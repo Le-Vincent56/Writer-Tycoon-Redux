@@ -6,8 +6,11 @@ This project started off as a way to hone my C++ skills, but now is more of a te
 ## Engine
 Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus on the low-level, engine-like development for the game. The goal for the game now is feature development, which is why I have switched to Unity. The goal, this time around, is to better my skills in general programming and software architecture/engineering by practicing design patterns for modularity and scalability.
 
-## PHASE 1 - GAMEPLAY DEVELOPMENT
-* Game: "Game" Time---------------------------------------------☐
+## GAMEPLAY CHECKLIST
+* World: Calendar-----------------------------------------------☑ (8/30/2024)
+* World: Calendar Time Dilation---------------------------------☑ (8/30/2024)
+* World: Calendar Pause-----------------------------------------☑ (8/30/2024)
+* World: Random Events------------------------------------------☐
 * Book Creation: Themes-----------------------------------------☐
 * Book Creation: Genre------------------------------------------☐
 * Book Creation: Flavor Text/Description------------------------☐
@@ -20,25 +23,26 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * Player: Creation----------------------------------------------☐
 * Player: Leveling/Growth---------------------------------------☐
 * Player: Traits------------------------------------------------☐
+* Research: Topics----------------------------------------------☐
+* Research: Genres----------------------------------------------☐
+* Research: Audiences-------------------------------------------☐
+* Research: Sequels---------------------------------------------☐
+* Research: Franchises------------------------------------------☐
+* Research: Media Forms-----------------------------------------☐
 * Economy: Book Sales Calculation-------------------------------☐
 * Economy: Timely Deductions------------------------------------☐
 * Economy: Displaying Statistics--------------------------------☐
+* Economy: Market Fluctuations----------------------------------☐
 * Workplace: Hiring---------------------------------------------☐
 * Workplace: Employee Leveling/Growth---------------------------☐
 * Workplace: Employee Types-------------------------------------☐
 * Workplace: Employee Traits------------------------------------☐
+* Workplace: Liveliness/Motivation------------------------------☐
+* Workplace: Contract Work--------------------------------------☐
+* AI: Competitors-----------------------------------------------☐
+* AI: Book Deals------------------------------------------------☐
 * Game: Win State-----------------------------------------------☐
 * Game: Lose State----------------------------------------------☐
-
-## PHASE 2 - POLISH
-* Accessibility: Time Dilation----------------------------------☐
-* Accessibility: Time Pause-------------------------------------☐
-* AI: Competitors-----------------------------------------------☐
-* Economy: Market Fluctuations----------------------------------☐
-* Immersion: Random Events--------------------------------------☐
-* Research: Progression/Timeline--------------------------------☐
-* Workplace: Liveliness/Motivation------------------------------☐
-* More to come...
 
 ## Sources
 Textures: Modern Interiors / Modern User Interface - LimeZu, https://limezu.itch.io/<br>
