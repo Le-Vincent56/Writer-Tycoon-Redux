@@ -7,9 +7,9 @@ This project started off as a way to hone my C++ skills, but now is more of a te
 Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus on the low-level, engine-like development for the game. The goal for the game now is feature development, which is why I have switched to Unity. The goal, this time around, is to better my skills in general programming and software architecture/engineering by practicing design patterns for modularity and scalability.
 
 ## GAMEPLAY CHECKLIST
-* World: Calendar-----------------------------------------------☐
-* World: Calendar Time Dilation---------------------------------☐
-* World: Calendar Pause-----------------------------------------☐
+* World: Calendar-----------------------------------------------☑ (8/30/2024)
+* World: Calendar Time Dilation---------------------------------☑ (8/30/2024)
+* World: Calendar Pause-----------------------------------------☑ (8/30/2024)
 * World: Random Events------------------------------------------☐
 * Book Creation: Themes-----------------------------------------☐
 * Book Creation: Genre------------------------------------------☐
