@@ -313,7 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 925edc7055be9b64a8a484fcf4f0a5ab, type: 2}
   inputReader: {fileID: 11400000, guid: 7c0e75d1e26315c458863a6a61eedf80, type: 2}
-  dayText: {fileID: 1096551101}
+  dateText: {fileID: 1096551101}
   currentTimeText: {fileID: 1923314033}
   currentSpeedText: {fileID: 821715703}
 --- !u!4 &564271176

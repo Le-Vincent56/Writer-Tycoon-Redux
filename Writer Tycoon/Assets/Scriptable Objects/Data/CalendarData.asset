@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3477ca5d76b1f424cb8cf557ab393568, type: 3}
   m_Name: CalendarData
   m_EditorClassIdentifier: 
-  DayIncrementTime: 0.2
+  DayIncrementTime: 0.5
   FasterScalar: 2
   FastestScalar: 5
