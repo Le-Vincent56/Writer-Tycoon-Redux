@@ -72,9 +72,9 @@ namespace WriterTycoon.World.Calendar
         private void Start()
         {
             // Set the current date to January 1, 2024
-            currentDay = 15;
-            currentMonth = 12;
-            currentYear = 2023;
+            currentDay = 0;
+            currentMonth = 1;
+            currentYear = 2024;
 
             // Check for leap year
             CheckForLeapYear();
@@ -172,6 +172,9 @@ namespace WriterTycoon.World.Calendar
             // Set the default speed for the timer
             dayTimer.SetDefaultSpeed();
 
+            // If the Timer is not running, resume it
+            if (!dayTimer.IsRunning) dayTimer.Resume();
+
             currentSpeedText.text = $"Current Speed: Default";
         }
 
@@ -183,6 +186,9 @@ namespace WriterTycoon.World.Calendar
             // Set the default speed for the timer
             dayTimer.SetFasterSpeed();
 
+            // If the Timer is not running, resume it
+            if (!dayTimer.IsRunning) dayTimer.Resume();
+
             currentSpeedText.text = $"Current Speed: Faster";
         }
 
@@ -193,6 +199,9 @@ namespace WriterTycoon.World.Calendar
         {
             // Set the default speed for the timer
             dayTimer.SetFastestSpeed();
+
+            // If the Timer is not running, resume it
+            if(!dayTimer.IsRunning) dayTimer.Resume();
 
             currentSpeedText.text = $"Current Speed: Fastest";
         }
