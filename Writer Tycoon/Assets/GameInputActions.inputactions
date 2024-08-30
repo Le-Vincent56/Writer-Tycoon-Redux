@@ -1,0 +1,74 @@
+{
+    "name": "GameInputActions",
+    "maps": [
+        {
+            "name": "PlayerControls",
+            "id": "8a224206-f9ef-4504-8895-38211bf1e7b7",
+            "actions": [
+                {
+                    "name": "SetDefaultSpeed",
+                    "type": "Button",
+                    "id": "eb5d05fb-ba27-40c9-adeb-c8e22f9d107d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SetFasterSpeed",
+                    "type": "Button",
+                    "id": "f0d750ea-6041-4935-a684-e6bef81fe2de",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SetFastestSpeed",
+                    "type": "Button",
+                    "id": "9d887042-21e8-4f95-80d2-bb8f0ef03058",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ed18a94f-930f-4334-a0bd-d17df6ebb98a",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SetDefaultSpeed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e93eeac-1917-4fe2-80bb-e8015d1711b6",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SetFasterSpeed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfd4704a-03c7-4d22-a208-904a5710b32f",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SetFastestSpeed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
