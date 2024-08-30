@@ -101,6 +101,21 @@ namespace WriterTycoon.Patterns.StateMachine
         }
 
         /// <summary>
+        /// Add a transition from one State to another given a certain condition
+        /// </summary>
+        /// <param name="from">The State to define the transition from</param>
+        /// <param name="to">The State to define the transition to</param>
+        /// <param name="condition">The condition of the Transition</param>
+        public void At(IState from, IState to, IPredicate condition) => AddTransition(from, to, condition);
+
+        /// <summary>
+        /// Add a transition from any State to another one given a certain condition
+        /// </summary>
+        /// <param name="to">The State to define the transition to</param>
+        /// <param name="condition">The condition of the transition</param>
+        public void Any(IState to, IPredicate condition) => AddAnyTransition(to, condition);
+
+        /// <summary>
         /// Add a Transition to the StateMachine's Transitions List
         /// </summary>
         /// <param name="to">The State to transition to</param>
