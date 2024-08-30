@@ -8,11 +8,12 @@ using static WriterTycoon.Input.GameInputActions;
 namespace WriterTycoon.Input
 {
     [CreateAssetMenu(fileName = "GameInputReader", menuName = "Input/Game Input Reader")]
-    public class PlayerInputReader : ScriptableObject, IPlayerControlsActions, IInputReader
+    public class GameInputReader : ScriptableObject, IPlayerControlsActions, IInputReader
     {
         public event UnityAction DefaultSpeed = delegate { };
         public event UnityAction FasterSpeed = delegate { };
         public event UnityAction FastestSpeed = delegate { };
+        public event UnityAction PauseCalendar = delegate { };
 
         GameInputActions inputActions;
 
@@ -56,6 +57,12 @@ namespace WriterTycoon.Input
         {
             // If the button has been lifted, invoke the event
             if (context.canceled) FastestSpeed.Invoke();
+        }
+
+        public void OnPauseCalendar(InputAction.CallbackContext context)
+        {
+            // If the button has been lifted, invoke the event
+            if (context.canceled) PauseCalendar.Invoke();
         }
     }
 }

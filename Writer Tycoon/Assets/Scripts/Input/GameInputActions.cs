@@ -55,6 +55,15 @@ namespace WriterTycoon.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseCalendar"",
+                    ""type"": ""Button"",
+                    ""id"": ""359ade29-301b-4a7e-9bac-e72f4fb1b9fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +99,17 @@ namespace WriterTycoon.Input
                     ""action"": ""SetFastestSpeed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cadc654a-20be-49e4-b00c-096423aac984"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseCalendar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +121,7 @@ namespace WriterTycoon.Input
             m_PlayerControls_SetDefaultSpeed = m_PlayerControls.FindAction("SetDefaultSpeed", throwIfNotFound: true);
             m_PlayerControls_SetFasterSpeed = m_PlayerControls.FindAction("SetFasterSpeed", throwIfNotFound: true);
             m_PlayerControls_SetFastestSpeed = m_PlayerControls.FindAction("SetFastestSpeed", throwIfNotFound: true);
+            m_PlayerControls_PauseCalendar = m_PlayerControls.FindAction("PauseCalendar", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -165,6 +186,7 @@ namespace WriterTycoon.Input
         private readonly InputAction m_PlayerControls_SetDefaultSpeed;
         private readonly InputAction m_PlayerControls_SetFasterSpeed;
         private readonly InputAction m_PlayerControls_SetFastestSpeed;
+        private readonly InputAction m_PlayerControls_PauseCalendar;
         public struct PlayerControlsActions
         {
             private @GameInputActions m_Wrapper;
@@ -172,6 +194,7 @@ namespace WriterTycoon.Input
             public InputAction @SetDefaultSpeed => m_Wrapper.m_PlayerControls_SetDefaultSpeed;
             public InputAction @SetFasterSpeed => m_Wrapper.m_PlayerControls_SetFasterSpeed;
             public InputAction @SetFastestSpeed => m_Wrapper.m_PlayerControls_SetFastestSpeed;
+            public InputAction @PauseCalendar => m_Wrapper.m_PlayerControls_PauseCalendar;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -190,6 +213,9 @@ namespace WriterTycoon.Input
                 @SetFastestSpeed.started += instance.OnSetFastestSpeed;
                 @SetFastestSpeed.performed += instance.OnSetFastestSpeed;
                 @SetFastestSpeed.canceled += instance.OnSetFastestSpeed;
+                @PauseCalendar.started += instance.OnPauseCalendar;
+                @PauseCalendar.performed += instance.OnPauseCalendar;
+                @PauseCalendar.canceled += instance.OnPauseCalendar;
             }
 
             private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -203,6 +229,9 @@ namespace WriterTycoon.Input
                 @SetFastestSpeed.started -= instance.OnSetFastestSpeed;
                 @SetFastestSpeed.performed -= instance.OnSetFastestSpeed;
                 @SetFastestSpeed.canceled -= instance.OnSetFastestSpeed;
+                @PauseCalendar.started -= instance.OnPauseCalendar;
+                @PauseCalendar.performed -= instance.OnPauseCalendar;
+                @PauseCalendar.canceled -= instance.OnPauseCalendar;
             }
 
             public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -225,6 +254,7 @@ namespace WriterTycoon.Input
             void OnSetDefaultSpeed(InputAction.CallbackContext context);
             void OnSetFasterSpeed(InputAction.CallbackContext context);
             void OnSetFastestSpeed(InputAction.CallbackContext context);
+            void OnPauseCalendar(InputAction.CallbackContext context);
         }
     }
 }

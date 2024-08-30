@@ -8,7 +8,7 @@ namespace WriterTycoon.World.Calendar
     public class Calendar : MonoBehaviour
     {
         [SerializeField] private CalendarData data;
-        [SerializeField] private PlayerInputReader inputReader;
+        [SerializeField] private GameInputReader inputReader;
 
         private int currentDay = 0;
 
@@ -22,6 +22,7 @@ namespace WriterTycoon.World.Calendar
             inputReader.DefaultSpeed += SetDefaultSpeed;
             inputReader.FasterSpeed += SetDoubleSpeed;
             inputReader.FastestSpeed += SetQuintupleSpeed;
+            inputReader.PauseCalendar += Pause;
         }
 
         private void OnDisable()
@@ -29,6 +30,7 @@ namespace WriterTycoon.World.Calendar
             inputReader.DefaultSpeed -= SetDefaultSpeed;
             inputReader.FasterSpeed -= SetDoubleSpeed;
             inputReader.FastestSpeed -= SetQuintupleSpeed;
+            inputReader.PauseCalendar -= Pause;
         }
 
         private void Start()
@@ -92,6 +94,37 @@ namespace WriterTycoon.World.Calendar
             dayTimer.SetFastestSpeed();
 
             currentSpeedText.text = $"Current Speed: Fastest";
+        }
+
+        private void Pause()
+        {
+            // Check if the Timer is running
+            if (dayTimer.IsRunning)
+            {
+                // If so, pause the Timer
+                dayTimer.Pause();
+                currentSpeedText.text = $"Current Speed: Paused";
+            }
+            else
+            {
+                // If not, resume the Timer
+                dayTimer.Resume();
+
+                switch(dayTimer.GetMode())
+                {
+                    case 1:
+                        currentSpeedText.text = $"Current Speed: Default";
+                        break;
+
+                    case 2:
+                        currentSpeedText.text = $"Current Speed: Faster";
+                        break;
+
+                    case 3:
+                        currentSpeedText.text = $"Current Speed: Fastest";
+                        break;
+                }
+            }
         }
     }
 }
