@@ -9,9 +9,8 @@ namespace WriterTycoon.GameCreation.Topics
     public class TopicManager : MonoBehaviour
     {
         [SerializeField] private int selectedTopicsMax;
-        [SerializeField] private int currentIndex = 0;
         private List<Topic> topics = new();
-        [SerializeField] private List<TopicButton> selectedTopics = new();
+        private List<TopicButton> selectedTopics = new();
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
         public UnityAction<List<TopicButton>> OnTopicsUpdated = delegate { };

@@ -49,8 +49,6 @@ namespace WriterTycoon.World.Calendar
         private int daysInMonth;
 
         [SerializeField] private Text dateText;
-        [SerializeField] private Text currentTimeText;
-        [SerializeField] private Text currentSpeedText;
         VariableFrequencyTimer dayTimer;
 
         private void OnEnable()
@@ -71,8 +69,8 @@ namespace WriterTycoon.World.Calendar
 
         private void Start()
         {
-            // Set the current date to January 1, 2024
-            currentDay = 0;
+            // Set the current date to January 01, 2024
+            currentDay = 1;
             currentMonth = 1;
             currentYear = 2024;
 
@@ -92,14 +90,8 @@ namespace WriterTycoon.World.Calendar
             // Start the day timer
             dayTimer.Start();
 
-            dateText.text = $"{Months[currentMonth]} {currentDay}, {currentYear}";
-            currentTimeText.text = $"Current Time: {dayTimer.CurrentTime}";
-            currentSpeedText.text = $"Current Speed: Default";
-        }
-
-        private void Update()
-        {
-            currentTimeText.text = $"Current Time: {dayTimer.CurrentTime}";
+            // Set text
+            SetDateText();
         }
 
         private void OnDestroy()
@@ -147,7 +139,23 @@ namespace WriterTycoon.World.Calendar
                 CheckForLeapYear();
             }
 
-            dateText.text = $"{Months[currentMonth]} {currentDay}, {currentYear}";
+            // Set the date text
+            SetDateText();
+        }
+
+        /// <summary>
+        /// Set the date text
+        /// </summary>
+        private void SetDateText()
+        {
+            // Format the string depending on how many digits the current day has
+            // This formats single digit days to have a zero in front ("01" instead of "1")
+            string currentDayString = (currentDay >= 0 && currentDay <= 9) 
+                ? $"0{currentDay}" 
+                : $"{currentDay}";
+
+            // Display text
+            dateText.text = $"{Months[currentMonth]} {currentDayString}, {currentYear}";
         }
 
         /// <summary>
@@ -174,8 +182,6 @@ namespace WriterTycoon.World.Calendar
 
             // If the Timer is not running, resume it
             if (!dayTimer.IsRunning) dayTimer.Resume();
-
-            currentSpeedText.text = $"Current Speed: Default";
         }
 
         /// <summary>
@@ -188,8 +194,6 @@ namespace WriterTycoon.World.Calendar
 
             // If the Timer is not running, resume it
             if (!dayTimer.IsRunning) dayTimer.Resume();
-
-            currentSpeedText.text = $"Current Speed: Faster";
         }
 
         /// <summary>
@@ -202,8 +206,6 @@ namespace WriterTycoon.World.Calendar
 
             // If the Timer is not running, resume it
             if(!dayTimer.IsRunning) dayTimer.Resume();
-
-            currentSpeedText.text = $"Current Speed: Fastest";
         }
 
         /// <summary>
@@ -216,7 +218,8 @@ namespace WriterTycoon.World.Calendar
             {
                 // If so, pause the Timer
                 dayTimer.Pause();
-                currentSpeedText.text = $"Current Speed: Paused";
+
+                // TODO: Update UI
             }
             else
             {
@@ -226,15 +229,15 @@ namespace WriterTycoon.World.Calendar
                 switch(dayTimer.GetMode())
                 {
                     case 1:
-                        currentSpeedText.text = $"Current Speed: Default";
+                        // TODO: Update UI (Default)
                         break;
 
                     case 2:
-                        currentSpeedText.text = $"Current Speed: Faster";
+                        // TODO: Update UI (Faster)
                         break;
 
                     case 3:
-                        currentSpeedText.text = $"Current Speed: Fastest";
+                        // TODO: Update UI (Fastest)
                         break;
                 }
             }
