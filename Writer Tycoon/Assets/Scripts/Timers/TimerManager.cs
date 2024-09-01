@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WriterTycoon.Extensions;
+using WriterTycoon.Extensions.List;
 
 namespace WriterTycoon.Timers
 {

@@ -1,19 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.GameCreation.UI;
+using WriterTycoon.GameCreation.Mediation;
+using WriterTycoon.Patterns.Mediator;
+using WriterTycoon.Patterns.ServiceLocator;
+using WriterTycoon.Patterns.Visitor;
 
 namespace WriterTycoon.GameCreation.Topics
 {
-    public class TopicManager : MonoBehaviour
+    public class TopicManager : Dedicant
     {
         [SerializeField] private int selectedTopicsMax;
         private List<Topic> topics = new();
         private List<TopicButton> selectedTopics = new();
+        private Mediator<Dedicant> mediator;
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
         public UnityAction<List<TopicButton>> OnTopicsUpdated = delegate { };
+
+        public override string Name { get => "Topic Manager"; }
+        public override DedicantType Type { get => DedicantType.Topic; }
 
         public int SelectedTopicsMax { get => selectedTopicsMax; }
 
@@ -27,6 +35,19 @@ namespace WriterTycoon.GameCreation.Topics
 
             // Communicate that the topics have been created
             OnTopicsCreated.Invoke(topics);
+        }
+
+        private void Start()
+        {
+            // Register with the mediator
+            mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
+            mediator.Register(this);
+        }
+
+        private void OnDestroy()
+        {
+            // Deregister the mediator
+            mediator.Deregister(this);
         }
 
         /// <summary>
@@ -181,5 +202,9 @@ namespace WriterTycoon.GameCreation.Topics
             // Invoke the event
             OnTopicsUpdated.Invoke(selectedTopics);
         }
+
+        public override void Accept(IVisitor message) => message.Visit(this);
+        protected override void Send(IVisitor message) => mediator.Broadcast(this, message);
+        protected override void Send(IVisitor message, Func<Dedicant, bool> predicate) => mediator.Broadcast(this, message, predicate);
     }
 }
