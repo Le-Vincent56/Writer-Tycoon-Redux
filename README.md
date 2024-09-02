@@ -11,8 +11,9 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * World: Calendar Time Dilation---------------------------------☑ (8/30/2024)
 * World: Calendar Pause-----------------------------------------☑ (8/30/2024)
 * World: Random Events------------------------------------------☐
-* Book Creation: Topics-----------------------------------------☐
-* Book Creation: Genre------------------------------------------☐
+* Book Creation: Topics-----------------------------------------☑ (9/02/2024)
+* Book Creation: Genre------------------------------------------☑ (9/02/2024)
+* Book Creation: Genre-Topic Compatibility----------------------☐
 * Book Creation: Theme------------------------------------------☐
 * Book Creation: Flavor Text/Description------------------------☐
 * Book Creation: Audience---------------------------------------☐
