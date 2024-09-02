@@ -2,11 +2,11 @@ namespace WriterTycoon.WorkCreation.Topics
 {
     public abstract class TopicFactory
     {
-        public abstract Topic CreateTopic(string name, bool unlocked);
+        public abstract Topic CreateTopic(TopicType topicType, bool unlocked);
     }
 
     public class StandardTopicFactory : TopicFactory
     {
-        public override Topic CreateTopic(string name, bool unlocked) => new Topic(name, unlocked);
+        public override Topic CreateTopic(TopicType topicType, bool unlocked) => new Topic(topicType, unlocked);
     }
 }

@@ -65,17 +65,17 @@ namespace WriterTycoon.WorkCreation.Genres
             StandardGenreFactory factory = new StandardGenreFactory();
 
             // Create and add all Genres
-            genres.Add(factory.CreateGenre("Action", true));
-            genres.Add(factory.CreateGenre("Adventure", true));
-            genres.Add(factory.CreateGenre("Contemporary Fiction", false));
-            genres.Add(factory.CreateGenre("Fantasy", true));
-            genres.Add(factory.CreateGenre("Horror", true));
-            genres.Add(factory.CreateGenre("Historical Fiction", true));
-            genres.Add(factory.CreateGenre("Mystery", false));
-            genres.Add(factory.CreateGenre("Non-fiction", false));
-            genres.Add(factory.CreateGenre("Romance", false));
-            genres.Add(factory.CreateGenre("Science Fiction", true));
-            genres.Add(factory.CreateGenre("Thriller", true));
+            genres.Add(factory.CreateGenre(GenreType.Action, true));
+            genres.Add(factory.CreateGenre(GenreType.Adventure, true));
+            genres.Add(factory.CreateGenre(GenreType.ContemporaryFiction, false));
+            genres.Add(factory.CreateGenre(GenreType.Fantasy, true));
+            genres.Add(factory.CreateGenre(GenreType.Horror, true));
+            genres.Add(factory.CreateGenre(GenreType.HistoricalFiction, true));
+            genres.Add(factory.CreateGenre(GenreType.Mystery, false));
+            genres.Add(factory.CreateGenre(GenreType.Nonfiction, false));
+            genres.Add(factory.CreateGenre(GenreType.Romance, false));
+            genres.Add(factory.CreateGenre(GenreType.ScienceFiction, true));
+            genres.Add(factory.CreateGenre(GenreType.Thriller, true));
         }
 
         /// <summary>

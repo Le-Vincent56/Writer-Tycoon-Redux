@@ -1,18 +1,29 @@
 using System;
+using System.Text;
 using WriterTycoon.WorkCreation.Rater;
+using WriterTycoon.WorkCreation.Topics;
 
 namespace WriterTycoon.WorkCreation.Genres
 {
+    public enum GenreType
+    {
+        Action, Adventure, ContemporaryFiction,
+        Fantasy, Horror, HistoricalFiction, Mystery,
+        Nonfiction, Romance, ScienceFiction, Thriller
+    }
+
     [Serializable]
     public class Genre : IMasterable
     {
+        public GenreType Type { get; private set; }
         public string Name { get; private set; }
         public bool IsUnlocked { get; private set; }
         public int MasteryLevel { get; set; }
 
-        public Genre(string name, bool unlocked)
+        public Genre(GenreType genreType, bool unlocked)
         {
-            Name = name;
+            Type = genreType;
+            Name = DecideName(genreType);
             IsUnlocked = unlocked;
             MasteryLevel = 0;
         }
@@ -37,6 +48,32 @@ namespace WriterTycoon.WorkCreation.Genres
 
             // Increment the mastery level
             MasteryLevel++;
+        }
+
+        /// <summary>
+        /// Decide the display name of the Genre
+        /// </summary>
+        /// <param name="genreType"></param>
+        public string DecideName(GenreType genreType)
+        {
+            string genreName = genreType.ToString();
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < genreName.Length; i++)
+            {
+                // Check for uppercases
+                if (i > 0 && char.IsUpper(genreName[i]))
+                {
+                    // If so, add a space to show
+                    // word differentiation
+                    result.Append(' ');
+                }
+
+                // Append the letter
+                result.Append(genreName[i]);
+            }
+
+            return result.ToString();
         }
     }
 }
