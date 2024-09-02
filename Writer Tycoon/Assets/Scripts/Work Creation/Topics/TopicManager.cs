@@ -1,20 +1,19 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.GameCreation.Mediation;
+using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Patterns.Visitor;
 
-namespace WriterTycoon.GameCreation.Topics
+namespace WriterTycoon.WorkCreation.Topics
 {
     public class TopicManager : Dedicant
     {
         [SerializeField] private int selectedTopicsMax;
         private List<Topic> topics = new();
-        private List<TopicButton> selectedTopics = new();
+        private List<TopicButton> selectedTopicButtons = new();
         private Mediator<Dedicant> mediator;
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
@@ -27,14 +26,12 @@ namespace WriterTycoon.GameCreation.Topics
 
         private void Awake()
         {
-            // Create Lists
+            // Initialize Lists
             topics = new();
-            selectedTopics = new();
+            selectedTopicButtons = new();
 
+            // Create the Topics
             CreateTopics();
-
-            // Communicate that the topics have been created
-            OnTopicsCreated.Invoke(topics);
         }
 
         private void Start()
@@ -42,6 +39,10 @@ namespace WriterTycoon.GameCreation.Topics
             // Register with the mediator
             mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
             mediator.Register(this);
+
+            // Communicate that the topics have been created and updated
+            OnTopicsCreated.Invoke(topics);
+            OnTopicsUpdated.Invoke(selectedTopicButtons);
         }
 
         private void OnDestroy()
@@ -59,7 +60,7 @@ namespace WriterTycoon.GameCreation.Topics
             topics.Clear();
             
             // Create the Topic factory
-            StandardTopicFactory factory = new StandardTopicFactory();
+            StandardTopicFactory factory = new();
 
             // Create and add all topics
             topics.Add(factory.CreateTopic("Agents", true));
@@ -164,24 +165,24 @@ namespace WriterTycoon.GameCreation.Topics
         public void SelectTopic(TopicButton buttonToSelect)
         {
             // Exit case - if the list already contains the Topic Button
-            if (selectedTopics.Contains(buttonToSelect)) return;
+            if (selectedTopicButtons.Contains(buttonToSelect)) return;
 
             // Check if the maximum amount of selected Topics have been reached
-            if (selectedTopics.Count >= selectedTopicsMax)
+            if (selectedTopicButtons.Count >= selectedTopicsMax)
             {
                 // Deselect the Topic Button and remove it
-                selectedTopics[0].Deselect();
-                selectedTopics.RemoveAt(0);
+                selectedTopicButtons[0].Deselect();
+                selectedTopicButtons.RemoveAt(0);
             }
 
             // Add the Topic Button to the selected Topic Buttons list
-            selectedTopics.Add(buttonToSelect);
+            selectedTopicButtons.Add(buttonToSelect);
 
             // Select the Topic Button
             buttonToSelect.Select();
 
             // Invoke the event
-            OnTopicsUpdated.Invoke(selectedTopics);
+            OnTopicsUpdated.Invoke(selectedTopicButtons);
         }
 
         /// <summary>
@@ -190,17 +191,33 @@ namespace WriterTycoon.GameCreation.Topics
         public void ClearSelectedTopics()
         {
             // Iterate over each selected Topic Button
-            foreach(TopicButton topicButton in selectedTopics)
+            foreach(TopicButton topicButton in selectedTopicButtons)
             {
                 // Deselect the Topic Button
                 topicButton.Deselect();
             }
 
             // Clear the list
-            selectedTopics.Clear();
+            selectedTopicButtons.Clear();
 
             // Invoke the event
-            OnTopicsUpdated.Invoke(selectedTopics);
+            OnTopicsUpdated.Invoke(selectedTopicButtons);
+        }
+
+        /// <summary>
+        /// Send the selected Topics to the Rater
+        /// </summary>
+        public void SendTopicsToRater()
+        {
+            // Create a list to store Topics in
+            List<Topic> selectedTopics = new();
+            foreach(TopicButton button in selectedTopicButtons)
+            {
+                selectedTopics.Add(button.Topic);
+            }
+
+            // Send the Topic payload
+            Send(new TopicPayload() { Content = selectedTopics }, IsRater);
         }
 
         public override void Accept(IVisitor message) => message.Visit(this);

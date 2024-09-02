@@ -1,12 +1,13 @@
 using UnityEngine;
-using WriterTycoon.GameCreation.Mediator;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.Patterns.ServiceLocator;
 
-namespace WriterTycoon.GameCreation.Mediation
+namespace WriterTycoon.WorkCreation.Mediation
 {
     public class DedicantMediator : Mediator<Dedicant>
     {
+        [SerializeField] private bool debug;
+
         private void Awake()
         {
             // Register to the global service locator
@@ -15,14 +16,12 @@ namespace WriterTycoon.GameCreation.Mediation
 
         protected override void OnRegistered(Dedicant component)
         {
-            Debug.Log($"{component.Name} registered");
-            Broadcast(component, new DedicantPayload { Source = component, Content = "Registered" });
+            if(debug) Debug.Log($"{component.Name} registered");
         }
 
         protected override void OnDeregistered(Dedicant component)
         {
-            Debug.Log($"{component.Name} deregistered");
-            Broadcast(component, new DedicantPayload { Source = component, Content = "Registered" });
+            if(debug) Debug.Log($"{component.Name} deregistered");
         }
 
         protected override bool MediatorConditionMet(Dedicant target) => true;

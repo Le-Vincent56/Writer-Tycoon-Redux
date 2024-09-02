@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.GameCreation.Topics;
+using WriterTycoon.WorkCreation.Topics;
 
-namespace WriterTycoon.GameCreation.UI
+namespace WriterTycoon.WorkCreation.UI
 {
     public class TopicsUI : MonoBehaviour
     {
@@ -77,7 +76,7 @@ namespace WriterTycoon.GameCreation.UI
             selectedTopicsText.text = selectedText;
 
             // Set the header text
-            headerText.text = $"Topics ({selectedTopics.Count}/{topicManager.SelectedTopicsMax})";
+            headerText.text = $"Topic(s) ({selectedTopics.Count}/{topicManager.SelectedTopicsMax})";
         }
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
-using WriterTycoon.GameCreation.UI.States;
+using WriterTycoon.WorkCreation.UI.States;
 using WriterTycoon.Patterns.StateMachine;
 
-namespace WriterTycoon.GameCreation.UI
+namespace WriterTycoon.WorkCreation.UI
 {
     public class CreateGameWindow : MonoBehaviour
     {
@@ -12,6 +12,7 @@ namespace WriterTycoon.GameCreation.UI
 
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
+        public int GENRE { get => 2; }
 
         private void Awake()
         {
@@ -24,10 +25,15 @@ namespace WriterTycoon.GameCreation.UI
             // Construct states
             IdeationState ideationState = new IdeationState(screens[IDEATION]);
             TopicState topicState = new TopicState(screens[TOPIC]);
+            GenreState genreState = new GenreState(screens[GENRE]);
 
             // Set state transitions
             stateMachine.At(ideationState, topicState, new FuncPredicate(() => state == TOPIC));
+
             stateMachine.At(topicState, ideationState, new FuncPredicate(() => state == IDEATION));
+            stateMachine.At(topicState, genreState, new FuncPredicate(() => state == GENRE));
+
+            stateMachine.At(genreState, topicState, new FuncPredicate(() => state == TOPIC));
 
             // Set the initial state
             stateMachine.SetState(ideationState);

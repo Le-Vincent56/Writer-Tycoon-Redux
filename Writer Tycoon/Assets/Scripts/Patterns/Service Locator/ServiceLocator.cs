@@ -13,7 +13,7 @@ namespace WriterTycoon.Patterns.ServiceLocator
         private static ServiceLocator global;
         private static Dictionary<Scene, ServiceLocator> sceneContainers;
         private static List<GameObject> tempSceneGameObjects;
-        private readonly ServiceManager services = new ServiceManager();
+        private readonly ServiceManager services = new();
 
         const string k_globalServiceLocatorName = "Service Locator [Global]";
         const string k_sceneServiceLocatorName = "Service Locator [Scene]";

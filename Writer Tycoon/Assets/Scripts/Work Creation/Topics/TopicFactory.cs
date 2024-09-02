@@ -1,4 +1,4 @@
-namespace WriterTycoon.GameCreation.Topics
+namespace WriterTycoon.WorkCreation.Topics
 {
     public abstract class TopicFactory
     {

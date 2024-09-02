@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.GameCreation.UI;
 
-namespace WriterTycoon.GameCreation.Topics
+namespace WriterTycoon.WorkCreation.Topics
 {
     public class TopicButton : MonoBehaviour
     {
@@ -29,7 +26,7 @@ namespace WriterTycoon.GameCreation.Topics
             this.topicManager = topicManager;
             Topic = topic;
 
-            // Check if the topic is unlocked
+            // Check if the Topic is unlocked
             if (Topic.IsUnlocked) 
                 // If so, allow it to be interacted with
                 button.interactable = true;

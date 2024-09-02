@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using WriterTycoon.Patterns.Visitor;
 
-namespace WriterTycoon.GameCreation.Mediation
+namespace WriterTycoon.WorkCreation.Mediation
 {
     public enum DedicantType
     {

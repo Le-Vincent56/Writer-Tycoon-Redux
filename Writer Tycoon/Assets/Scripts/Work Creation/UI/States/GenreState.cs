@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.GameCreation.UI.States
+namespace WriterTycoon.WorkCreation.UI.States
 {
-    public class TopicState : CreateGameState
+    public class GenreState : CreateWorkState
     {
-        public TopicState(GameObject uiObject) : base(uiObject)
+        public GenreState(GameObject uiObject) : base(uiObject)
         {
         }
 

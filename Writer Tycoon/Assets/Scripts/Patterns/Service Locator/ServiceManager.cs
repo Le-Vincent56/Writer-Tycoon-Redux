@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace WriterTycoon.Patterns.ServiceLocator
 {
-    public class ServiceManager : MonoBehaviour
+    public class ServiceManager
     {
         private readonly Dictionary<Type, object> services = new();
         public IEnumerable<object> RegisteredServices => services.Values;

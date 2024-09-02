@@ -6,16 +6,16 @@ using UnityEngine.UI;
 using WriterTycoon.Patterns.StateMachine;
 using static WriterTycoon.Utilities.UI.UIUtils;
 
-namespace WriterTycoon.GameCreation.UI.States
+namespace WriterTycoon.WorkCreation.UI.States
 {
-    public class CreateGameState : IState
+    public class CreateWorkState : IState
     {
         protected float fadeDuration;
         protected GameObject uiObject;
         protected List<ImageData> imageDatas = new();
         protected List<TextData> textDatas = new();
 
-        public CreateGameState(GameObject uiObject)
+        public CreateWorkState(GameObject uiObject)
         {
             fadeDuration = 0f;
             this.uiObject = uiObject;

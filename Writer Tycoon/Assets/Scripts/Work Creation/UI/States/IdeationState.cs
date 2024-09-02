@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace WriterTycoon.GameCreation.UI.States
+namespace WriterTycoon.WorkCreation.UI.States
 {
-    public class IdeationState : CreateGameState
+    public class IdeationState : CreateWorkState
     {
         public IdeationState(GameObject uiObject) : base(uiObject)
         {
