@@ -9,9 +9,19 @@ using WriterTycoon.WorkCreation.Topics;
 
 namespace WrtierTycoon.WorkCreation.Rater
 {
+    public enum Compatibility
+    {
+        Excellent,
+        Positve,
+        Neutral,
+        Bad,
+        Terrible
+    }
+
     public class WorkRater : Dedicant
     {
         private Mediator<Dedicant> mediator;
+
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
 

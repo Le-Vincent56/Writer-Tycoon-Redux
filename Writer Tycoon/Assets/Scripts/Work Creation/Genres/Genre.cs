@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using WriterTycoon.WorkCreation.Rater;
-using WriterTycoon.WorkCreation.Topics;
 
 namespace WriterTycoon.WorkCreation.Genres
 {

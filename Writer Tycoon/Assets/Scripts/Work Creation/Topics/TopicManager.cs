@@ -12,7 +12,7 @@ namespace WriterTycoon.WorkCreation.Topics
     public class TopicManager : Dedicant
     {
         [SerializeField] private int selectedTopicsMax;
-        private List<Topic> topics = new();
+        [SerializeField] private List<Topic> topics = new();
         private List<TopicButton> selectedTopicButtons = new();
         private Mediator<Dedicant> mediator;
 
