@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.Patterns.Mediator;
 
 namespace WriterTycoon.WorkCreation.Topics
 {
@@ -11,7 +10,6 @@ namespace WriterTycoon.WorkCreation.Topics
         [SerializeField] private int selectedTopicsMax;
         [SerializeField] private List<Topic> topics = new();
         private List<TopicButton> selectedTopicButtons = new();
-        private Mediator<Dedicant> mediator;
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
         public UnityAction<List<TopicButton>> OnTopicsUpdated = delegate { };

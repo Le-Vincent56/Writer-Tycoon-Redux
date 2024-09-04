@@ -6,6 +6,16 @@ using WriterTycoon.WorkCreation.Topics;
 
 namespace WriterTycoon.WorkCreation.Compatibility
 {
+    public enum CompatibilityType
+    {
+        None,
+        Excellent,
+        Good,
+        Neutral,
+        Poor,
+        Terrible
+    }
+
     public class CompatibilityManager : Dedicant
     {
         private GenreTopicCompatibility genreTopicCompatibility;
@@ -36,7 +46,7 @@ namespace WriterTycoon.WorkCreation.Compatibility
         /// Check the Genre-Topic compatibilities
         /// </summary>
         /// <returns></returns>
-        public List<Compatibility> CheckGenreTopicCompatibilities()
+        public List<CompatibilityType> CheckGenreTopicCompatibilities()
         {
             // Exit case - there are no Topics selected
             if (topics.Count <= 0) return null;
@@ -48,7 +58,7 @@ namespace WriterTycoon.WorkCreation.Compatibility
             if (genreTopicCompatibility == null) return null;
 
             // Create a list to store the compatibilities
-            List<Compatibility> compatibilities = new List<Compatibility>();
+            List<CompatibilityType> compatibilities = new List<CompatibilityType>();
 
             // Iterate through each genre
             for(int i = 0; i < genres.Count; i++)
@@ -75,11 +85,11 @@ namespace WriterTycoon.WorkCreation.Compatibility
         public void CalculateCompatibilityScore()
         {
             // Get the compatibilities
-            List<Compatibility> genreTopicCompatibilities = CheckGenreTopicCompatibilities();
+            List<CompatibilityType> genreTopicCompatibilities = CheckGenreTopicCompatibilities();
 
             string compatibilities = "";
 
-            foreach(Compatibility compatibility in genreTopicCompatibilities)
+            foreach(CompatibilityType compatibility in genreTopicCompatibilities)
             {
                 compatibilities += $"{compatibility}, ";
             }
