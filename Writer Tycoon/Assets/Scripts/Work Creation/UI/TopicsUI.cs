@@ -22,12 +22,14 @@ namespace WriterTycoon.WorkCreation.UI
 
         private void OnEnable()
         {
+            // Subscribe to events
             topicManager.OnTopicsCreated += InstantiateTopics;
             topicManager.OnTopicsUpdated += UpdateSelectedTopics;
         }
 
         private void OnDisable()
         {
+            // Unsubscribe to events
             topicManager.OnTopicsCreated -= InstantiateTopics;
             topicManager.OnTopicsUpdated -= UpdateSelectedTopics;
         }

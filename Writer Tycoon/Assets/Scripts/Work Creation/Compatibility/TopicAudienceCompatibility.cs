@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using WriterTycoon.WorkCreation.Compatibility;
-using WriterTycoon.WorkCreation.Genres;
+using WriterTycoon.WorkCreation.Audience;
 using WriterTycoon.WorkCreation.Topics;
 
-namespace WriterTycoon.WorkCreation.Audience
+namespace WriterTycoon.WorkCreation.Compatibility
 {
     public class TopicAudienceCompatibility
     {
@@ -323,7 +322,7 @@ namespace WriterTycoon.WorkCreation.Audience
             };
 
             // Add the pair to the Dictionary
-            topicAudienceCompatibilities.Add(TopicType.Agents, compatibleAudiences);
+            topicAudienceCompatibilities.Add(TopicType.Archaeology, compatibleAudiences);
         }
 
         /// <summary>
@@ -533,7 +532,7 @@ namespace WriterTycoon.WorkCreation.Audience
             };
 
             // Add the pair to the Dictionary
-            topicAudienceCompatibilities.Add(TopicType.Chess, compatibleAudiences);
+            topicAudienceCompatibilities.Add(TopicType.Circus, compatibleAudiences);
         }
 
         /// <summary>

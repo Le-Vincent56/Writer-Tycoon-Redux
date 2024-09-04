@@ -11,6 +11,7 @@ namespace WriterTycoon.WorkCreation.Genres
         [SerializeField] private int selectedGenresMax;
         private List<Genre> genres = new();
         private List<GenreButton> selectedGenreButtons = new();
+
         public UnityAction<List<Genre>> OnGenresCreated = delegate { };
         public UnityAction<List<GenreButton>> OnGenresUpdated = delegate { };
 
@@ -31,6 +32,7 @@ namespace WriterTycoon.WorkCreation.Genres
 
         protected override void Start()
         {
+            // Initialize the mediator
             base.Start();
 
             // Communicate that the Genres have been created and updated
@@ -109,7 +111,7 @@ namespace WriterTycoon.WorkCreation.Genres
         }
 
         /// <summary>
-        /// Send the selected Genres to the Rater
+        /// Send the selected Genres to the Compatibility Manager
         /// </summary>
         public void SendGenresToCompatibilityManager()
         {

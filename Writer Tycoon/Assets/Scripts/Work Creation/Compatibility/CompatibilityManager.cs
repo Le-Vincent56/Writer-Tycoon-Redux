@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WriterTycoon.WorkCreation.Audience;
 using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.Topics;
@@ -19,9 +20,11 @@ namespace WriterTycoon.WorkCreation.Compatibility
     public class CompatibilityManager : Dedicant
     {
         private GenreTopicCompatibility genreTopicCompatibility;
+        private TopicAudienceCompatibility topicAudienceCompatibility;
 
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
+        [SerializeField] private AudienceType audience;
 
         public override string Name { get => "Compatibility Manager"; }
         public override DedicantType Type { get => DedicantType.Compatibility; }
@@ -30,7 +33,13 @@ namespace WriterTycoon.WorkCreation.Compatibility
         {
             // Create a new data base for Genre-Topic compatibility
             genreTopicCompatibility = new GenreTopicCompatibility();
+            topicAudienceCompatibility = new TopicAudienceCompatibility();
         }
+
+        /// <summary>
+        /// Set the selected Audience
+        /// </summary>
+        public void SetAudience(AudienceType audience) => this.audience = audience;
 
         /// <summary>
         /// Set the selected Topics
@@ -45,7 +54,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
         /// <summary>
         /// Check the Genre-Topic compatibilities
         /// </summary>
-        /// <returns></returns>
         public List<CompatibilityType> CheckGenreTopicCompatibilities()
         {
             // Exit case - there are no Topics selected
@@ -58,7 +66,7 @@ namespace WriterTycoon.WorkCreation.Compatibility
             if (genreTopicCompatibility == null) return null;
 
             // Create a list to store the compatibilities
-            List<CompatibilityType> compatibilities = new List<CompatibilityType>();
+            List<CompatibilityType> compatibilities = new();
 
             // Iterate through each genre
             for(int i = 0; i < genres.Count; i++)
@@ -80,21 +88,91 @@ namespace WriterTycoon.WorkCreation.Compatibility
         }
 
         /// <summary>
+        /// Check the Audience-Topic compatibilities
+        /// </summary>
+        public List<CompatibilityType> CheckTopicAudienceCompatibility()
+        {
+            // Exit case - there are no Topics selected
+            if (topics.Count < 0) return null;
+
+            // Exit case - there is no Audience selected
+            if (audience == AudienceType.None) return null;
+
+            // Exit case - the Topic-Audience compatibility object does not exist
+            if (topicAudienceCompatibility == null) return null;
+
+            // Create a list to store the compatibilities
+            List<CompatibilityType> compatibilities = new();
+
+            // Iterate through each genre
+            for(int i = 0; i < topics.Count; i++)
+            {
+                // Add the compatibility for the Topic-Audience to the list
+                compatibilities.Add(
+                    topicAudienceCompatibility.GetCompatibility(topics[i].Type, audience)
+                );
+            }
+
+            return compatibilities;
+        }
+
+        /// <summary>
         /// Calculate the total compatibility score
         /// </summary>
         public void CalculateCompatibilityScore()
         {
             // Get the compatibilities
             List<CompatibilityType> genreTopicCompatibilities = CheckGenreTopicCompatibilities();
+            List<CompatibilityType> topicAudienceCompatibilities = CheckTopicAudienceCompatibility();
 
-            string compatibilities = "";
+            string genreTopicString = $"Genre Compatibilities (";
 
-            foreach(CompatibilityType compatibility in genreTopicCompatibilities)
+            for(int i = 0; i < genres.Count; i++)
             {
-                compatibilities += $"{compatibility}, ";
+                genreTopicString += $"{genres[i].Name}";
+
+                if (i < genres.Count - 1) genreTopicString += "/";
             }
 
-            Debug.Log(compatibilities);
+            genreTopicString += ") ";
+            genreTopicString += " [";
+
+            for(int i = 0; i < topics.Count; i++)
+            {
+                genreTopicString += $"{topics[i].Name}";
+
+                if (i < topics.Count - 1) genreTopicString += ", ";
+            }
+
+            genreTopicString += "]: ";
+
+            for (int i = 0; i < genreTopicCompatibilities.Count; i++)
+            {
+                genreTopicString += $"{genreTopicCompatibilities[i]}";
+
+                if (i < genreTopicCompatibilities.Count - 1) genreTopicString += ", ";
+            }
+
+            string topicAudienceString = $"Audience Compatibilities ({audience}) [";
+
+            for (int i = 0; i < topics.Count; i++)
+            {
+                topicAudienceString += $"{topics[i].Name}";
+
+                if (i < topics.Count - 1) topicAudienceString += ", ";
+            }
+
+            topicAudienceString += "]: ";
+
+            for (int i = 0; i < topicAudienceCompatibilities.Count; i++)
+            {
+                topicAudienceString += $"{topicAudienceCompatibilities[i]}";
+
+                if (i < topicAudienceCompatibilities.Count - 1) topicAudienceString += ", ";
+            }
+
+            Debug.Log(genreTopicString);
+            Debug.Log(topicAudienceString);
         }
     }
 }

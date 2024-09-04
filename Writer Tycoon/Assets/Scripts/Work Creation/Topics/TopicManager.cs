@@ -193,7 +193,7 @@ namespace WriterTycoon.WorkCreation.Topics
         }
 
         /// <summary>
-        /// Send the selected Topics to the Rater
+        /// Send the selected Topics to the Compatibility Manager
         /// </summary>
         public void SendTopicsToCompatibilityManager()
         {
@@ -204,11 +204,8 @@ namespace WriterTycoon.WorkCreation.Topics
                 selectedTopics.Add(button.Topic);
             }
 
-            // Store Dedicant types
-            DedicantType[] recipients = new DedicantType[2] { DedicantType.Compatibility, DedicantType.Audience };
-
             // Send the Topic payload
-            Send(new TopicPayload() { Content = selectedTopics }, AreTypes(recipients));
+            Send(new TopicPayload() { Content = selectedTopics }, IsType(DedicantType.Compatibility));
         }
     }
 }

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.WorkCreation.UI;
+using WriterTycoon.WorkCreation.Genres;
 
-namespace WriterTycoon.WorkCreation.Genres
+namespace WriterTycoon.WorkCreation.UI
 {
     public class GenreUI : MonoBehaviour
     {
@@ -22,12 +22,14 @@ namespace WriterTycoon.WorkCreation.Genres
 
         private void OnEnable()
         {
+            // Subscribe to events
             genreManager.OnGenresCreated += InstantiateGenres;
             genreManager.OnGenresUpdated += UpdateSelectedGenres;
         }
 
         private void OnDisable()
         {
+            // Unsubscribe to events
             genreManager.OnGenresCreated -= InstantiateGenres;
             genreManager.OnGenresUpdated -= UpdateSelectedGenres;
         }
