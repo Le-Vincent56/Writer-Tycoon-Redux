@@ -207,7 +207,7 @@ namespace WriterTycoon.WorkCreation.Topics
         /// <summary>
         /// Send the selected Topics to the Rater
         /// </summary>
-        public void SendTopicsToRater()
+        public void SendTopicsToCompatibilityManager()
         {
             // Create a list to store Topics in
             List<Topic> selectedTopics = new();
@@ -217,7 +217,7 @@ namespace WriterTycoon.WorkCreation.Topics
             }
 
             // Send the Topic payload
-            Send(new TopicPayload() { Content = selectedTopics }, IsRater);
+            Send(new TopicPayload() { Content = selectedTopics }, IsCompatibility);
         }
 
         public override void Accept(IVisitor message) => message.Visit(this);

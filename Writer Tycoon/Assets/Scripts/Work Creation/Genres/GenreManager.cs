@@ -126,7 +126,7 @@ namespace WriterTycoon.WorkCreation.Genres
         /// <summary>
         /// Send the selected Genres to the Rater
         /// </summary>
-        public void SendGenresToRater()
+        public void SendGenresToCompatibilityManager()
         {
             // Create a list to store Genres in
             List<Genre> selectedGenres = new();
@@ -136,7 +136,7 @@ namespace WriterTycoon.WorkCreation.Genres
             }
 
             // Send the Genre payload
-            Send(new GenrePayload() { Content = selectedGenres }, IsRater);
+            Send(new GenrePayload() { Content = selectedGenres }, IsCompatibility);
         }
 
         public override void Accept(IVisitor message) => message.Visit(this);

@@ -29,13 +29,15 @@ namespace WriterTycoon.WorkCreation.Topics
         public string Name { get; private set; }
         public bool IsUnlocked { get; private set; }
         public int MasteryLevel { get; set; }
+        public bool IgnoreGenreCompatibility { get; set; }
 
-        public Topic(TopicType topicType, bool unlocked)
+        public Topic(TopicType topicType, bool unlocked, bool ignoreGenreCompatibility = false)
         {
             Type = topicType;
             Name = DecideName(topicType);
             IsUnlocked = unlocked;
             MasteryLevel = 0;
+            IgnoreGenreCompatibility = ignoreGenreCompatibility;
         }
 
         /// <summary>

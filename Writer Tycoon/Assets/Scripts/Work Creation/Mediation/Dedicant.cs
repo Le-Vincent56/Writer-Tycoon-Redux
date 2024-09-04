@@ -10,7 +10,8 @@ namespace WriterTycoon.WorkCreation.Mediation
         Genre,
         Audience,
         Slider,
-        Rater
+        Compatibility,
+        Rater,
     }
 
     public abstract class Dedicant : MonoBehaviour, IVisitable
@@ -27,6 +28,7 @@ namespace WriterTycoon.WorkCreation.Mediation
         protected Func<Dedicant, bool> IsGenre => target => target.Type == DedicantType.Genre;
         protected Func<Dedicant, bool> IsAudience => target => target.Type == DedicantType.Audience;
         protected Func<Dedicant, bool> IsSlider => target => target.Type == DedicantType.Slider;
+        protected Func<Dedicant, bool> IsCompatibility => target => target.Type == DedicantType.Compatibility;
         protected Func<Dedicant, bool> IsRater => target => target.Type == DedicantType.Rater;
     }
 }

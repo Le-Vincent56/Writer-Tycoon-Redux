@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
-using WrtierTycoon.WorkCreation.Rater;
+using WriterTycoon.WorkCreation.Compatibility;
 
 namespace WriterTycoon.WorkCreation.Genres
 {
@@ -11,7 +11,7 @@ namespace WriterTycoon.WorkCreation.Genres
         public override void Visit<T>(T visitable)
         {
             // Verify types for mediation
-            if (visitable is WorkRater rater) rater.SetGenres(Content);
+            if (visitable is CompatibilityManager compatibilityManager) compatibilityManager.SetGenres(Content);
         }
     }
 }
