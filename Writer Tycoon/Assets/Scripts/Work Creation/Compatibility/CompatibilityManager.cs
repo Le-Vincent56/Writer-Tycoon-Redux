@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Patterns.Visitor;
 using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.Topics;
@@ -17,8 +13,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
 
-        private Mediator<Dedicant> mediator;
-
         public override string Name { get => "Compatibility Manager"; }
         public override DedicantType Type { get => DedicantType.Compatibility; }
 
@@ -26,19 +20,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
         {
             // Create a new data base for Genre-Topic compatibility
             genreTopicCompatibility = new GenreTopicCompatibility();
-        }
-
-        private void Start()
-        {
-            // Register with the mediator
-            mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
-            mediator.Register(this);
-        }
-
-        private void OnDestroy()
-        {
-            // Deregister the mediator
-            mediator.Deregister(this);
         }
 
         /// <summary>
@@ -104,13 +85,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
             }
 
             Debug.Log(compatibilities);
-        }
-
-        public override void Accept(IVisitor message) => message.Visit(this);
-
-        protected override void Send(IVisitor message)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

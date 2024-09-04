@@ -1,13 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Patterns.Visitor;
 using WriterTycoon.WorkCreation.UI;
-using WriterTycoon.WorkCreation.Topics;
 
 namespace WriterTycoon.WorkCreation.Genres
 {
@@ -16,8 +11,6 @@ namespace WriterTycoon.WorkCreation.Genres
         [SerializeField] private int selectedGenresMax;
         private List<Genre> genres = new();
         private List<GenreButton> selectedGenreButtons = new();
-        private Mediator<Dedicant> mediator;
-
         public UnityAction<List<Genre>> OnGenresCreated = delegate { };
         public UnityAction<List<GenreButton>> OnGenresUpdated = delegate { };
 
@@ -36,21 +29,13 @@ namespace WriterTycoon.WorkCreation.Genres
             CreateGenres();
         }
 
-        private void Start()
+        protected override void Start()
         {
-            // Register with the mediator
-            mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
-            mediator.Register(this);
+            base.Start();
 
             // Communicate that the Genres have been created and updated
             OnGenresCreated.Invoke(genres);
             OnGenresUpdated.Invoke(selectedGenreButtons);
-        }
-
-        private void OnDestroy()
-        {
-            // Deregister the mediator
-            mediator.Deregister(this);
         }
 
         /// <summary>
@@ -136,11 +121,7 @@ namespace WriterTycoon.WorkCreation.Genres
             }
 
             // Send the Genre payload
-            Send(new GenrePayload() { Content = selectedGenres }, IsCompatibility);
+            Send(new GenrePayload() { Content = selectedGenres }, IsType(DedicantType.Compatibility));
         }
-
-        public override void Accept(IVisitor message) => message.Visit(this);
-        protected override void Send(IVisitor message) => mediator.Broadcast(this, message);
-        protected override void Send(IVisitor message, Func<Dedicant, bool> predicate) => mediator.Broadcast(this, message, predicate);
     }
 }

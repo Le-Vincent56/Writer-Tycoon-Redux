@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Patterns.Visitor;
 
 namespace WriterTycoon.WorkCreation.Topics
 {
@@ -34,21 +31,14 @@ namespace WriterTycoon.WorkCreation.Topics
             CreateTopics();
         }
 
-        private void Start()
+        protected override void Start()
         {
             // Register with the mediator
-            mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
-            mediator.Register(this);
+            base.Start();
 
             // Communicate that the topics have been created and updated
             OnTopicsCreated.Invoke(topics);
             OnTopicsUpdated.Invoke(selectedTopicButtons);
-        }
-
-        private void OnDestroy()
-        {
-            // Deregister the mediator
-            mediator.Deregister(this);
         }
 
         /// <summary>
@@ -216,12 +206,11 @@ namespace WriterTycoon.WorkCreation.Topics
                 selectedTopics.Add(button.Topic);
             }
 
-            // Send the Topic payload
-            Send(new TopicPayload() { Content = selectedTopics }, IsCompatibility);
-        }
+            // Store Dedicant types
+            DedicantType[] recipients = new DedicantType[2] { DedicantType.Compatibility, DedicantType.Audience };
 
-        public override void Accept(IVisitor message) => message.Visit(this);
-        protected override void Send(IVisitor message) => mediator.Broadcast(this, message);
-        protected override void Send(IVisitor message, Func<Dedicant, bool> predicate) => mediator.Broadcast(this, message, predicate);
+            // Send the Topic payload
+            Send(new TopicPayload() { Content = selectedTopics }, AreTypes(recipients));
+        }
     }
 }
