@@ -20,7 +20,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
             DeployFantasyCompatibilities();
             DeployHistoricalFantasyCompatibilities();
             DeployMysteryCompatibilities();
-            DeployNonfictionCompatibilities();
             DeployRomanceCompatibilities();
             DeployScienceFictionCompatibilities();
             DeployThrillerCompatibilities();
@@ -717,117 +716,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
 
             // Add the pair to the Dictionary
             genreTopicCompatibilities.Add(GenreType.Mystery, compatibleTopics);
-        }
-
-        /// <summary>
-        /// Deploy all Non-fiction-Topic compatibilities
-        /// </summary>
-        private void DeployNonfictionCompatibilities()
-        {
-            // Exit case - if the Dictionary is not yet initialized
-            if (genreTopicCompatibilities == null) return;
-
-            // Create a Dictionary to store the compatible topics
-            Dictionary<TopicType, CompatibilityType> compatibleTopics = new()
-            {
-                { TopicType.Agents, CompatibilityType.Neutral },
-                { TopicType.Airplanes, CompatibilityType.Good },
-                { TopicType.Aliens, CompatibilityType.Terrible },
-                { TopicType.AncientCivilization, CompatibilityType.Excellent },
-                { TopicType.Androids, CompatibilityType.Terrible },
-                { TopicType.Angels, CompatibilityType.Terrible },
-                { TopicType.Animals, CompatibilityType.Good },
-                { TopicType.Apocalypse, CompatibilityType.Terrible },
-                { TopicType.Archaeology, CompatibilityType.Excellent },
-                { TopicType.Archery, CompatibilityType.Neutral },
-                { TopicType.Art, CompatibilityType.Excellent },
-                { TopicType.Assassins, CompatibilityType.Neutral },
-                { TopicType.Biology, CompatibilityType.Good },
-                { TopicType.BountyHunters, CompatibilityType.Terrible },
-                { TopicType.Cars, CompatibilityType.Excellent },
-                { TopicType.Cards, CompatibilityType.Good },
-                { TopicType.Chemistry, CompatibilityType.Good },
-                { TopicType.Chess, CompatibilityType.Excellent },
-                { TopicType.Cinema, CompatibilityType.Excellent },
-                { TopicType.Circus, CompatibilityType.Good },
-                { TopicType.Conspiracies, CompatibilityType.Neutral },
-                { TopicType.Crime, CompatibilityType.Good },
-                { TopicType.Curses, CompatibilityType.Poor },
-                { TopicType.Dancing, CompatibilityType.Good },
-                { TopicType.Demons, CompatibilityType.Terrible },
-                { TopicType.Detective, CompatibilityType.Neutral },
-                { TopicType.Dinosaurs, CompatibilityType.Good },
-                { TopicType.Doctors, CompatibilityType.Good },
-                { TopicType.Dogs, CompatibilityType.Good },
-                { TopicType.Dolls, CompatibilityType.Neutral },
-                { TopicType.Dragons, CompatibilityType.Terrible },
-                { TopicType.Dreams, CompatibilityType.Terrible },
-                { TopicType.Erotica, CompatibilityType.Terrible },
-                { TopicType.Espionage, CompatibilityType.Good },
-                { TopicType.Evolution, CompatibilityType.Good },
-                { TopicType.Fey, CompatibilityType.Terrible },
-                { TopicType.Fashion, CompatibilityType.Excellent },
-                { TopicType.Food, CompatibilityType.Excellent },
-                { TopicType.Gambling, CompatibilityType.Neutral },
-                { TopicType.Games, CompatibilityType.Good },
-                { TopicType.Gangs, CompatibilityType.Good },
-                { TopicType.Gladiators, CompatibilityType.Good },
-                { TopicType.Gods, CompatibilityType.Terrible },
-                { TopicType.Hacking, CompatibilityType.Excellent },
-                { TopicType.Heaven, CompatibilityType.Terrible },
-                { TopicType.Heist, CompatibilityType.Poor },
-                { TopicType.Hell, CompatibilityType.Terrible },
-                { TopicType.Hitmen, CompatibilityType.Poor },
-                { TopicType.Hunting, CompatibilityType.Neutral },
-                { TopicType.Industrialization, CompatibilityType.Excellent },
-                { TopicType.Insects, CompatibilityType.Good },
-                { TopicType.Journalism, CompatibilityType.Excellent },
-                { TopicType.Kaiju, CompatibilityType.Terrible },
-                { TopicType.Language, CompatibilityType.Good },
-                { TopicType.Mathematics, CompatibilityType.Good },
-                { TopicType.Mecha, CompatibilityType.Terrible },
-                { TopicType.Mermaids, CompatibilityType.Terrible },
-                { TopicType.Military, CompatibilityType.Excellent },
-                { TopicType.Mummies, CompatibilityType.Neutral },
-                { TopicType.Music, CompatibilityType.Excellent },
-                { TopicType.Ninjas, CompatibilityType.Neutral },
-                { TopicType.ParallelWorld, CompatibilityType.Terrible },
-                { TopicType.Pets, CompatibilityType.Neutral },
-                { TopicType.Photography, CompatibilityType.Good },
-                { TopicType.Physics, CompatibilityType.Good },
-                { TopicType.Pirates, CompatibilityType.Neutral },
-                { TopicType.Plants, CompatibilityType.Good },
-                { TopicType.Police, CompatibilityType.Good },
-                { TopicType.Politics, CompatibilityType.Excellent },
-                { TopicType.Prison, CompatibilityType.Neutral },
-                { TopicType.Religion, CompatibilityType.Good },
-                { TopicType.Revolution, CompatibilityType.Good },
-                { TopicType.Samurai, CompatibilityType.Neutral },
-                { TopicType.Sea, CompatibilityType.Good },
-                { TopicType.SecretSociety, CompatibilityType.Poor },
-                { TopicType.Showbiz, CompatibilityType.Excellent },
-                { TopicType.Singing, CompatibilityType.Good },
-                { TopicType.Space, CompatibilityType.Neutral },
-                { TopicType.Sports, CompatibilityType.Good },
-                { TopicType.StoneAge, CompatibilityType.Excellent },
-                { TopicType.Superheroes, CompatibilityType.Terrible },
-                { TopicType.Supervillains, CompatibilityType.Terrible },
-                { TopicType.Survival, CompatibilityType.Excellent },
-                { TopicType.TimeTravel, CompatibilityType.Terrible },
-                { TopicType.TreasureHunters, CompatibilityType.Poor },
-                { TopicType.University, CompatibilityType.Excellent },
-                { TopicType.Vampires, CompatibilityType.Terrible },
-                { TopicType.Vikings, CompatibilityType.Neutral },
-                { TopicType.Viruses, CompatibilityType.Good },
-                { TopicType.War, CompatibilityType.Excellent },
-                { TopicType.Werewolves, CompatibilityType.Terrible },
-                { TopicType.WildWest, CompatibilityType.Poor },
-                { TopicType.Wizardry, CompatibilityType.Terrible },
-                { TopicType.Zombies, CompatibilityType.Terrible }
-            };
-
-            // Add the pair to the Dictionary
-            genreTopicCompatibilities.Add(GenreType.Nonfiction, compatibleTopics);
         }
 
         /// <summary>

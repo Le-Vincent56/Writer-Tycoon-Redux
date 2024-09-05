@@ -8,7 +8,7 @@ namespace WriterTycoon.WorkCreation.Genres
     {
         Action, Adventure, ContemporaryFiction,
         Fantasy, Horror, HistoricalFiction, Mystery,
-        Nonfiction, Romance, ScienceFiction, Thriller
+        Romance, ScienceFiction, Thriller
     }
 
     [Serializable]

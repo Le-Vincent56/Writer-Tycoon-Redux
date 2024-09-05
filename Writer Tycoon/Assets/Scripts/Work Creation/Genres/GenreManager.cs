@@ -59,7 +59,6 @@ namespace WriterTycoon.WorkCreation.Genres
             genres.Add(factory.CreateGenre(GenreType.Horror, true));
             genres.Add(factory.CreateGenre(GenreType.HistoricalFiction, true));
             genres.Add(factory.CreateGenre(GenreType.Mystery, false));
-            genres.Add(factory.CreateGenre(GenreType.Nonfiction, false));
             genres.Add(factory.CreateGenre(GenreType.Romance, false));
             genres.Add(factory.CreateGenre(GenreType.ScienceFiction, true));
             genres.Add(factory.CreateGenre(GenreType.Thriller, true));
