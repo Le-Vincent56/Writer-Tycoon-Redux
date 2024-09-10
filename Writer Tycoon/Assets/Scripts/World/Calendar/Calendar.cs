@@ -226,7 +226,7 @@ namespace WriterTycoon.World.Calendar
                 // If not, resume the Timer
                 dayTimer.Resume();
 
-                switch(dayTimer.GetMode())
+                switch (dayTimer.GetMode())
                 {
                     case 1:
                         // TODO: Update UI (Default)

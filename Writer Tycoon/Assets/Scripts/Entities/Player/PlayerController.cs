@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Player.States;
 using WriterTycoon.Input;
@@ -11,6 +9,7 @@ namespace WriterTycoon.Entities.Player
     {
         [SerializeField] private GameInputReader inputReader;
         [SerializeField] private float moveSpeed;
+        [SerializeField] private bool canMove;
 
         private Animator animator;
         private Rigidbody2D rb;
@@ -27,6 +26,9 @@ namespace WriterTycoon.Entities.Player
             rb = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+            // Set variables
+            canMove = true;
+
             // Initialize the state machine
             stateMachine = new StateMachine();
 
@@ -42,14 +44,32 @@ namespace WriterTycoon.Entities.Player
             stateMachine.SetState(idleState);
         }
 
+        private void OnEnable()
+        {
+            inputReader.PauseCalendar += ToggleMove;
+        }
+
+        private void OnDisable()
+        {
+            inputReader.PauseCalendar -= ToggleMove;
+        }
+
         private void Update()
         {
-            // Update input
-            velocity.x = inputReader.NormMoveX;
-            velocity.y = inputReader.NormMoveY;
+            // Check if the player can move
+            if (canMove)
+            {
+                // Update input
+                velocity.x = inputReader.NormMoveX;
+                velocity.y = inputReader.NormMoveY;
 
-            // Set player velocity
-            rb.velocity = velocity * moveSpeed;
+                // Set player velocity
+                rb.velocity = velocity * moveSpeed;
+            } else
+            {
+                // Zero out the velocity
+                rb.velocity = Vector2.zero;
+            }
 
             // Update the state machine
             stateMachine.Update();
@@ -60,5 +80,10 @@ namespace WriterTycoon.Entities.Player
             // Fixed update the state machine
             stateMachine.FixedUpdate();
         }
+
+        /// <summary>
+        /// Toggle whether or not the player can or cannot move
+        /// </summary>
+        private void ToggleMove() => canMove = !canMove;
     }
 }

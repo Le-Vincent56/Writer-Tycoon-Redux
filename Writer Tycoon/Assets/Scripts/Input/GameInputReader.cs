@@ -16,6 +16,7 @@ namespace WriterTycoon.Input
         public event UnityAction FastestSpeed = delegate { };
         public event UnityAction PauseCalendar = delegate { };
 
+        public bool DisableMovement { get; set; }
         public int NormMoveX { get; private set; }
         public int NormMoveY { get; private set; }
 
@@ -47,10 +48,22 @@ namespace WriterTycoon.Input
 
         public void OnMove(InputAction.CallbackContext context)
         {
+            // Exit case - if movement is not enabled
+            if(DisableMovement)
+            {
+                // Zero out movement and return
+                NormMoveX = 0;
+                NormMoveY = 0;
+                return;
+            }
+
+            // Get the raw movement input from the control
             Vector2 rawMovementInput = context.ReadValue<Vector2>();
 
+            // Invoke the movement event
             Move.Invoke(rawMovementInput);
 
+            // Set variables
             NormMoveX = (int)(rawMovementInput * Vector2.right).normalized.x;
             NormMoveY = (int)(rawMovementInput * Vector2.up).normalized.y;
         }
