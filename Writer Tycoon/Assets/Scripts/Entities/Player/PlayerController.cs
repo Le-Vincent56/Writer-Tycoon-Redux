@@ -10,8 +10,10 @@ namespace WriterTycoon.Entities.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private GameInputReader inputReader;
+        [SerializeField] private float moveSpeed;
 
         private Animator animator;
+        private Rigidbody2D rb;
         private SpriteRenderer spriteRenderer;
 
         private StateMachine stateMachine;
@@ -22,6 +24,7 @@ namespace WriterTycoon.Entities.Player
         {
             // Get components
             animator = GetComponentInChildren<Animator>();
+            rb = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             // Initialize the state machine
@@ -41,14 +44,20 @@ namespace WriterTycoon.Entities.Player
 
         private void Update()
         {
+            // Update input
+            velocity.x = inputReader.NormMoveX;
+            velocity.y = inputReader.NormMoveY;
+
+            // Set player velocity
+            rb.velocity = velocity * moveSpeed;
+
+            // Update the state machine
             stateMachine.Update();
         }
 
         private void FixedUpdate()
         {
-            velocity.x = inputReader.NormMoveX;
-            velocity.y = inputReader.NormMoveY;
-
+            // Fixed update the state machine
             stateMachine.FixedUpdate();
         }
     }
