@@ -10,10 +10,14 @@ namespace WriterTycoon.Input
     [CreateAssetMenu(fileName = "GameInputReader", menuName = "Input/Game Input Reader")]
     public class GameInputReader : ScriptableObject, IPlayerControlsActions, IInputReader
     {
+        public event UnityAction<Vector2> Move = delegate { };
         public event UnityAction DefaultSpeed = delegate { };
         public event UnityAction FasterSpeed = delegate { };
         public event UnityAction FastestSpeed = delegate { };
         public event UnityAction PauseCalendar = delegate { };
+
+        public int NormMoveX { get; private set; }
+        public int NormMoveY { get; private set; }
 
         GameInputActions inputActions;
 
@@ -40,6 +44,16 @@ namespace WriterTycoon.Input
         /// Disable the input actions
         /// </summary>
         public void Disable() => inputActions.Disable();
+
+        public void OnMove(InputAction.CallbackContext context)
+        {
+            Vector2 rawMovementInput = context.ReadValue<Vector2>();
+
+            Move.Invoke(rawMovementInput);
+
+            NormMoveX = (int)(rawMovementInput * Vector2.right).normalized.x;
+            NormMoveY = (int)(rawMovementInput * Vector2.up).normalized.y;
+        }
 
         public void OnSetDefaultSpeed(InputAction.CallbackContext context)
         {

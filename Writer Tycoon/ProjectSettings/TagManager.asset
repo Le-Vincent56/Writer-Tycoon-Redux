@@ -44,6 +44,12 @@ TagManager:
   - name: Floor
     uniqueID: 2959021995
     locked: 0
+  - name: Carpet
+    uniqueID: 3115025655
+    locked: 0
+  - name: Player
+    uniqueID: 1924646435
+    locked: 0
   - name: Far Walls
     uniqueID: 3746256405
     locked: 0
@@ -55,7 +61,4 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 4162634731
-    locked: 0
-  - name: New Layer 4
-    uniqueID: 3115025655
     locked: 0
