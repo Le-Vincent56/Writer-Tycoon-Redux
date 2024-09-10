@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Room_Builder_32x32_0
+  m_Name: Wall_TopLeft
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -413586017, guid: 64e529b5b6a7b96439e8158952a81760, type: 3}
+  m_Sprite: {fileID: 599956261, guid: 6ff49be1480e9fe47b4db8cf00c2bbda, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

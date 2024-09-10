@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Walls
+  - Floor
+  - Objects
   - 
   - 
   - 
@@ -38,12 +38,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Tilemap
-    uniqueID: 2847469975
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 2959021995
+    locked: 0
+  - name: Far Walls
+    uniqueID: 3746256405
+    locked: 0
+  - name: Obstacles
+    uniqueID: 3816569851
+    locked: 0
+  - name: Close Walls
+    uniqueID: 311907853
+    locked: 0
   - name: UI
     uniqueID: 4162634731
+    locked: 0
+  - name: New Layer 4
+    uniqueID: 3115025655
     locked: 0
