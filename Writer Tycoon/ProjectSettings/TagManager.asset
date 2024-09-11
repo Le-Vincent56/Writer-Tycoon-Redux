@@ -41,8 +41,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Floor
+  - name: Lower Floor
     uniqueID: 2959021995
+    locked: 0
+  - name: Steps
+    uniqueID: 1735526167
+    locked: 0
+  - name: Higher Floor
+    uniqueID: 330776507
     locked: 0
   - name: Carpet
     uniqueID: 3115025655
