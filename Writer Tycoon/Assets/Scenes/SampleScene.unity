@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 51646323}
   - component: {fileID: 51646324}
   m_Layer: 5
-  m_Name: Game Creation Window
+  m_Name: Work Creation Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4980,7 +4980,7 @@ GameObject:
   - component: {fileID: 970653742}
   - component: {fileID: 970653743}
   m_Layer: 5
-  m_Name: Game Creator
+  m_Name: Work Creator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8844,7 +8844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1337403123}
   m_Layer: 0
-  m_Name: ----- GAME CREATION -----
+  m_Name: ----- WORK CREATION -----
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
