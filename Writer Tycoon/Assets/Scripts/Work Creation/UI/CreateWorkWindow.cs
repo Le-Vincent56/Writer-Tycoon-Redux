@@ -11,7 +11,7 @@ namespace WriterTycoon.WorkCreation.UI
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
-        [SerializeField] private GameObject[] screens = new GameObject[2];
+        [SerializeField] private CanvasGroup[] screens = new CanvasGroup[3];
 
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;

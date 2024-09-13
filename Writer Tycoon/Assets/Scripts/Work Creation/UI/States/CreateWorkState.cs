@@ -1,30 +1,25 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 using WriterTycoon.Patterns.StateMachine;
-using static WriterTycoon.Utilities.UI.UIUtils;
 
 namespace WriterTycoon.WorkCreation.UI.States
 {
     public class CreateWorkState : IState
     {
         protected float fadeDuration;
-        protected GameObject uiObject;
-        protected List<ImageData> imageDatas = new();
-        protected List<TextData> textDatas = new();
+        protected CanvasGroup canvasGroup;
+        protected Tween fadeTween;
+        protected float durationTime;
 
-        public CreateWorkState(GameObject uiObject)
+        public CreateWorkState(CanvasGroup canvasGroup)
         {
             fadeDuration = 0f;
-            this.uiObject = uiObject;
-
-            InstantiateUILists();
+            this.canvasGroup = canvasGroup;
         }
 
         public virtual void OnEnter()
         {
+            Show();
         }
 
         public virtual void Update()
@@ -37,61 +32,44 @@ namespace WriterTycoon.WorkCreation.UI.States
 
         public virtual void OnExit()
         {
+            Hide();
+        }
+
+        protected void Show()
+        {
+            Fade(1f, fadeDuration, () =>
+            {
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
+            });
+        }
+
+        protected void Hide()
+        {
+            Fade(0f, fadeDuration, () =>
+            {
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+            });
         }
 
         /// <summary>
-        /// Show the UI object
+        /// Handle fading for the Window
         /// </summary>
-        protected virtual async Task Show() => await FadeIn(imageDatas, textDatas, fadeDuration, true);
-
-        /// <summary>
-        /// Hide the UI object
-        /// </summary>
-        protected virtual async Task Hide() => await FadeOut(imageDatas, textDatas, fadeDuration, true);
-
-        /// <summary>
-        /// Instantiate the UI data lists
-        /// </summary>
-        private void InstantiateUILists()
+        /// <param name="endFadeValue"></param>
+        /// <param name="duration"></param>
+        /// <param name="onEnd"></param>
+        private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
         {
-            // Sotre images and texts into lists
-            List<Image> images = uiObject.GetComponentsInChildren<Image>(true).ToList();
-            List<Text> texts = uiObject.GetComponentsInChildren<Text>(true).ToList();
+            // Kill the current fade tween if it exists
+            fadeTween?.Kill(false);
 
-            // Add Image Datas
-            foreach(Image image in images)
-            {
-                imageDatas.Add(new ImageData(image));
-            }
+            // Set the fade animation
+            fadeTween = canvasGroup.DOFade(endFadeValue, duration)
+                .SetEase(Ease.OutQuint);
 
-            foreach(Text text in texts)
-            {
-                textDatas.Add(new TextData(text));
-            }
-        }
-
-        /// <summary>
-        /// Make all Images and Texts invisible
-        /// </summary>
-        protected virtual void MakeElementsInvisible()
-        {
-            // Loop through each Image Data
-            foreach (ImageData imageData in imageDatas)
-            {
-                // Make the color invisible
-                Color invisible = imageData.Color;
-                invisible.a = 0f;
-                imageData.Image.color = invisible;
-            }
-
-            // Loop through each Text Data
-            foreach (TextData textData in textDatas)
-            {
-                // Make the color invisible
-                Color invisible = textData.Color;
-                invisible.a = 0f;
-                textData.Text.color = invisible;
-            }
+            // Hook up callback events
+            fadeTween.onComplete += onEnd;
         }
     }
 }
