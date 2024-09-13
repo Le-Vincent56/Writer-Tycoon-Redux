@@ -11,6 +11,7 @@ namespace WriterTycoon.Input
     public class GameInputReader : ScriptableObject, IPlayerControlsActions, IInputReader
     {
         public event UnityAction<Vector2> Move = delegate { };
+        public event UnityAction Interact = delegate { };
         public event UnityAction DefaultSpeed = delegate { };
         public event UnityAction FasterSpeed = delegate { };
         public event UnityAction FastestSpeed = delegate { };
@@ -66,6 +67,12 @@ namespace WriterTycoon.Input
             // Set variables
             NormMoveX = (int)(rawMovementInput * Vector2.right).normalized.x;
             NormMoveY = (int)(rawMovementInput * Vector2.up).normalized.y;
+        }
+
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            // If the button has been lifted, invoke the event
+            if (context.canceled) Interact.Invoke();
         }
 
         public void OnSetDefaultSpeed(InputAction.CallbackContext context)

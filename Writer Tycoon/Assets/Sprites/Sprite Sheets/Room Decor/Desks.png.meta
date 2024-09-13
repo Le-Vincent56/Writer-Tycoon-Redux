@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3578b46d004844e4c9641357a5dbecbd
+guid: 382f29689a91e534cbad0ccdcc95e234
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -98,7 +98,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,34 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Computers_0
+      name: Desks_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 53
-        width: 32
-        height: 53
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0957f111d7a3fde458ecf14a60c734bc
-      internalID: -350275878
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Computers_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 53
-        width: 32
-        height: 53
+        y: 96
+        width: 60
+        height: 36
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a5ed7ab8625b114083a6471fcc32a11
-      internalID: -1672016062
+      spriteID: cc779edfe8e7749459ffdc96e4c78c77
+      internalID: -1848979715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Computers_2
+      name: Desks_1
       rect:
         serializedVersion: 2
         x: 64
-        y: 53
-        width: 32
-        height: 53
+        y: 96
+        width: 60
+        height: 36
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9f556441bde4eb3468fd7449af98f8f6
-      internalID: 177161242
+      spriteID: 1488a0bec3dc9b14b9861b12bc3263c7
+      internalID: 444153637
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Computers_3
+      name: Desks_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 32
-        height: 53
+        y: 46
+        width: 26
+        height: 26
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 95c9db0c165e0b84cb96ef8e68b5ba90
-      internalID: -137095154
+      spriteID: c780785d2a25c9249a017f1c8d63e1af
+      internalID: -411465237
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Computers_4
+      name: Desks_3
       rect:
         serializedVersion: 2
         x: 32
-        y: 0
-        width: 32
-        height: 53
+        y: 46
+        width: 26
+        height: 26
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,29 +187,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f9e7a64cc63e9964a80d95a73637ea95
-      internalID: -1883018426
+      spriteID: 6f9b15a108c9a2b4da77192ab25469e1
+      internalID: 439806308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Computers_5
+      name: Desks_4
       rect:
         serializedVersion: 2
         x: 64
-        y: 0
-        width: 32
-        height: 53
+        y: 46
+        width: 26
+        height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f35a51af7fcf44449a60cac88d894380
-      internalID: -219688095
+      spriteID: 795947f962cef9c448a4f9aa3d0c956f
+      internalID: -145932902
       vertices: []
       indices: 
       edges: []
@@ -246,12 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Computers_0: -350275878
-      Computers_1: -1672016062
-      Computers_2: 177161242
-      Computers_3: -137095154
-      Computers_4: -1883018426
-      Computers_5: -219688095
+      Desks_0: -1848979715
+      Desks_1: 444153637
+      Desks_2: -411465237
+      Desks_3: 439806308
+      Desks_4: -145932902
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 using WriterTycoon.WorkCreation.UI.States;
 using WriterTycoon.Patterns.StateMachine;
 
@@ -7,8 +8,11 @@ namespace WriterTycoon.WorkCreation.UI
     public class CreateGameWindow : MonoBehaviour
     {
         private StateMachine stateMachine;
+        [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
         [SerializeField] private GameObject[] screens = new GameObject[2];
+
+        private Sequence sequence;
 
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
@@ -55,5 +59,51 @@ namespace WriterTycoon.WorkCreation.UI
         /// Set the state of Game Creation
         /// </summary>
         public void SetState(int state) => this.state = state;
+
+        public void ShowWindow()
+        {
+            Fade(1f, 0.3f, () => {
+                window.interactable = true;
+                window.blocksRaycasts = true;
+            });
+
+
+
+            //windowObject.transform.DOMoveY(-20f, 0.5f)
+            //    .From()
+            //    .SetEase(Ease.InQuint);
+        }
+
+        public void HideWindow()
+        {
+            Fade(0f, 0.3f, () => {
+                window.interactable = false;
+                window.blocksRaycasts = false;
+            });
+
+            //windowObject.transform.DOMoveY(-20f, 0.5f)
+            //    .SetEase(Ease.OutQuint);
+        }
+
+        private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
+        {
+
+            // Kill the current tween sequence if it exists
+            sequence?.Kill(true);
+
+            // Set the fade tween
+            sequence = DOTween.Sequence();
+
+            Tween fadeTween = window.DOFade(endFadeValue, duration);
+            Tween translateTween = (endFadeValue > 0)
+                ? window.transform.DOMoveY(-2f, duration).From()
+                : window.transform.DOMoveY(-2f, duration);
+
+            sequence.Append(fadeTween);
+            sequence.Append(translateTween);
+
+            // Hook up callback events
+            sequence.onComplete += onEnd;
+        }
     }
 }

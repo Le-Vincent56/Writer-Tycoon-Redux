@@ -73,6 +73,15 @@ namespace WriterTycoon.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca39d8ae-6595-4096-8250-f93dc63a8678"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -174,6 +183,17 @@ namespace WriterTycoon.Input
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5aa3c89e-d969-4807-ac0a-e2b054914d43"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ namespace WriterTycoon.Input
             m_PlayerControls_SetFastestSpeed = m_PlayerControls.FindAction("SetFastestSpeed", throwIfNotFound: true);
             m_PlayerControls_PauseCalendar = m_PlayerControls.FindAction("PauseCalendar", throwIfNotFound: true);
             m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
+            m_PlayerControls_Interact = m_PlayerControls.FindAction("Interact", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -253,6 +274,7 @@ namespace WriterTycoon.Input
         private readonly InputAction m_PlayerControls_SetFastestSpeed;
         private readonly InputAction m_PlayerControls_PauseCalendar;
         private readonly InputAction m_PlayerControls_Move;
+        private readonly InputAction m_PlayerControls_Interact;
         public struct PlayerControlsActions
         {
             private @GameInputActions m_Wrapper;
@@ -262,6 +284,7 @@ namespace WriterTycoon.Input
             public InputAction @SetFastestSpeed => m_Wrapper.m_PlayerControls_SetFastestSpeed;
             public InputAction @PauseCalendar => m_Wrapper.m_PlayerControls_PauseCalendar;
             public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
+            public InputAction @Interact => m_Wrapper.m_PlayerControls_Interact;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -286,6 +309,9 @@ namespace WriterTycoon.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
 
             private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -305,6 +331,9 @@ namespace WriterTycoon.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
+                @Interact.started -= instance.OnInteract;
+                @Interact.performed -= instance.OnInteract;
+                @Interact.canceled -= instance.OnInteract;
             }
 
             public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -329,6 +358,7 @@ namespace WriterTycoon.Input
             void OnSetFastestSpeed(InputAction.CallbackContext context);
             void OnPauseCalendar(InputAction.CallbackContext context);
             void OnMove(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
     }
 }
