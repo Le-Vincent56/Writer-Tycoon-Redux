@@ -19,6 +19,7 @@ namespace WriterTycoon.WorkCreation.UI.States
 
         public virtual void OnEnter()
         {
+            // Show the State
             Show();
         }
 
@@ -32,9 +33,13 @@ namespace WriterTycoon.WorkCreation.UI.States
 
         public virtual void OnExit()
         {
+            // Hide the State
             Hide();
         }
 
+        /// <summary>
+        /// Show the State
+        /// </summary>
         protected void Show()
         {
             Fade(1f, fadeDuration, () =>
@@ -44,6 +49,9 @@ namespace WriterTycoon.WorkCreation.UI.States
             });
         }
 
+        /// <summary>
+        /// Hide the State
+        /// </summary>
         protected void Hide()
         {
             Fade(0f, fadeDuration, () =>
@@ -54,11 +62,8 @@ namespace WriterTycoon.WorkCreation.UI.States
         }
 
         /// <summary>
-        /// Handle fading for the Window
+        /// Handle fading for the State
         /// </summary>
-        /// <param name="endFadeValue"></param>
-        /// <param name="duration"></param>
-        /// <param name="onEnd"></param>
         private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
         {
             // Kill the current fade tween if it exists

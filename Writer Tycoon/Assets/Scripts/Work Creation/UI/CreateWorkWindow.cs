@@ -134,9 +134,6 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Handle fading for the Window
         /// </summary>
-        /// <param name="endFadeValue"></param>
-        /// <param name="duration"></param>
-        /// <param name="onEnd"></param>
         private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
         {
             // Kill the current fade tween if it exists
