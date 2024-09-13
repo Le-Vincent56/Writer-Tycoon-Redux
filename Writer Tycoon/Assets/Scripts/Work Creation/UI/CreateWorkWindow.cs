@@ -5,14 +5,19 @@ using WriterTycoon.Patterns.StateMachine;
 
 namespace WriterTycoon.WorkCreation.UI
 {
-    public class CreateGameWindow : MonoBehaviour
+    public class CreateWorkWindow : MonoBehaviour
     {
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
         [SerializeField] private GameObject[] screens = new GameObject[2];
 
-        private Sequence sequence;
+        [SerializeField] private float translateValue;
+        [SerializeField] private float duration;
+
+        private Vector3 originalPosition;
+        private Tween fadeTween;
+        private Tween translateTween;
 
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
@@ -41,6 +46,9 @@ namespace WriterTycoon.WorkCreation.UI
 
             // Set the initial state
             stateMachine.SetState(ideationState);
+
+            // Set variables
+            originalPosition = window.transform.localPosition;
         }
 
         private void Update()
@@ -60,50 +68,79 @@ namespace WriterTycoon.WorkCreation.UI
         /// </summary>
         public void SetState(int state) => this.state = state;
 
+        /// <summary>
+        /// Show the Work window
+        /// </summary>
         public void ShowWindow()
         {
-            Fade(1f, 0.3f, () => {
+            // Set the window's initial position to be off-screen above (adjust this value as needed)
+            Vector3 startPos = new(
+                originalPosition.x, 
+                originalPosition.y + translateValue, 
+                originalPosition.z
+            );
+            window.transform.localPosition = startPos;
+
+            // Fade in
+            Fade(1f, duration, () => {
                 window.interactable = true;
                 window.blocksRaycasts = true;
             });
 
-
-
-            //windowObject.transform.DOMoveY(-20f, 0.5f)
-            //    .From()
-            //    .SetEase(Ease.InQuint);
+            // Translate down
+            Translate(-translateValue, duration);
         }
 
+        /// <summary>
+        /// Hide the Work window
+        /// </summary>
         public void HideWindow()
         {
-            Fade(0f, 0.3f, () => {
+            // Fade out
+            Fade(0f, duration, () => {
                 window.interactable = false;
                 window.blocksRaycasts = false;
             });
 
-            //windowObject.transform.DOMoveY(-20f, 0.5f)
-            //    .SetEase(Ease.OutQuint);
+            // Translate down
+            Translate(-translateValue, duration);
         }
 
+        /// <summary>
+        /// Handle fading for the Window
+        /// </summary>
+        /// <param name="endFadeValue"></param>
+        /// <param name="duration"></param>
+        /// <param name="onEnd"></param>
         private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
         {
+            // Kill the current fade tween if it exists
+            fadeTween?.Kill(false);
 
-            // Kill the current tween sequence if it exists
-            sequence?.Kill(true);
-
-            // Set the fade tween
-            sequence = DOTween.Sequence();
-
-            Tween fadeTween = window.DOFade(endFadeValue, duration);
-            Tween translateTween = (endFadeValue > 0)
-                ? window.transform.DOMoveY(-2f, duration).From()
-                : window.transform.DOMoveY(-2f, duration);
-
-            sequence.Append(fadeTween);
-            sequence.Append(translateTween);
+            // Set the fade animation
+            fadeTween = window.DOFade(endFadeValue, duration)
+                .SetEase(Ease.OutQuint);
 
             // Hook up callback events
-            sequence.onComplete += onEnd;
+            fadeTween.onComplete += onEnd;
+        }
+
+        /// <summary>
+        /// Handle translating for the Window
+        /// </summary>
+        /// <param name="endTranslateValue"></param>
+        /// <param name="duration"></param>
+        private void Translate(float endTranslateValue, float duration)
+        {
+            // Kill the current translate tween if it exists
+            translateTween?.Kill(false);
+
+            // Calculate the target position
+            float targetPos = window.transform.localPosition.y + endTranslateValue;
+
+            // Set the tween animation
+            translateTween = window.transform.DOLocalMoveY(targetPos, duration)
+                .SetEase(Ease.OutQuint);
         }
     }
 }

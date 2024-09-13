@@ -5,7 +5,7 @@ namespace WriterTycoon.World.Interactables
 {
     public class Computer : MonoBehaviour, IInteractable
     {
-        [SerializeField] CreateGameWindow gameWindow;
+        [SerializeField] CreateWorkWindow gameWindow;
         [SerializeField] private bool opening;
 
         public void Interact()
