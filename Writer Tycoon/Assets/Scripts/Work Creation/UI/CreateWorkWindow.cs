@@ -11,7 +11,7 @@ namespace WriterTycoon.WorkCreation.UI
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
-        [SerializeField] private CanvasGroup[] screens = new CanvasGroup[3];
+        [SerializeField] private CanvasGroup[] screens = new CanvasGroup[4];
 
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
@@ -25,6 +25,7 @@ namespace WriterTycoon.WorkCreation.UI
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
         public int GENRE { get => 2; }
+        public int REVIEW { get => 3; }
 
         private void OnEnable()
         {
@@ -49,6 +50,7 @@ namespace WriterTycoon.WorkCreation.UI
             IdeationState ideationState = new IdeationState(screens[IDEATION]);
             TopicState topicState = new TopicState(screens[TOPIC]);
             GenreState genreState = new GenreState(screens[GENRE]);
+            ReviewState reviewState = new ReviewState(screens[REVIEW]);
 
             // Set state transitions
             stateMachine.At(ideationState, topicState, new FuncPredicate(() => state == TOPIC));
@@ -57,6 +59,10 @@ namespace WriterTycoon.WorkCreation.UI
             stateMachine.At(topicState, genreState, new FuncPredicate(() => state == GENRE));
 
             stateMachine.At(genreState, topicState, new FuncPredicate(() => state == TOPIC));
+            stateMachine.At(genreState, reviewState, new FuncPredicate(() => state == REVIEW));
+
+            stateMachine.At(reviewState, genreState, new FuncPredicate(() => state == GENRE));
+            stateMachine.At(reviewState, ideationState, new FuncPredicate(() => state == IDEATION));
 
             // Set the initial state
             stateMachine.SetState(ideationState);

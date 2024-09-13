@@ -27,13 +27,16 @@ namespace WriterTycoon.WorkCreation.Audience
         /// </summary>
         public void SelectAudience(AudienceButton audienceButton)
         {
-            // Select the audience button
+            // Select the Audience button
             audienceButton.Select();
 
-            // Set the selected audience
+            // Set the selected Audience
             selectedAudience = audienceButton.Type;
 
-            // Invoke the audience selected event
+            // Send the selected Audience to the mediator
+            SendAudience();
+
+            // Invoke the Audience Selected event
             OnAudienceSelected.Invoke(audienceButton);
         }
 
@@ -43,8 +46,18 @@ namespace WriterTycoon.WorkCreation.Audience
         public void ClearAudience() => selectedAudience = AudienceType.None;
 
         /// <summary>
-        /// Send the selected Audience to the Compatibility Manager
+        /// Send the selected Audience
         /// </summary>
-        public void SendAudienceToCompatibilityManager() => Send(new AudiencePayload() { Content = selectedAudience }, IsType(DedicantType.Compatibility));
+        public void SendAudience()
+        {
+            Send(new AudiencePayload() 
+                { Content = selectedAudience }, 
+                AreTypes(new DedicantType[2]
+                {
+                    DedicantType.Compatibility,
+                    DedicantType.IdeaReviewer
+                })
+            );
+        }
     }
 }

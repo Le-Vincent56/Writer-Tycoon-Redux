@@ -1,4 +1,5 @@
 using WriterTycoon.Patterns.Mediator;
+using WriterTycoon.WorkCreation.Review;
 using WriterTycoon.WorkCreation.TimeEstimation;
 
 namespace WriterTycoon.WorkCreation.WorkTypes
@@ -11,6 +12,7 @@ namespace WriterTycoon.WorkCreation.WorkTypes
         {
             // Verify types for mediation
             if (visitable is TimeEstimator timeEstimator) timeEstimator.SetWorkType(Content);
+            if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetWorkType(Content);
         }
     }
 }

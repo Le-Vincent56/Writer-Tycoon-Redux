@@ -36,6 +36,9 @@ namespace WriterTycoon.WorkCreation.TimeEstimation
             dayEstimate += GetWorkTypeEstimates();
             dayEstimate += GetTopicEstimates();
 
+            // Send the Time Estimate to the mediator
+            SendTimeEstimate();
+
             // Invoke the Time Estimate Updated event
             Updated.Invoke(dayEstimate);
         }
@@ -115,6 +118,18 @@ namespace WriterTycoon.WorkCreation.TimeEstimation
                 3 => 0,
                 _ => 10
             };
+        }
+
+        /// <summary>
+        /// Send the Time Estimate
+        /// </summary>
+        private void SendTimeEstimate()
+        {
+            // Send the Topic payload
+            Send(new TimeEstimationPayload()
+                { Content = dayEstimate },
+                IsType(DedicantType.IdeaReviewer)
+            );
         }
     }
 }

@@ -14,9 +14,9 @@ namespace WriterTycoon.WorkCreation.Topics
         Erotica, Espionage, Evolution, Fey, Fashion, Food, Gambling, Games,
         Gangs, Gladiators, Gods, Hacking, Heaven, Heist, Hell, Hitmen, Hunting,
         Industrialization, Insects, Journalism, Kaiju, Language, Mathematics,
-        Mecha, Mermaids, Military, Mummies, Music, Ninjas, ParallelWorld,
+        Mecha, Magic, Mermaids, Military, Mummies, Music, Ninjas, ParallelWorld,
         Pets, Photography, Physics, Pirates, Plants, Police, Politics, Prison,
-        Religion, Revolution, Samurai, Sea, SecretSociety, Showbiz, Singing,
+        Religion, Revolution, Samurai, Science, Sea, SecretSociety, Showbiz, Singing,
         Space, Sports, StoneAge, Superheroes, Supervillains, Survival, TimeTravel,
         TreasureHunters, University, Vampires, Vikings, Viruses, War, Werewolves,
         WildWest, Wizardry, Zombies

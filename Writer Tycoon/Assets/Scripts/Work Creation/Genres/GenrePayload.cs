@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.WorkCreation.Compatibility;
+using WriterTycoon.WorkCreation.Review;
 
 namespace WriterTycoon.WorkCreation.Genres
 {
@@ -12,6 +13,7 @@ namespace WriterTycoon.WorkCreation.Genres
         {
             // Verify types for mediation
             if (visitable is CompatibilityManager compatibilityManager) compatibilityManager.SetGenres(Content);
+            if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetGenres(Content);
         }
     }
 }

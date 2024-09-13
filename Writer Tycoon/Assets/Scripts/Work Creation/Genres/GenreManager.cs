@@ -86,6 +86,9 @@ namespace WriterTycoon.WorkCreation.Genres
             // Select the Topic Button
             buttonToSelect.Select();
 
+            // Send the genres to the mediator
+            SendGenres();
+
             // Invoke the event
             OnGenresUpdated.Invoke(selectedGenreButtons);
         }
@@ -110,9 +113,9 @@ namespace WriterTycoon.WorkCreation.Genres
         }
 
         /// <summary>
-        /// Send the selected Genres to the Compatibility Manager
+        /// Send the selected Genres
         /// </summary>
-        public void SendGenresToCompatibilityManager()
+        public void SendGenres()
         {
             // Create a list to store Genres in
             List<Genre> selectedGenres = new();
@@ -122,7 +125,14 @@ namespace WriterTycoon.WorkCreation.Genres
             }
 
             // Send the Genre payload
-            Send(new GenrePayload() { Content = selectedGenres }, IsType(DedicantType.Compatibility));
+            Send(new GenrePayload() 
+                { Content = selectedGenres }, 
+                AreTypes(new DedicantType[2]
+                {
+                    DedicantType.Compatibility,
+                    DedicantType.IdeaReviewer
+                })
+            );
         }
     }
 }

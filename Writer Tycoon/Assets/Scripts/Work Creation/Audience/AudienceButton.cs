@@ -13,6 +13,10 @@ namespace WriterTycoon.WorkCreation.Audience
         public AudienceType Type { get => type; }
         public bool Selected { get; set; }
 
+        /// <summary>
+        /// Instantiate the Audience Button
+        /// </summary>
+        /// <param name="audienceManager"></param>
         public void Instantiate(AudienceManager audienceManager)
         {
             // Verify the Button component

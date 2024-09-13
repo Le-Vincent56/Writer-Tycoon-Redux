@@ -213,9 +213,10 @@ namespace WriterTycoon.WorkCreation.Topics
             // Send the Topic payload
             Send(new TopicPayload() 
                 { Content = selectedTopics }, 
-                AreTypes(new DedicantType[2] {
+                AreTypes(new DedicantType[3] {
                     DedicantType.Compatibility,
-                    DedicantType.TimeEstimator
+                    DedicantType.TimeEstimator,
+                    DedicantType.IdeaReviewer
                 })
             );
         }

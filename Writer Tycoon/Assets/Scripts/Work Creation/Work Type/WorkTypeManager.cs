@@ -50,6 +50,16 @@ namespace WriterTycoon.WorkCreation.WorkTypes
         /// <summary>
         /// Send the selected Work Type
         /// </summary>
-        public void SendWorkType() => Send(new WorkTypePayload() { Content = selectedType }, IsType(DedicantType.TimeEstimator));
+        public void SendWorkType()
+        {
+            Send(new WorkTypePayload() 
+                { Content = selectedType }, 
+                AreTypes(new DedicantType[2]
+                {
+                    DedicantType.TimeEstimator,
+                    DedicantType.IdeaReviewer
+                })
+            );
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.WorkCreation.Compatibility;
+using WriterTycoon.WorkCreation.Review;
 using WriterTycoon.WorkCreation.TimeEstimation;
 
 namespace WriterTycoon.WorkCreation.Topics
@@ -14,6 +15,7 @@ namespace WriterTycoon.WorkCreation.Topics
             // Verify types for mediation
             if (visitable is CompatibilityManager compatibilityManager) compatibilityManager.SetTopics(Content);
             if (visitable is TimeEstimator timeEstimator) timeEstimator.SetTopics(Content);
+            if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetTopics(Content);
         }
     }
 }

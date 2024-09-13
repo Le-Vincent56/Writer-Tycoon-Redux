@@ -69,6 +69,7 @@ namespace WriterTycoon.WorkCreation.Compatibility
             DeployLanguageCompatibilities();
             DeployMathematicsCompatibilities();
             DeployMechaCompatibilities();
+            DeployMagicCompatibilities();
             DeployMermaidsCompatibilities();
             DeployMilitaryCompatibilities();
             DeployMummiesCompatibilities();
@@ -86,6 +87,7 @@ namespace WriterTycoon.WorkCreation.Compatibility
             DeployReligionCompatibilities();
             DeployRevolutionCompatibilities();
             DeploySamuraiCompatibilities();
+            DeployScienceCompatibilities();
             DeploySeaCompatibilities();
             DeploySecretSocietyCompatibilities();
             DeployShowbizCompatibilities();
@@ -1313,6 +1315,27 @@ namespace WriterTycoon.WorkCreation.Compatibility
         }
 
         /// <summary>
+        /// Deploy Magic-Audience compatibilities
+        /// </summary>
+        private void DeployMagicCompatibilities()
+        {
+            // Exit case - if the Dictionary is not yet initialized
+            if (topicAudienceCompatibilities == null) return;
+
+            // Create a Dictionary to store compatibilities
+            Dictionary<AudienceType, CompatibilityType> compatibleAudiences = new()
+            {
+                { AudienceType.Children, CompatibilityType.Excellent },
+                { AudienceType.Teens, CompatibilityType.Good },
+                { AudienceType.YoungAdults, CompatibilityType.Good },
+                { AudienceType.Adults, CompatibilityType.Poor }
+            };
+
+            // Add the pair to the Dictionary
+            topicAudienceCompatibilities.Add(TopicType.Magic, compatibleAudiences);
+        }
+
+        /// <summary>
         /// Deploy Mermaids-Audience compatibilities
         /// </summary>
         private void DeployMermaidsCompatibilities()
@@ -1667,6 +1690,27 @@ namespace WriterTycoon.WorkCreation.Compatibility
 
             // Add the pair to the Dictionary
             topicAudienceCompatibilities.Add(TopicType.Samurai, compatibleAudiences);
+        }
+
+        /// <summary>
+        /// Deploy Science-Audience compatibilities
+        /// </summary>
+        private void DeployScienceCompatibilities()
+        {
+            // Exit case - if the Dictionary is not yet initialized
+            if (topicAudienceCompatibilities == null) return;
+
+            // Create a Dictionary to store compatibilities
+            Dictionary<AudienceType, CompatibilityType> compatibleAudiences = new()
+            {
+                { AudienceType.Children, CompatibilityType.Terrible },
+                { AudienceType.Teens, CompatibilityType.Neutral },
+                { AudienceType.YoungAdults, CompatibilityType.Good },
+                { AudienceType.Adults, CompatibilityType.Excellent }
+            };
+
+            // Add the pair to the Dictionary
+            topicAudienceCompatibilities.Add(TopicType.Science, compatibleAudiences);
         }
 
         /// <summary>
