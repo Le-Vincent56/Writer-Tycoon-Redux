@@ -8,9 +8,10 @@ namespace WriterTycoon.WorkCreation.Mediation
 {
     public enum DedicantType
     {
+        WorkType,
+        Audience,
         Topic,
         Genre,
-        Audience,
         Slider,
         Compatibility,
         Rater,

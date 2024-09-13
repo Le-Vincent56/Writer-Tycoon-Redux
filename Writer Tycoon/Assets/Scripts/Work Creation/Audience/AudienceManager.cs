@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.WorkCreation.UI;
 
 namespace WriterTycoon.WorkCreation.Audience
 {
