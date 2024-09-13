@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using WriterTycoon.WorkCreation.UI.States;
 using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.WorkCreation.UI
 {
@@ -15,6 +16,8 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
 
+        EventBinding<OpenWorkMenuEvent> openWorkMenuEvent;
+
         private Vector3 originalPosition;
         private Tween fadeTween;
         private Tween translateTween;
@@ -22,6 +25,17 @@ namespace WriterTycoon.WorkCreation.UI
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
         public int GENRE { get => 2; }
+
+        private void OnEnable()
+        {
+            openWorkMenuEvent = new EventBinding<OpenWorkMenuEvent>(HandleWorkMenu);
+            EventBus<OpenWorkMenuEvent>.Register(openWorkMenuEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<OpenWorkMenuEvent>.Deregister(openWorkMenuEvent);
+        }
 
         private void Awake()
         {
@@ -67,11 +81,22 @@ namespace WriterTycoon.WorkCreation.UI
         /// Set the state of Game Creation
         /// </summary>
         public void SetState(int state) => this.state = state;
+        
+        /// <summary>
+        /// Callback for handling the Work menu
+        /// </summary>
+        public void HandleWorkMenu(OpenWorkMenuEvent oenWorkMenuEvent)
+        {
+            if (oenWorkMenuEvent.IsOpening)
+                ShowWindow();
+            else
+                HideWindow();
+        }
 
         /// <summary>
         /// Show the Work window
         /// </summary>
-        public void ShowWindow()
+        private void ShowWindow()
         {
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
@@ -94,7 +119,7 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Hide the Work window
         /// </summary>
-        public void HideWindow()
+        private void HideWindow()
         {
             // Fade out
             Fade(0f, duration, () => {

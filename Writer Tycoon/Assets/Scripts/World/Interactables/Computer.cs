@@ -1,19 +1,19 @@
 using UnityEngine;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.UI;
 
 namespace WriterTycoon.World.Interactables
 {
     public class Computer : MonoBehaviour, IInteractable
     {
-        [SerializeField] CreateWorkWindow gameWindow;
         [SerializeField] private bool opening;
 
         public void Interact()
         {
-            if (opening)
-                gameWindow.ShowWindow();
-            else
-                gameWindow.HideWindow();
+            EventBus<OpenWorkMenuEvent>.Raise(new OpenWorkMenuEvent
+            {
+                IsOpening = opening
+            });
 
             opening = !opening;
         }

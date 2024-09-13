@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Input;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Timers;
 
 namespace WriterTycoon.World.Calendar
@@ -10,6 +11,7 @@ namespace WriterTycoon.World.Calendar
     {
         [SerializeField] private CalendarData data;
         [SerializeField] private GameInputReader inputReader;
+        [SerializeField] private bool canChangeSpeed;
 
         public Dictionary<int, string> Months = new()
         {
@@ -51,12 +53,17 @@ namespace WriterTycoon.World.Calendar
         [SerializeField] private Text dateText;
         VariableFrequencyTimer dayTimer;
 
+        EventBinding<OpenWorkMenuEvent> openWorkMenuEvent;
+
         private void OnEnable()
         {
             inputReader.DefaultSpeed += SetDefaultSpeed;
             inputReader.FasterSpeed += SetFasterSpeed;
             inputReader.FastestSpeed += SetFastestSpeed;
-            inputReader.PauseCalendar += Pause;
+            inputReader.PauseCalendar += HandlePause;
+
+            openWorkMenuEvent = new EventBinding<OpenWorkMenuEvent>(HandleWorkMenu);
+            EventBus<OpenWorkMenuEvent>.Register(openWorkMenuEvent);
         }
 
         private void OnDisable()
@@ -64,11 +71,16 @@ namespace WriterTycoon.World.Calendar
             inputReader.DefaultSpeed -= SetDefaultSpeed;
             inputReader.FasterSpeed -= SetFasterSpeed;
             inputReader.FastestSpeed -= SetFastestSpeed;
-            inputReader.PauseCalendar -= Pause;
+            inputReader.PauseCalendar -= HandlePause;
+
+            EventBus<OpenWorkMenuEvent>.Deregister(openWorkMenuEvent);
         }
 
         private void Start()
         {
+            // Allow the player to change speeds
+            canChangeSpeed = true;
+
             // Set the current date to January 01, 2024
             currentDay = 1;
             currentMonth = 1;
@@ -177,6 +189,9 @@ namespace WriterTycoon.World.Calendar
         /// </summary>
         private void SetDefaultSpeed()
         {
+            // Exit case - if can't change speed
+            if (!canChangeSpeed) return;
+
             // Set the default speed for the timer
             dayTimer.SetDefaultSpeed();
 
@@ -189,6 +204,9 @@ namespace WriterTycoon.World.Calendar
         /// </summary>
         private void SetFasterSpeed()
         {
+            // Exit case - if can't change speed
+            if (!canChangeSpeed) return;
+
             // Set the default speed for the timer
             dayTimer.SetFasterSpeed();
 
@@ -201,6 +219,9 @@ namespace WriterTycoon.World.Calendar
         /// </summary>
         private void SetFastestSpeed()
         {
+            // Exit case - if can't change speed
+            if (!canChangeSpeed) return;
+
             // Set the default speed for the timer
             dayTimer.SetFastestSpeed();
 
@@ -211,35 +232,95 @@ namespace WriterTycoon.World.Calendar
         /// <summary>
         /// Pause the calendar
         /// </summary>
-        private void Pause()
+        private void HandlePause()
         {
+            // Exit case - if the speed cannot be changed
+            if (!canChangeSpeed) return;
+
             // Check if the Timer is running
             if (dayTimer.IsRunning)
-            {
-                // If so, pause the Timer
-                dayTimer.Pause();
+                // If so, pause the game
+                Pause();
+            else
+                // Otherwise, unpause the game
+                Unpause();
+        }
 
-                // TODO: Update UI
+        /// <summary>
+        /// Pause the game
+        /// </summary>
+        private void Pause() 
+        {
+            // If so, pause the Timer
+            dayTimer.Pause();
+
+            // TODO: Update UI
+
+            // Invoke event
+            EventBus<PauseCalendarEvent>.Raise(new PauseCalendarEvent
+            {
+                Paused = true
+            });
+        }
+
+        /// <summary>
+        /// Unpause the game
+        /// </summary>
+        private void Unpause()
+        {
+            // If not, resume the Timer
+            dayTimer.Resume();
+
+            switch (dayTimer.GetMode())
+            {
+                case 1:
+                    // TODO: Update UI (Default)
+                    break;
+
+                case 2:
+                    // TODO: Update UI (Faster)
+                    break;
+
+                case 3:
+                    // TODO: Update UI (Fastest)
+                    break;
+            }
+
+            // Invoke event
+            EventBus<PauseCalendarEvent>.Raise(new PauseCalendarEvent
+            {
+                Paused = false
+            });
+        }
+
+        /// <summary>
+        /// Callback for handling the Work menu
+        /// </summary>
+        /// <param name="openWorkMenuEvent"></param>
+        private void HandleWorkMenu(OpenWorkMenuEvent openWorkMenuEvent)
+        {
+            // Check if the Work menu is opening or closing
+            if(openWorkMenuEvent.IsOpening)
+            {
+                // Exit case - if already paused
+                if (!dayTimer.IsRunning) return;
+
+                // Pause the game
+                Pause();
+
+                // Don't allow the player to change speed
+                canChangeSpeed = false;
             }
             else
             {
-                // If not, resume the Timer
-                dayTimer.Resume();
+                // Exit case - if already unpaused
+                if (dayTimer.IsRunning) return;
 
-                switch (dayTimer.GetMode())
-                {
-                    case 1:
-                        // TODO: Update UI (Default)
-                        break;
+                // Unpause the game
+                Unpause();
 
-                    case 2:
-                        // TODO: Update UI (Faster)
-                        break;
-
-                    case 3:
-                        // TODO: Update UI (Fastest)
-                        break;
-                }
+                // Allow the player to change speed
+                canChangeSpeed = true;
             }
         }
     }

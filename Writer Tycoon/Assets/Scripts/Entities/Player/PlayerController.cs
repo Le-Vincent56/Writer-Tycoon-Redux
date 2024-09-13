@@ -1,6 +1,7 @@
 using UnityEngine;
 using WriterTycoon.Entities.Player.States;
 using WriterTycoon.Input;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
 
 namespace WriterTycoon.Entities.Player
@@ -18,6 +19,8 @@ namespace WriterTycoon.Entities.Player
         private StateMachine stateMachine;
 
         private Vector2 velocity;
+
+        EventBinding<PauseCalendarEvent> pauseCalendarEvent;
 
         private void Awake()
         {
@@ -46,12 +49,13 @@ namespace WriterTycoon.Entities.Player
 
         private void OnEnable()
         {
-            inputReader.PauseCalendar += ToggleMove;
+            pauseCalendarEvent = new EventBinding<PauseCalendarEvent>(ToggleMove);
+            EventBus<PauseCalendarEvent>.Register(pauseCalendarEvent);
         }
 
         private void OnDisable()
         {
-            inputReader.PauseCalendar -= ToggleMove;
+            EventBus<PauseCalendarEvent>.Deregister(pauseCalendarEvent);
         }
 
         private void Update()
@@ -84,6 +88,9 @@ namespace WriterTycoon.Entities.Player
         /// <summary>
         /// Toggle whether or not the player can or cannot move
         /// </summary>
-        private void ToggleMove() => canMove = !canMove;
+        private void ToggleMove(PauseCalendarEvent pauseCalendarEvent)
+        {
+            canMove = !pauseCalendarEvent.Paused;
+        }
     }
 }
