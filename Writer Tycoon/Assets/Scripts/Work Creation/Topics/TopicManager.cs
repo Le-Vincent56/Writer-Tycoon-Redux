@@ -169,6 +169,9 @@ namespace WriterTycoon.WorkCreation.Topics
             // Select the Topic Button
             buttonToSelect.Select();
 
+            // Send the Topics out to the mediator
+            SendTopics();
+
             // Invoke the event
             OnTopicsUpdated.Invoke(selectedTopicButtons);
         }
@@ -188,14 +191,17 @@ namespace WriterTycoon.WorkCreation.Topics
             // Clear the list
             selectedTopicButtons.Clear();
 
+            // Send the Topics out to the mediator
+            SendTopics();
+
             // Invoke the event
             OnTopicsUpdated.Invoke(selectedTopicButtons);
         }
 
         /// <summary>
-        /// Send the selected Topics to the Compatibility Manager
+        /// Send the selected Topics
         /// </summary>
-        public void SendTopicsToCompatibilityManager()
+        public void SendTopics()
         {
             // Create a list to store Topics in
             List<Topic> selectedTopics = new();
@@ -205,7 +211,13 @@ namespace WriterTycoon.WorkCreation.Topics
             }
 
             // Send the Topic payload
-            Send(new TopicPayload() { Content = selectedTopics }, IsType(DedicantType.Compatibility));
+            Send(new TopicPayload() 
+                { Content = selectedTopics }, 
+                AreTypes(new DedicantType[2] {
+                    DedicantType.Compatibility,
+                    DedicantType.TimeEstimator
+                })
+            );
         }
     }
 }

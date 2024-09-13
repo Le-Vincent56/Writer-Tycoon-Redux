@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.WorkType
+namespace WriterTycoon.WorkCreation.WorkTypes
 {
     public class WorkTypeUI : MonoBehaviour
     {
@@ -28,13 +28,13 @@ namespace WriterTycoon.WorkCreation.WorkType
         private void OnEnable()
         {
             // Subscribe to events
-            workTypeManager.OnAudienceSelected += UpdateButtonSprites;
+            workTypeManager.OnWorkTypeSelected += UpdateButtonSprites;
         }
 
         private void OnDisable()
         {
             // Unsubscribe to events
-            workTypeManager.OnAudienceSelected -= UpdateButtonSprites;
+            workTypeManager.OnWorkTypeSelected -= UpdateButtonSprites;
         }
 
         /// <summary>

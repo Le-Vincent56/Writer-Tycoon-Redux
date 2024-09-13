@@ -1,7 +1,7 @@
 using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Compatibility;
+using WriterTycoon.WorkCreation.TimeEstimation;
 
-namespace WriterTycoon.WorkCreation.WorkType
+namespace WriterTycoon.WorkCreation.WorkTypes
 {
     public class WorkTypePayload : Payload<WorkType>
     {
@@ -10,7 +10,7 @@ namespace WriterTycoon.WorkCreation.WorkType
         public override void Visit<T>(T visitable)
         {
             // Verify types for mediation
-            if (visitable is CompatibilityManager compatibilityManager) compatibilityManager.SetWorkType(Content);
+            if (visitable is TimeEstimator timeEstimator) timeEstimator.SetWorkType(Content);
         }
     }
 }

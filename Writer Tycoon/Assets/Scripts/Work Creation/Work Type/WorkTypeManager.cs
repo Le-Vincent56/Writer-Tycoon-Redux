@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.WorkType
+namespace WriterTycoon.WorkCreation.WorkTypes
 {
     public enum WorkType
     {
@@ -19,7 +19,7 @@ namespace WriterTycoon.WorkCreation.WorkType
     {
         [SerializeField] private WorkType selectedType;
 
-        public UnityAction<WorkTypeButton> OnAudienceSelected = delegate { };
+        public UnityAction<WorkTypeButton> OnWorkTypeSelected = delegate { };
 
         public override string Name { get => "Work Type Manager"; }
         public override DedicantType Type { get => DedicantType.WorkType; }
@@ -35,8 +35,11 @@ namespace WriterTycoon.WorkCreation.WorkType
             // Set the selected type
             selectedType = typeButton.Type;
 
+            // Send the work type out to the mediator
+            SendWorkType();
+
             // Invoke the type selected event
-            OnAudienceSelected.Invoke(typeButton);
+            OnWorkTypeSelected.Invoke(typeButton);
         }
 
         /// <summary>
@@ -45,8 +48,8 @@ namespace WriterTycoon.WorkCreation.WorkType
         public void ClearAudience() => selectedType = WorkType.None;
 
         /// <summary>
-        /// Send the selected Work Type to the Compatibility Manager
+        /// Send the selected Work Type
         /// </summary>
-        public void SendTypeToCompatibilityManager() => Send(new WorkTypePayload() { Content = selectedType }, IsType(DedicantType.Compatibility));
+        public void SendWorkType() => Send(new WorkTypePayload() { Content = selectedType }, IsType(DedicantType.TimeEstimator));
     }
 }

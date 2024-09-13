@@ -4,7 +4,6 @@ using WriterTycoon.WorkCreation.Audience;
 using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.Topics;
-using WriterTycoon.WorkCreation.WorkType;
 
 namespace WriterTycoon.WorkCreation.Compatibility
 {
@@ -26,7 +25,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
         [SerializeField] private AudienceType audience;
-        [SerializeField] private WorkType.WorkType workType;
 
         public override string Name { get => "Compatibility Manager"; }
         public override DedicantType Type { get => DedicantType.Compatibility; }
@@ -37,11 +35,6 @@ namespace WriterTycoon.WorkCreation.Compatibility
             genreTopicCompatibility = new GenreTopicCompatibility();
             topicAudienceCompatibility = new TopicAudienceCompatibility();
         }
-
-        /// <summary>
-        /// Set the selected Work Type
-        /// </summary>
-        public void SetWorkType(WorkType.WorkType workType) => this.workType = workType;
 
         /// <summary>
         /// Set the selected Audience
