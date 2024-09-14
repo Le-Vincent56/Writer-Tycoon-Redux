@@ -100,7 +100,15 @@ namespace WriterTycoon.WorkCreation.UI
         /// </summary>
         private void UpdateSuccessUI()
         {
-            Debug.Log("Success");
+            // Unpause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
+            });
+
+            // Reset the Create Work Window
+            EventBus<NotifySuccessfulCreation>.Raise(new NotifySuccessfulCreation() { ReviewData = reviewData });
         }
     }
 }

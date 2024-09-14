@@ -8,6 +8,8 @@ namespace WriterTycoon.WorkCreation.UI
 {
     public class CreateWorkWindow : MonoBehaviour
     {
+        private bool canOpenWindow;
+
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
@@ -16,7 +18,8 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
 
-        EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
+        private EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
+        private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
 
         private Vector3 originalPosition;
         private Tween fadeTween;
@@ -31,11 +34,15 @@ namespace WriterTycoon.WorkCreation.UI
         {
             openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
             EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
+
+            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(HandleSuccessfulCreation);
+            EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
         }
 
         private void OnDisable()
         {
             EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
+            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
         }
 
         private void Awake()
@@ -69,6 +76,7 @@ namespace WriterTycoon.WorkCreation.UI
 
             // Set variables
             originalPosition = window.transform.localPosition;
+            canOpenWindow = true;
         }
 
         private void Update()
@@ -94,12 +102,24 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Callback for handling the Work menu
         /// </summary>
-        public void HandleWorkMenu(OpenCreateWorkMenu oenWorkMenuEvent)
+        private void HandleWorkMenu(OpenCreateWorkMenu eventData)
         {
-            if (oenWorkMenuEvent.IsOpening)
+            if (eventData.IsOpening)
                 ShowWindow();
             else
                 HideWindow();
+        }
+
+        /// <summary>
+        /// Callback for handling a successfully beginning the creation of a Work
+        /// </summary>
+        private void HandleSuccessfulCreation(NotifySuccessfulCreation eventData)
+        {
+            // Hide the window
+            HideWindowSuccess();
+
+            // Don't allow the player to open the window again
+            canOpenWindow = false;
         }
 
         /// <summary>
@@ -107,6 +127,9 @@ namespace WriterTycoon.WorkCreation.UI
         /// </summary>
         private void ShowWindow()
         {
+            // Exit case - if cannot open the window
+            if (!canOpenWindow) return;
+
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
                 originalPosition.x, 
@@ -141,16 +164,44 @@ namespace WriterTycoon.WorkCreation.UI
         }
 
         /// <summary>
+        /// Hide the window with a little more flair for successful Work creation
+        /// </summary>
+        private void HideWindowSuccess()
+        {
+            // Translate up
+            Translate(
+                translateValue * (3f/4f), 
+                duration / 3f,
+                () =>
+                    {
+                        // When done, fade out
+                        Fade(0f, duration, () =>
+                        {
+                            window.interactable = false;
+                            window.blocksRaycasts = false;
+                        }, Ease.OutCirc);
+
+                        // And translate downwards
+                        Translate(-translateValue * 2f, duration, null, Ease.OutCirc);
+                    }, 
+                Ease.OutBack
+            );
+        }
+
+        /// <summary>
         /// Handle fading for the Window
         /// </summary>
-        private void Fade(float endFadeValue, float duration, TweenCallback onEnd)
+        private void Fade(float endFadeValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
         {
             // Kill the current fade tween if it exists
             fadeTween?.Kill(false);
 
             // Set the fade animation
             fadeTween = window.DOFade(endFadeValue, duration)
-                .SetEase(Ease.OutQuint);
+                .SetEase(easeType);
+
+            // Exit case - if there is no given Tween Callback
+            if (onEnd == null) return;
 
             // Hook up callback events
             fadeTween.onComplete += onEnd;
@@ -161,7 +212,7 @@ namespace WriterTycoon.WorkCreation.UI
         /// </summary>
         /// <param name="endTranslateValue"></param>
         /// <param name="duration"></param>
-        private void Translate(float endTranslateValue, float duration)
+        private void Translate(float endTranslateValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
         {
             // Kill the current translate tween if it exists
             translateTween?.Kill(false);
@@ -171,7 +222,13 @@ namespace WriterTycoon.WorkCreation.UI
 
             // Set the tween animation
             translateTween = window.transform.DOLocalMoveY(targetPos, duration)
-                .SetEase(Ease.OutQuint);
+                .SetEase(easeType);
+
+            // Exit case - if there is no given Tween Callback
+            if (onEnd == null) return;
+
+            // Hook up callback events
+            translateTween.onComplete += onEnd;
         }
     }
 }

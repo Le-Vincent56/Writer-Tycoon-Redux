@@ -51,9 +51,9 @@ namespace WriterTycoon.World.Calendar
         private int daysInMonth;
 
         [SerializeField] private Text dateText;
-        VariableFrequencyTimer dayTimer;
+        private VariableFrequencyTimer dayTimer;
 
-        EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
+        private EventBinding<ChangeCalendarPauseState> changeCalendarPauseStateEvent;
 
         private void OnEnable()
         {
@@ -62,8 +62,8 @@ namespace WriterTycoon.World.Calendar
             inputReader.FastestSpeed += SetFastestSpeed;
             inputReader.PauseCalendar += HandlePause;
 
-            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
-            EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
+            changeCalendarPauseStateEvent = new EventBinding<ChangeCalendarPauseState>(HandleCalendarPauseStateChange);
+            EventBus<ChangeCalendarPauseState>.Register(changeCalendarPauseStateEvent);
         }
 
         private void OnDisable()
@@ -73,7 +73,7 @@ namespace WriterTycoon.World.Calendar
             inputReader.FastestSpeed -= SetFastestSpeed;
             inputReader.PauseCalendar -= HandlePause;
 
-            EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
+            EventBus<ChangeCalendarPauseState>.Deregister(changeCalendarPauseStateEvent);
         }
 
         private void Start()
@@ -257,7 +257,7 @@ namespace WriterTycoon.World.Calendar
             // TODO: Update UI
 
             // Invoke event
-            EventBus<PauseCalendar>.Raise(new PauseCalendar
+            EventBus<CalendarPauseStateChanged>.Raise(new CalendarPauseStateChanged
             {
                 Paused = true
             });
@@ -287,29 +287,24 @@ namespace WriterTycoon.World.Calendar
             }
 
             // Invoke event
-            EventBus<PauseCalendar>.Raise(new PauseCalendar
+            EventBus<CalendarPauseStateChanged>.Raise(new CalendarPauseStateChanged
             {
                 Paused = false
             });
         }
 
         /// <summary>
-        /// Callback for handling the Work menu
+        /// Callback for handling Calendar Pause State changes
         /// </summary>
-        /// <param name="openWorkMenuEvent"></param>
-        private void HandleWorkMenu(OpenCreateWorkMenu openWorkMenuEvent)
+        private void HandleCalendarPauseStateChange(ChangeCalendarPauseState eventData)
         {
-            // Check if the Work menu is opening or closing
-            if(openWorkMenuEvent.IsOpening)
+            if (eventData.Paused)
             {
                 // Exit case - if already paused
                 if (!dayTimer.IsRunning) return;
 
                 // Pause the game
                 Pause();
-
-                // Don't allow the player to change speed
-                canChangeSpeed = false;
             }
             else
             {
@@ -318,10 +313,9 @@ namespace WriterTycoon.World.Calendar
 
                 // Unpause the game
                 Unpause();
-
-                // Allow the player to change speed
-                canChangeSpeed = true;
             }
+
+            canChangeSpeed = eventData.AllowSpeedChanges;
         }
     }
 }
