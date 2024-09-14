@@ -11,6 +11,11 @@ namespace WriterTycoon.Patterns.EventBus
         public bool IsOpening;
     }
 
+    public struct  ShowEstimationTextEvent : IEvent
+    {
+        public bool ShowText;
+    }
+
     public struct PauseCalendarEvent : IEvent
     {
         public bool Paused;

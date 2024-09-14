@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.TimeEstimation;
 
 namespace WriterTycoon.WorkCreation.UI
@@ -11,6 +12,9 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Text timeEstimationText;
         [SerializeField] private float fadeDuration;
+        [SerializeField] private int dayEstimation;
+
+        EventBinding<ShowEstimationTextEvent> showEstimationTextEvent;
 
         private Tween fadeTween;
 
@@ -23,25 +27,65 @@ namespace WriterTycoon.WorkCreation.UI
 
         private void OnEnable()
         {
+            showEstimationTextEvent = new EventBinding<ShowEstimationTextEvent>(HandleEstimationText);
+            EventBus<ShowEstimationTextEvent>.Register(showEstimationTextEvent);
+
             timeEstimator.Updated += UpdateTimeEstimationText;
         }
 
         private void OnDisable()
         {
+            EventBus<ShowEstimationTextEvent>.Deregister(showEstimationTextEvent);
+
             timeEstimator.Updated -= UpdateTimeEstimationText;
         }
 
+        /// <summary>
+        /// Show the Estimation Text
+        /// </summary>
+        private void ShowText() => Fade(1f, fadeDuration);
+
+        /// <summary>
+        /// Hide the Estimation Text
+        /// </summary>
+        private void HideText() => Fade(0f, fadeDuration);
+
+        /// <summary>
+        /// Callback for the Show Estimation Text Event
+        /// </summary>
+        private void HandleEstimationText(ShowEstimationTextEvent eventData)
+        {
+            // Check whether or not to show the text
+            if (eventData.ShowText)
+                // If so, update the time estimation text
+                UpdateTimeEstimationText(dayEstimation);
+            else
+                // Otherwise, hide the text
+                HideText();
+        }
+
+        /// <summary>
+        /// Update the Time Estimation Text
+        /// </summary>
+        /// <param name="dayEstimation"></param>
         private void UpdateTimeEstimationText(int dayEstimation)
         {
             // Exit case - if the Time Estimation Text is null
             if (timeEstimationText == null) return;
 
-            if (dayEstimation == 0)
-                Fade(0f, fadeDuration);
-            else if (dayEstimation > 0)
-                Fade(1f, fadeDuration);
+            // Set the estimated days
+            this.dayEstimation = dayEstimation;
 
+            // Set the text
             timeEstimationText.text = $"Estimated Time: {dayEstimation} Days";
+
+            // Check if there is a set estimation in days
+            if (dayEstimation == 0)
+                // If not, hide the text
+                HideText();
+            else if (dayEstimation > 0)
+                // If so, show the text
+                ShowText();
         }
 
         /// <summary>

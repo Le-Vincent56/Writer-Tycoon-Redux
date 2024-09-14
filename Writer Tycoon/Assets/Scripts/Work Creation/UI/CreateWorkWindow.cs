@@ -86,7 +86,10 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Set the state of Game Creation
         /// </summary>
-        public void SetState(int state) => this.state = state;
+        public void SetState(int state)
+        {
+            this.state = state;
+        }
         
         /// <summary>
         /// Callback for handling the Work menu
