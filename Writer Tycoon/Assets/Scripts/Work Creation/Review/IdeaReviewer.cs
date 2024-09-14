@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.About;
 using WriterTycoon.WorkCreation.Audience;
 using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
@@ -9,16 +12,27 @@ using WriterTycoon.WorkCreation.WorkTypes;
 
 namespace WriterTycoon.WorkCreation.Review
 {
+    [Serializable]
+    public struct ReviewData
+    {
+        public AboutInfo AboutInfo;
+        public WorkType WorkType;
+        public AudienceType AudienceType;
+        public List<Topic> Topics;
+        public List<Genre> Genres;
+        public int DayEstimate;
+    }
+
     public class IdeaReviewer : Dedicant
     {
-        [SerializeField] private string title;
+        [SerializeField] private AboutInfo aboutInfo;
         [SerializeField] private WorkType workType;
         [SerializeField] private AudienceType audienceType;
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
         [SerializeField] private int dayEstimate;
 
-        public UnityAction<string> OnUpdateTitle = delegate { };
+        public UnityAction<AboutInfo> OnUpdateAboutData = delegate { };
         public UnityAction<WorkType> OnUpdateWorkType = delegate { };
         public UnityAction<AudienceType> OnUpdateAudienceType = delegate { };
         public UnityAction<List<Topic>> OnUpdateTopics = delegate { };
@@ -37,13 +51,16 @@ namespace WriterTycoon.WorkCreation.Review
         /// <summary>
         /// Set the Title for the Idea Reviewer
         /// </summary>
-        public void SetTitle(string title)
+        public void SetAboutInfo(AboutInfo aboutInfo)
         {
             // Set data
-            this.title = title;
+            this.aboutInfo = aboutInfo;
 
             // Invoke the update event
-            OnUpdateTitle.Invoke(this.title);
+            OnUpdateAboutData.Invoke(this.aboutInfo);
+
+            // Update review data
+            UpdateReviewData();
         }
 
         /// <summary>
@@ -56,6 +73,9 @@ namespace WriterTycoon.WorkCreation.Review
 
             // Invoke the update event
             OnUpdateWorkType.Invoke(this.workType);
+
+            // Update review data
+            UpdateReviewData();
         }
 
         /// <summary>
@@ -68,6 +88,9 @@ namespace WriterTycoon.WorkCreation.Review
 
             // Invoke the update event
             OnUpdateAudienceType.Invoke(this.audienceType);
+
+            // Update review data
+            UpdateReviewData();
         }
 
         /// <summary>
@@ -80,6 +103,9 @@ namespace WriterTycoon.WorkCreation.Review
 
             // Invoke the update event
             OnUpdateTopics.Invoke(this.topics);
+
+            // Update review data
+            UpdateReviewData();
         }
 
         /// <summary>
@@ -92,6 +118,9 @@ namespace WriterTycoon.WorkCreation.Review
 
             // Invoke the update event
             OnUpdateGenres.Invoke(this.genres);
+
+            // Update review data
+            UpdateReviewData();
         }
 
         /// <summary>
@@ -104,6 +133,28 @@ namespace WriterTycoon.WorkCreation.Review
 
             // Invoke the update event
             OnUpdateTimeEstimate.Invoke(this.dayEstimate);
+
+            // Update review data
+            UpdateReviewData();
+        }
+
+        /// <summary>
+        /// Update and send the Review Data
+        /// </summary>
+        private void UpdateReviewData()
+        {
+            EventBus<SendReviewData>.Raise(new SendReviewData
+            {
+                ReviewData = new ReviewData()
+                {
+                    AboutInfo = aboutInfo,
+                    WorkType = workType,
+                    AudienceType = audienceType,
+                    Topics = topics,
+                    Genres = genres,
+                    DayEstimate = dayEstimate
+                }
+            });
         }
     }
 }

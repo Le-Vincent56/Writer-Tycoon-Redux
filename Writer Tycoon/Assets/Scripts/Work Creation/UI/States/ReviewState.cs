@@ -15,13 +15,13 @@ namespace WriterTycoon.WorkCreation.UI.States
             base.OnEnter();
 
             // Raise an event to hide the Estimation Time Text
-            EventBus<ShowEstimationTextEvent>.Raise(new ShowEstimationTextEvent { ShowText = false });
+            EventBus<ShowEstimationText>.Raise(new ShowEstimationText { ShowText = false });
         }
 
         public override void OnExit()
         {
             // Raise an event to show the Estimation Time Text
-            EventBus<ShowEstimationTextEvent>.Raise(new ShowEstimationTextEvent { ShowText = true });
+            EventBus<ShowEstimationText>.Raise(new ShowEstimationText { ShowText = true });
 
             // Fade out
             base.OnExit();

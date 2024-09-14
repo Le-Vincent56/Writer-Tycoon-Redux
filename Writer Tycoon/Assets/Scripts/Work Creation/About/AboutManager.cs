@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.Input;
@@ -5,6 +6,7 @@ using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.About
 {
+    [Serializable]
     public struct AboutInfo
     {
         public string Title;

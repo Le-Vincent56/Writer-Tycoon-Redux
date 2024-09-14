@@ -16,7 +16,7 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
 
-        EventBinding<OpenWorkMenuEvent> openWorkMenuEvent;
+        EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
 
         private Vector3 originalPosition;
         private Tween fadeTween;
@@ -29,13 +29,13 @@ namespace WriterTycoon.WorkCreation.UI
 
         private void OnEnable()
         {
-            openWorkMenuEvent = new EventBinding<OpenWorkMenuEvent>(HandleWorkMenu);
-            EventBus<OpenWorkMenuEvent>.Register(openWorkMenuEvent);
+            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
+            EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<OpenWorkMenuEvent>.Deregister(openWorkMenuEvent);
+            EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
         }
 
         private void Awake()
@@ -94,7 +94,7 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Callback for handling the Work menu
         /// </summary>
-        public void HandleWorkMenu(OpenWorkMenuEvent oenWorkMenuEvent)
+        public void HandleWorkMenu(OpenCreateWorkMenu oenWorkMenuEvent)
         {
             if (oenWorkMenuEvent.IsOpening)
                 ShowWindow();

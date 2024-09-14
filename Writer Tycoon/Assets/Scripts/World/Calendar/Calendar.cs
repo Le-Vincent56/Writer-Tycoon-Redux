@@ -53,7 +53,7 @@ namespace WriterTycoon.World.Calendar
         [SerializeField] private Text dateText;
         VariableFrequencyTimer dayTimer;
 
-        EventBinding<OpenWorkMenuEvent> openWorkMenuEvent;
+        EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
 
         private void OnEnable()
         {
@@ -62,8 +62,8 @@ namespace WriterTycoon.World.Calendar
             inputReader.FastestSpeed += SetFastestSpeed;
             inputReader.PauseCalendar += HandlePause;
 
-            openWorkMenuEvent = new EventBinding<OpenWorkMenuEvent>(HandleWorkMenu);
-            EventBus<OpenWorkMenuEvent>.Register(openWorkMenuEvent);
+            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
+            EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
         }
 
         private void OnDisable()
@@ -73,7 +73,7 @@ namespace WriterTycoon.World.Calendar
             inputReader.FastestSpeed -= SetFastestSpeed;
             inputReader.PauseCalendar -= HandlePause;
 
-            EventBus<OpenWorkMenuEvent>.Deregister(openWorkMenuEvent);
+            EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
         }
 
         private void Start()
@@ -257,7 +257,7 @@ namespace WriterTycoon.World.Calendar
             // TODO: Update UI
 
             // Invoke event
-            EventBus<PauseCalendarEvent>.Raise(new PauseCalendarEvent
+            EventBus<PauseCalendar>.Raise(new PauseCalendar
             {
                 Paused = true
             });
@@ -287,7 +287,7 @@ namespace WriterTycoon.World.Calendar
             }
 
             // Invoke event
-            EventBus<PauseCalendarEvent>.Raise(new PauseCalendarEvent
+            EventBus<PauseCalendar>.Raise(new PauseCalendar
             {
                 Paused = false
             });
@@ -297,7 +297,7 @@ namespace WriterTycoon.World.Calendar
         /// Callback for handling the Work menu
         /// </summary>
         /// <param name="openWorkMenuEvent"></param>
-        private void HandleWorkMenu(OpenWorkMenuEvent openWorkMenuEvent)
+        private void HandleWorkMenu(OpenCreateWorkMenu openWorkMenuEvent)
         {
             // Check if the Work menu is opening or closing
             if(openWorkMenuEvent.IsOpening)

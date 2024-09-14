@@ -10,7 +10,7 @@ namespace WriterTycoon.World.Interactables
 
         public void Interact()
         {
-            EventBus<OpenWorkMenuEvent>.Raise(new OpenWorkMenuEvent
+            EventBus<OpenCreateWorkMenu>.Raise(new OpenCreateWorkMenu
             {
                 IsOpening = opening
             });

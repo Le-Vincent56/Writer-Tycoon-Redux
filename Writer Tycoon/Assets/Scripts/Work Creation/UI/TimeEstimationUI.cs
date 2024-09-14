@@ -14,7 +14,7 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private float fadeDuration;
         [SerializeField] private int dayEstimation;
 
-        EventBinding<ShowEstimationTextEvent> showEstimationTextEvent;
+        EventBinding<ShowEstimationText> showEstimationTextEvent;
 
         private Tween fadeTween;
 
@@ -27,15 +27,15 @@ namespace WriterTycoon.WorkCreation.UI
 
         private void OnEnable()
         {
-            showEstimationTextEvent = new EventBinding<ShowEstimationTextEvent>(HandleEstimationText);
-            EventBus<ShowEstimationTextEvent>.Register(showEstimationTextEvent);
+            showEstimationTextEvent = new EventBinding<ShowEstimationText>(HandleEstimationText);
+            EventBus<ShowEstimationText>.Register(showEstimationTextEvent);
 
             timeEstimator.Updated += UpdateTimeEstimationText;
         }
 
         private void OnDisable()
         {
-            EventBus<ShowEstimationTextEvent>.Deregister(showEstimationTextEvent);
+            EventBus<ShowEstimationText>.Deregister(showEstimationTextEvent);
 
             timeEstimator.Updated -= UpdateTimeEstimationText;
         }
@@ -53,7 +53,7 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Callback for the Show Estimation Text Event
         /// </summary>
-        private void HandleEstimationText(ShowEstimationTextEvent eventData)
+        private void HandleEstimationText(ShowEstimationText eventData)
         {
             // Check whether or not to show the text
             if (eventData.ShowText)

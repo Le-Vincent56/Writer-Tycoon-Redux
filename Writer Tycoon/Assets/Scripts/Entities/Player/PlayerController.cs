@@ -20,7 +20,7 @@ namespace WriterTycoon.Entities.Player
 
         private Vector2 velocity;
 
-        EventBinding<PauseCalendarEvent> pauseCalendarEvent;
+        EventBinding<PauseCalendar> pauseCalendarEvent;
 
         private void Awake()
         {
@@ -49,13 +49,13 @@ namespace WriterTycoon.Entities.Player
 
         private void OnEnable()
         {
-            pauseCalendarEvent = new EventBinding<PauseCalendarEvent>(ToggleMove);
-            EventBus<PauseCalendarEvent>.Register(pauseCalendarEvent);
+            pauseCalendarEvent = new EventBinding<PauseCalendar>(ToggleMove);
+            EventBus<PauseCalendar>.Register(pauseCalendarEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<PauseCalendarEvent>.Deregister(pauseCalendarEvent);
+            EventBus<PauseCalendar>.Deregister(pauseCalendarEvent);
         }
 
         private void Update()
@@ -88,7 +88,7 @@ namespace WriterTycoon.Entities.Player
         /// <summary>
         /// Toggle whether or not the player can or cannot move
         /// </summary>
-        private void ToggleMove(PauseCalendarEvent pauseCalendarEvent)
+        private void ToggleMove(PauseCalendar pauseCalendarEvent)
         {
             canMove = !pauseCalendarEvent.Paused;
         }

@@ -1,6 +1,9 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.About;
 using WriterTycoon.WorkCreation.Audience;
 using WriterTycoon.WorkCreation.Genres;
 using WriterTycoon.WorkCreation.Review;
@@ -12,23 +15,39 @@ namespace WriterTycoon.WorkCreation.UI
     public class IdeaReviewUI : MonoBehaviour
     {
         private IdeaReviewer ideaReviewer;
+        [SerializeField] private float fadeDuration;
+        [SerializeField] private float highlightDuration;
+        [SerializeField] private Color missingColorHighlight;
+        [SerializeField] private Color missingColorDefault;
+
         [SerializeField] private Text titleText;
         [SerializeField] private Text workTypeText;
         [SerializeField] private Text audienceTypeText;
         [SerializeField] private Text topicsText;
         [SerializeField] private Text genresText;
         [SerializeField] private Text timeEstimateText;
+        [SerializeField] private Text missingText;
+
+        EventBinding<NotifyFailedCreation> notifyFailedCreationEvent;
 
         private void Awake()
         {
             // Verify the Idea Reviewer
             if(ideaReviewer == null)
                 ideaReviewer = GetComponent<IdeaReviewer>();
+
+            // Set the missing text to be invisible
+            Color invisibleColor = missingColorDefault;
+            invisibleColor.a = 0f;
+            missingText.color = invisibleColor;
         }
 
         private void OnEnable()
         {
-            ideaReviewer.OnUpdateTitle += UpdateTitleReview;
+            notifyFailedCreationEvent = new EventBinding<NotifyFailedCreation>(NotifyFailedCreation);
+            EventBus<NotifyFailedCreation>.Register(notifyFailedCreationEvent);
+
+            ideaReviewer.OnUpdateAboutData += UpdateTitleReview;
             ideaReviewer.OnUpdateWorkType += UpdateWorkTypeReview;
             ideaReviewer.OnUpdateAudienceType += UpdateAudienceReview;
             ideaReviewer.OnUpdateTopics += UpdateTopicsReview;
@@ -38,7 +57,9 @@ namespace WriterTycoon.WorkCreation.UI
 
         private void OnDisable()
         {
-            ideaReviewer.OnUpdateTitle -= UpdateTitleReview;
+            EventBus<NotifyFailedCreation>.Deregister(notifyFailedCreationEvent);
+
+            ideaReviewer.OnUpdateAboutData -= UpdateTitleReview;
             ideaReviewer.OnUpdateWorkType -= UpdateWorkTypeReview;
             ideaReviewer.OnUpdateAudienceType -= UpdateAudienceReview;
             ideaReviewer.OnUpdateTopics -= UpdateTopicsReview;
@@ -46,11 +67,58 @@ namespace WriterTycoon.WorkCreation.UI
             ideaReviewer.OnUpdateTimeEstimate -= UpdateTimeEstimateReview;
         }
 
+        private void NotifyFailedCreation(NotifyFailedCreation eventData)
+        {
+            // Set data
+            ReviewData reviewData = eventData.ReviewData;
+
+            // Create a starting string
+            string failedText = "Missing the Following:";
+
+            if (reviewData.AboutInfo.Title == null || reviewData.AboutInfo.Title == string.Empty)
+                failedText += "\nTitle";
+            if (reviewData.AboutInfo.Author == null || reviewData.AboutInfo.Author == string.Empty)
+                failedText += "\nAuthor";
+            if (reviewData.AboutInfo.Description == null || reviewData.AboutInfo.Description == string.Empty)
+                failedText += "\nDescription";
+            if (reviewData.WorkType == WorkType.None)
+                failedText += "\nWork Type";
+            if (reviewData.AudienceType == AudienceType.None)
+                failedText += "\nAudience";
+            if (reviewData.Topics == null || reviewData.Topics.Count == 0)
+                failedText += "\nTopic(s)";
+            if (reviewData.Genres == null || reviewData.Genres.Count == 0)
+                failedText += "\nGenre(s)";
+
+            // Set the text
+            missingText.text = failedText;
+
+            // Fade in the text
+            missingText.DOFade(1f, fadeDuration);
+
+            // Create a simultaneous fade-in sequence for a highlight
+            Sequence fadeSequence = DOTween.Sequence();
+            fadeSequence.Append(missingText.DOColor(
+                missingColorHighlight,
+                highlightDuration
+            ));
+            fadeSequence.Append(missingText.DOColor(
+                missingColorDefault,
+                highlightDuration * 3f
+            ));
+        }
+
         /// <summary>
         /// Event handler for updating the Title for the Idea Reviewer
         /// </summary>
-        /// <param name="title"></param>
-        private void UpdateTitleReview(string title) => titleText.text = title;
+        private void UpdateTitleReview(AboutInfo aboutInfo)
+        {
+            string titleDisplayText = (aboutInfo.Title == null || aboutInfo.Title == string.Empty)
+                ? "-----"
+                : aboutInfo.Title;
+
+            titleText.text = titleDisplayText;
+        }
 
         /// <summary>
         /// Event handler for updating the Work Type for the Idea Reviewer
@@ -58,13 +126,13 @@ namespace WriterTycoon.WorkCreation.UI
         private void UpdateWorkTypeReview(WorkType workType)
         {
             // Create a container for the name
-            string workTypeName = "";
+            string workTypeName = "-----";
 
             // Decide the Work Type name
             switch (workType)
             {
                 case WorkType.None:
-                    workTypeName = "None";
+                    workTypeName = "-----";
                     break;
                 case WorkType.Poetry:
                     workTypeName = "Poetry";
@@ -96,13 +164,13 @@ namespace WriterTycoon.WorkCreation.UI
         private void UpdateAudienceReview(AudienceType audienceType)
         {
             // Create a container for the name
-            string audienceTypeName = "";
+            string audienceTypeName = "-----";
 
             // Decide the Work Type name
             switch (audienceType)
             {
                 case AudienceType.None:
-                    audienceTypeName = "None";
+                    audienceTypeName = "-----";
                     break;
                 case AudienceType.Children:
                     audienceTypeName = "Children";
@@ -128,7 +196,9 @@ namespace WriterTycoon.WorkCreation.UI
         private void UpdateTopicsReview(List<Topic> topics)
         {
             // Create a starting string
-            string selectedTopicsText = "";
+            string selectedTopicsText = (topics == null || topics.Count == 0)
+                ? "-----"
+                : "";
 
             // Iterate through each selected Topic
             for (int i = 0; i < topics.Count; i++)
@@ -151,7 +221,9 @@ namespace WriterTycoon.WorkCreation.UI
         private void UpdateGenresReview(List<Genre> genres)
         {
             // Create a starting string
-            string selectedGenresText = "";
+            string selectedGenresText = (genres == null || genres.Count == 0)
+                ? "-----"
+                : "";
 
             // Iterate through each selected Genre
             for (int i = 0; i < genres.Count; i++)
@@ -171,6 +243,13 @@ namespace WriterTycoon.WorkCreation.UI
         /// <summary>
         /// Event handler for updating the Time Estimate for the Idea Reviewer
         /// </summary>
-        private void UpdateTimeEstimateReview(int dayEstimate) => timeEstimateText.text = $"{dayEstimate} Days";
+        private void UpdateTimeEstimateReview(int dayEstimate)
+        {
+            string dayEstimateText = (dayEstimate > 0)
+                ? $"{dayEstimate} Days"
+                : "-----";
+
+            timeEstimateText.text = dayEstimateText;
+        }
     }
 }
