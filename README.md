@@ -11,16 +11,19 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * World: Calendar Time Dilation---------------------------------☑ (8/30/2024)
 * World: Calendar Pause-----------------------------------------☑ (8/30/2024)
 * World: Random Events------------------------------------------☐
-* Book Creation: Topics-----------------------------------------☑ (9/02/2024)
-* Book Creation: Genre------------------------------------------☑ (9/02/2024)
-* Book Creation: Genre-Topic Compatibility----------------------☐
-* Book Creation: Theme------------------------------------------☐
-* Book Creation: Flavor Text/Description------------------------☐
-* Book Creation: Audience---------------------------------------☐
-* Book Creation: Sliders----------------------------------------☐
-* Book Creation: Grade/Rating-----------------------------------☐
-* Book Creation: Research/Studying------------------------------☐
-* Player: Player States-----------------------------------------☐
+* World: Interactables -----------------------------------------☑ (9/12/2024)
+* Work Creation: Topics-----------------------------------------☑ (9/02/2024)
+* Work Creation: Genre------------------------------------------☑ (9/02/2024)
+* Work Creation: Genre-Topic Compatibility----------------------☑ (9/04/2024)
+* Work Creation: Type ------------------------------------------☑ (9/04/2024)
+* Work Creation: Theme------------------------------------------☑ (9/13/2024)
+* Work Creation: Audience---------------------------------------☑ (9/04/2024)
+* Work Creation: Time Estimation--------------------------------☑ (9/13/2024)
+* Work Creation: Sliders----------------------------------------☐
+* Work Creation: Grade/Rating-----------------------------------☐
+* Work Creation: Research/Studying------------------------------☐
+* Player: Movement----------------------------------------------☑ (9/10/2024)
+* Player: Player States-----------------------------------------☑ (9/10/2024)
 * Player: Attributes--------------------------------------------☐
 * Player: Creation----------------------------------------------☐
 * Player: Leveling/Growth---------------------------------------☐
