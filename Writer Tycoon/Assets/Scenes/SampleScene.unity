@@ -1189,6 +1189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438774a0abc2bdb4fb0e1f5bac671439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastFillAmount: 0
+  currentFillAmount: 0
+  timeToReachTarget: 0.25
   mask: {fileID: 0}
 --- !u!1 &173941239
 GameObject:

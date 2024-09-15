@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
@@ -8,6 +6,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
 {
     public class ProgressBar : MonoBehaviour
     {
+        [SerializeField] private float lastFillAmount;
+        [SerializeField] private float currentFillAmount;
+        [SerializeField] private float timeToReachTarget;
         public Image mask;
 
         private EventBinding<UpdateProgressData> updateProgressDataEvent;
@@ -30,12 +31,25 @@ namespace WriterTycoon.WorkCreation.UI.Development
             EventBus<UpdateProgressData>.Deregister(updateProgressDataEvent);
         }
 
+        private void Update()
+        {
+            // Dynamically calculate the speed to reach the current target within a fixed time
+            float dynamicFillSpeed = Mathf.Abs(currentFillAmount - lastFillAmount) / timeToReachTarget;
+
+            // Move the last fill amount smoothly toward the current fill amount
+            lastFillAmount = Mathf.MoveTowards(lastFillAmount, currentFillAmount, dynamicFillSpeed * Time.deltaTime);
+
+            // Update the mask to visually reflect the progress
+            mask.fillAmount = lastFillAmount;
+        }
+
         private void GetCurrentFill(UpdateProgressData eventData)
         {
-            float fillAmount = (float)eventData.Current / (float)eventData.Maximum;
-            mask.fillAmount = fillAmount;
+            // Calculate the target fill amount based on event data
+            float newFillAmount = (float)eventData.Current / (float)eventData.Maximum;
 
-            Debug.Log(fillAmount);
+            // Update the current fill target, clamping it between 0 and 1
+            currentFillAmount = Mathf.Clamp01(newFillAmount);
         }
     }
 }
