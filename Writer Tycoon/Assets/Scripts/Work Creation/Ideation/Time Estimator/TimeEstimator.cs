@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.WorkCreation.Ideation.Mediation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
 {
@@ -128,7 +128,11 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             // Send the Topic payload
             Send(new TimeEstimationPayload()
                 { Content = dayEstimate },
-                IsType(DedicantType.IdeaReviewer)
+                AreTypes(new DedicantType[2]
+                {
+                    DedicantType.IdeaReviewer,
+                    DedicantType.Tracker
+                })
             );
         }
     }

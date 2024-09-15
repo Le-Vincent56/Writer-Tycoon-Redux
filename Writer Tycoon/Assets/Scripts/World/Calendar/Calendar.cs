@@ -153,6 +153,9 @@ namespace WriterTycoon.World.Calendar
 
             // Set the date text
             SetDateText();
+
+            // Raise the Pass Day event
+            EventBus<PassDay>.Raise(new PassDay());
         }
 
         /// <summary>

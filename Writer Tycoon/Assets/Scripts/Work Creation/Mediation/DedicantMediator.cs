@@ -2,7 +2,7 @@ using UnityEngine;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.Patterns.ServiceLocator;
 
-namespace WriterTycoon.WorkCreation.Ideation.Mediation
+namespace WriterTycoon.WorkCreation.Mediation
 {
     public class DedicantMediator : Mediator<Dedicant>
     {

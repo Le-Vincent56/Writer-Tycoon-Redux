@@ -126,9 +126,14 @@ namespace WriterTycoon.Entities.Player
         private void OnMove(Vector2 movementVector, bool started)
         {
             // Check if the control has just been pressed and the Player is working
-            if (started && working) 
-                // If so, stop them from working
-                working = false;
+            if (started && working)
+            {
+                // Update the Player Work State to stop working
+                EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
+                {
+                    Working = false
+                });
+            }
         }
     }
 }

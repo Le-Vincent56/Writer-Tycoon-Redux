@@ -77,7 +77,7 @@ namespace WriterTycoon.WorkCreation.UI
             this.dayEstimation = dayEstimation;
 
             // Set the text
-            timeEstimationText.text = $"Estimated Time: {dayEstimation} Days";
+            timeEstimationText.text = $"{dayEstimation} Days";
 
             // Check if there is a set estimation in days
             if (dayEstimation == 0)

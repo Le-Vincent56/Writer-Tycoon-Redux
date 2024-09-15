@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Mediation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 
 namespace WriterTycoon.WorkCreation.Ideation.Compatibility

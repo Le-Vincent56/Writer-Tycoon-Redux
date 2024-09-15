@@ -4,10 +4,11 @@ using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Patterns.Visitor;
 
-namespace WriterTycoon.WorkCreation.Ideation.Mediation
+namespace WriterTycoon.WorkCreation.Mediation
 {
     public enum DedicantType
     {
+        // Ideation
         About,
         TimeEstimator,
         WorkType,
@@ -16,6 +17,9 @@ namespace WriterTycoon.WorkCreation.Ideation.Mediation
         Genre,
         Compatibility,
         IdeaReviewer,
+
+        // Development
+        Tracker,
         Slider,
         Rater,
     }
