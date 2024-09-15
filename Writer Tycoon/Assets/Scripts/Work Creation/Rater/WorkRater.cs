@@ -1,4 +1,4 @@
-using WriterTycoon.WorkCreation.Mediation;
+using WriterTycoon.WorkCreation.Ideation.Mediation;
 
 namespace WrtierTycoon.WorkCreation.Rater
 {

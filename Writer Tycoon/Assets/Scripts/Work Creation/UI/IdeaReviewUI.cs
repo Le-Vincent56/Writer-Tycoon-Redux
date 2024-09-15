@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.About;
-using WriterTycoon.WorkCreation.Audience;
-using WriterTycoon.WorkCreation.Genres;
-using WriterTycoon.WorkCreation.Review;
-using WriterTycoon.WorkCreation.Topics;
-using WriterTycoon.WorkCreation.WorkTypes;
+using WriterTycoon.WorkCreation.Ideation.About;
+using WriterTycoon.WorkCreation.Ideation.Audience;
+using WriterTycoon.WorkCreation.Ideation.Genres;
+using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.WorkCreation.UI
 {
@@ -28,7 +28,7 @@ namespace WriterTycoon.WorkCreation.UI
         [SerializeField] private Text timeEstimateText;
         [SerializeField] private Text missingText;
 
-        EventBinding<NotifyFailedCreation> notifyFailedCreationEvent;
+        private EventBinding<NotifyFailedCreation> notifyFailedCreationEvent;
 
         private void Awake()
         {

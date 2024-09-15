@@ -1,5 +1,5 @@
 using UnityEngine;
-using WriterTycoon.WorkCreation.About;
+using WriterTycoon.WorkCreation.Ideation.About;
 
 namespace WriterTycoon.WorkCreation.UI
 {

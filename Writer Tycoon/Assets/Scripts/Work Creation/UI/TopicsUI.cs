@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.WorkCreation.Topics;
+using WriterTycoon.WorkCreation.Ideation.Topics;
 
 namespace WriterTycoon.WorkCreation.UI
 {

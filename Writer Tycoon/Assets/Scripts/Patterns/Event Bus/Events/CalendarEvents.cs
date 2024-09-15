@@ -1,0 +1,13 @@
+namespace WriterTycoon.Patterns.EventBus
+{
+    public struct CalendarPauseStateChanged : IEvent
+    {
+        public bool Paused;
+    }
+
+    public struct ChangeCalendarPauseState : IEvent
+    {
+        public bool Paused;
+        public bool AllowSpeedChanges;
+    }
+}
