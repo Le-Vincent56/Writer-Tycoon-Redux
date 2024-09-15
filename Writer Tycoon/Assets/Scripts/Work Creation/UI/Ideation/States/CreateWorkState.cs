@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using WriterTycoon.Patterns.StateMachine;
 
-namespace WriterTycoon.WorkCreation.UI.States
+namespace WriterTycoon.WorkCreation.UI.Ideation.States
 {
     public class CreateWorkState : IState
     {

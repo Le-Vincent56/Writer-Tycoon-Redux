@@ -10,7 +10,7 @@ using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.WorkCreation.UI
+namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class IdeaReviewUI : MonoBehaviour
     {

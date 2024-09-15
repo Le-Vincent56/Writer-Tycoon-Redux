@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 
-namespace WriterTycoon.WorkCreation.UI
+namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class TimeEstimationUI : MonoBehaviour
     {

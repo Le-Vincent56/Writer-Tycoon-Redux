@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 
-namespace WriterTycoon.WorkCreation.UI
+namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class TopicsUI : MonoBehaviour
     {

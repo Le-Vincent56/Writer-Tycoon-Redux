@@ -8,4 +8,12 @@ namespace WriterTycoon.Patterns.EventBus
         public ReviewData ReviewData;
     }
     #endregion
+
+    #region WORK DEVELOPMENT EVENTS
+    public struct UpdateProgressData : IEvent
+    {
+        public int Current;
+        public int Maximum;
+    }
+    #endregion
 }

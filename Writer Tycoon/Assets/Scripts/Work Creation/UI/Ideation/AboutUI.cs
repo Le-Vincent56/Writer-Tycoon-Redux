@@ -1,7 +1,7 @@
 using UnityEngine;
 using WriterTycoon.WorkCreation.Ideation.About;
 
-namespace WriterTycoon.WorkCreation.UI
+namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class AboutUI : MonoBehaviour
     {

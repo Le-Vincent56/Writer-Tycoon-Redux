@@ -1,10 +1,10 @@
 using UnityEngine;
 using DG.Tweening;
-using WriterTycoon.WorkCreation.UI.States;
+using WriterTycoon.WorkCreation.UI.Ideation.States;
 using WriterTycoon.Patterns.StateMachine;
 using WriterTycoon.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.UI
+namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class CreateWorkWindow : MonoBehaviour
     {

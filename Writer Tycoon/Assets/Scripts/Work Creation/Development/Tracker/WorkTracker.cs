@@ -43,6 +43,12 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Increment the current day
             currentDay++;
+
+            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+            {
+                Current = currentDay,
+                Maximum = dayEstimate,
+            });
         }
 
         /// <summary>
