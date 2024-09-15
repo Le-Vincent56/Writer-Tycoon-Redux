@@ -42,4 +42,9 @@ namespace WriterTycoon.Patterns.EventBus
         public bool Paused;
         public bool AllowSpeedChanges;
     }
+
+    public struct ChangePlayerWorkState : IEvent
+    {
+        public bool Working;
+    }
 }

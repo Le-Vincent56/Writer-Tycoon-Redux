@@ -9,8 +9,9 @@ namespace WriterTycoon.Entities.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private GameInputReader inputReader;
-        [SerializeField] private float moveSpeed;
         [SerializeField] private bool canMove;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private bool working;
 
         private Animator animator;
         private Rigidbody2D rb;
@@ -20,7 +21,8 @@ namespace WriterTycoon.Entities.Player
 
         private Vector2 velocity;
 
-        EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
+        private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
+        private EventBinding<ChangePlayerWorkState> changePlayerWorkStateEvent;
 
         private void Awake()
         {
@@ -38,10 +40,17 @@ namespace WriterTycoon.Entities.Player
             // Create states
             IdleState idleState = new(this, spriteRenderer);
             LocomotionState locomotionState = new(this, spriteRenderer);
+            WorkState workState = new(this, spriteRenderer, rb);
 
             // Define state transitions
             stateMachine.At(idleState, locomotionState, new FuncPredicate(() => velocity != Vector2.zero));
+            stateMachine.At(idleState, workState, new FuncPredicate(() => working));
+
             stateMachine.At(locomotionState, idleState, new FuncPredicate(() => velocity == Vector2.zero));
+            stateMachine.At(locomotionState, workState, new FuncPredicate(() => working));
+
+            stateMachine.At(workState, idleState, new FuncPredicate(() => !working && velocity == Vector2.zero));
+            stateMachine.At(workState, locomotionState, new FuncPredicate(() => !working && velocity != Vector2.zero));
 
             // Set an initial state
             stateMachine.SetState(idleState);
@@ -49,13 +58,21 @@ namespace WriterTycoon.Entities.Player
 
         private void OnEnable()
         {
-            pauseCalendarEvent = new EventBinding<CalendarPauseStateChanged>(ToggleMove);
+            inputReader.Move += OnMove;
+
+            pauseCalendarEvent = new EventBinding<CalendarPauseStateChanged>(HandleCalendarPause);
             EventBus<CalendarPauseStateChanged>.Register(pauseCalendarEvent);
+
+            changePlayerWorkStateEvent = new EventBinding<ChangePlayerWorkState>(HandlePlayerWorkStateChange);
+            EventBus<ChangePlayerWorkState>.Register(changePlayerWorkStateEvent);
         }
 
         private void OnDisable()
         {
+            inputReader.Move -= OnMove;
+
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
+            EventBus<ChangePlayerWorkState>.Deregister(changePlayerWorkStateEvent);
         }
 
         private void Update()
@@ -86,11 +103,32 @@ namespace WriterTycoon.Entities.Player
         }
 
         /// <summary>
-        /// Toggle whether or not the player can or cannot move
+        /// Callback handler for when the Calendar pause state has changed
         /// </summary>
-        private void ToggleMove(CalendarPauseStateChanged pauseCalendarEvent)
+        private void HandleCalendarPause(CalendarPauseStateChanged eventData)
         {
-            canMove = !pauseCalendarEvent.Paused;
+            // Don't allow the player to move if the Calendar is paused
+            canMove = !eventData.Paused;
+        }
+
+        /// <summary>
+        /// Callback handler for when the Player work state is to change
+        /// </summary>
+        private void HandlePlayerWorkStateChange(ChangePlayerWorkState eventData)
+        {
+            // Set the player to working
+            working = eventData.Working;
+        }
+
+        /// <summary>
+        /// Handle Player movement input
+        /// </summary>
+        private void OnMove(Vector2 movementVector, bool started)
+        {
+            // Check if the control has just been pressed and the Player is working
+            if (started && working) 
+                // If so, stop them from working
+                working = false;
         }
     }
 }

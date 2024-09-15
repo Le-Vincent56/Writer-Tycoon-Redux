@@ -107,8 +107,17 @@ namespace WriterTycoon.WorkCreation.UI
                 AllowSpeedChanges = true
             });
 
-            // Reset the Create Work Window
-            EventBus<NotifySuccessfulCreation>.Raise(new NotifySuccessfulCreation() { ReviewData = reviewData });
+            // Notify that the Work was successfully created
+            EventBus<NotifySuccessfulCreation>.Raise(new NotifySuccessfulCreation() 
+            { 
+                ReviewData = reviewData
+            });
+
+            // Change the player work state
+            EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
+            {
+                Working = true
+            });
         }
     }
 }

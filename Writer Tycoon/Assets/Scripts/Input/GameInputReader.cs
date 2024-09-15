@@ -10,7 +10,7 @@ namespace WriterTycoon.Input
     [CreateAssetMenu(fileName = "GameInputReader", menuName = "Input/Game Input Reader")]
     public class GameInputReader : ScriptableObject, IPlayerControlsActions, IInputReader
     {
-        public event UnityAction<Vector2> Move = delegate { };
+        public event UnityAction<Vector2, bool> Move = delegate { };
         public event UnityAction Interact = delegate { };
         public event UnityAction DefaultSpeed = delegate { };
         public event UnityAction FasterSpeed = delegate { };
@@ -62,7 +62,7 @@ namespace WriterTycoon.Input
             Vector2 rawMovementInput = context.ReadValue<Vector2>();
 
             // Invoke the movement event
-            Move.Invoke(rawMovementInput);
+            Move.Invoke(rawMovementInput, context.started);
 
             // Set variables
             NormMoveX = (int)(rawMovementInput * Vector2.right).normalized.x;
