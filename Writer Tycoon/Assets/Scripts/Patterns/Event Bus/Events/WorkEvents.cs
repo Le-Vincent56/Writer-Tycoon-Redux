@@ -15,5 +15,7 @@ namespace WriterTycoon.Patterns.EventBus
         public int Current;
         public int Maximum;
     }
+
+    public struct EndDevelopment : IEvent { }
     #endregion
 }

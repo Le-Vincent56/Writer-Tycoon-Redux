@@ -3425,8 +3425,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   working: 0
+  developing: 0
   currentDay: 0
-  dayEstimate: 0
+  currentPhase: 0
+  currentDayEstimate: 0
+  totalDayEstimate: 0
+  phaseOneDayEstimate: 0
+  phaseTwoDayEstimate: 0
+  phaseThreeDayEstimate: 0
 --- !u!1 &536390436
 GameObject:
   m_ObjectHideFlags: 0
@@ -4949,6 +4955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 812260481}
   - component: {fileID: 812260482}
+  - component: {fileID: 812260483}
   m_Layer: 5
   m_Name: Progress Bar
   m_TagString: Untagged
@@ -4984,10 +4991,23 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 812260480}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &812260483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812260480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174fbea88d9f9a24a91b9b2646fa8399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 0.5
 --- !u!1 &835465779
 GameObject:
   m_ObjectHideFlags: 0
@@ -6633,7 +6653,6 @@ MonoBehaviour:
   audienceType: 0
   topics: []
   genres: []
-  dayEstimate: 0
 --- !u!1 &1156749888
 GameObject:
   m_ObjectHideFlags: 0
@@ -17564,7 +17583,6 @@ MonoBehaviour:
     AudienceType: 0
     Topics: []
     Genres: []
-    DayEstimate: 0
 --- !u!1 &2061970157
 GameObject:
   m_ObjectHideFlags: 0

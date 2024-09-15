@@ -43,6 +43,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
             mask.fillAmount = lastFillAmount;
         }
 
+        /// <summary>
+        /// Callback function to get the current fill amount for the Progress Bar
+        /// </summary>
         private void GetCurrentFill(UpdateProgressData eventData)
         {
             // Calculate the target fill amount based on event data

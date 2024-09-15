@@ -7,6 +7,7 @@ using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
@@ -243,10 +244,10 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// <summary>
         /// Event handler for updating the Time Estimate for the Idea Reviewer
         /// </summary>
-        private void UpdateTimeEstimateReview(int dayEstimate)
+        private void UpdateTimeEstimateReview(TimeEstimates estimates)
         {
-            string dayEstimateText = (dayEstimate > 0)
-                ? $"{dayEstimate} Days"
+            string dayEstimateText = (estimates.Total > 0)
+                ? $"{estimates.Total} Days"
                 : "-----";
 
             timeEstimateText.text = dayEstimateText;

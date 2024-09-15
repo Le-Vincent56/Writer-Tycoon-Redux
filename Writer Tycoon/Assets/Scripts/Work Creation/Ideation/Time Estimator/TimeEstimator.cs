@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,9 +7,20 @@ using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
 {
+    public struct TimeEstimates
+    {
+        public int Total;
+        public int PhaseOne;
+        public int PhaseTwo;
+        public int PhaseThree;
+    }
+
     public class TimeEstimator : Dedicant
     {
-        private int dayEstimate;
+        private int totalDayEstimate;
+        private int phaseOneDayEstimate;
+        private int phaseTwoDayEstimate;
+        private int phaseThreeDayEstimate;
         private List<Topic> topics;
         [SerializeField] private WorkType workType;
 
@@ -30,17 +40,31 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
         private void UpdateEstimate()
         {
             // Reset the total time estimate
-            dayEstimate = 0;
+            totalDayEstimate = 0;
 
             // Add estimates
-            dayEstimate += GetWorkTypeEstimates();
-            dayEstimate += GetTopicEstimates();
+            totalDayEstimate += GetWorkTypeEstimates();
+            totalDayEstimate += GetTopicEstimates();
+
+            // Split the total estimates into three phases
+            phaseOneDayEstimate = (int)(totalDayEstimate * (1f / 5f));
+            phaseTwoDayEstimate = (int)(totalDayEstimate * (3 / 5f));
+            phaseThreeDayEstimate = (int)(totalDayEstimate * (1f / 5f));
+
+            // Ensure that all of the total days are used
+            int combinedEstimates = phaseOneDayEstimate + phaseTwoDayEstimate + phaseThreeDayEstimate;
+            int leftoverEstimate = totalDayEstimate - combinedEstimates;
+            
+            // Check if a positive amount of leftover days remain
+            if(leftoverEstimate > 0)
+                // If so, add them to the third phase estimate
+                phaseThreeDayEstimate += leftoverEstimate;
 
             // Send the Time Estimate to the mediator
             SendTimeEstimate();
 
             // Invoke the Time Estimate Updated event
-            Updated.Invoke(dayEstimate);
+            Updated.Invoke(totalDayEstimate);
         }
 
         /// <summary>
@@ -74,11 +98,11 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             {
                 WorkType.None => 0,
                 WorkType.Poetry => 10,
-                WorkType.FlashFiction => 15,
-                WorkType.ShortStory => 30,
-                WorkType.Novella => 50,
-                WorkType.Novel => 100,
-                WorkType.Screenplay => 100,
+                WorkType.FlashFiction => 25,
+                WorkType.ShortStory => 70,
+                WorkType.Novella => 100,
+                WorkType.Novel => 365,
+                WorkType.Screenplay => 365,
                 _ => 0
             };
         }
@@ -125,14 +149,18 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
         /// </summary>
         private void SendTimeEstimate()
         {
+            TimeEstimates estimates = new TimeEstimates()
+            {
+                Total = totalDayEstimate,
+                PhaseOne = phaseOneDayEstimate,
+                PhaseTwo = phaseTwoDayEstimate,
+                PhaseThree = phaseThreeDayEstimate,
+            };
+
             // Send the Topic payload
             Send(new TimeEstimationPayload()
-                { Content = dayEstimate },
-                AreTypes(new DedicantType[2]
-                {
-                    DedicantType.IdeaReviewer,
-                    DedicantType.Tracker
-                })
+                { Content = estimates },
+                IsType(DedicantType.IdeaReviewer)
             );
         }
     }

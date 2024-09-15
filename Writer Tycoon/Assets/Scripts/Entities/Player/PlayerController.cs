@@ -125,6 +125,9 @@ namespace WriterTycoon.Entities.Player
         /// </summary>
         private void OnMove(Vector2 movementVector, bool started)
         {
+            // Exit case - if the player can't move
+            if (!canMove) return;
+
             // Check if the control has just been pressed and the Player is working
             if (started && working)
             {

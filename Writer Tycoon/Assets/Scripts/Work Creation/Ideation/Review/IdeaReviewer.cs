@@ -6,6 +6,7 @@ using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
+using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 using WriterTycoon.WorkCreation.Mediation;
@@ -20,7 +21,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         public AudienceType AudienceType;
         public List<Topic> Topics;
         public List<Genre> Genres;
-        public int DayEstimate;
+        public TimeEstimates TimeEstimates;
     }
 
     public class IdeaReviewer : Dedicant
@@ -30,14 +31,14 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         [SerializeField] private AudienceType audienceType;
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
-        [SerializeField] private int dayEstimate;
+        [SerializeField] private TimeEstimates timeEstimates;
 
         public UnityAction<AboutInfo> OnUpdateAboutData = delegate { };
         public UnityAction<WorkType> OnUpdateWorkType = delegate { };
         public UnityAction<AudienceType> OnUpdateAudienceType = delegate { };
         public UnityAction<List<Topic>> OnUpdateTopics = delegate { };
         public UnityAction<List<Genre>> OnUpdateGenres = delegate { };
-        public UnityAction<int> OnUpdateTimeEstimate = delegate { };
+        public UnityAction<TimeEstimates> OnUpdateTimeEstimate = delegate { };
 
         public override string Name { get => "Idea Reviewer"; }
         public override DedicantType Type { get => DedicantType.IdeaReviewer; }
@@ -126,13 +127,13 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         /// <summary>
         /// Set the Time Estimate for the Idea Reviewer
         /// </summary>
-        public void SetTimeEstimate(int dayEstimate)
+        public void SetTimeEstimate(TimeEstimates estimates)
         {
             // Set data
-            this.dayEstimate = dayEstimate;
+            timeEstimates = estimates;
 
             // Invoke the update event
-            OnUpdateTimeEstimate.Invoke(this.dayEstimate);
+            OnUpdateTimeEstimate.Invoke(timeEstimates);
 
             // Update review data
             UpdateReviewData();
@@ -152,7 +153,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
                     AudienceType = audienceType,
                     Topics = topics,
                     Genres = genres,
-                    DayEstimate = dayEstimate
+                    TimeEstimates = timeEstimates
                 }
             });
         }

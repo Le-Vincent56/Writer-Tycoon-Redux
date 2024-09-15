@@ -4,6 +4,7 @@ using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.WorkCreation.UI.Ideation
@@ -33,7 +34,13 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 AudienceType = AudienceType.None,
                 Topics = null,
                 Genres = null,
-                DayEstimate = 0
+                TimeEstimates = new TimeEstimates()
+                {
+                    Total = 0,
+                    PhaseOne = 0,
+                    PhaseTwo = 0,
+                    PhaseThree = 0
+                }
             };
 
             // Add event listener
@@ -78,7 +85,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 willSucceed = false;
             if (reviewData.Genres == null || reviewData.Genres.Count == 0)
                 willSucceed = false;
-            if (reviewData.DayEstimate == 0)
+            if (reviewData.TimeEstimates.Total == 0)
                 willSucceed = false;
 
             // Check if writing will succeed
