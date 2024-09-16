@@ -5,6 +5,10 @@ namespace WriterTycoon.World.Interactables
 {
     public class Computer : MonoBehaviour, IInteractable
     {
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Material defaultMaterial;
+        [SerializeField] private Material highlightMaterial;
+
         [SerializeField] private bool currentlyWorking;
         [SerializeField] private bool opening;
 
@@ -14,6 +18,10 @@ namespace WriterTycoon.World.Interactables
 
         private void Awake()
         {
+            // Verify the Sprite Renderer
+            if(spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
             Interactable = true;
         }
 
@@ -55,15 +63,9 @@ namespace WriterTycoon.World.Interactables
                 OpenCreateWorkMenu();
         }
 
-        public void Highlight()
-        {
+        public void Highlight() => spriteRenderer.material = highlightMaterial;
 
-        }
-
-        public void RemoveHighlight()
-        {
-
-        }
+        public void RemoveHighlight() => spriteRenderer.material = defaultMaterial;
 
         /// <summary>
         /// Continue working on interaction
@@ -93,6 +95,12 @@ namespace WriterTycoon.World.Interactables
             EventBus<OpenCreateWorkMenu>.Raise(new OpenCreateWorkMenu
             {
                 IsOpening = opening
+            });
+
+            // Notify interacting
+            EventBus<SetInteracting>.Raise(new SetInteracting()
+            {
+                Interacting = opening
             });
 
             // Flip opening state

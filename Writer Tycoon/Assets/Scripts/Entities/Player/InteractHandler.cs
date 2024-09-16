@@ -1,5 +1,6 @@
 using UnityEngine;
 using WriterTycoon.Input;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.World.Interactables;
 
 namespace WriterTycoon.Entities.Player
@@ -10,19 +11,31 @@ namespace WriterTycoon.Entities.Player
         private BoxCollider2D boxCollider;
         private IInteractable currentInteractable;
         [SerializeField] string currentInteractableName;
+        [SerializeField] private bool interacting;
+        [SerializeField] private bool inTrigger;
+
+        private EventBinding<SetInteracting> interactEvent;
 
         private void OnEnable()
         {
             inputReader.Interact += Interact;
+
+            interactEvent = new EventBinding<SetInteracting>(SetInteracting);
+            EventBus<SetInteracting>.Register(interactEvent);
         }
 
         private void OnDisable()
         {
             inputReader.Interact -= Interact;
+
+            EventBus<SetInteracting>.Deregister(interactEvent);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            // Set within the trigger
+            inTrigger = true;
+
             // Try to get an Interactable from the collision object
             IInteractable interactable = collision.GetComponent<IInteractable>();
 
@@ -39,6 +52,24 @@ namespace WriterTycoon.Entities.Player
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            // Set within the trigger
+            inTrigger = false;
+
+            // Return if currently interacting
+            if (interacting) return;
+
+            // Remove the interactor
+            RemoveInteractor();
+        }
+
+        /// <summary>
+        /// Remove interactor data
+        /// </summary>
+        private void RemoveInteractor()
+        {
+            // Exit case - if still within the trigger
+            if (inTrigger) return;
+
             // Remove the highlight from the current Interactable
             currentInteractable.RemoveHighlight();
 
@@ -46,7 +77,7 @@ namespace WriterTycoon.Entities.Player
             currentInteractable = null;
             currentInteractableName = string.Empty;
         }
-
+        
         /// <summary>
         /// Interact with an Interactable within range
         /// </summary>
@@ -56,6 +87,20 @@ namespace WriterTycoon.Entities.Player
 
             // Interact with the current interactable
             currentInteractable.Interact();
+        }
+
+        /// <summary>
+        /// Callback function to set interacting
+        /// </summary>
+        /// <param name="eventData"></param>
+        private void SetInteracting(SetInteracting eventData)
+        {
+            interacting = eventData.Interacting;
+
+            // Check if still interacting
+            if(!interacting)
+                // If not, then remove the interactor
+                RemoveInteractor();
         }
     }
 }

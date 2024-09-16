@@ -22,5 +22,10 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public ReviewData ReviewData;
     }
+
+    public struct SetInteracting : IEvent
+    {
+        public bool Interacting;
+    }
     #endregion
 }

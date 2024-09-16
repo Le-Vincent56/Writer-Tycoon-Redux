@@ -547,7 +547,7 @@
     "m_ShaderOutputName": "_Offset",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": 1.0,
+        "x": 2.0,
         "y": 0.0
     },
     "m_DefaultValue": {
@@ -1029,7 +1029,7 @@
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "Texture2D",
     "m_DefaultReferenceName": "_Texture2D",
-    "m_OverrideReferenceName": "_MainText",
+    "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
@@ -1749,7 +1749,7 @@
         "r": 1.0,
         "g": 1.0,
         "b": 1.0,
-        "a": 0.0
+        "a": 1.0
     },
     "isMainColor": false,
     "m_ColorMode": 0
@@ -1869,7 +1869,7 @@
     "m_StageCapability": 2,
     "m_Value": {
         "x": 0.0,
-        "y": 1.0
+        "y": 2.0
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -1890,7 +1890,7 @@
     "m_StageCapability": 2,
     "m_Value": {
         "x": 0.0,
-        "y": -1.0
+        "y": -2.0
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -2466,7 +2466,7 @@
     "m_ShaderOutputName": "_Offset",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": -1.0,
+        "x": -2.0,
         "y": 0.0
     },
     "m_DefaultValue": {
