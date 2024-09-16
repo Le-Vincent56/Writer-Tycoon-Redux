@@ -1,8 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Player.States;
 using WriterTycoon.Input;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.World.Graph;
 
 namespace WriterTycoon.Entities.Player
 {
@@ -11,16 +15,20 @@ namespace WriterTycoon.Entities.Player
         [SerializeField] private GameInputReader inputReader;
         [SerializeField] private bool canMove;
         [SerializeField] private float moveSpeed;
+        [SerializeField] private bool moving;
         [SerializeField] private bool working;
 
+        private MapGraph graph;
+        private Node currentNode;
+        [SerializeField] private List<Node> currentPath;
+        [SerializeField] private int currentPathIndex;
+
         private Animator animator;
-        private Rigidbody2D rb;
         private SpriteRenderer spriteRenderer;
 
         private StateMachine stateMachine;
 
-        private Vector2 velocity;
-
+        private EventBinding<CommandPlayerPosition> commandPlayerPositionEvent;
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
         private EventBinding<ChangePlayerWorkState> changePlayerWorkStateEvent;
 
@@ -28,7 +36,6 @@ namespace WriterTycoon.Entities.Player
         {
             // Get components
             animator = GetComponentInChildren<Animator>();
-            rb = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             // Set variables
@@ -40,17 +47,17 @@ namespace WriterTycoon.Entities.Player
             // Create states
             IdleState idleState = new(this, spriteRenderer);
             LocomotionState locomotionState = new(this, spriteRenderer);
-            WorkState workState = new(this, spriteRenderer, rb);
+            WorkState workState = new(this, spriteRenderer);
 
             // Define state transitions
-            stateMachine.At(idleState, locomotionState, new FuncPredicate(() => velocity != Vector2.zero));
+            stateMachine.At(idleState, locomotionState, new FuncPredicate(() => moving));
             stateMachine.At(idleState, workState, new FuncPredicate(() => working));
 
-            stateMachine.At(locomotionState, idleState, new FuncPredicate(() => velocity == Vector2.zero));
+            stateMachine.At(locomotionState, idleState, new FuncPredicate(() => !moving));
             stateMachine.At(locomotionState, workState, new FuncPredicate(() => working));
 
-            stateMachine.At(workState, idleState, new FuncPredicate(() => !working && velocity == Vector2.zero));
-            stateMachine.At(workState, locomotionState, new FuncPredicate(() => !working && velocity != Vector2.zero));
+            stateMachine.At(workState, idleState, new FuncPredicate(() => !working && !moving));
+            stateMachine.At(workState, locomotionState, new FuncPredicate(() => !working && moving));
 
             // Set an initial state
             stateMachine.SetState(idleState);
@@ -60,6 +67,9 @@ namespace WriterTycoon.Entities.Player
         {
             inputReader.Move += OnMove;
 
+            commandPlayerPositionEvent = new EventBinding<CommandPlayerPosition>(MovePlayer);
+            EventBus<CommandPlayerPosition>.Register(commandPlayerPositionEvent);
+
             pauseCalendarEvent = new EventBinding<CalendarPauseStateChanged>(HandleCalendarPause);
             EventBus<CalendarPauseStateChanged>.Register(pauseCalendarEvent);
 
@@ -67,35 +77,29 @@ namespace WriterTycoon.Entities.Player
             EventBus<ChangePlayerWorkState>.Register(changePlayerWorkStateEvent);
         }
 
+        private void Start()
+        {
+            // Get the graph to use as a service
+            graph = ServiceLocator.ForSceneOf(this).Get<MapGraph>();
+
+            currentNode = graph.GetNodeFromWorldPosition(transform.position);
+            transform.position = graph.GetWorldPosFromNode(currentNode);
+        }
+
         private void OnDisable()
         {
             inputReader.Move -= OnMove;
 
+            EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
             EventBus<ChangePlayerWorkState>.Deregister(changePlayerWorkStateEvent);
         }
 
         private void Update()
         {
-            // Check if the player can move
-            if (canMove)
-            {
-                // Update input
-                velocity.x = inputReader.NormMoveX;
-                velocity.y = inputReader.NormMoveY;
-
-                // Set player velocity
-                rb.velocity = velocity * moveSpeed;
-            } else
-            {
-                // Zero out the velocity
-                rb.velocity = Vector2.zero;
-            }
-
             // Update the state machine
             stateMachine.Update();
         }
-
         private void FixedUpdate()
         {
             // Fixed update the state machine
@@ -137,6 +141,70 @@ namespace WriterTycoon.Entities.Player
                     Working = false
                 });
             }
+        }
+
+        /// <summary>
+        /// Callback function to move the player when commanded
+        /// </summary>
+        private void MovePlayer(CommandPlayerPosition eventData)
+        {
+            // Set the path at the node position of the event data position
+            SetPath(
+                graph.GetNodeAtCellPosition(
+                    eventData.TargetPosition.x, 
+                    eventData.TargetPosition.y
+                )
+            );
+
+            // Start traversal
+            StartTraversal();
+        }
+
+        /// <summary>
+        /// Set the path for traversal
+        /// </summary>
+        private void SetPath(Node endNode) => currentPath = graph.PathfindAStar(currentNode, endNode);
+
+        /// <summary>
+        /// Begin player traversal
+        /// </summary>
+        private void StartTraversal()
+        {
+            currentPathIndex = 0;
+            moving = true;
+            StartCoroutine(TraversePath());
+        }
+
+        /// <summary>
+        /// Handle traversal
+        /// </summary>
+        private IEnumerator TraversePath()
+        {
+            while(currentPathIndex < currentPath.Count)
+            {
+                Node targetNode = currentPath[currentPathIndex];
+
+                // Move the player towards the target node
+                Vector3 targetPosition = graph.GetWorldPosFromNode(targetNode);
+
+                // Move until the player has reached the position
+                while(Vector3.Distance(transform.position, targetPosition) > 0.1f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                    yield return null;
+                }
+
+                // Snap to the exact position
+                transform.position = targetPosition;
+
+                // Move to the next node in the path
+                currentPathIndex++;
+
+                yield return null;
+            }
+
+            // Finish traversal
+            moving = false;
         }
     }
 }
