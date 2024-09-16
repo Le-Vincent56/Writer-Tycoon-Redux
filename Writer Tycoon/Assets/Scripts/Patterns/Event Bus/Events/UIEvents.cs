@@ -1,4 +1,5 @@
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.World.Interactables;
 
 namespace WriterTycoon.Patterns.EventBus
 {
@@ -26,6 +27,13 @@ namespace WriterTycoon.Patterns.EventBus
     public struct SetInteracting : IEvent
     {
         public bool Interacting;
+    }
+
+
+    public struct HandleInteractMenu : IEvent
+    {
+        public bool Opening;
+        public InteractableType InteractableType;
     }
     #endregion
 }

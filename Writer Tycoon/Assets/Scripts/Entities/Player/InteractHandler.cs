@@ -57,15 +57,12 @@ namespace WriterTycoon.Entities.Player
 
             // Return if currently interacting
             if (interacting) return;
-
-            // Remove the interactor
-            RemoveInteractor();
         }
 
         /// <summary>
-        /// Remove interactor data
+        /// Check whether or not to remove interactor data
         /// </summary>
-        private void RemoveInteractor()
+        private void CheckRemoveInteractor()
         {
             // Exit case - if still within the trigger
             if (inTrigger) return;
@@ -83,10 +80,11 @@ namespace WriterTycoon.Entities.Player
         /// </summary>
         public void Interact()
         {
-            if(currentInteractable == null) return;
-
             // Interact with the current interactable
             currentInteractable.Interact();
+
+            // Check to remove the interaction
+            CheckRemoveInteractor();
         }
 
         /// <summary>
@@ -100,7 +98,7 @@ namespace WriterTycoon.Entities.Player
             // Check if still interacting
             if(!interacting)
                 // If not, then remove the interactor
-                RemoveInteractor();
+                CheckRemoveInteractor();
         }
     }
 }

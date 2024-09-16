@@ -3,27 +3,13 @@ using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.World.Interactables
 {
-    public class Computer : MonoBehaviour, IInteractable
+    public class Computer : Interactable
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private Material defaultMaterial;
-        [SerializeField] private Material highlightMaterial;
-
+        [Header("Computer")]
         [SerializeField] private bool currentlyWorking;
         [SerializeField] private bool opening;
 
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-
-        public bool Interactable { get; set; }
-
-        private void Awake()
-        {
-            // Verify the Sprite Renderer
-            if(spriteRenderer == null)
-                spriteRenderer = GetComponent<SpriteRenderer>();
-
-            Interactable = true;
-        }
 
         private void OnEnable()
         {
@@ -49,23 +35,18 @@ namespace WriterTycoon.World.Interactables
         /// <summary>
         /// Interact with the Computer
         /// </summary>
-        public void Interact()
-        {
-            // Exit case - if cannot be interacted with
-            if (!Interactable) return;
+        //public override void Interact()
+        //{
+            
 
-            // Check if currently working
-            if (currentlyWorking)
-                // Then continue working on interaction
-                ContinueWorking();
-            else
-                // Otherwise, open the Create Work menu
-                OpenCreateWorkMenu();
-        }
-
-        public void Highlight() => spriteRenderer.material = highlightMaterial;
-
-        public void RemoveHighlight() => spriteRenderer.material = defaultMaterial;
+        //    //// Check if currently working
+        //    //if (currentlyWorking)
+        //    //    // Then continue working on interaction
+        //    //    ContinueWorking();
+        //    //else
+        //    //    // Otherwise, open the Create Work menu
+        //    //    OpenCreateWorkMenu();
+        //}
 
         /// <summary>
         /// Continue working on interaction
