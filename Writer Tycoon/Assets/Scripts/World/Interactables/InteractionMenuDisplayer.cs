@@ -17,6 +17,9 @@ namespace WriterTycoon.World.Interactables.UI
 
         private void Awake()
         {
+            computerGroup.transform.localScale = new Vector3(1f, 0f, 1f);
+            fridgeGroup.transform.localScale = new Vector3(1f, 0f, 1f);
+
             canvasGroups = new() 
             { 
                 computerGroup,
@@ -46,11 +49,11 @@ namespace WriterTycoon.World.Interactables.UI
             switch (eventData.InteractableType)
             {
                 case InteractableType.Computer:
-                    HandleMenu(eventData.Opening, computerGroup);
+                    HandleMenu(eventData.Opening, computerGroup, eventData.CursorPosition);
                     break;
 
                 case InteractableType.Fridge:
-                    HandleMenu(eventData.Opening, fridgeGroup);
+                    HandleMenu(eventData.Opening, fridgeGroup, eventData.CursorPosition);
                     break;
             }
         }
@@ -67,7 +70,7 @@ namespace WriterTycoon.World.Interactables.UI
         /// <summary>
         /// Handle the opening and closing of the menu
         /// </summary>
-        private void HandleMenu(bool opening, CanvasGroup canvasGroup)
+        private void HandleMenu(bool opening, CanvasGroup canvasGroup, Vector2 cursorPosition)
         {
             // Close all menus
             CloseMenus();
@@ -75,7 +78,7 @@ namespace WriterTycoon.World.Interactables.UI
             // Check if opening the menu
             if (opening)
                 // If so, show the menu
-                ShowMenu(canvasGroup);
+                ShowMenu(canvasGroup, cursorPosition);
             else
                 // Otherwise, hide the menu
                 HideMenu(canvasGroup);
@@ -96,13 +99,19 @@ namespace WriterTycoon.World.Interactables.UI
         /// <summary>
         /// Show the menu
         /// </summary>
-        private void ShowMenu(CanvasGroup canvasGroup)
+        private void ShowMenu(CanvasGroup canvasGroup, Vector2 cursorPosition)
         {
+            canvasGroup.transform.position = cursorPosition;
+
+            // Fade in to 1
             Fade(canvasGroup, 1f, fadeDuration, () =>
             {
                 canvasGroup.interactable = true;
                 canvasGroup.blocksRaycasts = true;
             });
+
+            // Scale up to 1
+            Scale(canvasGroup, 1f, fadeDuration);
 
             // Pause the Calendar
             EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
@@ -117,13 +126,17 @@ namespace WriterTycoon.World.Interactables.UI
         /// </summary>
         private void HideMenu(CanvasGroup canvasGroup)
         {
+            // Scale down to 0
+            Scale(canvasGroup, 0f, fadeDuration);
+
+            // Fade to 0
             Fade(canvasGroup, 0f, fadeDuration, () =>
             {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
             });
 
-            // Unause the Calendar
+            // Unpause the Calendar
             EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
             {
                 Paused = false,
@@ -136,9 +149,6 @@ namespace WriterTycoon.World.Interactables.UI
         /// </summary>
         private void Fade(CanvasGroup canvasGroup, float endFadeValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
         {
-            // Kill the current fade tween if it exists
-            //fadeTween?.Kill(false);
-
             // Set the fade animation
             Tween fadeTween = canvasGroup.DOFade(endFadeValue, duration)
                 .SetEase(easeType);
@@ -148,6 +158,16 @@ namespace WriterTycoon.World.Interactables.UI
 
             // Hook up callback events
             fadeTween.onComplete += onEnd;
+        }
+
+        /// <summary>
+        /// Handle scaling for the menus
+        /// </summary>
+        private void Scale(CanvasGroup canvasGroup, float endFadeValue, float duration, Ease easeType = Ease.OutQuint)
+        {
+            // Set the scale animation
+            canvasGroup.transform.DOScaleY(endFadeValue, duration)
+                .SetEase(easeType);
         }
     }
 }

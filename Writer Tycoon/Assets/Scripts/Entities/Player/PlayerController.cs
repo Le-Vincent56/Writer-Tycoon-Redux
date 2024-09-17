@@ -12,11 +12,12 @@ namespace WriterTycoon.Entities.Player
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private GameInputReader inputReader;
         [SerializeField] private bool canMove;
         [SerializeField] private float moveSpeed;
         [SerializeField] private bool moving;
+
         [SerializeField] private bool working;
+        [SerializeField] private bool eating;
 
         private MapGraph graph;
         private Node currentNode;
@@ -31,6 +32,7 @@ namespace WriterTycoon.Entities.Player
         private EventBinding<CommandPlayerPosition> commandPlayerPositionEvent;
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
         private EventBinding<ChangePlayerWorkState> changePlayerWorkStateEvent;
+        private EventBinding<ChangePlayerEatState> changePlayerEatStateEvent;
 
         private void Awake()
         {
@@ -48,16 +50,22 @@ namespace WriterTycoon.Entities.Player
             IdleState idleState = new(this, spriteRenderer);
             LocomotionState locomotionState = new(this, spriteRenderer);
             WorkState workState = new(this, spriteRenderer);
+            EatState eatState = new(this, spriteRenderer);
 
             // Define state transitions
             stateMachine.At(idleState, locomotionState, new FuncPredicate(() => moving));
             stateMachine.At(idleState, workState, new FuncPredicate(() => working));
+            stateMachine.At(idleState, eatState, new FuncPredicate(() => eating));
 
             stateMachine.At(locomotionState, idleState, new FuncPredicate(() => !moving));
-            stateMachine.At(locomotionState, workState, new FuncPredicate(() => working));
+            stateMachine.At(locomotionState, workState, new FuncPredicate(() => working && !moving));
+            stateMachine.At(locomotionState, eatState, new FuncPredicate(() => eating && !moving));
 
             stateMachine.At(workState, idleState, new FuncPredicate(() => !working && !moving));
             stateMachine.At(workState, locomotionState, new FuncPredicate(() => !working && moving));
+
+            stateMachine.At(eatState, idleState, new FuncPredicate(() => !eating && !moving));
+            stateMachine.At(eatState, locomotionState, new FuncPredicate(() => !eating && moving));
 
             // Set an initial state
             stateMachine.SetState(idleState);
@@ -65,8 +73,6 @@ namespace WriterTycoon.Entities.Player
 
         private void OnEnable()
         {
-            inputReader.Move += OnMove;
-
             commandPlayerPositionEvent = new EventBinding<CommandPlayerPosition>(MovePlayer);
             EventBus<CommandPlayerPosition>.Register(commandPlayerPositionEvent);
 
@@ -75,6 +81,9 @@ namespace WriterTycoon.Entities.Player
 
             changePlayerWorkStateEvent = new EventBinding<ChangePlayerWorkState>(HandlePlayerWorkStateChange);
             EventBus<ChangePlayerWorkState>.Register(changePlayerWorkStateEvent);
+
+            changePlayerEatStateEvent = new EventBinding<ChangePlayerEatState>(HandlePlayerEatStateChange);
+            EventBus<ChangePlayerEatState>.Register(changePlayerEatStateEvent);
         }
 
         private void Start()
@@ -88,11 +97,10 @@ namespace WriterTycoon.Entities.Player
 
         private void OnDisable()
         {
-            inputReader.Move -= OnMove;
-
             EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
             EventBus<ChangePlayerWorkState>.Deregister(changePlayerWorkStateEvent);
+            EventBus<ChangePlayerEatState>.Deregister(changePlayerEatStateEvent);
         }
 
         private void Update()
@@ -124,23 +132,10 @@ namespace WriterTycoon.Entities.Player
             working = eventData.Working;
         }
 
-        /// <summary>
-        /// Handle Player movement input
-        /// </summary>
-        private void OnMove(Vector2 movementVector, bool started)
+        private void HandlePlayerEatStateChange(ChangePlayerEatState eventData)
         {
-            // Exit case - if the player can't move
-            if (!canMove) return;
-
-            // Check if the control has just been pressed and the Player is working
-            if (started && working)
-            {
-                // Update the Player Work State to stop working
-                EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
-                {
-                    Working = false
-                });
-            }
+            // Set the player to eating
+            eating = eventData.Eating;
         }
 
         /// <summary>
@@ -163,12 +158,12 @@ namespace WriterTycoon.Entities.Player
         /// <summary>
         /// Set the path for traversal
         /// </summary>
-        private void SetPath(Node endNode) => currentPath = graph.PathfindAStar(currentNode, endNode);
+        public void SetPath(Node endNode) => currentPath = graph.PathfindAStar(currentNode, endNode);
 
         /// <summary>
         /// Begin player traversal
         /// </summary>
-        private void StartTraversal()
+        public void StartTraversal()
         {
             currentPathIndex = 0;
             moving = true;
@@ -180,8 +175,20 @@ namespace WriterTycoon.Entities.Player
         /// </summary>
         private IEnumerator TraversePath()
         {
+            // Exit case - if no path was found
+            if(currentPath == null)
+            {
+                Debug.Log("No path found");
+                yield break;
+            }
+
             while(currentPathIndex < currentPath.Count)
             {
+                // If can't move, then constantly loop until able to
+                if (!canMove)
+                    yield return null;
+
+                // Get the target node
                 Node targetNode = currentPath[currentPathIndex];
 
                 // Move the player towards the target node
@@ -196,6 +203,9 @@ namespace WriterTycoon.Entities.Player
 
                 // Snap to the exact position
                 transform.position = targetPosition;
+
+                // Set the current node to the target node
+                currentNode = targetNode;
 
                 // Move to the next node in the path
                 currentPathIndex++;

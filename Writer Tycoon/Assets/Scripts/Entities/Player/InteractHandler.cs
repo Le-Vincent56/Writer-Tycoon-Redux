@@ -94,7 +94,7 @@ namespace WriterTycoon.Entities.Player
             }
 
             // Interact with the current interactable
-            currentInteractable.Interact();
+            currentInteractable.Interact(transform.position);
         }
 
         /// <summary>

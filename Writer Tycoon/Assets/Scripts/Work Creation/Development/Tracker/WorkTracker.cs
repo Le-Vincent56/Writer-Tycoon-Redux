@@ -31,7 +31,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-        private EventBinding<ChangePlayerWorkState> changePlayerWorkStateEvent;
+        private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkState;
 
         private void OnEnable()
         {
@@ -41,15 +41,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(StartTracker);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
 
-            changePlayerWorkStateEvent = new EventBinding<ChangePlayerWorkState>(ChangeWorkState);
-            EventBus<ChangePlayerWorkState>.Register(changePlayerWorkStateEvent);
+            confirmPlayerWorkState = new EventBinding<ConfirmPlayerWorkState>(ChangeWorkState);
+            EventBus<ConfirmPlayerWorkState>.Register(confirmPlayerWorkState);
         }
 
         private void OnDisable()
         {
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<ChangePlayerWorkState>.Deregister(changePlayerWorkStateEvent);
+            EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkState);
         }
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         }
 
         /// <summary>
-        /// Callback event to reflect the Player's Work State changes
+        /// Callback event to confirm the player is working
         /// </summary>
-        private void ChangeWorkState(ChangePlayerWorkState eventData) => working = eventData.Working;
+        private void ChangeWorkState(ConfirmPlayerWorkState eventData) => working = eventData.Working;
     }
 }

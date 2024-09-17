@@ -125,6 +125,18 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             {
                 Working = true
             });
+
+            // Set the player to eating
+            EventBus<ChangePlayerEatState>.Raise(new ChangePlayerEatState()
+            {
+                Eating = false
+            });
+
+            // Move the player (on top of the chair)
+            EventBus<CommandPlayerPosition>.Raise(new CommandPlayerPosition()
+            {
+                TargetPosition = new Vector2Int(9, 5)
+            });
         }
     }
 }

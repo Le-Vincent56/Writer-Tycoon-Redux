@@ -5,7 +5,7 @@ namespace WriterTycoon.Entities.Player.States
 {
     public abstract class PlayerState : IState
     {
-        protected readonly PlayerController player;
+        protected readonly PlayerController controller;
         protected readonly Animator animator;
         protected readonly SpriteRenderer renderer;
 
@@ -15,9 +15,9 @@ namespace WriterTycoon.Entities.Player.States
 
         protected const float crossFadeDuration = 0.1f;
 
-        public PlayerState(PlayerController player, /*Animator animator*/ SpriteRenderer renderer)
+        public PlayerState(PlayerController controller, /*Animator animator*/ SpriteRenderer renderer)
         {
-            this.player = player;
+            this.controller = controller;
             //this.animator = animator;
             this.renderer = renderer;
         }

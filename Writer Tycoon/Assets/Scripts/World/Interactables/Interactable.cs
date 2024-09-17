@@ -1,4 +1,3 @@
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 
@@ -45,13 +44,14 @@ namespace WriterTycoon.World.Interactables
             EventBus<CloseInteractMenus>.Deregister(closeInteractMenusEvent);
         }
 
-        public virtual void Interact()
+        public virtual void Interact(Vector2 cursorPosition)
         {
             // Exit case - if cannot be interacted with
             if (!interactable) return;
 
             EventBus<ToggleInteractMenu>.Raise(new ToggleInteractMenu()
             {
+                CursorPosition = cursorPosition,
                 Opening = openMenu,
                 InteractableType = type
             });

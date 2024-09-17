@@ -1,3 +1,4 @@
+using UnityEngine;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.World.Interactables;
 
@@ -36,6 +37,7 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ToggleInteractMenu : IEvent
     {
+        public Vector2 CursorPosition;
         public bool Opening;
         public InteractableType InteractableType;
     }
