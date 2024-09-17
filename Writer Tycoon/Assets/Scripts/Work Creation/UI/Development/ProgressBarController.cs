@@ -10,6 +10,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         private CanvasGroup canvasGroup;
         private Tween fadeTween;
 
+        private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkStateEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
 
@@ -22,35 +23,35 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
         private void OnEnable()
         {
-            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ShowProgressBar);
+            confirmPlayerWorkStateEvent = new EventBinding<ConfirmPlayerWorkState>(HandleProgressBar);
+            EventBus<ConfirmPlayerWorkState>.Register(confirmPlayerWorkStateEvent);
+
+            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(Show);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(HideProgressBar);
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(Hide);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
         private void OnDisable()
         {
+            EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkStateEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
         /// <summary>
-        /// Callback function to show the Progress Bar
+        /// Callback function to handle work state confirmation
         /// </summary>
-        private void ShowProgressBar(NotifySuccessfulCreation eventData)
+        private void HandleProgressBar(ConfirmPlayerWorkState eventData)
         {
-            // Show the Progress Bar
-            Show();
-        }
-
-        /// <summary>
-        /// Callback function to hide the Progress Bar
-        /// </summary>
-        private void HideProgressBar(EndDevelopment eventData)
-        {
-            // Hide the progrss bar
-            Hide();
+            // Check if the player is working
+            if (eventData.Working)
+                // If so, show the progress bar
+                Show();
+            else
+                // Otherwise, hide it
+                Hide();
         }
 
         /// <summary>
