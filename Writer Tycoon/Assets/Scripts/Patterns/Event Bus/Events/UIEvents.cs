@@ -29,8 +29,12 @@ namespace WriterTycoon.Patterns.EventBus
         public bool Interacting;
     }
 
+    public struct CloseInteractMenus : IEvent
+    {
+        
+    }
 
-    public struct HandleInteractMenu : IEvent
+    public struct ToggleInteractMenu : IEvent
     {
         public bool Opening;
         public InteractableType InteractableType;

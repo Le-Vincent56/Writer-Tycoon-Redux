@@ -1,22 +1,19 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.World.Interactables.UI
 {
-    public class InteractionUI : MonoBehaviour
+    public class InteractionMenuDisplayer : MonoBehaviour
     {
         [SerializeField] private float fadeDuration;
         [SerializeField] private CanvasGroup computerGroup;
         [SerializeField] private CanvasGroup fridgeGroup;
         private HashSet<CanvasGroup> canvasGroups;
 
-        private Tween fadeTween;
-
-        private EventBinding<HandleInteractMenu> showInteractMenuEvent;
+        private EventBinding<ToggleInteractMenu> showInteractMenuEvent;
+        private EventBinding<CloseInteractMenus> closeInteractMenusEvent;
 
         private void Awake()
         {
@@ -29,23 +26,23 @@ namespace WriterTycoon.World.Interactables.UI
 
         private void OnEnable()
         {
-            showInteractMenuEvent = new EventBinding<HandleInteractMenu>(HandleInteractionMenus);
-            EventBus<HandleInteractMenu>.Register(showInteractMenuEvent);
+            showInteractMenuEvent = new EventBinding<ToggleInteractMenu>(HandleInteractionMenus);
+            EventBus<ToggleInteractMenu>.Register(showInteractMenuEvent);
+
+            closeInteractMenusEvent = new EventBinding<CloseInteractMenus>(CloseInteractionMenus);
+            EventBus<CloseInteractMenus>.Register(closeInteractMenusEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<HandleInteractMenu>.Deregister(showInteractMenuEvent);
+            EventBus<ToggleInteractMenu>.Deregister(showInteractMenuEvent);
         }
 
         /// <summary>
         /// Callback function to handle the interaction menus
         /// </summary>
-        /// <param name="eventData"></param>
-        private void HandleInteractionMenus(HandleInteractMenu eventData)
+        private void HandleInteractionMenus(ToggleInteractMenu eventData)
         {
-            Debug.Log("Handling menu");
-
             switch (eventData.InteractableType)
             {
                 case InteractableType.Computer:
@@ -59,12 +56,21 @@ namespace WriterTycoon.World.Interactables.UI
         }
 
         /// <summary>
+        /// Callback function to hide all interaction menus
+        /// </summary>
+        private void CloseInteractionMenus(CloseInteractMenus eventData)
+        {
+            // Close all the menus
+            CloseMenus();
+        }
+
+        /// <summary>
         /// Handle the opening and closing of the menu
         /// </summary>
         private void HandleMenu(bool opening, CanvasGroup canvasGroup)
         {
-            // Close all other menus
-            CloseOtherMenus(canvasGroup);
+            // Close all menus
+            CloseMenus();
 
             // Check if opening the menu
             if (opening)
@@ -76,16 +82,12 @@ namespace WriterTycoon.World.Interactables.UI
         }
 
         /// <summary>
-        /// Close all other menus besides the current one
+        /// Close all interaction menus
         /// </summary>
-        /// <param name="currentGroup"></param>
-        private void CloseOtherMenus(CanvasGroup currentGroup)
+        private void CloseMenus()
         {
             foreach(CanvasGroup canvasGroup in canvasGroups)
             {
-                // Exit case - if the canvas group equals the current group
-                if (canvasGroup == currentGroup) continue;
-
                 // Hide the canvas group
                 HideMenu(canvasGroup);
             }
@@ -94,7 +96,6 @@ namespace WriterTycoon.World.Interactables.UI
         /// <summary>
         /// Show the menu
         /// </summary>
-        /// <param name="canvasGroup"></param>
         private void ShowMenu(CanvasGroup canvasGroup)
         {
             Fade(canvasGroup, 1f, fadeDuration, () =>
@@ -102,18 +103,31 @@ namespace WriterTycoon.World.Interactables.UI
                 canvasGroup.interactable = true;
                 canvasGroup.blocksRaycasts = true;
             });
+
+            // Pause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false
+            });
         }
 
         /// <summary>
         /// Hide the menu
         /// </summary>
-        /// <param name="canvasGroup"></param>
         private void HideMenu(CanvasGroup canvasGroup)
         {
             Fade(canvasGroup, 0f, fadeDuration, () =>
             {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
+            });
+
+            // Unause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
             });
         }
 
@@ -123,10 +137,10 @@ namespace WriterTycoon.World.Interactables.UI
         private void Fade(CanvasGroup canvasGroup, float endFadeValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
         {
             // Kill the current fade tween if it exists
-            fadeTween?.Kill(false);
+            //fadeTween?.Kill(false);
 
             // Set the fade animation
-            fadeTween = canvasGroup.DOFade(endFadeValue, duration)
+            Tween fadeTween = canvasGroup.DOFade(endFadeValue, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

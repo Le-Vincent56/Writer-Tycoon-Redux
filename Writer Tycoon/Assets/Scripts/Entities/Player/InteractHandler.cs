@@ -9,6 +9,7 @@ namespace WriterTycoon.Entities.Player
     {
         [SerializeField] private GameInputReader inputReader;
         private BoxCollider2D boxCollider;
+        private IInteractable lastInteractable;
         private IInteractable currentInteractable;
         [SerializeField] string currentInteractableName;
         [SerializeField] private bool interacting;
@@ -57,6 +58,8 @@ namespace WriterTycoon.Entities.Player
 
             // Return if currently interacting
             if (interacting) return;
+
+            CheckRemoveInteractor();
         }
 
         /// <summary>
@@ -71,6 +74,8 @@ namespace WriterTycoon.Entities.Player
             currentInteractable.RemoveHighlight();
 
             // Nullify the current Interactable
+            lastInteractable = currentInteractable;
+            currentInteractable.ResetInteractable();
             currentInteractable = null;
             currentInteractableName = string.Empty;
         }
@@ -80,11 +85,16 @@ namespace WriterTycoon.Entities.Player
         /// </summary>
         public void Interact()
         {
+            // Exit case - if there's no current Interactable
+            if (currentInteractable == null)
+            {
+                // Close all interact menus
+                EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+                return;
+            }
+
             // Interact with the current interactable
             currentInteractable.Interact();
-
-            // Check to remove the interaction
-            CheckRemoveInteractor();
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace WriterTycoon.World.Interactables
         /// </summary>
         //public override void Interact()
         //{
-            
+
 
         //    //// Check if currently working
         //    //if (currentlyWorking)

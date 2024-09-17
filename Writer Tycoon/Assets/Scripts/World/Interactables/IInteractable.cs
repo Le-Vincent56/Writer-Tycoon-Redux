@@ -2,6 +2,7 @@ namespace WriterTycoon.World.Interactables
 {
     public interface IInteractable
     {
+        void ResetInteractable();
         void Interact();
         void Highlight();
         void RemoveHighlight();

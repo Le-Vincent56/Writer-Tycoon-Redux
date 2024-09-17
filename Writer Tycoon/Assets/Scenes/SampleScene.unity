@@ -795,6 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 95674305}
   - component: {fileID: 95674306}
+  - component: {fileID: 95674307}
   m_Layer: 5
   m_Name: Interaction UI
   m_TagString: Untagged
@@ -838,6 +839,21 @@ MonoBehaviour:
   fadeDuration: 0.1
   computerGroup: {fileID: 1033655027}
   fridgeGroup: {fileID: 1353909326}
+--- !u!114 &95674307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95674304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c15bf6c9dc6c7438196b46f664057d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newWorkButton: {fileID: 1068217404}
+  continueWorkButton: {fileID: 602593971}
+  eatButton: {fileID: 1616649453}
 --- !u!1 &96607953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,7 +2729,7 @@ GameObject:
   - component: {fileID: 380379182}
   - component: {fileID: 380379183}
   - component: {fileID: 380379185}
-  - component: {fileID: 380379184}
+  - component: {fileID: 380379186}
   m_Layer: 0
   m_Name: Computer
   m_TagString: Untagged
@@ -2788,26 +2804,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &380379184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 380379181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b5c4c4e84ba8314cb3d03efff669cf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  highlightMaterial: {fileID: 2100000, guid: e43f78bc0d0233548bf7062e045147fc, type: 2}
-  type: 0
-  interactable: 0
-  openMenu: 0
-  currentlyWorking: 0
-  opening: 1
 --- !u!61 &380379185
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2853,6 +2849,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4869952, y: 1.2155557}
   m_EdgeRadius: 0
+--- !u!114 &380379186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380379181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea3f013eab2c504aa715f056b36896b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  highlightMaterial: {fileID: -876546973899608171, guid: 99f77225d0f9c194f86f3b07e1d79893, type: 3}
+  type: 0
+  interactable: 0
+  openMenu: 0
 --- !u!1 &424224752
 GameObject:
   m_ObjectHideFlags: 0
@@ -4477,6 +4491,7 @@ GameObject:
   - component: {fileID: 602593970}
   - component: {fileID: 602593969}
   - component: {fileID: 602593968}
+  - component: {fileID: 602593971}
   m_Layer: 5
   m_Name: Continue Work Button
   m_TagString: Untagged
@@ -4587,6 +4602,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 602593966}
   m_CullTransparentMesh: 1
+--- !u!114 &602593971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602593966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95397cf9debd6004a9094f716630e5e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &615560117
 GameObject:
   m_ObjectHideFlags: 0
@@ -9351,6 +9378,7 @@ GameObject:
   - component: {fileID: 1068217403}
   - component: {fileID: 1068217402}
   - component: {fileID: 1068217401}
+  - component: {fileID: 1068217404}
   m_Layer: 5
   m_Name: New Work Button
   m_TagString: Untagged
@@ -9461,6 +9489,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068217399}
   m_CullTransparentMesh: 1
+--- !u!114 &1068217404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068217399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95397cf9debd6004a9094f716630e5e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1085378308
 GameObject:
   m_ObjectHideFlags: 0
@@ -16139,12 +16179,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1535532956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2b6d3f17ab9f1145a7cd78639789974, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ea3f013eab2c504aa715f056b36896b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 0}
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  highlightMaterial: {fileID: 2100000, guid: e43f78bc0d0233548bf7062e045147fc, type: 2}
+  highlightMaterial: {fileID: -876546973899608171, guid: 99f77225d0f9c194f86f3b07e1d79893, type: 3}
   type: 1
   interactable: 0
   openMenu: 0
@@ -16736,6 +16776,7 @@ GameObject:
   - component: {fileID: 1616649452}
   - component: {fileID: 1616649451}
   - component: {fileID: 1616649450}
+  - component: {fileID: 1616649453}
   m_Layer: 5
   m_Name: Eat Button
   m_TagString: Untagged
@@ -16846,6 +16887,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616649448}
   m_CullTransparentMesh: 1
+--- !u!114 &1616649453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616649448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95397cf9debd6004a9094f716630e5e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1618863861
 GameObject:
   m_ObjectHideFlags: 0
