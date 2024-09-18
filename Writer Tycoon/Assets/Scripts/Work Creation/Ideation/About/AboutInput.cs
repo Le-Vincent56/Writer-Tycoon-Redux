@@ -56,6 +56,14 @@ namespace WriterTycoon.WorkCreation.Ideation.About
         }
 
         /// <summary>
+        /// Clear the Input Field
+        /// </summary>
+        public void Clear()
+        {
+            inputField.text = string.Empty;
+        }
+
+        /// <summary>
         /// Handle when the Input Field is initially focused
         /// </summary>
         public void OnSelect(BaseEventData eventData) => aboutManager.OnSelected();

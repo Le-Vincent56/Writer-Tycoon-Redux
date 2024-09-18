@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.Topics
@@ -13,6 +14,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
         public UnityAction<List<TopicButton>> OnTopicsUpdated = delegate { };
+
+        private EventBinding<ClearIdeation> clearIdeationEvent;
 
         public override string Name { get => "Topic Manager"; }
         public override DedicantType Type { get => DedicantType.Topic; }
@@ -27,6 +30,17 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
 
             // Create the Topics
             CreateTopics();
+        }
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearSelectedTopics);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
         }
 
         protected override void Start()

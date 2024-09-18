@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 using WriterTycoon.WorkCreation.Mediation;
@@ -26,12 +27,25 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
 
         public UnityAction<int> Updated = delegate { };
 
+        private EventBinding<ClearIdeation> clearIdeationEvent;
+
         public override string Name { get => "Time Estimator"; }
         public override DedicantType Type { get => DedicantType.TimeEstimator; }
 
         private void Awake()
         {
             topics = new();
+        }
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearEstimates);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
         }
 
         /// <summary>
@@ -59,6 +73,24 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             if(leftoverEstimate > 0)
                 // If so, add them to the third phase estimate
                 phaseThreeDayEstimate += leftoverEstimate;
+
+            // Send the Time Estimate to the mediator
+            SendTimeEstimate();
+
+            // Invoke the Time Estimate Updated event
+            Updated.Invoke(totalDayEstimate);
+        }
+
+        /// <summary>
+        /// Clear the estimated times
+        /// </summary>
+        private void ClearEstimates()
+        {
+            // Reset all estimates
+            totalDayEstimate = 0;
+            phaseOneDayEstimate = 0;
+            phaseTwoDayEstimate = 0;
+            phaseThreeDayEstimate = 0;
 
             // Send the Time Estimate to the mediator
             SendTimeEstimate();

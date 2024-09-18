@@ -1,4 +1,5 @@
 using UnityEngine;
+using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
 {
@@ -29,12 +30,14 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         {
             // Subscribe to events
             workTypeManager.OnWorkTypeSelected += UpdateButtonSprites;
+            workTypeManager.OnWorkTypeCleared += DeselectButtons;
         }
 
         private void OnDisable()
         {
             // Unsubscribe to events
             workTypeManager.OnWorkTypeSelected -= UpdateButtonSprites;
+            workTypeManager.OnWorkTypeCleared -= DeselectButtons;
         }
 
         /// <summary>
@@ -46,6 +49,17 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
             {
                 if (workTypeButtons[i] == latestSelectedButton) continue;
 
+                workTypeButtons[i].Deselect();
+            }
+        }
+
+        /// <summary>
+        /// Clear the work type by deselecting each button
+        /// </summary>
+        private void DeselectButtons()
+        {
+            for(int i = 0; i < workTypeButtons.Length; i++)
+            {
                 workTypeButtons[i].Deselect();
             }
         }

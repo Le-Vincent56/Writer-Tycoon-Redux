@@ -24,6 +24,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         private EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
         private EventBinding<CloseCreateWorkMenu> closeWorkMenuEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private EventBinding<EndDevelopment> endDevelopmentEvent;
 
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
@@ -74,6 +75,9 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(HandleSuccessfulCreation);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(HandleDevelopmentEnd);
+            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
         private void OnDisable()
@@ -81,6 +85,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
             EventBus<CloseCreateWorkMenu>.Deregister(closeWorkMenuEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
+            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
         private void Update()
@@ -157,6 +162,18 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 
             // Don't allow the player to open the window again
             canOpenWindow = false;
+        }
+
+        /// <summary>
+        /// Callback for handling the end of development
+        /// </summary>
+        private void HandleDevelopmentEnd(EndDevelopment eventData)
+        {
+            // Allow the player to open the window
+            canOpenWindow = true;
+
+            // Set the state to ideation
+            state = IDEATION;
         }
 
         /// <summary>

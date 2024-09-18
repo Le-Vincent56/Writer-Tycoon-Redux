@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.Input;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.About
@@ -34,6 +35,19 @@ namespace WriterTycoon.WorkCreation.Ideation.About
         private readonly UnityAction<string> OnTitleChange = delegate { };
         private readonly UnityAction<string> OnAuthorChange = delegate { };
         private readonly UnityAction<string> OnDescriptionChange = delegate { };
+
+        private EventBinding<ClearIdeation> clearIdeationEvent;
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearValues);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
+        }
 
         /// <summary>
         /// Callback for selecting an About Input
@@ -88,6 +102,16 @@ namespace WriterTycoon.WorkCreation.Ideation.About
 
             // Invoke the Description Change event
             OnDescriptionChange.Invoke(currentDescription);
+        }
+
+        /// <summary>
+        /// Clear all values
+        /// </summary>
+        private void ClearValues()
+        {
+            UpdateTitleValue(string.Empty);
+            UpdateAuthorValue(string.Empty);
+            UpdateDescriptionValue(string.Empty);
         }
 
         /// <summary>

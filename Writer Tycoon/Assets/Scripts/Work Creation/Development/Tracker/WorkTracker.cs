@@ -67,7 +67,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
                 Current = currentDay,
-                Maximum = currentDayEstimate,
+                Maximum = currentDayEstimate - 1,
             });
 
             // Increment the current day
@@ -118,6 +118,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
                     // Set the new time estimate
                     currentDayEstimate = phaseTwoDayEstimate;
+
+                    // Update the Focus Slider phase
+                    EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                    {
+                        Phase = currentPhase
+                    });
+
+                    // Open the slider window
+                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
                     break;
 
                 case DevelopmentPhase.PhaseTwo:
@@ -129,6 +138,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
                     // Set the new time estimate
                     currentDayEstimate = phaseThreeDayEstimate;
+
+                    // Update the Focus Slider phase
+                    EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                    {
+                        Phase = currentPhase
+                    });
+
+                    // Open the slider window
+                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
                     break;
 
                 case DevelopmentPhase.PhaseThree:
@@ -151,6 +169,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Raise the End Development event
             EventBus<EndDevelopment>.Raise(new EndDevelopment());
+
+            // Clear ideation settings to prepare for new creations
+            EventBus<ClearIdeation>.Raise(new ClearIdeation());
         }
 
         /// <summary>

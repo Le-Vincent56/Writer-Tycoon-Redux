@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
@@ -19,10 +21,25 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
     {
         [SerializeField] private WorkType selectedType;
 
-        public UnityAction<WorkTypeButton> OnWorkTypeSelected = delegate { };
-
         public override string Name { get => "Work Type Manager"; }
         public override DedicantType Type { get => DedicantType.WorkType; }
+
+        public UnityAction<WorkTypeButton> OnWorkTypeSelected = delegate { };
+        public UnityAction OnWorkTypeCleared = delegate { };
+
+
+        private EventBinding<ClearIdeation> clearIdeationEvent;
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearWorkType);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
+        }
 
         /// <summary>
         /// Select a Work Type
@@ -45,7 +62,16 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         /// <summary>
         /// Clear the selected Work Type
         /// </summary>
-        public void ClearAudience() => selectedType = WorkType.None;
+        public void ClearWorkType()
+        {
+            // Set the Work type to none
+            selectedType = WorkType.None;
+
+            // Send the work type out to the mediator
+            SendWorkType();
+
+            OnWorkTypeCleared.Invoke();
+        }
 
         /// <summary>
         /// Send the selected Work Type

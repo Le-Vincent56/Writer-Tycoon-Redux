@@ -1,4 +1,5 @@
 using UnityEngine;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 
 namespace WriterTycoon.WorkCreation.UI.Ideation
@@ -10,6 +11,8 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         [SerializeField] private AboutInput authorInput;
         [SerializeField] private AboutInput descriptionInput;
 
+        private EventBinding<ClearIdeation> clearIdeationEvent;
+
         private void Awake()
         {
             // Verify the About Manager
@@ -20,6 +23,27 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             nameInput.Instantiate(aboutManager);
             authorInput.Instantiate(aboutManager);
             descriptionInput.Instantiate(aboutManager);
+        }
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearInputs);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
+        }
+
+        /// <summary>
+        /// Callback function to clear all input fields
+        /// </summary>
+        private void ClearInputs()
+        {
+            nameInput.Clear();
+            authorInput.Clear();
+            descriptionInput.Clear();
         }
     }
 }

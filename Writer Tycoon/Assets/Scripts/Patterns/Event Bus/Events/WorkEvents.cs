@@ -22,6 +22,8 @@ namespace WriterTycoon.Patterns.EventBus
         public DevelopmentPhase Phase;
     }
 
+    public struct ClearIdeation : IEvent { }
+
     public struct EndDevelopment : IEvent { }
     #endregion
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.Audience
@@ -18,9 +19,23 @@ namespace WriterTycoon.WorkCreation.Ideation.Audience
         [SerializeField] private AudienceType selectedAudience;
 
         public UnityAction<AudienceButton> OnAudienceSelected = delegate { };
+        public UnityAction OnAudienceCleared = delegate { };
 
         public override string Name { get => "Audience Manager"; }
         public override DedicantType Type { get => DedicantType.Audience; }
+
+        private EventBinding<ClearIdeation> clearIdeationEvent;
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearAudience);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
+        }
 
         /// <summary>
         /// Select an Audience
@@ -43,7 +58,17 @@ namespace WriterTycoon.WorkCreation.Ideation.Audience
         /// <summary>
         /// Clear the selected Audience
         /// </summary>
-        public void ClearAudience() => selectedAudience = AudienceType.None;
+        public void ClearAudience()
+        {
+            // Set the selected audience to none
+            selectedAudience = AudienceType.None;
+
+            // Send the selected Audience to the mediator
+            SendAudience();
+
+            // Invoke the Audience Selected event
+            OnAudienceCleared.Invoke();
+        }
 
         /// <summary>
         /// Send the selected Audience

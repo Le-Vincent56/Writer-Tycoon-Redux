@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.Genres
@@ -13,6 +14,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
         public UnityAction<List<Genre>> OnGenresCreated = delegate { };
         public UnityAction<List<GenreButton>> OnGenresUpdated = delegate { };
+
+        private EventBinding<ClearIdeation> clearIdeationEvent;
 
         public override string Name { get => "Genre Manager"; }
         public override DedicantType Type { get => DedicantType.Genre; }
@@ -27,6 +30,17 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
             // Create the Genres
             CreateGenres();
+        }
+
+        private void OnEnable()
+        {
+            clearIdeationEvent = new EventBinding<ClearIdeation>(ClearSelectedGenres);
+            EventBus<ClearIdeation>.Register(clearIdeationEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<ClearIdeation>.Deregister(clearIdeationEvent);
         }
 
         protected override void Start()
@@ -106,6 +120,9 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
             // Clear the list
             selectedGenreButtons.Clear();
+
+            // Send the genres out
+            SendGenres();
 
             // Invoke the event
             OnGenresUpdated.Invoke(selectedGenreButtons);

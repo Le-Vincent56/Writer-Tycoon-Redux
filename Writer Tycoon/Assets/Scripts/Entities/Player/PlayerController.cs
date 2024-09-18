@@ -40,6 +40,7 @@ namespace WriterTycoon.Entities.Player
         private EventBinding<CommandPlayerPosition> commandPlayerPositionEvent;
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private EventBinding<EndDevelopment> endDevelopmentEvent;
 
         private void Awake()
         {
@@ -89,6 +90,17 @@ namespace WriterTycoon.Entities.Player
 
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ResetDevelopmentVars);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(EndDevelopment);
+            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
+            EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
+            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
+            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
         private void Start()
@@ -98,13 +110,6 @@ namespace WriterTycoon.Entities.Player
 
             currentNode = graph.GetNodeFromWorldPosition(transform.position);
             transform.position = graph.GetWorldPosFromNode(currentNode);
-        }
-
-        private void OnDisable()
-        {
-            EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
-            EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
-            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
         }
 
         private void Update()
@@ -125,6 +130,15 @@ namespace WriterTycoon.Entities.Player
         {
             // Don't allow the player to move if the Calendar is paused
             canMove = !eventData.Paused;
+        }
+
+        /// <summary>
+        /// Callback handler for when a work's development phase ends
+        /// </summary>
+        private void EndDevelopment(EndDevelopment eventData)
+        {
+            // Set the player to no longer working
+            working = false;
         }
 
         /// <summary>

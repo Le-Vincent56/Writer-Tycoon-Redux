@@ -30,12 +30,14 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         {
             // Subscribe to events
             audienceManager.OnAudienceSelected += UpdateButtonSprites;
+            audienceManager.OnAudienceCleared += DeselectButtons;
         }
 
         private void OnDisable()
         {
             // Unsubscribe to events
             audienceManager.OnAudienceSelected -= UpdateButtonSprites;
+            audienceManager.OnAudienceCleared -= DeselectButtons;
         }
 
         /// <summary>
@@ -47,6 +49,17 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             {
                 if (audienceButtons[i] == latestSelectedButton) continue;
 
+                audienceButtons[i].Deselect();
+            }
+        }
+
+        /// <summary>
+        /// Deslect all Audience Buttons
+        /// </summary>
+        private void DeselectButtons()
+        {
+            for (int i = 0; i < audienceButtons.Length; i++)
+            {
                 audienceButtons[i].Deselect();
             }
         }
