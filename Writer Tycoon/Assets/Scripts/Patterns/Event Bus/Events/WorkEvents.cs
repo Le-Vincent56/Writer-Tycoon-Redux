@@ -1,3 +1,4 @@
+using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
 
 namespace WriterTycoon.Patterns.EventBus
@@ -15,6 +16,18 @@ namespace WriterTycoon.Patterns.EventBus
         public int Current;
         public int Maximum;
     }
+
+    public struct SetPhaseSlider : IEvent
+    {
+        public DevelopmentPhase Phase;
+    }
+
+    public struct  HandleSliderWindow : IEvent
+    {
+        public bool IsOpening;
+    }
+
+    public struct CloseSliderWindow : IEvent { }
 
     public struct EndDevelopment : IEvent { }
     #endregion

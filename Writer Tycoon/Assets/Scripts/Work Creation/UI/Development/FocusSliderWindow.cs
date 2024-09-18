@@ -1,18 +1,18 @@
-using UnityEngine;
 using DG.Tweening;
-using WriterTycoon.WorkCreation.UI.Ideation.States;
-using WriterTycoon.Patterns.StateMachine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.WorkCreation.Development.Tracker;
+using WriterTycoon.WorkCreation.Development.UI.States;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace WriterTycoon.WorkCreation.Development.FocusSliders
 {
-    public class CreateWorkWindow : MonoBehaviour
+    public class FocusSliderWindow : MonoBehaviour
     {
-        private bool canOpenWindow;
-
-        private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
-        [SerializeField] private int state;
+        [SerializeField] private DevelopmentPhase phase;
         [SerializeField] private CanvasGroup[] screens = new CanvasGroup[4];
 
         [SerializeField] private float translateValue;
@@ -21,61 +21,51 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         private Tween fadeTween;
         private Tween translateTween;
 
-        private EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
-        private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private StateMachine stateMachine;
 
-        public int IDEATION { get => 0; }
-        public int TOPIC { get => 1; }
-        public int GENRE { get => 2; }
-        public int REVIEW { get => 3; }
+        private EventBinding<SetPhaseSlider> showPhaseSliderEvent;
+        private EventBinding<HandleSliderWindow> handleSliderWindowEvent;
+        private EventBinding<CloseSliderWindow> closeSliderWindowEvent;
 
         private void Awake()
         {
             // Set the ideation state
-            state = IDEATION;
+            phase = DevelopmentPhase.PhaseOne;
 
             // Initialize the state machine
             stateMachine = new StateMachine();
 
             // Construct states
-            IdeationState ideationState = new IdeationState(screens[IDEATION]);
-            TopicState topicState = new TopicState(screens[TOPIC]);
-            GenreState genreState = new GenreState(screens[GENRE]);
-            ReviewState reviewState = new ReviewState(screens[REVIEW]);
+            PhaseOneState phaseOneState = new(screens[0]);
+            PhaseTwoState phaseTwoState = new(screens[1]);
+            PhaseThreeState phaseThreeState = new(screens[2]);
 
             // Set state transitions
-            stateMachine.At(ideationState, topicState, new FuncPredicate(() => state == TOPIC));
-
-            stateMachine.At(topicState, ideationState, new FuncPredicate(() => state == IDEATION));
-            stateMachine.At(topicState, genreState, new FuncPredicate(() => state == GENRE));
-
-            stateMachine.At(genreState, topicState, new FuncPredicate(() => state == TOPIC));
-            stateMachine.At(genreState, reviewState, new FuncPredicate(() => state == REVIEW));
-
-            stateMachine.At(reviewState, genreState, new FuncPredicate(() => state == GENRE));
-            stateMachine.At(reviewState, ideationState, new FuncPredicate(() => state == IDEATION));
+            stateMachine.At(phaseOneState, phaseTwoState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseTwo));
+            stateMachine.At(phaseTwoState, phaseThreeState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseThree));
+            stateMachine.At(phaseThreeState, phaseOneState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseOne));
 
             // Set the initial state
-            stateMachine.SetState(ideationState);
-
-            // Set variables
-            originalPosition = window.transform.localPosition;
-            canOpenWindow = true;
+            stateMachine.SetState(phaseOneState);
         }
 
         private void OnEnable()
         {
-            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
-            EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
+            showPhaseSliderEvent = new EventBinding<SetPhaseSlider>(SetPhaseState);
+            EventBus<SetPhaseSlider>.Register(showPhaseSliderEvent);
 
-            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(HandleSuccessfulCreation);
-            EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+            handleSliderWindowEvent = new EventBinding<HandleSliderWindow>(HandleSliderWindow);
+            EventBus<HandleSliderWindow>.Register(handleSliderWindowEvent);
+
+            closeSliderWindowEvent = new EventBinding<CloseSliderWindow>(CloseSliderWindow);
+            EventBus<CloseSliderWindow>.Register(closeSliderWindowEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
-            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
+            EventBus<SetPhaseSlider>.Deregister(showPhaseSliderEvent);
+            EventBus<HandleSliderWindow>.Deregister(handleSliderWindowEvent);
+            EventBus<CloseSliderWindow>.Deregister(closeSliderWindowEvent);
         }
 
         private void Update()
@@ -91,17 +81,19 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         }
 
         /// <summary>
-        /// Set the state of Game Creation
+        /// Set the phase state
         /// </summary>
-        public void SetState(int state)
+        /// <param name="eventData"></param>
+        private void SetPhaseState(SetPhaseSlider eventData)
         {
-            this.state = state;
+            phase = eventData.Phase;
         }
-        
+
         /// <summary>
-        /// Callback for handling the Work menu
+        /// Callback for handling the Slider window
         /// </summary>
-        private void HandleWorkMenu(OpenCreateWorkMenu eventData)
+        /// <param name="eventData"></param>
+        private void HandleSliderWindow(HandleSliderWindow eventData)
         {
             if (eventData.IsOpening)
                 ShowWindow();
@@ -109,16 +101,10 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 HideWindow();
         }
 
-        /// <summary>
-        /// Callback for handling a successfully beginning the creation of a Work
-        /// </summary>
-        private void HandleSuccessfulCreation(NotifySuccessfulCreation eventData)
+        private void CloseSliderWindow(CloseSliderWindow eventData)
         {
-            // Hide the window
-            HideWindowSuccess();
-
-            // Don't allow the player to open the window again
-            canOpenWindow = false;
+            // Hide the window with flair
+            ConfirmChoiceClose();
         }
 
         /// <summary>
@@ -126,13 +112,10 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// </summary>
         private void ShowWindow()
         {
-            // Exit case - if cannot open the window
-            if (!canOpenWindow) return;
-
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
-                originalPosition.x, 
-                originalPosition.y + translateValue, 
+                originalPosition.x,
+                originalPosition.y + translateValue,
                 originalPosition.z
             );
             window.transform.localPosition = startPos;
@@ -165,24 +148,24 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// <summary>
         /// Hide the window with a little more flair for successful Work creation
         /// </summary>
-        private void HideWindowSuccess()
+        private void ConfirmChoiceClose()
         {
             // Translate up
             Translate(
-                translateValue * (3f/4f), 
+                translateValue * (3f / 4f),
                 duration / 3f,
                 () =>
+                {
+                    // When done, fade out
+                    Fade(0f, duration, () =>
                     {
-                        // When done, fade out
-                        Fade(0f, duration, () =>
-                        {
-                            window.interactable = false;
-                            window.blocksRaycasts = false;
-                        }, Ease.OutCirc);
+                        window.interactable = false;
+                        window.blocksRaycasts = false;
+                    }, Ease.OutCirc);
 
-                        // And translate downwards
-                        Translate(-translateValue * 2f, duration, null, Ease.OutCirc);
-                    }, 
+                    // And translate downwards
+                    Translate(-translateValue * 2f, duration, null, Ease.OutCirc);
+                },
                 Ease.OutBack
             );
         }
