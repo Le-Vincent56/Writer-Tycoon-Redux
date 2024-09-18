@@ -6,10 +6,9 @@ using WriterTycoon.World.Interactables;
 namespace WriterTycoon.Patterns.EventBus
 {
     #region WORK CREATION UI EVENTS
-    public struct OpenCreateWorkMenu : IEvent
-    {
-        public bool IsOpening;
-    }
+    public struct OpenCreateWorkMenu : IEvent { }
+
+    public struct CloseCreateWorkMenu : IEvent { }
 
     public struct ShowEstimationText : IEvent
     {
@@ -36,6 +35,11 @@ namespace WriterTycoon.Patterns.EventBus
     public struct OpenSliderWindow : IEvent { }
 
     public struct CloseSliderWindow : IEvent { }
+
+    public struct SetCanInteract : IEvent
+    {
+        public bool CanInteract;
+    }
 
     public struct ToggleInteractMenu : IEvent
     {

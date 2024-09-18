@@ -92,11 +92,20 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         /// <param name="eventData"></param>
         private void OpenSliderWindow(OpenSliderWindow eventData)
         {
+            // Close the interact menus
+            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+
             // Ensure the calendar is paused
             EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
             {
                 Paused = true,
                 AllowSpeedChanges = false
+            });
+
+            // Don't allow the player to interact with outside objects
+            EventBus<SetCanInteract>.Raise(new SetCanInteract()
+            {
+                CanInteract = false
             });
 
             // Show the window
@@ -117,6 +126,12 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
             {
                 Paused = false,
                 AllowSpeedChanges = true
+            });
+
+            // Allow the player to interact with outside objects
+            EventBus<SetCanInteract>.Raise(new SetCanInteract()
+            {
+                CanInteract = true
             });
         }
 

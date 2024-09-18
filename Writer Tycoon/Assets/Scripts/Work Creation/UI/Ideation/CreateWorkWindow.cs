@@ -22,6 +22,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         private Tween translateTween;
 
         private EventBinding<OpenCreateWorkMenu> openWorkMenuEvent;
+        private EventBinding<CloseCreateWorkMenu> closeWorkMenuEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
 
         public int IDEATION { get => 0; }
@@ -65,8 +66,11 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 
         private void OnEnable()
         {
-            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(HandleWorkMenu);
+            openWorkMenuEvent = new EventBinding<OpenCreateWorkMenu>(OpenWorkMenu);
             EventBus<OpenCreateWorkMenu>.Register(openWorkMenuEvent);
+
+            closeWorkMenuEvent = new EventBinding<CloseCreateWorkMenu>(CloseWorkMenu);
+            EventBus<CloseCreateWorkMenu>.Register(closeWorkMenuEvent);
 
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(HandleSuccessfulCreation);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
@@ -75,6 +79,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         private void OnDisable()
         {
             EventBus<OpenCreateWorkMenu>.Deregister(openWorkMenuEvent);
+            EventBus<CloseCreateWorkMenu>.Deregister(closeWorkMenuEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
         }
 
@@ -101,12 +106,45 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// <summary>
         /// Callback for handling the Work menu
         /// </summary>
-        private void HandleWorkMenu(OpenCreateWorkMenu eventData)
+        private void OpenWorkMenu(OpenCreateWorkMenu eventData)
         {
-            if (eventData.IsOpening)
-                ShowWindow();
-            else
-                HideWindow();
+            // Close the interact menus
+            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+
+            // Pause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false
+            });
+
+            // Don't allow the player to interact with outside objects
+            EventBus<SetCanInteract>.Raise(new SetCanInteract()
+            {
+                CanInteract = false
+            });
+
+            // Show the window
+            ShowWindow();
+        }
+
+        private void CloseWorkMenu(CloseCreateWorkMenu eventData)
+        {
+            // Hide the window
+            HideWindow();
+
+            // Ensure the calendar is unpaused
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
+            });
+
+            // Allow the player to interact with outside objects
+            EventBus<SetCanInteract>.Raise(new SetCanInteract()
+            {
+                CanInteract = true
+            });
         }
 
         /// <summary>

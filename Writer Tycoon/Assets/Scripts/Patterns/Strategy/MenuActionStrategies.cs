@@ -13,21 +13,8 @@ namespace WriterTycoon.Patterns.Strategy
     {
         public void PerformAction()
         {
-            // Close the interact menus
-            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
-
-            // Pause the Calendar
-            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
-            {
-                Paused = true,
-                AllowSpeedChanges = false
-            });
-
             // Open the Create Work menu
-            EventBus<OpenCreateWorkMenu>.Raise(new OpenCreateWorkMenu()
-            {
-                IsOpening = true
-            });
+            EventBus<OpenCreateWorkMenu>.Raise(new OpenCreateWorkMenu());
         }
     }
 

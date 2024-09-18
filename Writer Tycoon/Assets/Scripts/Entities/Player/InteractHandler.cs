@@ -8,18 +8,27 @@ namespace WriterTycoon.Entities.Player
     public class InteractHandler : MonoBehaviour
     {
         [SerializeField] private GameInputReader inputReader;
-        private BoxCollider2D boxCollider;
-        private IInteractable lastInteractable;
         private IInteractable currentInteractable;
-        [SerializeField] string currentInteractableName;
+        [SerializeField] private string currentInteractableName;
+        [SerializeField] private bool canInteract;
         [SerializeField] private bool interacting;
         [SerializeField] private bool inTrigger;
 
+        private EventBinding<SetCanInteract> setCanInteractEvent;
         private EventBinding<SetInteracting> interactEvent;
+
+        private void Awake()
+        {
+            // Set can interact
+            canInteract = true;
+        }
 
         private void OnEnable()
         {
             inputReader.Interact += Interact;
+
+            setCanInteractEvent = new EventBinding<SetCanInteract>(SetCanInteract);
+            EventBus<SetCanInteract>.Register(setCanInteractEvent);
 
             interactEvent = new EventBinding<SetInteracting>(SetInteracting);
             EventBus<SetInteracting>.Register(interactEvent);
@@ -29,6 +38,7 @@ namespace WriterTycoon.Entities.Player
         {
             inputReader.Interact -= Interact;
 
+            EventBus<SetCanInteract>.Deregister(setCanInteractEvent);
             EventBus<SetInteracting>.Deregister(interactEvent);
         }
 
@@ -74,7 +84,6 @@ namespace WriterTycoon.Entities.Player
             currentInteractable.RemoveHighlight();
 
             // Nullify the current Interactable
-            lastInteractable = currentInteractable;
             currentInteractable.ResetInteractable();
             currentInteractable = null;
             currentInteractableName = string.Empty;
@@ -85,6 +94,9 @@ namespace WriterTycoon.Entities.Player
         /// </summary>
         public void Interact()
         {
+            // Exit case - if the player cannot interact
+            if (!canInteract) return;
+
             // Exit case - if there's no current Interactable
             if (currentInteractable == null)
             {
@@ -95,6 +107,14 @@ namespace WriterTycoon.Entities.Player
 
             // Interact with the current interactable
             currentInteractable.Interact(transform.position);
+        }
+
+        /// <summary>
+        /// Callback function to set if the player is able to interact with objects
+        /// </summary>
+        private void SetCanInteract(SetCanInteract eventData)
+        {
+            canInteract = eventData.CanInteract;
         }
 
         /// <summary>
