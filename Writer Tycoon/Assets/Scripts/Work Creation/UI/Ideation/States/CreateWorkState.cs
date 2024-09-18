@@ -9,7 +9,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation.States
         protected float fadeDuration;
         protected CanvasGroup canvasGroup;
         protected Tween fadeTween;
-        protected float durationTime;
 
         public CreateWorkState(CanvasGroup canvasGroup)
         {
