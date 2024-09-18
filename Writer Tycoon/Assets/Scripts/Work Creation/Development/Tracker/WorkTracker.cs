@@ -14,7 +14,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
     public class WorkTracker : Dedicant
     {
-        [SerializeField] private bool firstDay;
         [SerializeField] private bool working;
         [SerializeField] private bool developing;
         [SerializeField] private int currentDay;
@@ -64,32 +63,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Exit case - if not developing
             if (!developing) return;
 
-            // Check if the first day
-            if (firstDay)
-            {
-                // Set first day to false
-                firstDay = false;
-
-                // Ensure the calendar is paused
-                EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
-                {
-                    Paused = true,
-                    AllowSpeedChanges = false
-                });
-
-                // Set phase one sliders
-                EventBus<SetPhaseSlider>.Raise(new SetPhaseSlider()
-                {
-                    Phase = DevelopmentPhase.PhaseOne
-                });
-
-                // Show the phase sliders
-                EventBus<HandleSliderWindow>.Raise(new HandleSliderWindow()
-                {
-                    IsOpening = true
-                });
-            }
-
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
@@ -124,9 +97,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Set the first phase of development
             currentPhase = DevelopmentPhase.PhaseOne;
             currentDayEstimate = phaseOneDayEstimate;
-
-            // Set the first day
-            firstDay = true;
 
             // Set developing
             developing = true;

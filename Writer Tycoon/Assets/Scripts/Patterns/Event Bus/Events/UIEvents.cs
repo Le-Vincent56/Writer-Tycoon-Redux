@@ -1,4 +1,5 @@
 using UnityEngine;
+using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.World.Interactables;
 
@@ -30,10 +31,11 @@ namespace WriterTycoon.Patterns.EventBus
         public bool Interacting;
     }
 
-    public struct CloseInteractMenus : IEvent
-    {
-        
-    }
+    public struct CloseInteractMenus : IEvent { }
+
+    public struct OpenSliderWindow : IEvent { }
+
+    public struct CloseSliderWindow : IEvent { }
 
     public struct ToggleInteractMenu : IEvent
     {

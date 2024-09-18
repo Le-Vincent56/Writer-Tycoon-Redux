@@ -1,4 +1,5 @@
 using UnityEngine;
+using WriterTycoon.Entities.Player;
 
 namespace WriterTycoon.Patterns.EventBus
 {
@@ -25,6 +26,7 @@ namespace WriterTycoon.Patterns.EventBus
     public struct CommandPlayerPosition : IEvent
     {
         public Vector2Int TargetPosition;
+        public CommandType Type;
     }
 
     

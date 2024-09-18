@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using WriterTycoon.Entities.Player;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
@@ -120,22 +121,11 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 ReviewData = reviewData
             });
 
-            // Change the player work state
-            EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
-            {
-                Working = true
-            });
-
-            // Set the player to eating
-            EventBus<ChangePlayerEatState>.Raise(new ChangePlayerEatState()
-            {
-                Eating = false
-            });
-
             // Move the player (on top of the chair)
             EventBus<CommandPlayerPosition>.Raise(new CommandPlayerPosition()
             {
-                TargetPosition = new Vector2Int(9, 5)
+                TargetPosition = new Vector2Int(9, 5),
+                Type = CommandType.Computer
             });
         }
     }

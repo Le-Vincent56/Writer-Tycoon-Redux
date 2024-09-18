@@ -1,21 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Player.States;
-using WriterTycoon.Input;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.World.Graph;
 
 namespace WriterTycoon.Entities.Player
 {
+    public enum CommandType
+    {
+        Computer,
+        Fridge
+    }
+
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private bool canMove;
         [SerializeField] private float moveSpeed;
         [SerializeField] private bool moving;
 
+        [SerializeField] private bool firstTimeWorking;
         [SerializeField] private bool working;
         [SerializeField] private bool eating;
 
@@ -31,8 +39,7 @@ namespace WriterTycoon.Entities.Player
 
         private EventBinding<CommandPlayerPosition> commandPlayerPositionEvent;
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
-        private EventBinding<ChangePlayerWorkState> changePlayerWorkStateEvent;
-        private EventBinding<ChangePlayerEatState> changePlayerEatStateEvent;
+        private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
 
         private void Awake()
         {
@@ -42,6 +49,7 @@ namespace WriterTycoon.Entities.Player
 
             // Set variables
             canMove = true;
+            firstTimeWorking = true;
 
             // Initialize the state machine
             stateMachine = new StateMachine();
@@ -79,11 +87,8 @@ namespace WriterTycoon.Entities.Player
             pauseCalendarEvent = new EventBinding<CalendarPauseStateChanged>(HandleCalendarPause);
             EventBus<CalendarPauseStateChanged>.Register(pauseCalendarEvent);
 
-            changePlayerWorkStateEvent = new EventBinding<ChangePlayerWorkState>(HandlePlayerWorkStateChange);
-            EventBus<ChangePlayerWorkState>.Register(changePlayerWorkStateEvent);
-
-            changePlayerEatStateEvent = new EventBinding<ChangePlayerEatState>(HandlePlayerEatStateChange);
-            EventBus<ChangePlayerEatState>.Register(changePlayerEatStateEvent);
+            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ResetDevelopmentVars);
+            EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
         }
 
         private void Start()
@@ -99,8 +104,7 @@ namespace WriterTycoon.Entities.Player
         {
             EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
-            EventBus<ChangePlayerWorkState>.Deregister(changePlayerWorkStateEvent);
-            EventBus<ChangePlayerEatState>.Deregister(changePlayerEatStateEvent);
+            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
         }
 
         private void Update()
@@ -124,18 +128,12 @@ namespace WriterTycoon.Entities.Player
         }
 
         /// <summary>
-        /// Callback handler for when the Player work state is to change
+        /// Reset development variables on new creation
         /// </summary>
-        private void HandlePlayerWorkStateChange(ChangePlayerWorkState eventData)
+        private void ResetDevelopmentVars(NotifySuccessfulCreation eventData)
         {
-            // Set the player to working
-            working = eventData.Working;
-        }
-
-        private void HandlePlayerEatStateChange(ChangePlayerEatState eventData)
-        {
-            // Set the player to eating
-            eating = eventData.Eating;
+            // Set first time working
+            firstTimeWorking = true;
         }
 
         /// <summary>
@@ -151,8 +149,41 @@ namespace WriterTycoon.Entities.Player
                 )
             );
 
-            // Start traversal
-            StartTraversal();
+            switch (eventData.Type)
+            {
+                case CommandType.Computer:
+                    // Start traversal to the computer
+                    StartTraversal(() =>
+                    {
+                        working = true;
+                        eating = false;
+
+                        // Check if the first time working
+                        if (firstTimeWorking)
+                        {
+                            // Set first time working to false
+                            firstTimeWorking = false;
+
+                            // Set the current slider phase state
+                            EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                            {
+                                Phase = DevelopmentPhase.PhaseOne
+                            });
+
+                            // Open the Focus Slider window
+                            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+                        }
+                    });
+                    break;
+                case CommandType.Fridge:
+                    // Start traversal to the fridge
+                    StartTraversal(() =>
+                    {
+                        working = false;
+                        eating = true;
+                    });
+                    break;
+            }
         }
 
         /// <summary>
@@ -163,17 +194,17 @@ namespace WriterTycoon.Entities.Player
         /// <summary>
         /// Begin player traversal
         /// </summary>
-        public void StartTraversal()
+        public void StartTraversal(Action onComplete)
         {
             currentPathIndex = 0;
             moving = true;
-            StartCoroutine(TraversePath());
+            StartCoroutine(TraversePath(onComplete));
         }
 
         /// <summary>
         /// Handle traversal
         /// </summary>
-        private IEnumerator TraversePath()
+        private IEnumerator TraversePath(Action onComplete)
         {
             // Exit case - if no path was found
             if(currentPath == null)
@@ -215,6 +246,8 @@ namespace WriterTycoon.Entities.Player
 
             // Finish traversal
             moving = false;
+
+            onComplete.Invoke();
         }
     }
 }

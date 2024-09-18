@@ -17,17 +17,10 @@ namespace WriterTycoon.Patterns.EventBus
         public int Maximum;
     }
 
-    public struct SetPhaseSlider : IEvent
+    public struct SetSliderPhaseState : IEvent
     {
         public DevelopmentPhase Phase;
     }
-
-    public struct  HandleSliderWindow : IEvent
-    {
-        public bool IsOpening;
-    }
-
-    public struct CloseSliderWindow : IEvent { }
 
     public struct EndDevelopment : IEvent { }
     #endregion

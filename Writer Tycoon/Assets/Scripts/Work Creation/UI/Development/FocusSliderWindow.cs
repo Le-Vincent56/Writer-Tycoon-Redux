@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
@@ -12,7 +10,7 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
     public class FocusSliderWindow : MonoBehaviour
     {
         [SerializeField] private CanvasGroup window;
-        [SerializeField] private DevelopmentPhase phase;
+        [SerializeField] private DevelopmentPhase currentPhase;
         [SerializeField] private CanvasGroup[] screens = new CanvasGroup[4];
 
         [SerializeField] private float translateValue;
@@ -23,14 +21,14 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
 
         private StateMachine stateMachine;
 
-        private EventBinding<SetPhaseSlider> showPhaseSliderEvent;
-        private EventBinding<HandleSliderWindow> handleSliderWindowEvent;
+        private EventBinding<SetSliderPhaseState> setSliderPhaseStateEvent;
+        private EventBinding<OpenSliderWindow> openSliderWindowEvent;
         private EventBinding<CloseSliderWindow> closeSliderWindowEvent;
 
         private void Awake()
         {
             // Set the ideation state
-            phase = DevelopmentPhase.PhaseOne;
+            currentPhase = DevelopmentPhase.PhaseOne;
 
             // Initialize the state machine
             stateMachine = new StateMachine();
@@ -41,9 +39,9 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
             PhaseThreeState phaseThreeState = new(screens[2]);
 
             // Set state transitions
-            stateMachine.At(phaseOneState, phaseTwoState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseTwo));
-            stateMachine.At(phaseTwoState, phaseThreeState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseThree));
-            stateMachine.At(phaseThreeState, phaseOneState, new FuncPredicate(() => phase == DevelopmentPhase.PhaseOne));
+            stateMachine.At(phaseOneState, phaseTwoState, new FuncPredicate(() => currentPhase == DevelopmentPhase.PhaseTwo));
+            stateMachine.At(phaseTwoState, phaseThreeState, new FuncPredicate(() => currentPhase == DevelopmentPhase.PhaseThree));
+            stateMachine.At(phaseThreeState, phaseOneState, new FuncPredicate(() => currentPhase == DevelopmentPhase.PhaseOne));
 
             // Set the initial state
             stateMachine.SetState(phaseOneState);
@@ -51,11 +49,11 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
 
         private void OnEnable()
         {
-            showPhaseSliderEvent = new EventBinding<SetPhaseSlider>(SetPhaseState);
-            EventBus<SetPhaseSlider>.Register(showPhaseSliderEvent);
+            setSliderPhaseStateEvent = new EventBinding<SetSliderPhaseState>(SetSliderPhase);
+            EventBus<SetSliderPhaseState>.Register(setSliderPhaseStateEvent);
 
-            handleSliderWindowEvent = new EventBinding<HandleSliderWindow>(HandleSliderWindow);
-            EventBus<HandleSliderWindow>.Register(handleSliderWindowEvent);
+            openSliderWindowEvent = new EventBinding<OpenSliderWindow>(OpenSliderWindow);
+            EventBus<OpenSliderWindow>.Register(openSliderWindowEvent);
 
             closeSliderWindowEvent = new EventBinding<CloseSliderWindow>(CloseSliderWindow);
             EventBus<CloseSliderWindow>.Register(closeSliderWindowEvent);
@@ -63,9 +61,9 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
 
         private void OnDisable()
         {
-            EventBus<SetPhaseSlider>.Deregister(showPhaseSliderEvent);
-            EventBus<HandleSliderWindow>.Deregister(handleSliderWindowEvent);
+            EventBus<OpenSliderWindow>.Deregister(openSliderWindowEvent);
             EventBus<CloseSliderWindow>.Deregister(closeSliderWindowEvent);
+            EventBus<SetSliderPhaseState>.Deregister(setSliderPhaseStateEvent);
         }
 
         private void Update()
@@ -81,30 +79,45 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         }
 
         /// <summary>
-        /// Set the phase state
+        /// Callback function to set the slider phase
         /// </summary>
-        /// <param name="eventData"></param>
-        private void SetPhaseState(SetPhaseSlider eventData)
+        private void SetSliderPhase(SetSliderPhaseState eventData)
         {
-            phase = eventData.Phase;
+            currentPhase = eventData.Phase;
         }
 
         /// <summary>
-        /// Callback for handling the Slider window
+        /// Callback for opening the Focus Slider window
         /// </summary>
         /// <param name="eventData"></param>
-        private void HandleSliderWindow(HandleSliderWindow eventData)
+        private void OpenSliderWindow(OpenSliderWindow eventData)
         {
-            if (eventData.IsOpening)
-                ShowWindow();
-            else
-                HideWindow();
+            // Ensure the calendar is paused
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false
+            });
+
+            // Show the window
+            ShowWindow();
         }
 
+        /// <summary>
+        /// Callback function to closing the Focus Slider window
+        /// </summary>
+        /// <param name="eventData"></param>
         private void CloseSliderWindow(CloseSliderWindow eventData)
         {
             // Hide the window with flair
             ConfirmChoiceClose();
+
+            // Ensure the calendar is unpaused
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
+            });
         }
 
         /// <summary>
