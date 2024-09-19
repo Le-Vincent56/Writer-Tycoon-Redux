@@ -12,4 +12,9 @@ namespace WriterTycoon.Patterns.EventBus
         public bool Paused;
         public bool AllowSpeedChanges;
     }
+
+    public struct ChangeCalendarSpeed : IEvent
+    {
+        public int TimeScale;
+    }
 }

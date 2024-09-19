@@ -5,7 +5,7 @@ using WriterTycoon.Patterns.StateMachine;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Development.UI.States;
 
-namespace WriterTycoon.WorkCreation.Development.FocusSliders
+namespace WriterTycoon.WorkCreation.Development.UI
 {
     public class FocusSliderWindow : MonoBehaviour
     {

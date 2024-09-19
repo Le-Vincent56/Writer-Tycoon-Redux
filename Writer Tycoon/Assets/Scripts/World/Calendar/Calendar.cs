@@ -91,9 +91,7 @@ namespace WriterTycoon.World.Calendar
 
             // Create the day timer
             dayTimer = new VariableFrequencyTimer(
-                data.DayIncrementTime,
-                data.FasterScalar,
-                data.FastestScalar
+                data.DayIncrementTime
             );
 
             // Set the Tick event
@@ -198,6 +196,12 @@ namespace WriterTycoon.World.Calendar
             // Set the default speed for the timer
             dayTimer.SetDefaultSpeed();
 
+            // Invoke the event for changing the calendar speed
+            EventBus<ChangeCalendarSpeed>.Raise(new ChangeCalendarSpeed()
+            {
+                TimeScale = dayTimer.GetScalar()
+            });
+
             // If the Timer is not running, resume it
             if (!dayTimer.IsRunning) dayTimer.Resume();
         }
@@ -212,6 +216,12 @@ namespace WriterTycoon.World.Calendar
 
             // Set the default speed for the timer
             dayTimer.SetFasterSpeed();
+
+            // Invoke the event for changing the calendar speed
+            EventBus<ChangeCalendarSpeed>.Raise(new ChangeCalendarSpeed()
+            {
+                TimeScale = dayTimer.GetScalar()
+            });
 
             // If the Timer is not running, resume it
             if (!dayTimer.IsRunning) dayTimer.Resume();
@@ -228,8 +238,14 @@ namespace WriterTycoon.World.Calendar
             // Set the default speed for the timer
             dayTimer.SetFastestSpeed();
 
+            // Invoke the event for changing the calendar speed
+            EventBus<ChangeCalendarSpeed>.Raise(new ChangeCalendarSpeed()
+            {
+                TimeScale = dayTimer.GetScalar()
+            });
+
             // If the Timer is not running, resume it
-            if(!dayTimer.IsRunning) dayTimer.Resume();
+            if (!dayTimer.IsRunning) dayTimer.Resume();
         }
 
         /// <summary>

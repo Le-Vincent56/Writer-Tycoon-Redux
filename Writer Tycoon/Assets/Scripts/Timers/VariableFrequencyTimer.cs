@@ -5,9 +5,10 @@ namespace WriterTycoon.Timers
         private float timeThresholdDef;
         private float timeThresholdFaster;
         private float timeThresholdFastest;
+        private int scalar;
         private int mode;
 
-        public VariableFrequencyTimer(float ticksPerSecond, float fasterScalar, float fastestScalar) : base(ticksPerSecond) 
+        public VariableFrequencyTimer(float ticksPerSecond) : base(ticksPerSecond) 
         {
             mode = 1;
         }
@@ -32,6 +33,7 @@ namespace WriterTycoon.Timers
         public void SetDefaultSpeed()
         {
             timeThreshold = timeThresholdDef;
+            scalar = 1;
             mode = 1;
         }
 
@@ -41,6 +43,7 @@ namespace WriterTycoon.Timers
         public void SetFasterSpeed()
         {
             timeThreshold = timeThresholdFaster;
+            scalar = 2;
             mode = 2;
         }
 
@@ -50,9 +53,18 @@ namespace WriterTycoon.Timers
         public void SetFastestSpeed()
         {
             timeThreshold = timeThresholdFastest;
+            scalar = 5;
             mode = 3;
         }
 
+        /// <summary>
+        /// Get the current scalar of the Timer
+        /// </summary>
+        public int GetScalar() => scalar;
+
+        /// <summary>
+        /// Get the current mode of the Timer
+        /// </summary>
         public int GetMode() => mode;
     }
 }

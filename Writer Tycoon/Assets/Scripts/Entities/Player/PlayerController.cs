@@ -20,7 +20,8 @@ namespace WriterTycoon.Entities.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private bool canMove;
-        [SerializeField] private float moveSpeed;
+        [SerializeField] private float baseMoveSpeed;
+        [SerializeField] private float currentMoveSpeed;
         [SerializeField] private bool moving;
 
         [SerializeField] private bool firstTimeWorking;
@@ -41,6 +42,7 @@ namespace WriterTycoon.Entities.Player
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
+        private EventBinding<ChangeCalendarSpeed> changeCalendarSpeedEvent;
 
         private void Awake()
         {
@@ -93,6 +95,9 @@ namespace WriterTycoon.Entities.Player
 
             endDevelopmentEvent = new EventBinding<EndDevelopment>(EndDevelopment);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
+
+            changeCalendarSpeedEvent = new EventBinding<ChangeCalendarSpeed>(ChangePlayerSpeed);
+            EventBus<ChangeCalendarSpeed>.Register(changeCalendarSpeedEvent);
         }
 
         private void OnDisable()
@@ -101,6 +106,7 @@ namespace WriterTycoon.Entities.Player
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+            EventBus<ChangeCalendarSpeed>.Deregister(changeCalendarSpeedEvent);
         }
 
         private void Start()
@@ -142,12 +148,21 @@ namespace WriterTycoon.Entities.Player
         }
 
         /// <summary>
-        /// Reset development variables on new creation
+        /// Callback handler for resetting development variables on new work creation
         /// </summary>
         private void ResetDevelopmentVars(NotifySuccessfulCreation eventData)
         {
             // Set first time working
             firstTimeWorking = true;
+        }
+
+        /// <summary>
+        /// Callback handler for changing the Calendar speed
+        /// </summary>
+        private void ChangePlayerSpeed(ChangeCalendarSpeed eventData)
+        {
+            // Multiply the base move speed by the Calendar's time scale
+            currentMoveSpeed = baseMoveSpeed * eventData.TimeScale;
         }
 
         /// <summary>
@@ -242,7 +257,7 @@ namespace WriterTycoon.Entities.Player
                 // Move until the player has reached the position
                 while(Vector3.Distance(transform.position, targetPosition) > 0.1f)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentMoveSpeed * Time.deltaTime);
                     yield return null;
                 }
 
