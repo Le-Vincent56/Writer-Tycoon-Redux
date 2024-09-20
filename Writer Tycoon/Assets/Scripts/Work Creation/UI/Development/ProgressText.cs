@@ -41,11 +41,18 @@ namespace WriterTycoon.WorkCreation.UI.Development
             EventBus<HideProgressText>.Deregister(hideProgressTextEvent);
         }
 
+        /// <summary>
+        /// Callback function to update the progress text
+        /// </summary>
         private void UpdateProgressText(ShowProgressText eventData)
         {
+            // Update the progress text
             UpdateText(eventData.Text);
         }
 
+        /// <summary>
+        /// Callback function to hide the progress text
+        /// </summary>
         private void HideProgressText()
         {
             // Create a tween that fades out and changes the text when completed
@@ -53,6 +60,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
             fadeOutTween.onComplete += () => displayText.text = string.Empty;
         }
 
+        /// <summary>
+        /// Fade out the text, update it, then fade it back in
+        /// </summary>
         private void UpdateText(string newText)
         {
             Sequence sequence = DOTween.Sequence();
