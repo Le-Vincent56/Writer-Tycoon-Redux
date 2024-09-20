@@ -38,7 +38,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             generatePoints = false;
             genreFocusTargets = new();
             allocatedPoints = new();
-            totalDays = 0;
             currentDay = 0;
             split = 1;
         }
@@ -74,9 +73,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             // Exit case - if not supposed to generate points
             if (!generatePoints) return;
 
-            // Increment the days
+            // Increment the current day
             currentDay++;
-            totalDays++;
 
             switch (split)
             {
