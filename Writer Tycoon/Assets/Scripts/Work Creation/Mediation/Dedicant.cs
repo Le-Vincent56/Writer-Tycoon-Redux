@@ -20,7 +20,8 @@ namespace WriterTycoon.WorkCreation.Mediation
 
         // Development
         Tracker,
-        Slider,
+        Sliders,
+        PointGenerator,
         Rater,
     }
 

@@ -21,6 +21,10 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
 
         private void SendSliderPoints()
         {
+            // Send the points
+            EventBus<SendSliderPoints>.Raise(new SendSliderPoints());
+
+            // Close the window
             EventBus<CloseSliderWindow>.Raise(new CloseSliderWindow());
         }
     }

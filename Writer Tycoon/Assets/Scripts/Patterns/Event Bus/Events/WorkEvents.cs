@@ -1,3 +1,4 @@
+using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
 
@@ -21,6 +22,14 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public DevelopmentPhase Phase;
     }
+
+    public struct SetSliderPoints : IEvent
+    {
+        public PointCategory Category;
+        public int Value;
+    }
+
+    public struct SendSliderPoints : IEvent { }
 
     public struct ClearIdeation : IEvent { }
 

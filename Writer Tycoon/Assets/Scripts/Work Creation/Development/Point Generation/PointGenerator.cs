@@ -1,17 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Development.PointGeneration
 {
-    public class PointGenerator : MonoBehaviour
+    public class PointGenerator : Dedicant
     {
-        GenreFocusTargets genreFocusTargets;
+        private GenreFocusTargets genreFocusTargets;
+        private Dictionary<PointCategory, int> allocatedPoints;
+
+        public override string Name => "Point Generator";
+        public override DedicantType Type => DedicantType.PointGenerator;
 
         private void Awake()
         {
-            // Initialize the Genre Focus Targets
+            // Initialize variables
             genreFocusTargets = new();
+            allocatedPoints = new();
+        }
+
+        /// <summary>
+        /// Set the allocated points Dictionary
+        /// </summary>
+        public void SetAllocatedPoints(Dictionary<PointCategory, int> allocatedPoints)
+        {
+            this.allocatedPoints = allocatedPoints;
         }
     }
 }
