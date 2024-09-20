@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
@@ -18,7 +17,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         private GenreFocusTargets genreFocusTargets;
         private Dictionary<PointCategory, int> allocatedPoints;
 
-        [SerializeField] private int totalDays;
         [SerializeField] private int currentDay;
         [SerializeField] private int totalPhaseTime;
         [SerializeField] private int split;
@@ -223,6 +221,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             }
         }
 
+        /// <summary>
+        /// Calculate the split times for each Point Category within a phase
+        /// </summary>
         private void CalculateSplitTimes(
             PointCategory splitOneCategory, PointCategory splitTwoCategory, PointCategory splitThreeCategory
         )

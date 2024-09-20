@@ -12,8 +12,6 @@ namespace WriterTycoon.WorkCreation.UI.Development
         private EventBinding<ShowProgressText> showProgressTextEvent;
         private EventBinding<HideProgressText> hideProgressTextEvent;
 
-        Tween fadeTween;
-
         private void Awake()
         {
             // Verify the text component
@@ -65,14 +63,17 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void UpdateText(string newText)
         {
+            // Create a sequence
             Sequence sequence = DOTween.Sequence();
 
             // Create a tween that fades out and changes the text when completed
             Tween fadeOutTween = displayText.DOFade(0f, fadeDuration);
             fadeOutTween.onComplete += () => displayText.text = newText;
 
+            // Create a tween that fades in
             Tween fadeInTween = displayText.DOFade(1f, fadeDuration);
 
+            // Add both tweens to the sequence
             sequence.Append(fadeOutTween);
             sequence.Append(fadeInTween);
         }
