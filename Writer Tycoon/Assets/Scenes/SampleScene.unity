@@ -10926,6 +10926,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e08494a09d2d9040ac896194995792a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPhase: 0
+  totalDays: 0
+  currentDay: 0
+  totalPhaseTime: 0
+  split: 0
+  splitOneTime: 0
+  splitTwoTime: 0
+  splitThreeTime: 0
 --- !u!1 &779672619
 GameObject:
   m_ObjectHideFlags: 0
