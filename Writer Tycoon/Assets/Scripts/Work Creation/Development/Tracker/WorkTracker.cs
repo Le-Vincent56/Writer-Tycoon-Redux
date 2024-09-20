@@ -63,15 +63,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Exit case - if not developing
             if (!developing) return;
 
+            // Increment the current day
+            currentDay++;
+
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
                 Current = currentDay,
-                Maximum = currentDayEstimate - 1,
+                Maximum = currentDayEstimate,
             });
-
-            // Increment the current day
-            currentDay++;
 
             // Check if the current day has reached the estimate
             if (currentDay == currentDayEstimate)
@@ -125,6 +125,13 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Set the new time estimate
                     currentDayEstimate = phaseTwoDayEstimate;
 
+                    // Update the progress data
+                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                    {
+                        Current = currentDay,
+                        Maximum = currentDayEstimate,
+                    });
+
                     // Update the Focus Slider phase
                     EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                     {
@@ -150,6 +157,13 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
                     // Set the new time estimate
                     currentDayEstimate = phaseThreeDayEstimate;
+
+                    // Update the progress data
+                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                    {
+                        Current = currentDay,
+                        Maximum = currentDayEstimate,
+                    });
 
                     // Update the Focus Slider phase
                     EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()

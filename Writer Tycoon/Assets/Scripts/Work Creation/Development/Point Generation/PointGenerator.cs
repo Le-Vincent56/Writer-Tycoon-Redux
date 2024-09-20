@@ -83,31 +83,25 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             switch (split)
             {
                 case 1:
-                    Debug.Log($"Generated Split One Points ({currentDay}/{splitOneTime})");
-
                     // Handle the split time
                     HandleSplit(splitOneTime);
-                    
                     break;
 
                 case 2:
-                    Debug.Log($"Generated Split Two Points ({currentDay}/{splitTwoTime})");
-
                     // Handle the split time
                     HandleSplit(splitTwoTime);
-                    
                     break;
 
                 case 3:
-                    Debug.Log($"Generated Split Three Points ({currentDay}/{splitThreeTime})");
-
                     // Handle the split time
                     HandleSplit(splitThreeTime, false);
-                    
                     break;
             }
         }
 
+        /// <summary>
+        /// Handle the passing of days within a split
+        /// </summary>
         private void HandleSplit(int splitTime, bool incrementSplit = true)
         {
             // Exit case - if finished the split time
@@ -116,17 +110,116 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 // Reset the current day
                 currentDay = 0;
 
-                Debug.Log($"Finished Split {split}");
-
                 // Check whether or not to increment the split
                 if (incrementSplit)
+                {
                     // Increment the split (if on split 1 or 2)
                     split++;
+
+                    // Update the progress text
+                    ChangeProgressText();
+                }
                 else
+                {
                     // Stop generating points (if on split 3)
                     generatePoints = false;
+                    
+                    // Hide the progress text
+                    EventBus<HideProgressText>.Raise(new HideProgressText());
+                }
 
                 return;
+            }
+        }
+        
+        /// <summary>
+        /// Change the progress text to display flavor text according to the current split
+        /// </summary>
+        private void ChangeProgressText()
+        {
+            // Check which phase of development
+            switch (currentPhase)
+            {
+                case DevelopmentPhase.PhaseOne:
+                    // Change the text based on the split
+                    switch(split)
+                    {
+                        case 1:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Writing Characters"
+                            });
+                            break;
+
+                        case 2:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Outlining Plot"
+                            });
+                            break;
+
+                        case 3:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Building World"
+                            });
+                            break;
+                    }
+                    break;
+
+                case DevelopmentPhase.PhaseTwo:
+                    // Change the text based on the split
+                    switch (split)
+                    {
+                        case 1:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Creating Dialogue"
+                            });
+                            break;
+
+                        case 2:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Stringing Subplots"
+                            });
+                            break;
+
+                        case 3:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Enhancing Descriptions"
+                            });
+                            break;
+                    }
+                    break;
+
+                case DevelopmentPhase.PhaseThree:
+                    // Change the text based on the split
+                    switch (split)
+                    {
+                        case 1:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Invoking Emotions"
+                            });
+                            break;
+
+                        case 2:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Unraveling Twists"
+                            });
+                            break;
+
+                        case 3:
+                            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                            {
+                                Text = "Developing Symbolism"
+                            });
+                            break;
+                    }
+                    break;
             }
         }
 
@@ -177,6 +270,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             this.splitOneTime = splitOneTime;
             this.splitTwoTime = splitTwoTime;
             this.splitThreeTime = splitThreeTime;
+
+            // Update the progress text
+            ChangeProgressText();
         }
 
         /// <summary>
@@ -251,6 +347,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             // Clear allocated points
             allocatedPoints = new();
             currentPhase = DevelopmentPhase.PhaseOne;
+            
+            // Hide the progress text
+            EventBus<HideProgressText>.Raise(new HideProgressText());
         }
 
         /// <summary>

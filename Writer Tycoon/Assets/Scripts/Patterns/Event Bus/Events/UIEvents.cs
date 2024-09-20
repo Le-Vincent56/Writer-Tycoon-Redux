@@ -35,6 +35,13 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct CloseSliderWindow : IEvent { }
 
+    public struct ShowProgressText : IEvent
+    {
+        public string Text;
+    }
+
+    public struct HideProgressText : IEvent { }
+
     public struct SetCanInteract : IEvent
     {
         public bool CanInteract;
