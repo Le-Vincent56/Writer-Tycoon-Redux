@@ -13,7 +13,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
     {
         [SerializeField] private DevelopmentPhase currentPhase;
 
-        private bool generatePoints;
+        [SerializeField] private bool generatePoints;
         private GenreType chosenGenre;
         private GenreFocusTargets genreFocusTargets;
         private Dictionary<PointCategory, int> allocatedPoints;
@@ -116,11 +116,16 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 // Reset the current day
                 currentDay = 0;
 
+                Debug.Log($"Finished Split {split}");
+
                 // Check whether or not to increment the split
                 if (incrementSplit)
+                    // Increment the split (if on split 1 or 2)
                     split++;
+                else
+                    // Stop generating points (if on split 3)
+                    generatePoints = false;
 
-                Debug.Log($"Finished Split {split}");
                 return;
             }
         }
@@ -148,53 +153,30 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             int roundedTotal = splitOneTime + splitTwoTime + splitThreeTime;
             int difference = totalPhaseTime - roundedTotal;
 
-            // Exit case - if there's no extra days to redistribute
-            if (difference == 0) return;
-
-            // Check if the difference is positive or negative
-            if(difference > 0)
+            // Check if there's a difference to distribute
+            if(difference != 0)
             {
-                // If positive, add extra time to one of the splits
-                if (splitOneTime < rawSplitOneTime) splitOneTime += 1;
-                else if (splitTwoTime < rawSplitTwoTime) splitTwoTime += 1;
-                else splitThreeTime += 1;
-            } else
-            {
-                // If negative, remove extra time from one of the splits
-                if (splitOneTime > rawSplitOneTime) splitOneTime -= 1;
-                else if(splitTwoTime > rawSplitTwoTime) splitTwoTime -= 1;
-                else splitThreeTime -= 1;
+                // Check if the difference is positive or negative
+                if (difference > 0)
+                {
+                    // If positive, add extra time to one of the splits
+                    if (splitOneTime < rawSplitOneTime) splitOneTime += 1;
+                    else if (splitTwoTime < rawSplitTwoTime) splitTwoTime += 1;
+                    else splitThreeTime += 1;
+                }
+                else
+                {
+                    // If negative, remove extra time from one of the splits
+                    if (splitOneTime > rawSplitOneTime) splitOneTime -= 1;
+                    else if (splitTwoTime > rawSplitTwoTime) splitTwoTime -= 1;
+                    else splitThreeTime -= 1;
+                }
             }
 
+            // Set split times
             this.splitOneTime = splitOneTime;
             this.splitTwoTime = splitTwoTime;
             this.splitThreeTime = splitThreeTime;
-        }
-
-        /// <summary>
-        /// Calculate the time a split will take
-        /// </summary>
-        private int CalculateSplitTime(PointCategory pointCategory)
-        {
-            // Get the percentage of the split
-            float splitPercentage = (float)allocatedPoints[pointCategory] / 15;
-
-            // Get the raw split estimation
-            float rawSplit = splitPercentage * totalPhaseTime;
-
-            // Round the split to a whole number
-            int roundedSplit = Mathf.RoundToInt(rawSplit);
-
-            return roundedSplit;
-        }
-
-        private void RedistributeLeftoverDays()
-        {
-            int roundedTotal = splitOneTime + splitTwoTime + splitThreeTime;
-            int difference = totalPhaseTime - roundedTotal;
-
-            // Exit case - if there are no days to redistribute
-            if (difference == 0) return;
         }
 
         /// <summary>
@@ -224,9 +206,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         private void SetDevelopmentPhase(SetDevelopmentPhase eventData)
         {
             currentPhase = eventData.Phase;
-
-            split = 1;
-            currentDay = 0;
         }
 
         /// <summary>
@@ -237,8 +216,17 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             totalPhaseTime = eventData.TimeEstimate;
         }
 
+        /// <summary>
+        /// Set the split times for each phase
+        /// </summary>
         private void SetPhaseSplitTime()
         {
+            // Set the split to 1
+            split = 1;
+
+            // Set the current day to 0
+            currentDay = 0;
+
             switch (currentPhase)
             {
                 case DevelopmentPhase.PhaseOne:
@@ -247,18 +235,10 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 
                 case DevelopmentPhase.PhaseTwo:
                     CalculateSplitTimes(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
-
-                    //splitOneTime = CalculateSplitTime(PointCategory.Dialogue);
-                    //splitTwoTime = CalculateSplitTime(PointCategory.Subplots);
-                    //splitThreeTime = CalculateSplitTime(PointCategory.Descriptions);
                     break;
 
                 case DevelopmentPhase.PhaseThree:
                     CalculateSplitTimes(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
-
-                    //splitOneTime = CalculateSplitTime(PointCategory.Emotions);
-                    //splitTwoTime = CalculateSplitTime(PointCategory.Twists);
-                    //splitThreeTime = CalculateSplitTime(PointCategory.Symbolism);
                     break;
             }
         }
@@ -270,10 +250,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         {
             // Clear allocated points
             allocatedPoints = new();
-            generatePoints = false;
-            currentDay = 1;
             currentPhase = DevelopmentPhase.PhaseOne;
-            split = 0;
         }
 
         /// <summary>

@@ -87,9 +87,6 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         {
             // Reset the dictionary
             InitializeDictionary();
-
-            // Send out the defaut slider points
-            SendSliderPoints();
         }
     }
 }
