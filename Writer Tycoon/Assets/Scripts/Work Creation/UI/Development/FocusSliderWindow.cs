@@ -21,7 +21,7 @@ namespace WriterTycoon.WorkCreation.Development.UI
 
         private StateMachine stateMachine;
 
-        private EventBinding<SetSliderPhaseState> setSliderPhaseStateEvent;
+        private EventBinding<SetDevelopmentPhase> setDevelopmentPhaseEvent;
         private EventBinding<OpenSliderWindow> openSliderWindowEvent;
         private EventBinding<CloseSliderWindow> closeSliderWindowEvent;
 
@@ -49,8 +49,8 @@ namespace WriterTycoon.WorkCreation.Development.UI
 
         private void OnEnable()
         {
-            setSliderPhaseStateEvent = new EventBinding<SetSliderPhaseState>(SetSliderPhase);
-            EventBus<SetSliderPhaseState>.Register(setSliderPhaseStateEvent);
+            setDevelopmentPhaseEvent = new EventBinding<SetDevelopmentPhase>(SetSliderPhase);
+            EventBus<SetDevelopmentPhase>.Register(setDevelopmentPhaseEvent);
 
             openSliderWindowEvent = new EventBinding<OpenSliderWindow>(OpenSliderWindow);
             EventBus<OpenSliderWindow>.Register(openSliderWindowEvent);
@@ -63,7 +63,7 @@ namespace WriterTycoon.WorkCreation.Development.UI
         {
             EventBus<OpenSliderWindow>.Deregister(openSliderWindowEvent);
             EventBus<CloseSliderWindow>.Deregister(closeSliderWindowEvent);
-            EventBus<SetSliderPhaseState>.Deregister(setSliderPhaseStateEvent);
+            EventBus<SetDevelopmentPhase>.Deregister(setDevelopmentPhaseEvent);
         }
 
         private void Update()
@@ -81,7 +81,7 @@ namespace WriterTycoon.WorkCreation.Development.UI
         /// <summary>
         /// Callback function to set the slider phase
         /// </summary>
-        private void SetSliderPhase(SetSliderPhaseState eventData)
+        private void SetSliderPhase(SetDevelopmentPhase eventData)
         {
             currentPhase = eventData.Phase;
         }

@@ -51,6 +51,7 @@ namespace WriterTycoon.Entities.Player
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             // Set variables
+            currentMoveSpeed = baseMoveSpeed;
             canMove = true;
             firstTimeWorking = true;
 
@@ -194,7 +195,7 @@ namespace WriterTycoon.Entities.Player
                             firstTimeWorking = false;
 
                             // Set the current slider phase state
-                            EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                            EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                             {
                                 Phase = DevelopmentPhase.PhaseOne
                             });

@@ -18,7 +18,12 @@ namespace WriterTycoon.Patterns.EventBus
         public int Maximum;
     }
 
-    public struct SetSliderPhaseState : IEvent
+    public struct SendPhaseTime : IEvent
+    {
+        public int TimeEstimate;
+    }
+
+    public struct SetDevelopmentPhase : IEvent
     {
         public DevelopmentPhase Phase;
     }

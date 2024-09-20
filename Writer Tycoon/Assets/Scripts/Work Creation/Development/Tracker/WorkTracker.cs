@@ -98,6 +98,12 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             currentPhase = DevelopmentPhase.PhaseOne;
             currentDayEstimate = phaseOneDayEstimate;
 
+            // Send out the first phase's estimates
+            EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+            {
+                TimeEstimate = phaseOneDayEstimate
+            });
+
             // Set developing
             developing = true;
         }
@@ -120,9 +126,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     currentDayEstimate = phaseTwoDayEstimate;
 
                     // Update the Focus Slider phase
-                    EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                     {
                         Phase = currentPhase
+                    });
+
+                    // Send out the second phase's estimates
+                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+                    {
+                        TimeEstimate = phaseTwoDayEstimate
                     });
 
                     // Open the slider window
@@ -140,9 +152,15 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     currentDayEstimate = phaseThreeDayEstimate;
 
                     // Update the Focus Slider phase
-                    EventBus<SetSliderPhaseState>.Raise(new SetSliderPhaseState()
+                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                     {
                         Phase = currentPhase
+                    });
+
+                    // Send out the third phase's estimates
+                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+                    {
+                        TimeEstimate = phaseThreeDayEstimate
                     });
 
                     // Open the slider window
