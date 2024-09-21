@@ -22,7 +22,11 @@ namespace WriterTycoon.WorkCreation.Mediation
         Tracker,
         Sliders,
         PointGenerator,
+        ErrorGenerator,
         Rater,
+
+        // Editing
+        Editor
     }
 
     public abstract class Dedicant : MonoBehaviour, IVisitable
@@ -38,13 +42,11 @@ namespace WriterTycoon.WorkCreation.Mediation
             mediator = ServiceLocator.ForSceneOf(this).Get<Mediator<Dedicant>>();
             mediator.Register(this);
         }
-
         protected void OnDestroy()
         {
             // Deregister the mediator
             mediator.Deregister(this);
         }
-
 
         /// <summary>
         /// Accept a message from the Mediator

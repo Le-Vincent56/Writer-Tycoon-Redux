@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Development.ErrorGeneraton
+namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
 {
-    public class ErrorGenerator : MonoBehaviour
+    public class ErrorGenerator : Dedicant
     {
         [SerializeField] private int totalErrors;
         [SerializeField] private float currentErrors;
@@ -17,6 +18,9 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneraton
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
+
+        public override string Name => "Error Generator";
+        public override DedicantType Type => DedicantType.ErrorGenerator;
 
         private void Awake()
         {
@@ -33,7 +37,7 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneraton
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(GetTotalErrors);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(ResetErrors);
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndReset);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
@@ -124,10 +128,13 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneraton
         }
 
         /// <summary>
-        /// Callback function to reset the error variables on the end of development
+        /// Callback function to send and reset the error variables on the end of development
         /// </summary>
-        private void ResetErrors()
+        private void SendAndReset()
         {
+            // Send the errors
+            SendErrors();
+
             // Reset variables
             totalErrors = 0;
             currentErrors = 0;
@@ -148,8 +155,18 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneraton
 
             // Increment the path count
             pathCount++;
+        }
 
-            // Display the current errors
+        /// <summary>
+        /// Send the total errors
+        /// </summary>
+        private void SendErrors()
+        {
+            Send(new ErrorPayload()
+            {
+                Content = totalErrors
+            }, IsType(DedicantType.Editor)
+            );
         }
     }
 }
