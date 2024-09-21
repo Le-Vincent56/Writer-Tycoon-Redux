@@ -41,7 +41,7 @@ namespace WriterTycoon.Entities.Player
         private EventBinding<CommandPlayerPosition> commandPlayerPositionEvent;
         private EventBinding<CalendarPauseStateChanged> pauseCalendarEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-        private EventBinding<EndDevelopment> endDevelopmentEvent;
+        private EventBinding<EndEditing> endEditingEvent;
         private EventBinding<ChangeCalendarSpeed> changeCalendarSpeedEvent;
 
         private void Awake()
@@ -94,8 +94,8 @@ namespace WriterTycoon.Entities.Player
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ResetDevelopmentVars);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(EndDevelopment);
-            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
+            endEditingEvent = new EventBinding<EndEditing>(EndEditing);
+            EventBus<EndEditing>.Register(endEditingEvent);
 
             changeCalendarSpeedEvent = new EventBinding<ChangeCalendarSpeed>(ChangePlayerSpeed);
             EventBus<ChangeCalendarSpeed>.Register(changeCalendarSpeedEvent);
@@ -106,7 +106,7 @@ namespace WriterTycoon.Entities.Player
             EventBus<CommandPlayerPosition>.Deregister(commandPlayerPositionEvent);
             EventBus<CalendarPauseStateChanged>.Deregister(pauseCalendarEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+            EventBus<EndEditing>.Deregister(endEditingEvent);
             EventBus<ChangeCalendarSpeed>.Deregister(changeCalendarSpeedEvent);
         }
 
@@ -140,9 +140,9 @@ namespace WriterTycoon.Entities.Player
         }
 
         /// <summary>
-        /// Callback handler for when a work's development phase ends
+        /// Callback handler for when a work's editing phase ends
         /// </summary>
-        private void EndDevelopment(EndDevelopment eventData)
+        private void EndEditing(EndEditing eventData)
         {
             // Set the player to no longer working
             working = false;

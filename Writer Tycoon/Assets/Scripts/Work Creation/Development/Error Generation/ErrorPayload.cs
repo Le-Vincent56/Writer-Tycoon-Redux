@@ -9,7 +9,7 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         public override void Visit<T>(T visitable)
         {
             // Verify types of mediation
-            if (visitable is PolishManager editingManager) editingManager.SetTotalErrors(Content);
+            if (visitable is PolishManager editingManager) editingManager.SetErrors(Content);
         }
     }
 }

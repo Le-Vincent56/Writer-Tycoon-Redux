@@ -39,5 +39,9 @@ namespace WriterTycoon.Patterns.EventBus
     public struct ClearIdeation : IEvent { }
 
     public struct EndDevelopment : IEvent { }
+
+    public struct BeginEditing : IEvent { }
+
+    public struct EndEditing : IEvent { }
     #endregion
 }

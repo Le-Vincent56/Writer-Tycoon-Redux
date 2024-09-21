@@ -11,7 +11,7 @@ namespace WriterTycoon.World.Interactables.UI
         [SerializeField] private MenuActionButton eatButton;
 
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-        private EventBinding<EndDevelopment> endDevelopmentEndEvent;
+        private EventBinding<EndEditing> onEditingEndEvent;
 
         private void Awake()
         {
@@ -32,14 +32,14 @@ namespace WriterTycoon.World.Interactables.UI
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ChangeButtonsOnWorkCreation);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
 
-            endDevelopmentEndEvent = new EventBinding<EndDevelopment>(ChangeButtonsOnDevelopmentEnd);
-            EventBus<EndDevelopment>.Register(endDevelopmentEndEvent);
+            onEditingEndEvent = new EventBinding<EndEditing>(ChangeButtonsOnEditingEnd);
+            EventBus<EndEditing>.Register(onEditingEndEvent);
         }
 
         private void OnDisable()
         {
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<EndDevelopment>.Deregister(endDevelopmentEndEvent);
+            EventBus<EndEditing>.Deregister(onEditingEndEvent);
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace WriterTycoon.World.Interactables.UI
         }
 
         /// <summary>
-        /// Callback function for changing button interactability after development end
+        /// Callback function for changing button interactability after editing end
         /// </summary>
-        private void ChangeButtonsOnDevelopmentEnd(EndDevelopment eventData)
+        private void ChangeButtonsOnEditingEnd(EndEditing eventData)
         {
             // Enable the "New" button
             newWorkButton.Enable();

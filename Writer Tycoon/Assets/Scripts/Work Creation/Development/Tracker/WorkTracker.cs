@@ -204,6 +204,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Clear ideation settings to prepare for new creations
             EventBus<ClearIdeation>.Raise(new ClearIdeation());
+
+            EventBus<BeginEditing>.Raise(new BeginEditing());
         }
 
         /// <summary>
