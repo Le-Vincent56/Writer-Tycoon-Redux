@@ -64,7 +64,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             sendPhaseTimeEvent = new EventBinding<SendPhaseTime>(SetPhaseTotal);
             EventBus<SendPhaseTime>.Register(sendPhaseTimeEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(ResetGenerator);
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndResetGenerator);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
@@ -77,6 +77,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
+        /// <summary>
+        /// Generate points per hour
+        /// </summary>
         private void GeneratePoints()
         {
             // Exit case - if the arrays are not initialized
@@ -303,7 +306,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         }
 
         /// <summary>
-        /// Calculate the percentage of how close the player was to the score
+        /// Calculate the target scores and generation rates for each Point Category within a phase
         /// </summary>
         private void CalculateCategoryScoresAndRates(
             PointCategory splitOneCategory, PointCategory splitTwoCategory, PointCategory splitThreeCategory
@@ -330,6 +333,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         private float CalculateGenerationRate(float splitTime, float targetScore) => targetScore / (splitTime * 24);
 
+        /// <summary>
+        /// Calculate the point threshold for a given Point Category
+        /// </summary>
         private float CalculateCategoryScore(PointCategory pointCategory)
         {
             // Get the player and target values
@@ -363,13 +369,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 
                 // Add the multiplier to the total
                 totalMultiplier += multiplier;
-
-                //Debug.Log($"Multiplier for {pointCategory}: {multiplier}" +
-                //    $"\nPlayer Value: {playerValue}" +
-                //    $"\nTarget Value: {targetValue}" +
-                //    $"\nDifference: {difference}" +
-                //    $"\nStep Value: {stepValue}" +
-                //    $"\nPercentage Loss: {percentageLoss}");
             }
 
             // Get the average of the total multiplier
@@ -440,8 +439,14 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// <summary>
         /// Reset the Point Generator
         /// </summary>
-        private void ResetGenerator()
+        private void SendAndResetGenerator()
         {
+            // Send the points out for editing
+            Send(new PointPayload()
+                { Content = currentScore},
+                IsType(DedicantType.Editor)
+            );
+
             // Clear allocated points
             allocatedPoints = new();
             currentPhase = DevelopmentPhase.PhaseOne;

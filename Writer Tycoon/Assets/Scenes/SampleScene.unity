@@ -912,7 +912,10 @@ MonoBehaviour:
   polish: 0
   totalErrors: 0
   currentErrors: 0
-  polishRate: 0
+  dailyErrorGoal: 0
+  errorRate: 0
+  developedPoints: 0
+  polishRate: 0.041667
 --- !u!1 &95674304
 GameObject:
   m_ObjectHideFlags: 0
@@ -11104,12 +11107,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e08494a09d2d9040ac896194995792a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chosenGenres: []
   currentPhase: 0
   generatePoints: 0
-  targetScore: 0
   componentScore: 0
   targetSplitScores: []
+  targetScore: 0
   currentScore: 0
+  generationRates: []
   currentDay: 0
   totalPhaseTime: 0
   split: 0
