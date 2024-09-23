@@ -14,9 +14,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         [SerializeField] private DevelopmentPhase currentPhase;
 
         [SerializeField] private bool generatePoints;
-        [SerializeField] private float targetScore;
         [SerializeField] private float componentScore;
         [SerializeField] private float[] targetSplitScores;
+        [SerializeField] private float targetScore;
         [SerializeField] private float currentScore;
         [SerializeField] private float[] generationRates;
         private GenreFocusTargets genreFocusTargets;
@@ -83,7 +83,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             if (targetSplitScores == null || generationRates == null) return;
 
             // Exit case - if the current score has generated the amount of points for this split
-            if (currentScore >= targetSplitScores[split - 1]) return;
+            if (currentScore >= targetScore) return;
 
             // Increment the current score by this split's generation rate
             currentScore += generationRates[split - 1];
@@ -139,6 +139,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 
                     // Update the progress text
                     ChangeProgressText();
+
+                    // Update the target score
+                    targetScore += targetSplitScores[split - 1];
                 }
                 else
                 {
@@ -352,7 +355,11 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 // Calculate the percentage loss
                 float percentageLoss = difference * stepValue;
 
+                // Get the multiplier
                 float multiplier = 1f - percentageLoss;
+
+                // Clamp so that the most someone can get if 5%
+                multiplier = Mathf.Clamp(multiplier, 0.05f, 1f);
 
                 // Add the multiplier to the total
                 totalMultiplier += multiplier;
@@ -425,6 +432,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                     CalculateCategoryScoresAndRates(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
                     break;
             }
+
+            // Set the current target score for the first split
+            targetScore += targetSplitScores[split - 1];
         }
 
         /// <summary>
@@ -459,10 +469,10 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// <summary>
         /// Set the target score for the Point Generator
         /// </summary>
-        public void SetTargetScore(float targetScore)
+        public void SetTargetScore(float totalTargetScore)
         {
-            this.targetScore = targetScore;
-            componentScore = targetScore / 9f;
+            componentScore = totalTargetScore / 9f;
+            targetScore = 0;
             currentScore = 0;
         }
 
