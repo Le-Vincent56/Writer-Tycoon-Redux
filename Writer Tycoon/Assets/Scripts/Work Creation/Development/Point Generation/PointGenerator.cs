@@ -18,6 +18,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         [SerializeField] private float componentScore;
         [SerializeField] private float[] targetSplitScores;
         [SerializeField] private float currentScore;
+        [SerializeField] private float[] generationRates;
         private GenreFocusTargets genreFocusTargets;
         private Dictionary<PointCategory, int> allocatedPoints;
 
@@ -31,6 +32,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         public override string Name => "Point Generator";
         public override DedicantType Type => DedicantType.PointGenerator;
 
+        private EventBinding<PassHour> passHourEvent;
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<SetDevelopmentPhase> setDevelopmentPhaseEvent;
         private EventBinding<SendPhaseTime> sendPhaseTimeEvent;
@@ -44,11 +46,16 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             allocatedPoints = new();
             currentDay = 0;
             split = 1;
+            targetSplitScores = null;
+            generationRates = null;
         }
 
         private void OnEnable()
         {
-            passDayEvent = new EventBinding<PassDay>(GeneratePoints);
+            passHourEvent = new EventBinding<PassHour>(GeneratePoints);
+            EventBus<PassHour>.Register(passHourEvent);
+
+            passDayEvent = new EventBinding<PassDay>(ManageSplits);
             EventBus<PassDay>.Register(passDayEvent);
 
             setDevelopmentPhaseEvent = new EventBinding<SetDevelopmentPhase>(SetDevelopmentPhase);
@@ -63,16 +70,29 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 
         private void OnDisable()
         {
+            EventBus<PassHour>.Deregister(passHourEvent);
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<SetDevelopmentPhase>.Deregister(setDevelopmentPhaseEvent);
             EventBus<SendPhaseTime>.Deregister(sendPhaseTimeEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
+        private void GeneratePoints()
+        {
+            // Exit case - if the arrays are not initialized
+            if (targetSplitScores == null || generationRates == null) return;
+
+            // Exit case - if the current score has generated the amount of points for this split
+            if (currentScore >= targetSplitScores[split - 1]) return;
+
+            // Increment the current score by this split's generation rate
+            currentScore += generationRates[split - 1];
+        }
+
         /// <summary>
         /// Callback function to generate points every day
         /// </summary>
-        private void GeneratePoints()
+        private void ManageSplits()
         {
             // Exit case - if not supposed to generate points
             if (!generatePoints) return;
@@ -282,20 +302,30 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// <summary>
         /// Calculate the percentage of how close the player was to the score
         /// </summary>
-        private float[] CalculateCategoryScores(
+        private void CalculateCategoryScoresAndRates(
             PointCategory splitOneCategory, PointCategory splitTwoCategory, PointCategory splitThreeCategory
         )
         {
             // Create a new array representing each split
-            float[] targetScores = new float[3];
+            targetSplitScores = new float[3];
 
             // Set each split score
-            targetScores[0] = CalculateCategoryScore(splitOneCategory);
-            targetScores[1] = CalculateCategoryScore(splitTwoCategory);
-            targetScores[2] = CalculateCategoryScore(splitThreeCategory);
+            targetSplitScores[0] = CalculateCategoryScore(splitOneCategory);
+            targetSplitScores[1] = CalculateCategoryScore(splitTwoCategory);
+            targetSplitScores[2] = CalculateCategoryScore(splitThreeCategory);
 
-            return targetScores;
+            // Calculate generation rates
+            generationRates = new float[3];
+
+            generationRates[0] = CalculateGenerationRate(splitOneTime, targetSplitScores[0]);
+            generationRates[1] = CalculateGenerationRate(splitTwoTime, targetSplitScores[1]);
+            generationRates[2] = CalculateGenerationRate(splitThreeTime, targetSplitScores[2]);
         }
+
+        /// <summary>
+        /// Calculate the hourly generation rate for the split and the target score
+        /// </summary>
+        private float CalculateGenerationRate(float splitTime, float targetScore) => targetScore / (splitTime * 24);
 
         private float CalculateCategoryScore(PointCategory pointCategory)
         {
@@ -375,24 +405,24 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                     // Set the split times
                     CalculateSplitTimes(PointCategory.CharacterSheets, PointCategory.PlotOutline, PointCategory.WorldDocument);
 
-                    // Set the current split target scores
-                    targetSplitScores = CalculateCategoryScores(PointCategory.CharacterSheets, PointCategory.PlotOutline, PointCategory.WorldDocument);
+                    // Set the current split target scores and generation rates
+                    CalculateCategoryScoresAndRates(PointCategory.CharacterSheets, PointCategory.PlotOutline, PointCategory.WorldDocument);
                     break;
 
                 case DevelopmentPhase.PhaseTwo:
                     // Set the split times
                     CalculateSplitTimes(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
 
-                    // Set the current split target scores
-                    targetSplitScores = CalculateCategoryScores(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
+                    // Set the current split target scores and generation rates
+                    CalculateCategoryScoresAndRates(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
                     break;
 
                 case DevelopmentPhase.PhaseThree:
                     // Set the split times
                     CalculateSplitTimes(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
 
-                    // Set the current split target scores
-                    targetSplitScores = CalculateCategoryScores(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
+                    // Set the current split target scores and generation rates
+                    CalculateCategoryScoresAndRates(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
                     break;
             }
         }
@@ -405,7 +435,11 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             // Clear allocated points
             allocatedPoints = new();
             currentPhase = DevelopmentPhase.PhaseOne;
-            
+
+            // Nullify arrays
+            targetSplitScores = null;
+            generationRates = null;
+
             // Hide the progress text
             EventBus<HideProgressText>.Raise(new HideProgressText());
         }
