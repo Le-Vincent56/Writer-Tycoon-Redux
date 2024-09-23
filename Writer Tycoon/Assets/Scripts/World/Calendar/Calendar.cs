@@ -45,12 +45,14 @@ namespace WriterTycoon.World.Calendar
             { 12, 31 }
         };
 
+        private int currentHour;
         private int currentDay;
         private int currentMonth;
         private int currentYear;
         private int daysInMonth;
 
         [SerializeField] private Text dateText;
+        private VariableFrequencyTimer hourTimer;
         private VariableFrequencyTimer dayTimer;
 
         private EventBinding<ChangeCalendarPauseState> changeCalendarPauseStateEvent;
@@ -82,12 +84,21 @@ namespace WriterTycoon.World.Calendar
             canChangeSpeed = true;
 
             // Set the current date to January 01, 2024
+            currentHour = 1;
             currentDay = 1;
             currentMonth = 1;
             currentYear = 2024;
 
             // Check for leap year
             CheckForLeapYear();
+
+            // Create the hour timer
+            hourTimer = new VariableFrequencyTimer(
+                data.DayIncrementTime * 24
+            );
+
+            // Set the Tick event
+            hourTimer.OnTick += PassHour;
 
             // Create the day timer
             dayTimer = new VariableFrequencyTimer(
@@ -97,7 +108,8 @@ namespace WriterTycoon.World.Calendar
             // Set the Tick event
             dayTimer.OnTick += PassDay;
 
-            // Start the day timer
+            // Start the timers
+            hourTimer.Start();
             dayTimer.Start();
 
             // Set text
@@ -106,8 +118,29 @@ namespace WriterTycoon.World.Calendar
 
         private void OnDestroy()
         {
+            // Dispose of the hour timer
+            hourTimer.Dispose();
+
             // Dispose of the day timer
             dayTimer.Dispose();
+        }
+
+        /// <summary>
+        /// Pass an horu on the calendar
+        /// </summary>
+        private void PassHour()
+        {
+            // Increment the current hour
+            currentHour++;
+
+            // Reset on a 24-hour cycle
+            if(currentHour > 24)
+            {
+                currentHour = 1;
+            }
+
+            // Raise the Pass Hour event
+            EventBus<PassHour>.Raise(new PassHour());
         }
 
         /// <summary>
@@ -193,7 +226,8 @@ namespace WriterTycoon.World.Calendar
             // Exit case - if can't change speed
             if (!canChangeSpeed) return;
 
-            // Set the default speed for the timer
+            // Set the default speeds for the timers
+            hourTimer.SetDefaultSpeed();
             dayTimer.SetDefaultSpeed();
 
             // Invoke the event for changing the calendar speed
@@ -202,8 +236,11 @@ namespace WriterTycoon.World.Calendar
                 TimeScale = dayTimer.GetScalar()
             });
 
-            // If the Timer is not running, resume it
-            if (!dayTimer.IsRunning) dayTimer.Resume();
+            if (!dayTimer.IsRunning)
+            {
+                hourTimer.Resume();
+                dayTimer.Resume();
+            }
         }
 
         /// <summary>
@@ -214,7 +251,8 @@ namespace WriterTycoon.World.Calendar
             // Exit case - if can't change speed
             if (!canChangeSpeed) return;
 
-            // Set the default speed for the timer
+            // Set the faster speeds for the timers
+            hourTimer.SetFasterSpeed();
             dayTimer.SetFasterSpeed();
 
             // Invoke the event for changing the calendar speed
@@ -223,8 +261,11 @@ namespace WriterTycoon.World.Calendar
                 TimeScale = dayTimer.GetScalar()
             });
 
-            // If the Timer is not running, resume it
-            if (!dayTimer.IsRunning) dayTimer.Resume();
+            if (!dayTimer.IsRunning)
+            {
+                hourTimer.Resume();
+                dayTimer.Resume();
+            }
         }
 
         /// <summary>
@@ -235,7 +276,8 @@ namespace WriterTycoon.World.Calendar
             // Exit case - if can't change speed
             if (!canChangeSpeed) return;
 
-            // Set the default speed for the timer
+            // Set the fastest speed for the timers
+            hourTimer.SetFastestSpeed();
             dayTimer.SetFastestSpeed();
 
             // Invoke the event for changing the calendar speed
@@ -244,8 +286,12 @@ namespace WriterTycoon.World.Calendar
                 TimeScale = dayTimer.GetScalar()
             });
 
-            // If the Timer is not running, resume it
-            if (!dayTimer.IsRunning) dayTimer.Resume();
+            // If the Timers are not running, resume them
+            if (!dayTimer.IsRunning)
+            {
+                hourTimer.Resume();
+                dayTimer.Resume();
+            }
         }
 
         /// <summary>
@@ -270,7 +316,8 @@ namespace WriterTycoon.World.Calendar
         /// </summary>
         private void Pause() 
         {
-            // If so, pause the Timer
+            // If so, pause the Timers
+            hourTimer.Pause();
             dayTimer.Pause();
 
             // TODO: Update UI
@@ -288,6 +335,7 @@ namespace WriterTycoon.World.Calendar
         private void Unpause()
         {
             // If not, resume the Timer
+            hourTimer.Resume();
             dayTimer.Resume();
 
             switch (dayTimer.GetMode())

@@ -1,5 +1,7 @@
 namespace WriterTycoon.Patterns.EventBus
 {
+    public struct PassHour : IEvent { }
+
     public struct PassDay : IEvent { }
 
     public struct CalendarPauseStateChanged : IEvent

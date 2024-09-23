@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace WriterTycoon.Timers
 {
     public class VariableFrequencyTimer : FrequencyTimer
