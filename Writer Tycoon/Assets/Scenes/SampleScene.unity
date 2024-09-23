@@ -908,7 +908,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16218c7fa011daf49bf07b1eac8c4547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  working: 0
+  polish: 0
   totalErrors: 0
+  currentErrors: 0
+  polishRate: 0
 --- !u!1 &95674304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,6 +1992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
+  targetScore: 5000
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &177975273
 GameObject:
@@ -3043,6 +3048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
+  targetScore: 15000
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &262496582
 GameObject:
@@ -8379,6 +8385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedType: 0
+  targetScore: 0
 --- !u!1 &748900290
 GameObject:
   m_ObjectHideFlags: 0
@@ -8514,6 +8521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  targetScore: 1000
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &750316751
 GameObject:
@@ -11098,6 +11106,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPhase: 0
   generatePoints: 0
+  targetScore: 0
+  componentScore: 0
+  targetSplitScores: []
+  currentScore: 0
   currentDay: 0
   totalPhaseTime: 0
   split: 0
@@ -11930,6 +11942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
+  targetScore: 15000
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &869060368
 GameObject:
@@ -20997,6 +21010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  targetScore: 500
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &1483548545
 GameObject:
@@ -23873,6 +23887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  targetScore: 100
   buttonSelectedColor: {r: 1, g: 0.9529412, b: 0.7372549, a: 1}
 --- !u!1 &1689768117
 GameObject:

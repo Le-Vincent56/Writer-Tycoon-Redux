@@ -8,9 +8,11 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         private WorkTypeManager workTypeManager;
         private Button button;
         [SerializeField] private WorkType type;
+        [SerializeField] private float targetScore;
         [SerializeField] private Color buttonSelectedColor;
 
         public WorkType Type { get => type; }
+        public float TargetScore { get => targetScore; }
         public bool Selected { get; set; }
 
         public void Instantiate(WorkTypeManager workTypeManager)

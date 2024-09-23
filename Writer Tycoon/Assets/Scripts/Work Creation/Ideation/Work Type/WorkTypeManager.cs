@@ -20,6 +20,7 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
     public class WorkTypeManager : Dedicant
     {
         [SerializeField] private WorkType selectedType;
+        [SerializeField] private float targetScore;
 
         public override string Name { get => "Work Type Manager"; }
         public override DedicantType Type { get => DedicantType.WorkType; }
@@ -51,6 +52,7 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
 
             // Set the selected type
             selectedType = typeButton.Type;
+            targetScore = typeButton.TargetScore;
 
             // Send the work type out to the mediator
             SendWorkType();
@@ -67,6 +69,9 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
             // Set the Work type to none
             selectedType = WorkType.None;
 
+            // Set the workload to 0
+            targetScore = 0;
+
             // Send the work type out to the mediator
             SendWorkType();
 
@@ -79,11 +84,12 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         public void SendWorkType()
         {
             Send(new WorkTypePayload() 
-                { Content = selectedType }, 
-                AreTypes(new DedicantType[2]
+                { Content = (selectedType, targetScore) }, 
+                AreTypes(new DedicantType[3]
                 {
                     DedicantType.TimeEstimator,
-                    DedicantType.IdeaReviewer
+                    DedicantType.IdeaReviewer,
+                    DedicantType.PointGenerator
                 })
             );
         }

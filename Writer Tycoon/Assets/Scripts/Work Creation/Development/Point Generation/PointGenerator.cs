@@ -10,10 +10,14 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 {
     public class PointGenerator : Dedicant
     {
+        [SerializeField] private List<Genre> chosenGenres;
         [SerializeField] private DevelopmentPhase currentPhase;
 
         [SerializeField] private bool generatePoints;
-        private GenreType chosenGenre;
+        [SerializeField] private float targetScore;
+        [SerializeField] private float componentScore;
+        [SerializeField] private float[] targetSplitScores;
+        [SerializeField] private float currentScore;
         private GenreFocusTargets genreFocusTargets;
         private Dictionary<PointCategory, int> allocatedPoints;
 
@@ -76,6 +80,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             // Increment the current day
             currentDay++;
 
+            // Update UI
             switch (split)
             {
                 case 1:
@@ -277,22 +282,64 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// <summary>
         /// Calculate the percentage of how close the player was to the score
         /// </summary>
-        private float CalculateComponentScore(PointCategory pointCategory)
+        private float[] CalculateCategoryScores(
+            PointCategory splitOneCategory, PointCategory splitTwoCategory, PointCategory splitThreeCategory
+        )
+        {
+            // Create a new array representing each split
+            float[] targetScores = new float[3];
+
+            // Set each split score
+            targetScores[0] = CalculateCategoryScore(splitOneCategory);
+            targetScores[1] = CalculateCategoryScore(splitTwoCategory);
+            targetScores[2] = CalculateCategoryScore(splitThreeCategory);
+
+            return targetScores;
+        }
+
+        private float CalculateCategoryScore(PointCategory pointCategory)
         {
             // Get the player and target values
             int playerValue = allocatedPoints[pointCategory];
-            int targetValue = genreFocusTargets.GetTargetScore(chosenGenre, pointCategory);
 
-            // Get the absolute difference of the given values
-            int difference = Math.Abs(playerValue - targetValue);
+            // Start counting a total multiplier
+            float totalMultiplier = 0;
 
-            // Normalize the difference relative to the target value
-            float percentageFromTarget = (float)difference / targetValue;
+            // Iterate through each Genre
+            foreach(Genre genre in chosenGenres)
+            {
+                // Get the target value for the Genre
+                int targetValue = genreFocusTargets.GetTargetScore(genre.Type, pointCategory);
 
-            // Get the multiplier (will give a percent based on how close to the target)
-            float multiplier = 1f - percentageFromTarget;
+                // Get the absolute difference of the given values
+                int difference = Math.Abs(playerValue - targetValue);
 
-            return multiplier;
+                // Get the step value for calculating percentages (symmetrically)
+                float stepValue = (targetValue >= 5f)
+                    ? 1f / targetValue
+                    : 1f / (10f - targetValue);
+
+                // Calculate the percentage loss
+                float percentageLoss = difference * stepValue;
+
+                float multiplier = 1f - percentageLoss;
+
+                // Add the multiplier to the total
+                totalMultiplier += multiplier;
+
+                //Debug.Log($"Multiplier for {pointCategory}: {multiplier}" +
+                //    $"\nPlayer Value: {playerValue}" +
+                //    $"\nTarget Value: {targetValue}" +
+                //    $"\nDifference: {difference}" +
+                //    $"\nStep Value: {stepValue}" +
+                //    $"\nPercentage Loss: {percentageLoss}");
+            }
+
+            // Get the average of the total multiplier
+            float averageMult = totalMultiplier / chosenGenres.Count;
+
+            // Return the average multiplier times the base component score
+            return componentScore * averageMult;
         }
 
         /// <summary>
@@ -325,15 +372,27 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             switch (currentPhase)
             {
                 case DevelopmentPhase.PhaseOne:
+                    // Set the split times
                     CalculateSplitTimes(PointCategory.CharacterSheets, PointCategory.PlotOutline, PointCategory.WorldDocument);
+
+                    // Set the current split target scores
+                    targetSplitScores = CalculateCategoryScores(PointCategory.CharacterSheets, PointCategory.PlotOutline, PointCategory.WorldDocument);
                     break;
 
                 case DevelopmentPhase.PhaseTwo:
+                    // Set the split times
                     CalculateSplitTimes(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
+
+                    // Set the current split target scores
+                    targetSplitScores = CalculateCategoryScores(PointCategory.Dialogue, PointCategory.Subplots, PointCategory.Descriptions);
                     break;
 
                 case DevelopmentPhase.PhaseThree:
+                    // Set the split times
                     CalculateSplitTimes(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
+
+                    // Set the current split target scores
+                    targetSplitScores = CalculateCategoryScores(PointCategory.Emotions, PointCategory.Twists, PointCategory.Symbolism);
                     break;
             }
         }
@@ -361,6 +420,24 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
 
             // Set the split times for the phases
             SetPhaseSplitTime();
+        }
+
+        /// <summary>
+        /// Set the target score for the Point Generator
+        /// </summary>
+        public void SetTargetScore(float targetScore)
+        {
+            this.targetScore = targetScore;
+            componentScore = targetScore / 9f;
+            currentScore = 0;
+        }
+
+        /// <summary>
+        /// Set the chosen genre
+        /// </summary>
+        public void SetGenres(List<Genre> genres)
+        {
+            chosenGenres = genres;
         }
     }
 }
