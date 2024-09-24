@@ -45,9 +45,6 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void UpdateProgressText(ShowProgressText eventData)
         {
-            // Exit case - if not the correct type
-            if (eventData.Type != progressType) return;
-
             // Update the progress text
             UpdateText(eventData.Text);
         }
@@ -57,9 +54,6 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void HideProgressText(HideProgressText eventData)
         {
-            // Exit case - if not the correct type
-            if (eventData.Type != progressType) return;
-
             // Create a tween that fades out and changes the text when completed
             Tween fadeOutTween = displayText.DOFade(0f, fadeDuration);
             fadeOutTween.onComplete += () => displayText.text = string.Empty;

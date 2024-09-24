@@ -264,8 +264,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// <summary>
         /// Handle translating for the Window
         /// </summary>
-        /// <param name="endTranslateValue"></param>
-        /// <param name="duration"></param>
         private void Translate(float endTranslateValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
         {
             // Kill the current translate tween if it exists

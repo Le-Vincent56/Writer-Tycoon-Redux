@@ -15,7 +15,6 @@ namespace WriterTycoon.Patterns.EventBus
     #region WORK DEVELOPMENT EVENTS
     public struct UpdateProgressData : IEvent
     {
-        public ProgressType Type;
         public float Current;
         public float Maximum;
     }

@@ -115,6 +115,12 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 AllowSpeedChanges = true
             });
 
+            // Set the card title
+            EventBus<SetProgressCardTitle>.Raise(new SetProgressCardTitle()
+            {
+                Title = reviewData.AboutInfo.Title
+            });
+
             // Notify that the Work was successfully created
             EventBus<NotifySuccessfulCreation>.Raise(new NotifySuccessfulCreation() 
             { 

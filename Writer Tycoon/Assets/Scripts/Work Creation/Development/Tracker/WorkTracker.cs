@@ -70,7 +70,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
-                Type = ProgressType.Development,
                 Current = currentDay,
                 Maximum = currentDayEstimate,
             });
@@ -130,7 +129,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Update the progress data
                     EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
                     {
-                        Type = ProgressType.Development,
                         Current = currentDay,
                         Maximum = currentDayEstimate,
                     });
@@ -164,7 +162,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Update the progress data
                     EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
                     {
-                        Type = ProgressType.Development,
                         Current = currentDay,
                         Maximum = currentDayEstimate,
                     });

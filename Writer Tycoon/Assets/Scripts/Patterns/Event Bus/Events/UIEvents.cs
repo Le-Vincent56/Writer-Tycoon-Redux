@@ -43,16 +43,17 @@ namespace WriterTycoon.Patterns.EventBus
         public int PointsRemaining;
     }
 
+    public struct SetProgressCardTitle : IEvent
+    {
+        public string Title;
+    }
+
     public struct ShowProgressText : IEvent
     {
-        public ProgressType Type;
         public string Text;
     }
 
-    public struct HideProgressText : IEvent
-    {
-        public ProgressType Type;
-    }
+    public struct HideProgressText : IEvent { }
 
     public struct SetCanInteract : IEvent
     {

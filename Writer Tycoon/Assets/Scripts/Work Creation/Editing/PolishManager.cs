@@ -127,13 +127,12 @@ namespace WriterTycoon.WorkCreation.Editing
                 // Add to the daily error goal
                 dailyErrorQuota += dailyErrorGoal;
 
-                // Update the error progress bar
-                EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                {
-                    Type = ProgressType.Errors,
-                    Current = dailyErrorQuota,
-                    Maximum = dailyErrorGoal
-                });
+                //// Update the error progress bar
+                //EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                //{
+                //    Current = dailyErrorQuota,
+                //    Maximum = dailyErrorGoal
+                //});
 
                 // Get the lowest whole number
                 int currentErrorInt = Mathf.FloorToInt(dailyErrorQuota);
@@ -143,11 +142,11 @@ namespace WriterTycoon.WorkCreation.Editing
                 if(currentErrorInt != 0 && currentErrorInt != previousWholeNumber)
                 {
                     // Show how many errors are left
-                    EventBus<ShowProgressText>.Raise(new ShowProgressText()
-                    {
-                        Type = ProgressType.Errors,
-                        Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
-                    });
+                    //EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                    //{
+                    //    Type = ProgressType.Errors,
+                    //    Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
+                    //});
 
                     // Update the previous whole number
                     previousWholeNumber = currentErrorInt;
@@ -163,17 +162,17 @@ namespace WriterTycoon.WorkCreation.Editing
                 finishedRemovingErrors = true;
 
                 // Hide the errors progress bar and text
-                EventBus<HideProgressText>.Raise(new HideProgressText()
-                {
-                    Type = ProgressType.Errors
-                });
+                //EventBus<HideProgressText>.Raise(new HideProgressText()
+                //{
+                //    Type = ProgressType.Errors
+                //});
 
                 // Show the polish progress bar and text
-                EventBus<ShowProgressText>.Raise(new ShowProgressText()
-                {
-                    Type = ProgressType.Polish,
-                    Text = "Polishing"
-                });
+                //EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                //{
+                //    Type = ProgressType.Polish,
+                //    Text = "Polishing"
+                //});
                 
                 // Set a maximum for the polish burst
                 polishBurstMax = Random.Range(1, 3);
@@ -182,13 +181,12 @@ namespace WriterTycoon.WorkCreation.Editing
             // Increase the current polish burst
             currentPolishBurst += polishRate;
 
-            // Update the progress bar data
-            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-            {
-                Type = ProgressType.Polish,
-                Current = currentPolishBurst,
-                Maximum = polishBurstMax
-            });
+            //// Update the progress bar data
+            //EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+            //{
+            //    Current = currentPolishBurst,
+            //    Maximum = polishBurstMax
+            //});
 
             // Check if the current burst has exceeded the maximum
             if(currentPolishBurst >= polishBurstMax)
@@ -213,11 +211,11 @@ namespace WriterTycoon.WorkCreation.Editing
             polish = true;
 
             // Show the progress bar and text
-            EventBus<ShowProgressText>.Raise(new ShowProgressText()
-            {
-                Type = ProgressType.Errors,
-                Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
-            });
+            //EventBus<ShowProgressText>.Raise(new ShowProgressText()
+            //{
+            //    Type = ProgressType.Errors,
+            //    Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
+            //});
         }
 
         /// <summary>
@@ -259,10 +257,10 @@ namespace WriterTycoon.WorkCreation.Editing
             polishBurstMax = 0;
 
             // Hide the polish progress bar and text
-            EventBus<HideProgressText>.Raise(new HideProgressText()
-            {
-                Type = ProgressType.Polish,
-            });
+            //EventBus<HideProgressText>.Raise(new HideProgressText()
+            //{
+            //    Type = ProgressType.Polish,
+            //});
         }
 
         /// <summary>

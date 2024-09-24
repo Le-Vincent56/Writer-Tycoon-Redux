@@ -151,12 +151,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 {
                     // Stop generating points (if on split 3)
                     generatePoints = false;
-                    
+
                     // Hide the development progress text
-                    EventBus<HideProgressText>.Raise(new HideProgressText()
-                    {
-                        Type = ProgressType.Development
-                    });
+                    EventBus<HideProgressText>.Raise(new HideProgressText());
                 }
 
                 return;
@@ -178,7 +175,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Writing Characters"
                             });
                             break;
@@ -186,7 +182,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Outlining Plot"
                             });
                             break;
@@ -194,7 +189,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Building World"
                             });
                             break;
@@ -208,7 +202,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Creating Dialogue"
                             });
                             break;
@@ -216,7 +209,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Stringing Subplots"
                             });
                             break;
@@ -224,7 +216,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Enhancing Descriptions"
                             });
                             break;
@@ -238,7 +229,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Invoking Emotions"
                             });
                             break;
@@ -246,7 +236,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Unraveling Twists"
                             });
                             break;
@@ -254,7 +243,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
-                                Type = ProgressType.Development,
                                 Text = "Developing Symbolism"
                             });
                             break;
@@ -469,10 +457,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             generationRates = null;
 
             // Hide the development progress text
-            EventBus<HideProgressText>.Raise(new HideProgressText()
-            {
-                Type = ProgressType.Development
-            });
+            EventBus<HideProgressText>.Raise(new HideProgressText());
         }
 
         /// <summary>
