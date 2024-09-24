@@ -2386,6 +2386,7 @@ GameObject:
   - component: {fileID: 225347208}
   - component: {fileID: 225347210}
   - component: {fileID: 225347209}
+  - component: {fileID: 225347211}
   m_Layer: 5
   m_Name: Point Tracker
   m_TagString: Untagged
@@ -2454,6 +2455,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225347207}
   m_CullTransparentMesh: 1
+--- !u!114 &225347211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225347207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d1775cd4c05ea46a78f4ed7692c84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intendedPhase: 1
 --- !u!1 &225534318
 GameObject:
   m_ObjectHideFlags: 0
@@ -6697,6 +6711,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefdd8529cc286845a07013a1d926b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intendedPhase: 2
+  sliders: []
+  previousValues: 
 --- !u!1 &571467724
 GameObject:
   m_ObjectHideFlags: 0
@@ -18410,6 +18427,7 @@ GameObject:
   - component: {fileID: 1294104848}
   - component: {fileID: 1294104850}
   - component: {fileID: 1294104849}
+  - component: {fileID: 1294104851}
   m_Layer: 5
   m_Name: Point Tracker
   m_TagString: Untagged
@@ -18478,6 +18496,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294104847}
   m_CullTransparentMesh: 1
+--- !u!114 &1294104851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294104847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d1775cd4c05ea46a78f4ed7692c84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intendedPhase: 2
 --- !u!1 &1301821724
 GameObject:
   m_ObjectHideFlags: 0
@@ -24454,6 +24485,7 @@ GameObject:
   - component: {fileID: 1733255483}
   - component: {fileID: 1733255485}
   - component: {fileID: 1733255484}
+  - component: {fileID: 1733255486}
   m_Layer: 5
   m_Name: Point Tracker
   m_TagString: Untagged
@@ -24522,6 +24554,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733255482}
   m_CullTransparentMesh: 1
+--- !u!114 &1733255486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733255482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d1775cd4c05ea46a78f4ed7692c84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intendedPhase: 3
 --- !u!1 &1733880896
 GameObject:
   m_ObjectHideFlags: 0
@@ -25061,6 +25106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefdd8529cc286845a07013a1d926b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intendedPhase: 1
+  sliders: []
+  previousValues: 
 --- !u!1 &1762101440
 GameObject:
   m_ObjectHideFlags: 0
@@ -26262,6 +26310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefdd8529cc286845a07013a1d926b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intendedPhase: 3
+  sliders: []
+  previousValues: 
 --- !u!1 &1899915056
 GameObject:
   m_ObjectHideFlags: 0

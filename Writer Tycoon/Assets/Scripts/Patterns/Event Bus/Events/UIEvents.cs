@@ -1,4 +1,5 @@
 using UnityEngine;
+using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.World.Interactables;
 
@@ -34,6 +35,12 @@ namespace WriterTycoon.Patterns.EventBus
     public struct OpenSliderWindow : IEvent { }
 
     public struct CloseSliderWindow : IEvent { }
+
+    public struct SetSliderPointText : IEvent
+    {
+        public DevelopmentPhase IntendedPhase;
+        public int PointsRemaining;
+    }
 
     public struct ShowProgressText : IEvent
     {
