@@ -7,6 +7,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
 {
     public class ProgressText : MonoBehaviour
     {
+        [SerializeField] private ProgressType progressType;
         [SerializeField] private float fadeDuration;
         private Text displayText;
         private EventBinding<ShowProgressText> showProgressTextEvent;
@@ -44,6 +45,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void UpdateProgressText(ShowProgressText eventData)
         {
+            // Exit case - if not the correct type
+            if (eventData.Type != progressType) return;
+
             // Update the progress text
             UpdateText(eventData.Text);
         }
@@ -51,8 +55,11 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// <summary>
         /// Callback function to hide the progress text
         /// </summary>
-        private void HideProgressText()
+        private void HideProgressText(HideProgressText eventData)
         {
+            // Exit case - if not the correct type
+            if (eventData.Type != progressType) return;
+
             // Create a tween that fades out and changes the text when completed
             Tween fadeOutTween = displayText.DOFade(0f, fadeDuration);
             fadeOutTween.onComplete += () => displayText.text = string.Empty;

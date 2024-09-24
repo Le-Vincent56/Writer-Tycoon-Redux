@@ -2,6 +2,7 @@ using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Mediation;
+using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -69,6 +70,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
+                Type = ProgressType.Development,
                 Current = currentDay,
                 Maximum = currentDayEstimate,
             });
@@ -128,6 +130,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Update the progress data
                     EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
                     {
+                        Type = ProgressType.Development,
                         Current = currentDay,
                         Maximum = currentDayEstimate,
                     });
@@ -161,6 +164,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Update the progress data
                     EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
                     {
+                        Type = ProgressType.Development,
                         Current = currentDay,
                         Maximum = currentDayEstimate,
                     });

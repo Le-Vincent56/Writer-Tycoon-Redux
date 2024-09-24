@@ -4,8 +4,16 @@ using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.WorkCreation.UI.Development
 {
+    public enum ProgressType
+    {
+        Development,
+        Errors,
+        Polish
+    }
+
     public class ProgressBar : MonoBehaviour
     {
+        [SerializeField] private ProgressType progressType;
         [SerializeField] private float lastFillAmount;
         [SerializeField] private float currentFillAmount;
         [SerializeField] private float timeToReachTarget;
@@ -48,11 +56,24 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void GetCurrentFill(UpdateProgressData eventData)
         {
+            // Exit case - if not the correct progress type
+            if (eventData.Type != progressType) return;
+
             // Calculate the target fill amount based on event data
             float newFillAmount = (float)eventData.Current / (float)eventData.Maximum;
 
             // Update the current fill target, clamping it between 0 and 1
             currentFillAmount = Mathf.Clamp01(newFillAmount);
+        }
+
+        private void ActivateBar()
+        {
+
+        }
+
+        private void DeactivateBar()
+        {
+
         }
     }
 }

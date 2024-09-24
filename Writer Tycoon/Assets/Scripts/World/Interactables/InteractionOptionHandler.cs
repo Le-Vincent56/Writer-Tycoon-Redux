@@ -8,9 +8,11 @@ namespace WriterTycoon.World.Interactables.UI
     {
         [SerializeField] private MenuActionButton newWorkButton;
         [SerializeField] private MenuActionButton continueWorkButton;
+        [SerializeField] private MenuActionButton publishWorkButton;
         [SerializeField] private MenuActionButton eatButton;
 
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private EventBinding<EndDevelopment> endDevelopmentEvent;
         private EventBinding<EndEditing> onEditingEndEvent;
 
         private void Awake()
@@ -21,16 +23,21 @@ namespace WriterTycoon.World.Interactables.UI
             // Initialize the Menu Action Buttons
             newWorkButton.Initialize(commandFactory.CreateMenuActionCommand("New Work"));
             continueWorkButton.Initialize(commandFactory.CreateMenuActionCommand("Continue Work"));
+            publishWorkButton.Initialize(commandFactory.CreateMenuActionCommand("Publish Work"));
             eatButton.Initialize(commandFactory.CreateMenuActionCommand("Eat"));
 
             // Disable the "Work" button
             continueWorkButton.Disable();
+            publishWorkButton.Disable();
         }
 
         private void OnEnable()
         {
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(ChangeButtonsOnWorkCreation);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(ChangeButtonsOnDevelopmentEnd);
+            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
 
             onEditingEndEvent = new EventBinding<EndEditing>(ChangeButtonsOnEditingEnd);
             EventBus<EndEditing>.Register(onEditingEndEvent);
@@ -52,6 +59,24 @@ namespace WriterTycoon.World.Interactables.UI
 
             // Enable the "Work" button
             continueWorkButton.Enable();
+
+            // Disable the "Publish" button
+            publishWorkButton.Disable();
+        }
+
+        /// <summary>
+        /// Callback function for changing button interactability after development end
+        /// </summary>
+        private void ChangeButtonsOnDevelopmentEnd(EndDevelopment eventData)
+        {
+            // Disable the "New" button
+            newWorkButton.Disable();
+
+            // Enable the "Work" button
+            continueWorkButton.Enable();
+
+            // Enable the "Publish" button
+            publishWorkButton.Enable();
         }
 
         /// <summary>
@@ -64,6 +89,9 @@ namespace WriterTycoon.World.Interactables.UI
 
             // Disable the "Work" button
             continueWorkButton.Disable();
+
+            // Disable the "Publish" button
+            publishWorkButton.Disable();
         }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.UI.Development;
 using WriterTycoon.World.Interactables;
 
 namespace WriterTycoon.Patterns.EventBus
@@ -44,10 +45,14 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ShowProgressText : IEvent
     {
+        public ProgressType Type;
         public string Text;
     }
 
-    public struct HideProgressText : IEvent { }
+    public struct HideProgressText : IEvent
+    {
+        public ProgressType Type;
+    }
 
     public struct SetCanInteract : IEvent
     {
