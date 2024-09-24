@@ -44,7 +44,7 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         {
             for(int i = 0; i < sliders.Length; i++)
             {
-                sliders[i].onValueChanged.AddListener((value) => BindSliders(value, i));
+                sliders[i].onValueChanged.AddListener((value) => BindSliders(value, sliders[i], ref previousValues[i]));
             }
         }
 
@@ -52,7 +52,7 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         /// Callback function to bind the sliders to a maximum
         /// </summary>
         /// <param name="value"></param>
-        private void BindSliders(float value, int index)
+        private void BindSliders(float value, Slider slider, ref int previousValue)
         {
             // TODO: Get a reference to the slider being changed here
 
@@ -65,12 +65,14 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
                 // Calculate the excess value
                 float excessValue = totalValue - 15;
 
+                Debug.Log($"{slider}, {previousValue}");
+
                 // Subtract the excess from the slider's previous value
-                sliders[index].value = previousValues[index] - excessValue;
+                slider.value = previousValue - excessValue;
             }
 
             // Update the slider's previous value
-            previousValues[index] = (int)sliders[index].value;
+            previousValue = (int)slider.value;
         }
 
         /// <summary>
