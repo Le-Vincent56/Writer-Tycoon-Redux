@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
+using WriterTycoon.WorkCreation.Development.ErrorGeneration;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
@@ -10,7 +11,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         public override void Visit<T>(T visitable)
         {
             // Determine mediation routes
-            if (visitable is PointGenerationManager pointGenerator) pointGenerator.SetWorksInProgress(Content);
+            if (visitable is PointGenerationManager pointGenerationManager) pointGenerationManager.SetWorksInProgress(Content);
+            if (visitable is ErrorGenerationManager errorGenerationManager) errorGenerationManager.SetWorksInProgress(Content);
         }
     }
 }

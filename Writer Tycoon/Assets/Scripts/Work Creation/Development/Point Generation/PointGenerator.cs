@@ -264,11 +264,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             generationRates[0] = CalculateGenerationRate(splitOneTime, targetSplitScores[0]);
             generationRates[1] = CalculateGenerationRate(splitTwoTime, targetSplitScores[1]);
             generationRates[2] = CalculateGenerationRate(splitThreeTime, targetSplitScores[2]);
-
-            foreach(float rate in generationRates)
-            {
-                Debug.Log(rate);
-            }
         }
 
         /// <summary>
@@ -339,6 +334,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         {
             generatePoints = true;
             this.allocatedPoints = allocatedPoints;
+
+            Debug.Log("Set allocated points");
 
             // Set split times
             SetPhaseSplitTime();

@@ -5,6 +5,7 @@ using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+using WriterTycoon.WorkCreation.Rater;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -27,8 +28,10 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [SerializeField] private int phaseThreeDayEstimate;
 
         [SerializeField] private PointGenerator pointGenerator;
+        [SerializeField] private ErrorGenerator errorGenerator;
 
         public PointGenerator PointGenerator { get => pointGenerator; }
+        public ErrorGenerator ErrorGenerator { get => errorGenerator; }
 
         public Work(List<IWorker> workers, TimeEstimates estimates, List<Genre> chosenGenres, float targetScore, int hash)
         {
@@ -53,6 +56,10 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Initialize the pointGenerator
             pointGenerator = new PointGenerator(chosenGenres, currentPhase, targetScore);
+            errorGenerator = new ErrorGenerator(estimates.Total, 0.33f);
+
+            // Set the current phase total for the second phase
+            pointGenerator.SetCurrentPhaseTotal(phaseOneDayEstimate);
         }
 
         /// <summary>
@@ -96,6 +103,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     // Set the new time estimate
                     currentDayEstimate = phaseTwoDayEstimate;
 
+                    // Set the current phase total for the second phase
+                    pointGenerator.SetCurrentPhaseTotal(phaseTwoDayEstimate);
+
                     // End the phase
                     EndPhase();
                     break;
@@ -106,6 +116,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
                     // Set the new time estimate
                     currentDayEstimate = phaseThreeDayEstimate;
+
+                    // Set the current phase total for the third phase
+                    pointGenerator.SetCurrentPhaseTotal(phaseThreeDayEstimate);
 
                     // End the phase
                     EndPhase();
@@ -142,14 +155,6 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             {
                 Hash = hash,
                 Phase = currentPhase
-            });
-
-            // Send out the third phase's estimates
-            EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
-            {
-
-                Hash = hash,
-                TimeEstimate = phaseThreeDayEstimate
             });
 
             // Open the slider window

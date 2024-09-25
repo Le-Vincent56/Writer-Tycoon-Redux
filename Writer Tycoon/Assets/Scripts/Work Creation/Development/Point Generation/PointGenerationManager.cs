@@ -11,13 +11,12 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         [SerializeField] private Dictionary<int, Work> worksInProgress;
         private GenreFocusTargets genreFocusTargets;
 
-        public override string Name => "Point Generator";
+        public override string Name => "Point Generation Manager";
         public override DedicantType Type => DedicantType.PointGenerator;
 
         private EventBinding<PassHour> passHourEvent;
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<SetDevelopmentPhase> setDevelopmentPhaseEvent;
-        private EventBinding<SendPhaseTime> sendPhaseTimeEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
 
         private void Awake()
@@ -39,9 +38,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             setDevelopmentPhaseEvent = new EventBinding<SetDevelopmentPhase>(SetDevelopmentPhase);
             EventBus<SetDevelopmentPhase>.Register(setDevelopmentPhaseEvent);
 
-            sendPhaseTimeEvent = new EventBinding<SendPhaseTime>(SetPhaseTotal);
-            EventBus<SendPhaseTime>.Register(sendPhaseTimeEvent);
-
             endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndResetGenerator);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
@@ -51,7 +47,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             EventBus<PassHour>.Deregister(passHourEvent);
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<SetDevelopmentPhase>.Deregister(setDevelopmentPhaseEvent);
-            EventBus<SendPhaseTime>.Deregister(sendPhaseTimeEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
 
@@ -86,14 +81,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         private void SetDevelopmentPhase(SetDevelopmentPhase eventData)
         {
             worksInProgress[eventData.Hash].PointGenerator.SetDevelopmentPhase(eventData.Phase);
-        }
-
-        /// <summary>
-        /// Callback function to set the current phase's total time for a given Work
-        /// </summary>
-        private void SetPhaseTotal(SendPhaseTime eventData)
-        {
-            worksInProgress[eventData.Hash].PointGenerator.SetCurrentPhaseTotal(eventData.TimeEstimate);
         }
 
         /// <summary>

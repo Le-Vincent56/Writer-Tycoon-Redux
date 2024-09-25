@@ -1,6 +1,6 @@
 using WriterTycoon.WorkCreation.Mediation;
 
-namespace WrtierTycoon.WorkCreation.Rater
+namespace WriterTycoon.WorkCreation.Rater
 {
     public class WorkRater : Dedicant
     {
