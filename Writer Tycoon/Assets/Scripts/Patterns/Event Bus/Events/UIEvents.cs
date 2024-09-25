@@ -33,7 +33,10 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct CloseInteractMenus : IEvent { }
 
-    public struct OpenSliderWindow : IEvent { }
+    public struct OpenSliderWindow : IEvent 
+    {
+        public int Hash;
+    }
 
     public struct CloseSliderWindow : IEvent { }
 

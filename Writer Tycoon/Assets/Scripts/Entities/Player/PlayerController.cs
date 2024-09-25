@@ -214,6 +214,12 @@ namespace WriterTycoon.Entities.Player
                             // Set first time working to false
                             firstTimeWorking = false;
 
+                            // Open the Focus Slider window
+                            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow()
+                            {
+                                Hash = assignedHash
+                            });
+
                             // Set the current development phase state
                             EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                             {
@@ -226,9 +232,6 @@ namespace WriterTycoon.Entities.Player
                             {
                                 Hash = assignedHash
                             });
-
-                            // Open the Focus Slider window
-                            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
                         }
                     });
                     break;

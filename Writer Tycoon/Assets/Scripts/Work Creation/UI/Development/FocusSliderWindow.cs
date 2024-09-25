@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
@@ -10,12 +11,15 @@ namespace WriterTycoon.WorkCreation.UI.Development
 {
     public class FocusSliderWindow : MonoBehaviour
     {
+        [SerializeField] private bool windowOpen;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int currentHash;
         [SerializeField] private DevelopmentPhase currentPhase;
         [SerializeField] private CanvasGroup[] screens = new CanvasGroup[3];
         [SerializeField] private FocusSlider[] focusSliders = new FocusSlider[9];
         [SerializeField] private ConfirmSlidersButton[] confirmButtons = new ConfirmSlidersButton[3];
+
+        private Queue<int> hashQueue;
 
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
@@ -63,6 +67,10 @@ namespace WriterTycoon.WorkCreation.UI.Development
                 // Initialize the slider
                 slider.Initialize(this);
             }
+
+            // Initialize variables
+            hashQueue = new();
+            windowOpen = false;
         }
 
         private void OnEnable()
@@ -88,6 +96,34 @@ namespace WriterTycoon.WorkCreation.UI.Development
         {
             // Update the state machine
             stateMachine.Update();
+
+            // Exit case - if there is nothing in the hash queue
+            if (hashQueue.Count == 0) return;
+
+            // Exit case - if the window is already open
+            if (windowOpen) return;
+
+            // Dequeue the hash and set it as the current hash
+            currentHash = hashQueue.Dequeue();
+
+            // Close the interact menus
+            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+
+            // Ensure the calendar is paused
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false
+            });
+
+            // Don't allow the player to interact with outside objects
+            EventBus<SetCanInteract>.Raise(new SetCanInteract()
+            {
+                CanInteract = false
+            });
+
+            // Show the window
+            ShowWindow();
         }
 
         private void FixedUpdate()
@@ -116,24 +152,8 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// <param name="eventData"></param>
         private void OpenSliderWindow(OpenSliderWindow eventData)
         {
-            // Close the interact menus
-            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
-
-            // Ensure the calendar is paused
-            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
-            {
-                Paused = true,
-                AllowSpeedChanges = false
-            });
-
-            // Don't allow the player to interact with outside objects
-            EventBus<SetCanInteract>.Raise(new SetCanInteract()
-            {
-                CanInteract = false
-            });
-
-            // Show the window
-            ShowWindow();
+            // Enqueue the hash
+            hashQueue.Enqueue(eventData.Hash);
         }
 
         /// <summary>
@@ -164,6 +184,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void ShowWindow()
         {
+            // Set the window to open
+            windowOpen = true;
+
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
                 originalPosition.x,
@@ -176,21 +199,6 @@ namespace WriterTycoon.WorkCreation.UI.Development
             Fade(1f, duration, () => {
                 window.interactable = true;
                 window.blocksRaycasts = true;
-            });
-
-            // Translate down
-            Translate(-translateValue, duration);
-        }
-
-        /// <summary>
-        /// Hide the Work window
-        /// </summary>
-        private void HideWindow()
-        {
-            // Fade out
-            Fade(0f, duration, () => {
-                window.interactable = false;
-                window.blocksRaycasts = false;
             });
 
             // Translate down
@@ -216,7 +224,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
                     }, Ease.OutCirc);
 
                     // And translate downwards
-                    Translate(-translateValue * 2f, duration, null, Ease.OutCirc);
+                    Translate(-translateValue * 2f, duration, () => windowOpen = false, Ease.OutCirc);
                 },
                 Ease.OutBack
             );

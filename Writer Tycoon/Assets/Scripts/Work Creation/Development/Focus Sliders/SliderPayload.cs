@@ -9,7 +9,7 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         public override (int Hash, Dictionary<PointCategory, int> Points) Content { get; set; }
         public override void Visit<T>(T visitable)
         {
-            if (visitable is PointGenerator pointGenerator) pointGenerator.SetAllocatedPoints(Content);
+            if (visitable is PointGenerationManager pointGenerator) pointGenerator.SetAllocatedPoints(Content);
         }
     }
 }

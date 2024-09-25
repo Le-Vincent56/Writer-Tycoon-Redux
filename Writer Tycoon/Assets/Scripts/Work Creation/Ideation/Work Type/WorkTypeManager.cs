@@ -85,11 +85,10 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         {
             Send(new WorkTypePayload() 
                 { Content = (selectedType, targetScore) }, 
-                AreTypes(new DedicantType[3]
+                AreTypes(new DedicantType[2]
                 {
                     DedicantType.TimeEstimator,
-                    DedicantType.IdeaReviewer,
-                    DedicantType.PointGenerator
+                    DedicantType.IdeaReviewer
                 })
             );
         }

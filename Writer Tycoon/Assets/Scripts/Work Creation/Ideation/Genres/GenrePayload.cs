@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Review;
 
@@ -15,7 +14,6 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
             // Verify types for mediation
             if (visitable is CompatibilityManager compatibilityManager) compatibilityManager.SetGenres(Content);
             if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetGenres(Content);
-            if (visitable is PointGenerator pointGenerator) pointGenerator.SetGenres(Content);
         }
     }
 }

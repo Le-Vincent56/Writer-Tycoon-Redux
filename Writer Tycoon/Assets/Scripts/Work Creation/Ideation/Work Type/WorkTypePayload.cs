@@ -13,8 +13,7 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         {
             // Verify types for mediation
             if (visitable is TimeEstimator timeEstimator) timeEstimator.SetWorkType(Content.Type);
-            if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetWorkType(Content.Type);
-            if (visitable is PointGenerator pointGenerator) pointGenerator.SetTargetScore(Content.TargetScore);
+            if (visitable is IdeaReviewer ideaReviewer) ideaReviewer.SetWorkType(Content.Type, Content.TargetScore);
         }
     }
 }

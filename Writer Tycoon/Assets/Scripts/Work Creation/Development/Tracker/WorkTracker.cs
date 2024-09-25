@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
 
@@ -13,7 +14,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
     public class WorkTracker : Dedicant
     {
-        private Dictionary<int, Work> worksToTrack;
+        [SerializeField] private Dictionary<int, Work> worksToTrack;
 
         public override string Name => "Work Tracker";
         public override DedicantType Type => DedicantType.Tracker;
@@ -51,8 +52,16 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             worksToTrack.Add(eventData.ReviewData.Hash, new Work(
                 eventData.ReviewData.Workers,
                 eventData.ReviewData.TimeEstimates,
+                eventData.ReviewData.Genres,
+                eventData.ReviewData.TargetScore,
                 eventData.ReviewData.Hash
             ));
+
+            // Send out the tracked works
+            Send(new TrackerPayload()
+                { Content = worksToTrack },
+                IsType(DedicantType.PointGenerator)
+            );
         }
 
         /// <summary>

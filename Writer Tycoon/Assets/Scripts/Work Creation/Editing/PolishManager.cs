@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Editing
 {
     public class PolishManager : Dedicant
     {
+        private Dictionary<int, Work> worksInProgress;
+
         [SerializeField] private bool working;
         [SerializeField] private bool polish;
 
@@ -227,11 +231,11 @@ namespace WriterTycoon.WorkCreation.Editing
         }
 
         /// <summary>
-        /// Set the amount of points the player accumulated during development
+        /// Set the Works in progress
         /// </summary>
-        public void SetPoints(float points)
+        public void SetWorks(Dictionary<int, Work> worksInProgress)
         {
-            developedPoints = points;
+            this.worksInProgress = worksInProgress;
         }
 
         /// <summary>

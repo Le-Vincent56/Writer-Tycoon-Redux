@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.Development.PointGeneration;
+using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
@@ -13,17 +15,22 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         private List<IWorker> workers;
 
         [SerializeField] private bool developing;
-        [SerializeField] private int currentDay;
+        [SerializeField] private int currentDayPhase;
 
         [SerializeField] private DevelopmentPhase currentPhase;
 
+        [Header("Phases")]
         [SerializeField] private int currentDayEstimate;
         [SerializeField] private int totalDayEstimate;
         [SerializeField] private int phaseOneDayEstimate;
         [SerializeField] private int phaseTwoDayEstimate;
         [SerializeField] private int phaseThreeDayEstimate;
 
-        public Work(List<IWorker> workers, TimeEstimates estimates, int hash)
+        [SerializeField] private PointGenerator pointGenerator;
+
+        public PointGenerator PointGenerator { get => pointGenerator; }
+
+        public Work(List<IWorker> workers, TimeEstimates estimates, List<Genre> chosenGenres, float targetScore, int hash)
         {
             // Set the hash
             this.hash = hash;
@@ -43,6 +50,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Set developing
             developing = true;
+
+            // Initialize the pointGenerator
+            pointGenerator = new PointGenerator(chosenGenres, currentPhase, targetScore);
         }
 
         /// <summary>
@@ -57,17 +67,17 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             if (!developing) return;
 
             // Increment the current day
-            currentDay++;
+            currentDayPhase++;
 
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
-                Current = currentDay,
+                Current = currentDayPhase,
                 Maximum = currentDayEstimate,
             });
 
             // Check if the current day has reached the estimate
-            if (currentDay == currentDayEstimate)
+            if (currentDayPhase == currentDayEstimate)
                 // If so, update the phase
                 UpdatePhase();
         }
@@ -103,7 +113,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
                 case DevelopmentPhase.PhaseThree:
                     // Reset the current day
-                    currentDay = 0;
+                    currentDayPhase = 0;
 
                     // Finish development
                     FinishDevelopment();
@@ -117,13 +127,13 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         private void EndPhase()
         {
             // Reset the current day
-            currentDay = 0;
+            currentDayPhase = 0;
 
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
                 Hash = hash,
-                Current = currentDay,
+                Current = currentDayPhase,
                 Maximum = currentDayEstimate,
             });
 
@@ -143,7 +153,10 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             });
 
             // Open the slider window
-            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow()
+            {
+                Hash = hash
+            });
         }
 
         /// <summary>

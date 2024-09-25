@@ -143,11 +143,10 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
             // Send the Genre payload
             Send(new GenrePayload() 
                 { Content = selectedGenres }, 
-                AreTypes(new DedicantType[3]
+                AreTypes(new DedicantType[2]
                 {
                     DedicantType.Compatibility,
                     DedicantType.IdeaReviewer,
-                    DedicantType.PointGenerator
                 })
             );
         }

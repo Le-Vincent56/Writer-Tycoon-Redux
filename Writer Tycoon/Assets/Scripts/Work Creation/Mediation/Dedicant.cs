@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 using WriterTycoon.Patterns.Mediator;
@@ -30,7 +31,7 @@ namespace WriterTycoon.WorkCreation.Mediation
         Editor
     }
 
-    public abstract class Dedicant : MonoBehaviour, IVisitable
+    public abstract class Dedicant : SerializedMonoBehaviour, IVisitable
     {
         protected Mediator<Dedicant> mediator;
 

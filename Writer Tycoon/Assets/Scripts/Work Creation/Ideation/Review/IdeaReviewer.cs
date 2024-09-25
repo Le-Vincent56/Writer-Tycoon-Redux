@@ -21,6 +21,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         public List<IWorker> Workers;
         public AboutInfo AboutInfo;
         public WorkType WorkType;
+        public float TargetScore;
         public AudienceType AudienceType;
         public List<Topic> Topics;
         public List<Genre> Genres;
@@ -32,6 +33,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         [SerializeField] private List<IWorker> workers;
         [SerializeField] private AboutInfo aboutInfo;
         [SerializeField] private WorkType workType;
+        [SerializeField] private float targetScore;
         [SerializeField] private AudienceType audienceType;
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
@@ -72,10 +74,11 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         /// <summary>
         /// Set the Work Type for the Idea Reviewer
         /// </summary>
-        public void SetWorkType(WorkType workType)
+        public void SetWorkType(WorkType workType, float targetScore)
         {
             // Set data
             this.workType = workType;
+            this.targetScore = targetScore;
 
             // Invoke the update event
             OnUpdateWorkType.Invoke(this.workType);
@@ -171,6 +174,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
                     Workers = workers,
                     AboutInfo = aboutInfo,
                     WorkType = workType,
+                    TargetScore = targetScore,
                     AudienceType = audienceType,
                     Topics = topics,
                     Genres = genres,
