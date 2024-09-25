@@ -26,6 +26,9 @@ namespace WriterTycoon.WorkCreation.Rater
             GetTotalErrors(totalTime);
         }
 
+        /// <summary>
+        /// Generate errors for the Work
+        /// </summary>
         public void GenerateErrors()
         {
             // Exit case - if traversed all the days
