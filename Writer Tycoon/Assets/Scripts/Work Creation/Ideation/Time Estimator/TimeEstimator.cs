@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
@@ -23,6 +24,7 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
         private int phaseTwoDayEstimate;
         private int phaseThreeDayEstimate;
         private List<Topic> topics;
+        private List<IWorker> workers;
         [SerializeField] private WorkType workType;
 
         public UnityAction<int> Updated = delegate { };
@@ -59,6 +61,12 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             // Add estimates
             totalDayEstimate += GetWorkTypeEstimates();
             totalDayEstimate += GetTopicEstimates();
+
+            // Get the total day estimate as a float to incorporate the scalar
+            float totalDayEstimateFloat = (float)totalDayEstimate * GetWorkerEstimates();
+
+            // Round the scaled estimate
+            totalDayEstimate = Mathf.RoundToInt(totalDayEstimateFloat);
 
             // Split the total estimates into three phases
             phaseOneDayEstimate = (int)(totalDayEstimate * (1f / 5f));
@@ -121,6 +129,14 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             UpdateEstimate();
         }
 
+        public void SetWorkers(List<IWorker> workers)
+        {
+            this.workers = workers;
+
+            // Update the estimate
+            UpdateEstimate();
+        }
+
         /// <summary>
         /// Get the time estimates for the current Work Type
         /// </summary>
@@ -159,6 +175,23 @@ namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
             }
 
             return totalTime;
+        }
+
+        private float GetWorkerEstimates()
+        {
+            // Exit case - if the Workers list is null or empty
+            if (workers == null || workers.Count == 0) return 1f;
+
+            // Exit case - if there's only one worker, return the default scalar
+            if (workers.Count == 0) return 1f;
+
+            // Establish a total time estimate
+            float timeScalar = 1f;
+
+            // Multiply the time scalar by 0.75 for each worker besides the first
+            timeScalar *= Mathf.Pow(0.75f, workers.Count - 1);
+
+            return timeScalar;
         }
 
         /// <summary>

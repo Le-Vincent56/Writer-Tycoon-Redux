@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Entities.Player;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Utilities.Hash;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Review;
@@ -108,6 +109,12 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// </summary>
         private void UpdateSuccessUI()
         {
+            // Generate a hash
+            int hash = HashUtils.GenerateHash(reviewData.AboutInfo.Title);
+
+            // Set the hash
+            reviewData.Hash = hash;
+
             // Unpause the Calendar
             EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
             {
@@ -115,9 +122,10 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 AllowSpeedChanges = true
             });
 
-            // Set the card title
-            EventBus<SetProgressCardTitle>.Raise(new SetProgressCardTitle()
+            // Create a progress card
+            EventBus<CreateProgressCard>.Raise(new CreateProgressCard()
             {
+                Hash = hash,
                 Title = reviewData.AboutInfo.Title
             });
 
@@ -133,6 +141,9 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 TargetPosition = new Vector2Int(9, 5),
                 Type = CommandType.Computer
             });
+
+            // Clear ideation to prepare for a new creation
+            EventBus<ClearIdeation>.Raise(new ClearIdeation());
         }
     }
 }

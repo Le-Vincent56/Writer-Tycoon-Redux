@@ -2,23 +2,22 @@ using DG.Tweening;
 using UnityEngine;
 using WriterTycoon.Patterns.StateMachine;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation.States
+namespace WriterTycoon.WorkCreation.UI.Development.States
 {
-    public class CreateWorkState : IState
+    public class ProgressState : IState
     {
         protected float fadeDuration;
         protected CanvasGroup canvasGroup;
         protected Tween fadeTween;
 
-        public CreateWorkState(CanvasGroup canvasGroup)
+        public ProgressState(CanvasGroup canvasGroup)
         {
-            fadeDuration = 0f;
             this.canvasGroup = canvasGroup;
         }
 
         public virtual void OnEnter()
         {
-            // Show the State
+            // Show the state
             Show();
         }
 
@@ -34,7 +33,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation.States
 
         public virtual void OnExit()
         {
-            // Hide the State
+            // Hide the state
             Hide();
         }
 

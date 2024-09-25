@@ -15,6 +15,7 @@ namespace WriterTycoon.WorkCreation.Mediation
         Audience,
         Topic,
         Genre,
+        Workers,
         Compatibility,
         IdeaReviewer,
 

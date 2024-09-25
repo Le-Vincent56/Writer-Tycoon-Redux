@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Player.States;
+using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Patterns.StateMachine;
@@ -17,24 +18,33 @@ namespace WriterTycoon.Entities.Player
         Fridge
     }
 
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IWorker
     {
+        [Header("General")]
+        [SerializeField] private string playerName;
+
+        [Header("Locomotion")]
         [SerializeField] private bool canMove;
         [SerializeField] private float baseMoveSpeed;
         [SerializeField] private float currentMoveSpeed;
         [SerializeField] private bool moving;
-
-        [SerializeField] private bool firstTimeWorking;
-        [SerializeField] private bool working;
-        [SerializeField] private bool eating;
 
         private MapGraph graph;
         private Node currentNode;
         [SerializeField] private List<Node> currentPath;
         [SerializeField] private int currentPathIndex;
 
+        [Header("Rest/Recreation")]
+        [SerializeField] private bool firstTimeWorking;
+        [SerializeField] private bool eating;
+
+        [Header("Work")]
+        [SerializeField] private bool working;
+        [SerializeField] private int assignedHash;
+
         private Animator animator;
         private SpriteRenderer spriteRenderer;
+        private WorkerRecord workerRecord;
 
         private StateMachine stateMachine;
 
@@ -43,6 +53,10 @@ namespace WriterTycoon.Entities.Player
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
         private EventBinding<EndEditing> endEditingEvent;
         private EventBinding<ChangeCalendarSpeed> changeCalendarSpeedEvent;
+
+        public string Name { get => playerName; set => playerName = value; }
+        public bool Working { get => working; set => working = value; }
+        public int AssignedHash { get => assignedHash; set => assignedHash = value; }
 
         private void Awake()
         {
@@ -54,6 +68,8 @@ namespace WriterTycoon.Entities.Player
             currentMoveSpeed = baseMoveSpeed;
             canMove = true;
             firstTimeWorking = true;
+            AssignedHash = -1;
+            playerName = "Vincent Le";
 
             // Initialize the state machine
             stateMachine = new StateMachine();
@@ -117,6 +133,10 @@ namespace WriterTycoon.Entities.Player
 
             currentNode = graph.GetNodeFromWorldPosition(transform.position);
             transform.position = graph.GetWorldPosFromNode(currentNode);
+
+            // Get the worker record to use as a service
+            workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
+            workerRecord.RecordWorker(this);
         }
 
         private void Update()

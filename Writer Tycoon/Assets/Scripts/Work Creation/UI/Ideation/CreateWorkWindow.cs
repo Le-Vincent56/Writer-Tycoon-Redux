@@ -8,8 +8,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 {
     public class CreateWorkWindow : MonoBehaviour
     {
-        private bool canOpenWindow;
-
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
@@ -29,7 +27,8 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         public int IDEATION { get => 0; }
         public int TOPIC { get => 1; }
         public int GENRE { get => 2; }
-        public int REVIEW { get => 3; }
+        public int WORKERS { get => 3; }
+        public int REVIEW { get => 4; }
 
         private void Awake()
         {
@@ -43,6 +42,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             IdeationState ideationState = new IdeationState(screens[IDEATION]);
             TopicState topicState = new TopicState(screens[TOPIC]);
             GenreState genreState = new GenreState(screens[GENRE]);
+            WorkersState workersState = new WorkersState(screens[WORKERS]);
             ReviewState reviewState = new ReviewState(screens[REVIEW]);
 
             // Set state transitions
@@ -52,9 +52,12 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             stateMachine.At(topicState, genreState, new FuncPredicate(() => state == GENRE));
 
             stateMachine.At(genreState, topicState, new FuncPredicate(() => state == TOPIC));
-            stateMachine.At(genreState, reviewState, new FuncPredicate(() => state == REVIEW));
+            stateMachine.At(genreState, workersState, new FuncPredicate(() => state == WORKERS));
 
-            stateMachine.At(reviewState, genreState, new FuncPredicate(() => state == GENRE));
+            stateMachine.At(workersState, genreState, new FuncPredicate(() => state == GENRE));
+            stateMachine.At(workersState, reviewState, new FuncPredicate(() => state == REVIEW));
+
+            stateMachine.At(reviewState, workersState, new FuncPredicate(() => state == WORKERS));
             stateMachine.At(reviewState, ideationState, new FuncPredicate(() => state == IDEATION));
 
             // Set the initial state
@@ -62,7 +65,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 
             // Set variables
             originalPosition = window.transform.localPosition;
-            canOpenWindow = true;
         }
 
         private void OnEnable()
@@ -109,9 +111,9 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         }
         
         /// <summary>
-        /// Callback for handling the Work menu
+        /// Callback for opening the Work menu
         /// </summary>
-        private void OpenWorkMenu(OpenCreateWorkMenu eventData)
+        private void OpenWorkMenu()
         {
             // Close the interact menus
             EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
@@ -133,7 +135,10 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             ShowWindow();
         }
 
-        private void CloseWorkMenu(CloseCreateWorkMenu eventData)
+        /// <summary>
+        /// Callback for closing the Work menu
+        /// </summary>
+        public void CloseWorkMenu()
         {
             // Hide the window
             HideWindow();
@@ -160,8 +165,8 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             // Hide the window
             HideWindowSuccess();
 
-            // Don't allow the player to open the window again
-            canOpenWindow = false;
+            // Set the state to ideation
+            state = IDEATION;
         }
 
         /// <summary>
@@ -169,9 +174,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// </summary>
         private void HandleDevelopmentEnd(EndDevelopment eventData)
         {
-            // Allow the player to open the window
-            canOpenWindow = true;
-
             // Set the state to ideation
             state = IDEATION;
         }
@@ -181,9 +183,6 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         /// </summary>
         private void ShowWindow()
         {
-            // Exit case - if cannot open the window
-            if (!canOpenWindow) return;
-
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
                 originalPosition.x, 

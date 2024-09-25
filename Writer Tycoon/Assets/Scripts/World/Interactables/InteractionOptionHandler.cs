@@ -55,7 +55,7 @@ namespace WriterTycoon.World.Interactables.UI
         private void ChangeButtonsOnWorkCreation(NotifySuccessfulCreation eventData)
         {
             // Disable the "New" button
-            newWorkButton.Disable();
+            //newWorkButton.Disable();
 
             // Enable the "Work" button
             continueWorkButton.Enable();
@@ -70,7 +70,7 @@ namespace WriterTycoon.World.Interactables.UI
         private void ChangeButtonsOnDevelopmentEnd(EndDevelopment eventData)
         {
             // Disable the "New" button
-            newWorkButton.Disable();
+            //newWorkButton.Disable();
 
             // Enable the "Work" button
             continueWorkButton.Enable();

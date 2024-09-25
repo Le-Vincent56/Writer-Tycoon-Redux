@@ -151,9 +151,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 {
                     // Stop generating points (if on split 3)
                     generatePoints = false;
-
-                    // Hide the development progress text
-                    EventBus<HideProgressText>.Raise(new HideProgressText());
                 }
 
                 return;

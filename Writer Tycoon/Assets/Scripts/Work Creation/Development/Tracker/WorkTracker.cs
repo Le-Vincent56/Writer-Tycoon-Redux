@@ -1,8 +1,6 @@
-using UnityEngine;
+using System.Collections.Generic;
 using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -15,203 +13,59 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
     public class WorkTracker : Dedicant
     {
-        [SerializeField] private bool working;
-        [SerializeField] private bool developing;
-        [SerializeField] private int currentDay;
-
-        [SerializeField] private DevelopmentPhase currentPhase;
-
-        [SerializeField] private int currentDayEstimate;
-        [SerializeField] private int totalDayEstimate;
-        [SerializeField] private int phaseOneDayEstimate;
-        [SerializeField] private int phaseTwoDayEstimate;
-        [SerializeField] private int phaseThreeDayEstimate;
+        private Dictionary<int, Work> worksToTrack;
 
         public override string Name => "Work Tracker";
         public override DedicantType Type => DedicantType.Tracker;
 
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-        private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkState;
+
+        private void Awake()
+        {
+            // Instantiate the dictionary
+            worksToTrack = new();
+        }
 
         private void OnEnable()
         {
-            passDayEvent = new EventBinding<PassDay>(UpdateTracker);
+            passDayEvent = new EventBinding<PassDay>(TrackWorks);
             EventBus<PassDay>.Register(passDayEvent);
 
-            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(StartTracker);
+            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(AddWorkToTrack);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
-
-            confirmPlayerWorkState = new EventBinding<ConfirmPlayerWorkState>(ChangeWorkState);
-            EventBus<ConfirmPlayerWorkState>.Register(confirmPlayerWorkState);
         }
 
         private void OnDisable()
         {
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkState);
         }
 
         /// <summary>
-        /// Callback event to update the Tracker
+        /// Callback function to add a new work to track
         /// </summary>
-        private void UpdateTracker()
+        public void AddWorkToTrack(NotifySuccessfulCreation eventData)
         {
-            // Exit case - if the Player is not working
-            if (!working) return;
-
-            // Exit case - if not developing
-            if (!developing) return;
-
-            // Increment the current day
-            currentDay++;
-
-            // Update the progress data
-            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-            {
-                Current = currentDay,
-                Maximum = currentDayEstimate,
-            });
-
-            // Check if the current day has reached the estimate
-            if (currentDay == currentDayEstimate)
-                // If so, update the phase
-                UpdatePhase();
+            // Add a new work to track
+            worksToTrack.Add(eventData.ReviewData.Hash, new Work(
+                eventData.ReviewData.Workers,
+                eventData.ReviewData.TimeEstimates,
+                eventData.ReviewData.Hash
+            ));
         }
 
         /// <summary>
-        /// Callback function to start the Work Tracker
+        /// Callback function to track works
         /// </summary>
-        /// <param name="notifySuccessfulCreation"></param>
-        private void StartTracker(NotifySuccessfulCreation notifySuccessfulCreation)
+        private void TrackWorks()
         {
-            // Set relevant data
-            TimeEstimates estimates = notifySuccessfulCreation.ReviewData.TimeEstimates;
-
-            // Set estimates
-            totalDayEstimate = estimates.Total;
-            phaseOneDayEstimate = estimates.PhaseOne;
-            phaseTwoDayEstimate = estimates.PhaseTwo;
-            phaseThreeDayEstimate = estimates.PhaseThree;
-
-            // Set the first phase of development
-            currentPhase = DevelopmentPhase.PhaseOne;
-            currentDayEstimate = phaseOneDayEstimate;
-
-            // Send out the first phase's estimates
-            EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+            // Iterate through each key-value pair in the works to track
+            foreach(KeyValuePair<int, Work> kvp in worksToTrack)
             {
-                TimeEstimate = phaseOneDayEstimate
-            });
-
-            // Set developing
-            developing = true;
-        }
-
-        /// <summary>
-        /// Update the current development phase
-        /// </summary>
-        private void UpdatePhase()
-        {
-            switch (currentPhase)
-            {
-                case DevelopmentPhase.PhaseOne:
-                    // Reset the current day
-                    currentDay = 0;
-
-                    // Start the second phase
-                    currentPhase = DevelopmentPhase.PhaseTwo;
-
-                    // Set the new time estimate
-                    currentDayEstimate = phaseTwoDayEstimate;
-
-                    // Update the progress data
-                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                    {
-                        Current = currentDay,
-                        Maximum = currentDayEstimate,
-                    });
-
-                    // Update the Focus Slider phase
-                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
-                    {
-                        Phase = currentPhase
-                    });
-
-                    // Send out the second phase's estimates
-                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
-                    {
-                        TimeEstimate = phaseTwoDayEstimate
-                    });
-
-                    // Open the slider window
-                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
-                    break;
-
-                case DevelopmentPhase.PhaseTwo:
-                    // Reset the current day
-                    currentDay = 0;
-
-                    // Increment the third phase
-                    currentPhase = DevelopmentPhase.PhaseThree;
-
-                    // Set the new time estimate
-                    currentDayEstimate = phaseThreeDayEstimate;
-
-                    // Update the progress data
-                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                    {
-                        Current = currentDay,
-                        Maximum = currentDayEstimate,
-                    });
-
-                    // Update the Focus Slider phase
-                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
-                    {
-                        Phase = currentPhase
-                    });
-
-                    // Send out the third phase's estimates
-                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
-                    {
-                        TimeEstimate = phaseThreeDayEstimate
-                    });
-
-                    // Open the slider window
-                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
-                    break;
-
-                case DevelopmentPhase.PhaseThree:
-                    // Reset the current day
-                    currentDay = 0;
-
-                    // Finish development
-                    FinishDevelopment();
-                    break;
+                // Track each work
+                kvp.Value.Track();
             }
         }
-
-        /// <summary>
-        /// Finish development
-        /// </summary>
-        private void FinishDevelopment()
-        {
-            // Stop developing
-            developing = false;
-
-            // Raise the End Development event
-            EventBus<EndDevelopment>.Raise(new EndDevelopment());
-
-            // Clear ideation settings to prepare for new creations
-            EventBus<ClearIdeation>.Raise(new ClearIdeation());
-
-            EventBus<BeginEditing>.Raise(new BeginEditing());
-        }
-
-        /// <summary>
-        /// Callback event to confirm the player is working
-        /// </summary>
-        private void ChangeWorkState(ConfirmPlayerWorkState eventData) => working = eventData.Working;
     }
 }

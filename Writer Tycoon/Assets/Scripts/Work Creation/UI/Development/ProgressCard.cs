@@ -2,11 +2,26 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.WorkCreation.Mediation;
+using WriterTycoon.WorkCreation.UI.Development.States;
 
 namespace WriterTycoon.WorkCreation.UI.Development
 {
+    public enum ProgressStage
+    {
+        Development,
+        Error,
+        Polish
+    }
+
     public class ProgressCard : MonoBehaviour
     {
+        [SerializeField] private ProgressStage currentStage;
+        [SerializeField] private ProgressTitle progressTitle;
+        [SerializeField] private ProgressBar progressBar;
+
+        [SerializeField] private CanvasGroup[] canvasGroups;
         [SerializeField] private float translateValue;
         [SerializeField] private float animateDuration;
         private RectTransform rectTransform;
@@ -16,26 +31,10 @@ namespace WriterTycoon.WorkCreation.UI.Development
         private Tween fadeTween;
         private Tween translateTween;
 
+        private StateMachine stateMachine;
+
         private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkStateEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
-
-        private void Awake()
-        {
-            // Verify the rect transform
-            if(rectTransform == null)
-                rectTransform = GetComponent<RectTransform>();
-
-            // Verify the layout element
-            if (layoutElement == null)
-                layoutElement = GetComponent<LayoutElement>();
-
-            // Verify the Canvas Group
-            if (card == null)
-                card = GetComponent<CanvasGroup>();
-
-            // Set variables
-            originalPosition = rectTransform.localPosition;
-        }
 
         private void OnEnable()
         {
@@ -50,6 +49,67 @@ namespace WriterTycoon.WorkCreation.UI.Development
         {
             EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkStateEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+        }
+
+        private void Update()
+        {
+            // Update the state machine
+            stateMachine.Update();
+        }
+
+        private void FixedUpdate()
+        {
+            // Fixed update the state machine
+            stateMachine.FixedUpdate();
+        }
+
+        public void Initialize(string title)
+        {
+            // Verify the Progress Title
+            if (progressTitle == null)
+                progressTitle = GetComponentInChildren<ProgressTitle>();
+
+            // Verify the Rect Transform
+            if (rectTransform == null)
+                rectTransform = GetComponent<RectTransform>();
+
+            // Verify the Layout Element
+            if (layoutElement == null)
+                layoutElement = GetComponent<LayoutElement>();
+
+            // Verify the Canvas Group
+            if (card == null)
+                card = GetComponent<CanvasGroup>();
+
+            // Set variables
+            originalPosition = rectTransform.localPosition;
+            currentStage = ProgressStage.Development;
+
+            // Initialize the Progress Title
+            progressTitle.Initialize(title);
+
+            InitializeStateMachine();
+        }
+
+        /// <summary>
+        /// Initialize the state machine for the Progress Card
+        /// </summary>
+        private void InitializeStateMachine()
+        {
+            // Initialize the state machine
+            stateMachine = new StateMachine();
+
+            // Create the states
+            ProgressDevelopmentState developmentState = new(canvasGroups[0]);
+            ProgressErrorState errorState = new(canvasGroups[1]);
+            ProgressPolishState polishState = new(canvasGroups[2]);
+
+            // Define state transitions
+            stateMachine.At(developmentState, errorState, new FuncPredicate(() => currentStage == ProgressStage.Error));
+            stateMachine.At(errorState, polishState, new FuncPredicate(() => currentStage == ProgressStage.Polish));
+
+            // Set an initial state
+            stateMachine.SetState(developmentState);
         }
 
         /// <summary>
@@ -71,6 +131,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void Show()
         {
+            // Ignore the layout
             layoutElement.ignoreLayout = true;
 
             // Set the window's initial position to be below
@@ -93,26 +154,14 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// </summary>
         private void Hide()
         {
+            // Ignore the layout
             layoutElement.ignoreLayout = true;
 
-            // Translate up slightly
-            Translate(
-                translateValue * (3f/4f),
-                animateDuration / 3f,
-                () =>
-                {
-                    // When done, fade out
-                    Fade(0f, animateDuration, () =>
-                    {
-                        card.interactable = false;
-                        card.blocksRaycasts = false;
-                    }, Ease.OutCirc);
+            // Fade out
+            Fade(0f, animateDuration, null, Ease.OutQuint);
 
-                    // Translate downwards
-                    Translate(-translateValue * 2f, animateDuration, () => layoutElement.ignoreLayout = false, Ease.OutCirc);
-                },
-                Ease.OutBack
-            );
+            // Translate down
+            Translate(-translateValue, animateDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
         }
 
         /// <summary>
@@ -137,7 +186,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// <summary>
         /// Handle translating for the Window
         /// </summary>
-        private void Translate(float endTranslateValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.OutQuint)
+        private void Translate(float endTranslateValue, float duration, TweenCallback onEnd = null, Ease easeType = Ease.InQuint)
         {
             // Kill the current translate tween if it exists
             translateTween?.Kill(false);

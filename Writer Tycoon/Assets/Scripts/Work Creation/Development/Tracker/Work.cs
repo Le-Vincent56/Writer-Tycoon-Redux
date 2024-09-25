@@ -1,0 +1,197 @@
+using System.Collections.Generic;
+using UnityEngine;
+using WriterTycoon.Entities;
+using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+
+namespace WriterTycoon.WorkCreation.Development.Tracker
+{
+    [System.Serializable]
+    public class Work
+    {
+        [SerializeField] private int hash;
+        private List<IWorker> workers;
+
+        [SerializeField] private bool developing;
+        [SerializeField] private int currentDay;
+
+        [SerializeField] private DevelopmentPhase currentPhase;
+
+        [SerializeField] private int currentDayEstimate;
+        [SerializeField] private int totalDayEstimate;
+        [SerializeField] private int phaseOneDayEstimate;
+        [SerializeField] private int phaseTwoDayEstimate;
+        [SerializeField] private int phaseThreeDayEstimate;
+
+        public Work(List<IWorker> workers, TimeEstimates estimates, int hash)
+        {
+            // Set the hash
+            this.hash = hash;
+
+            // Set workers
+            this.workers = workers;
+
+            // Set estimates
+            totalDayEstimate = estimates.Total;
+            phaseOneDayEstimate = estimates.PhaseOne;
+            phaseTwoDayEstimate = estimates.PhaseTwo;
+            phaseThreeDayEstimate = estimates.PhaseThree;
+
+            // Set the first phase of development
+            currentPhase = DevelopmentPhase.PhaseOne;
+            currentDayEstimate = phaseOneDayEstimate;
+
+            // Set developing
+            developing = true;
+        }
+
+        /// <summary>
+        /// Track the work
+        /// </summary>
+        public void Track()
+        {
+            // Exit case - if the Player is not working
+            if (!IsWorkedOn()) return;
+
+            // Exit case - if not developing
+            if (!developing) return;
+
+            // Increment the current day
+            currentDay++;
+
+            // Update the progress data
+            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+            {
+                Current = currentDay,
+                Maximum = currentDayEstimate,
+            });
+
+            // Check if the current day has reached the estimate
+            if (currentDay == currentDayEstimate)
+                // If so, update the phase
+                UpdatePhase();
+        }
+
+        /// <summary>
+        /// Update the current development phase
+        /// </summary>
+        private void UpdatePhase()
+        {
+            switch (currentPhase)
+            {
+                case DevelopmentPhase.PhaseOne:
+                    // Reset the current day
+                    currentDay = 0;
+
+                    // Start the second phase
+                    currentPhase = DevelopmentPhase.PhaseTwo;
+
+                    // Set the new time estimate
+                    currentDayEstimate = phaseTwoDayEstimate;
+
+                    // Update the progress data
+                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                    {
+                        Current = currentDay,
+                        Maximum = currentDayEstimate,
+                    });
+
+                    // Update the Focus Slider phase
+                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
+                    {
+                        Phase = currentPhase
+                    });
+
+                    // Send out the second phase's estimates
+                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+                    {
+                        TimeEstimate = phaseTwoDayEstimate
+                    });
+
+                    // Open the slider window
+                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+                    break;
+
+                case DevelopmentPhase.PhaseTwo:
+                    // Reset the current day
+                    currentDay = 0;
+
+                    // Increment the third phase
+                    currentPhase = DevelopmentPhase.PhaseThree;
+
+                    // Set the new time estimate
+                    currentDayEstimate = phaseThreeDayEstimate;
+
+                    // Update the progress data
+                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                    {
+                        Current = currentDay,
+                        Maximum = currentDayEstimate,
+                    });
+
+                    // Update the Focus Slider phase
+                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
+                    {
+                        Phase = currentPhase
+                    });
+
+                    // Send out the third phase's estimates
+                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+                    {
+                        TimeEstimate = phaseThreeDayEstimate
+                    });
+
+                    // Open the slider window
+                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+                    break;
+
+                case DevelopmentPhase.PhaseThree:
+                    // Reset the current day
+                    currentDay = 0;
+
+                    // Finish development
+                    FinishDevelopment();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Finish development
+        /// </summary>
+        private void FinishDevelopment()
+        {
+            // Stop developing
+            developing = false;
+
+            // Raise the End Development event
+            EventBus<EndDevelopment>.Raise(new EndDevelopment()
+            {
+                Hash = hash
+            });
+
+            // Begin the editing phase
+            EventBus<BeginEditing>.Raise(new BeginEditing()
+            {
+                Hash = hash
+            });
+        }
+
+        /// <summary>
+        /// Check if the Work is being worked on
+        /// </summary>
+        public bool IsWorkedOn()
+        {
+            bool isWorkedOn = false;
+
+            foreach(IWorker worker in workers)
+            {
+                // Check if at least one worker is working
+                if (worker.Working)
+                    // If so, set isWorking to true
+                    isWorkedOn = true;
+            }
+
+            return isWorkedOn;
+        }
+    }
+}

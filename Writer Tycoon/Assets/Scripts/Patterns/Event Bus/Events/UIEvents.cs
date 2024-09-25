@@ -43,6 +43,12 @@ namespace WriterTycoon.Patterns.EventBus
         public int PointsRemaining;
     }
 
+    public struct CreateProgressCard : IEvent 
+    {
+        public int Hash;
+        public string Title;
+    }
+
     public struct SetProgressCardTitle : IEvent
     {
         public string Title;

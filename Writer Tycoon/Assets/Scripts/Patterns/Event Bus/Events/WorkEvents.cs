@@ -1,3 +1,4 @@
+using UnityEngine;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
@@ -15,12 +16,14 @@ namespace WriterTycoon.Patterns.EventBus
     #region WORK DEVELOPMENT EVENTS
     public struct UpdateProgressData : IEvent
     {
+        public int Hash;
         public float Current;
         public float Maximum;
     }
 
     public struct SendPhaseTime : IEvent
     {
+        public int Hash;
         public int TimeEstimate;
     }
 
@@ -35,14 +38,26 @@ namespace WriterTycoon.Patterns.EventBus
         public int Value;
     }
 
-    public struct SendSliderPoints : IEvent { }
+    public struct SendSliderPoints : IEvent
+    {
+        public int Hash;
+    }
 
     public struct ClearIdeation : IEvent { }
 
-    public struct EndDevelopment : IEvent { }
+    public struct EndDevelopment : IEvent 
+    {
+        public int Hash;
+    }
 
-    public struct BeginEditing : IEvent { }
+    public struct BeginEditing : IEvent
+    {
+        public int Hash;
+    }
 
-    public struct EndEditing : IEvent { }
+    public struct EndEditing : IEvent
+    {
+        public int Hash;
+    }
     #endregion
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
@@ -16,6 +17,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
     [Serializable]
     public struct ReviewData
     {
+        public int Hash;
+        public List<IWorker> Workers;
         public AboutInfo AboutInfo;
         public WorkType WorkType;
         public AudienceType AudienceType;
@@ -26,6 +29,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
 
     public class IdeaReviewer : Dedicant
     {
+        [SerializeField] private List<IWorker> workers;
         [SerializeField] private AboutInfo aboutInfo;
         [SerializeField] private WorkType workType;
         [SerializeField] private AudienceType audienceType;
@@ -33,6 +37,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         [SerializeField] private List<Genre> genres;
         [SerializeField] private TimeEstimates timeEstimates;
 
+        public UnityAction<List<IWorker>> OnUpdateWorkers = delegate { };
         public UnityAction<AboutInfo> OnUpdateAboutData = delegate { };
         public UnityAction<WorkType> OnUpdateWorkType = delegate { };
         public UnityAction<AudienceType> OnUpdateAudienceType = delegate { };
@@ -140,6 +145,21 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         }
 
         /// <summary>
+        /// Set the list of Workers for the Idea Reviewer
+        /// </summary>
+        public void SetWorkers(List<IWorker> workers)
+        {
+            // Set data
+            this.workers = workers;
+
+            // Invoke the update event
+            OnUpdateWorkers.Invoke(this.workers);
+
+            // Update review data
+            UpdateReviewData();
+        }
+
+        /// <summary>
         /// Update and send the Review Data
         /// </summary>
         private void UpdateReviewData()
@@ -148,6 +168,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
             {
                 ReviewData = new ReviewData()
                 {
+                    Workers = workers,
                     AboutInfo = aboutInfo,
                     WorkType = workType,
                     AudienceType = audienceType,

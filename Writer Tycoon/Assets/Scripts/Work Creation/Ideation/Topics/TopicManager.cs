@@ -193,7 +193,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
         /// <summary>
         /// Clear the selected Topics list
         /// </summary>
-        public void ClearSelectedTopics()
+        private void ClearSelectedTopics()
         {
             // Iterate over each selected Topic Button
             foreach(TopicButton topicButton in selectedTopicButtons)
