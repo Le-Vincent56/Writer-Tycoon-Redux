@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
@@ -26,6 +27,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         [SerializeField] private Text audienceTypeText;
         [SerializeField] private Text topicsText;
         [SerializeField] private Text genresText;
+        [SerializeField] private Text workersText;
         [SerializeField] private Text timeEstimateText;
         [SerializeField] private Text missingText;
 
@@ -53,6 +55,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             ideaReviewer.OnUpdateAudienceType += UpdateAudienceReview;
             ideaReviewer.OnUpdateTopics += UpdateTopicsReview;
             ideaReviewer.OnUpdateGenres += UpdateGenresReview;
+            ideaReviewer.OnUpdateWorkers += UpdateWorkersReview;
             ideaReviewer.OnUpdateTimeEstimate += UpdateTimeEstimateReview;
         }
 
@@ -65,6 +68,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             ideaReviewer.OnUpdateAudienceType -= UpdateAudienceReview;
             ideaReviewer.OnUpdateTopics -= UpdateTopicsReview;
             ideaReviewer.OnUpdateGenres -= UpdateGenresReview;
+            ideaReviewer.OnUpdateWorkers -= UpdateWorkersReview;
             ideaReviewer.OnUpdateTimeEstimate -= UpdateTimeEstimateReview;
         }
 
@@ -86,6 +90,8 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 failedText += "\nWork Type";
             if (reviewData.AudienceType == AudienceType.None)
                 failedText += "\nAudience";
+            if (reviewData.Workers == null || reviewData.Workers.Count == 0)
+                failedText += "\nWorker(s)";
             if (reviewData.Topics == null || reviewData.Topics.Count == 0)
                 failedText += "\nTopic(s)";
             if (reviewData.Genres == null || reviewData.Genres.Count == 0)
@@ -239,6 +245,38 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
 
             // Set the text
             genresText.text = selectedGenresText;
+        }
+
+        /// <summary>
+        /// Event handler for updating the Workers for the Idea Reviewer
+        /// </summary>
+        /// <param name="workers"></param>
+        private void UpdateWorkersReview(List<IWorker> workers)
+        {
+            // Create a starting string
+            string selectedWorkersText = (workers == null || workers.Count == 0)
+                ? "-----"
+                : "";
+
+            // Loop until a maximum of three
+            for(int i = 0; i < Mathf.Min(workers.Count, 3); i++)
+            {
+                // Add the worker's name
+                selectedWorkersText += $"{workers[i].Name}";
+
+                // Add commas if not the last element
+                if (i != workers.Count - 1)
+                    selectedWorkersText += ", ";
+            }
+
+            // If there are more than three workers, add an ellipses
+            if(workers.Count > 3)
+            {
+                selectedWorkersText += " [...]";
+            }
+
+            // Set the text
+            workersText.text = selectedWorkersText;
         }
 
         /// <summary>

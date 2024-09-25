@@ -87,6 +87,8 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 willSucceed = false;
             if (reviewData.Genres == null || reviewData.Genres.Count == 0)
                 willSucceed = false;
+            if (reviewData.Workers == null || reviewData.Workers.Count == 0)
+                willSucceed = false;
             if (reviewData.TimeEstimates.Total == 0)
                 willSucceed = false;
 
