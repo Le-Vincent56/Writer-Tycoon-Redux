@@ -7,56 +7,60 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
 {
     public class FocusSliderManager : Dedicant
     {
-        private Dictionary<PointCategory, int> allocatedPoints;
+        private Dictionary<int, Dictionary<PointCategory, int>> allocatedPoints;
+        //private Dictionary<PointCategory, int> allocatedPoints;
 
+        private EventBinding<PrepareSliders> prepareSlidersEvent;
         private EventBinding<SetSliderPoints> setSliderPointsEvent;
         private EventBinding<SendSliderPoints> sendSliderPointsEvent;
-        private EventBinding<EndDevelopment> endDevelopmentEvent;
+        private EventBinding<DeleteSliderData> deleteSliderDataEvent;
 
         public override string Name => "Slider Manager";
         public override DedicantType Type => DedicantType.Sliders;
 
-        private void Awake()
-        {
-            // Initialize the Dictionary
-            InitializeDictionary();
-        }
-
         private void OnEnable()
         {
+            prepareSlidersEvent = new EventBinding<PrepareSliders>(InitializeDictionary);
+            EventBus<PrepareSliders>.Register(prepareSlidersEvent);
+
             setSliderPointsEvent = new EventBinding<SetSliderPoints>(AllocatePoints);
             EventBus<SetSliderPoints>.Register(setSliderPointsEvent);
 
             sendSliderPointsEvent = new EventBinding<SendSliderPoints>(SendSliderPoints);
             EventBus<SendSliderPoints>.Register(sendSliderPointsEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(ResetSliders);
-            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
+            deleteSliderDataEvent = new EventBinding<DeleteSliderData>(DeleteSliderData);
+            EventBus<DeleteSliderData>.Register(deleteSliderDataEvent);
         }
 
         private void OnDisable()
         {
+            EventBus<PrepareSliders>.Deregister(prepareSlidersEvent);
             EventBus<SetSliderPoints>.Deregister(setSliderPointsEvent);
             EventBus<SendSliderPoints>.Deregister(sendSliderPointsEvent);
-            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+            EventBus<DeleteSliderData>.Deregister(deleteSliderDataEvent);
         }
 
         /// <summary>
-        /// Initialize the Dictionary
+        /// Initialize the Dictionary for a Work
         /// </summary>
-        private void InitializeDictionary()
+        private void InitializeDictionary(PrepareSliders eventData)
         {
             allocatedPoints = new()
             {
-                { PointCategory.CharacterSheets, 5 },
-                { PointCategory.PlotOutline, 5 },
-                { PointCategory.WorldDocument, 5 },
-                { PointCategory.Dialogue, 5 },
-                { PointCategory.Subplots, 5 },
-                { PointCategory.Descriptions, 5 },
-                { PointCategory.Emotions, 5 },
-                { PointCategory.Twists, 5 },
-                { PointCategory.Symbolism, 5 },
+                { eventData.Hash, new Dictionary<PointCategory, int>()
+                    {
+                        { PointCategory.CharacterSheets, 5 },
+                        { PointCategory.PlotOutline, 5 },
+                        { PointCategory.WorldDocument, 5 },
+                        { PointCategory.Dialogue, 5 },
+                        { PointCategory.Subplots, 5 },
+                        { PointCategory.Descriptions, 5 },
+                        { PointCategory.Emotions, 5 },
+                        { PointCategory.Twists, 5 },
+                        { PointCategory.Symbolism, 5 },
+                    }
+                }
             };
         }
 
@@ -66,27 +70,27 @@ namespace WriterTycoon.WorkCreation.Development.FocusSliders
         private void AllocatePoints(SetSliderPoints eventData)
         {
             // Set the value within the dictionary
-            allocatedPoints[eventData.Category] = eventData.Value;
+            allocatedPoints[eventData.Hash][eventData.Category] = eventData.Value;
         }
 
         /// <summary>
         /// Send the allocated points
         /// </summary>
-        private void SendSliderPoints()
+        private void SendSliderPoints(SendSliderPoints eventData)
         {
             Send(new SliderPayload()
-            { Content = allocatedPoints },
+            { Content = (eventData.Hash, allocatedPoints[eventData.Hash]) },
                 IsType(DedicantType.PointGenerator)
             );
         }
 
         /// <summary>
-        /// Reset the sliders
+        /// Delete the slider data
         /// </summary>
-        private void ResetSliders()
+        private void DeleteSliderData(DeleteSliderData eventData)
         {
-            // Reset the dictionary
-            InitializeDictionary();
+            // Remove the slider data
+            allocatedPoints.Remove(eventData.Hash);
         }
     }
 }

@@ -28811,11 +28811,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   window: {fileID: 1933789792}
+  currentHash: 0
   currentPhase: 0
   screens:
   - {fileID: 2084341493}
   - {fileID: 2110069322}
   - {fileID: 1884001643}
+  focusSliders:
+  - {fileID: 1196351996}
+  - {fileID: 1681629782}
+  - {fileID: 492511345}
+  - {fileID: 469614901}
+  - {fileID: 1329167048}
+  - {fileID: 1852312459}
+  - {fileID: 665752782}
+  - {fileID: 1969111160}
+  - {fileID: 438471846}
+  confirmButtons:
+  - {fileID: 240765704}
+  - {fileID: 773472807}
+  - {fileID: 1184276358}
   translateValue: 80
   duration: 0.4
 --- !u!1 &1936872695

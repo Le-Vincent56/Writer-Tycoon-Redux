@@ -1,8 +1,6 @@
-using UnityEngine;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.Patterns.EventBus
 {
@@ -29,16 +27,28 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct SetDevelopmentPhase : IEvent
     {
+        public int Hash;
         public DevelopmentPhase Phase;
+    }
+
+    public struct PrepareSliders : IEvent
+    {
+        public int Hash;
     }
 
     public struct SetSliderPoints : IEvent
     {
+        public int Hash;
         public PointCategory Category;
         public int Value;
     }
 
     public struct SendSliderPoints : IEvent
+    {
+        public int Hash;
+    }
+
+    public struct  DeleteSliderData : IEvent
     {
         public int Hash;
     }

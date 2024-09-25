@@ -214,10 +214,17 @@ namespace WriterTycoon.Entities.Player
                             // Set first time working to false
                             firstTimeWorking = false;
 
-                            // Set the current slider phase state
+                            // Set the current development phase state
                             EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
                             {
+                                Hash = assignedHash,
                                 Phase = DevelopmentPhase.PhaseOne
+                            });
+
+                            // Prepare the sliders
+                            EventBus<PrepareSliders>.Raise(new PrepareSliders()
+                            {
+                                Hash = assignedHash
                             });
 
                             // Open the Focus Slider window

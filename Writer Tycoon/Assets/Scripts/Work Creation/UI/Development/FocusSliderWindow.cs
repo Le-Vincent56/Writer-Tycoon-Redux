@@ -2,16 +2,20 @@ using DG.Tweening;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.WorkCreation.Development.FocusSliders;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Development.UI.States;
 
-namespace WriterTycoon.WorkCreation.Development.UI
+namespace WriterTycoon.WorkCreation.UI.Development
 {
     public class FocusSliderWindow : MonoBehaviour
     {
         [SerializeField] private CanvasGroup window;
+        [SerializeField] private int currentHash;
         [SerializeField] private DevelopmentPhase currentPhase;
-        [SerializeField] private CanvasGroup[] screens = new CanvasGroup[4];
+        [SerializeField] private CanvasGroup[] screens = new CanvasGroup[3];
+        [SerializeField] private FocusSlider[] focusSliders = new FocusSlider[9];
+        [SerializeField] private ConfirmSlidersButton[] confirmButtons = new ConfirmSlidersButton[3];
 
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
@@ -45,6 +49,20 @@ namespace WriterTycoon.WorkCreation.Development.UI
 
             // Set the initial state
             stateMachine.SetState(phaseOneState);
+
+            // Iterate through each confirm button
+            foreach(ConfirmSlidersButton button in confirmButtons)
+            {
+                // Initialize the button
+                button.Initialize(this);
+            }
+
+            // Iterate through each Focus Slider
+            foreach(FocusSlider slider in focusSliders)
+            {
+                // Initialize the slider
+                slider.Initialize(this);
+            }
         }
 
         private void OnEnable()
@@ -79,10 +97,16 @@ namespace WriterTycoon.WorkCreation.Development.UI
         }
 
         /// <summary>
+        /// Get the current hash
+        /// </summary>
+        public int GetCurrentHash() => currentHash;
+
+        /// <summary>
         /// Callback function to set the slider phase
         /// </summary>
         private void SetSliderPhase(SetDevelopmentPhase eventData)
         {
+            currentHash = eventData.Hash;
             currentPhase = eventData.Phase;
         }
 

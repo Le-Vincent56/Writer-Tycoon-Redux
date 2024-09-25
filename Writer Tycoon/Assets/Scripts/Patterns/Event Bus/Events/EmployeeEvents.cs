@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using UnityEngine;
 using WriterTycoon.Entities;
+using WriterTycoon.Entities.Player;
 
 namespace WriterTycoon.Patterns.EventBus
 {

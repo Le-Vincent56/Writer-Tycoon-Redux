@@ -5,12 +5,13 @@ using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Development.PointGeneration
 {
     public class PointGenerator : Dedicant
     {
+        private Dictionary<int, Work> worksToGenerateFor;
+
         [SerializeField] private List<Genre> chosenGenres;
         [SerializeField] private DevelopmentPhase currentPhase;
 
@@ -42,6 +43,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         private void Awake()
         {
             // Initialize variables
+            worksToGenerateFor = new();
+
             generatePoints = false;
             genreFocusTargets = new();
             allocatedPoints = new();
@@ -460,10 +463,10 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// <summary>
         /// Set the allocated points Dictionary
         /// </summary>
-        public void SetAllocatedPoints(Dictionary<PointCategory, int> allocatedPoints)
+        public void SetAllocatedPoints((int Hash, Dictionary<PointCategory, int> Points) allocatedPoints)
         {
             generatePoints = true;
-            this.allocatedPoints = allocatedPoints;
+            this.allocatedPoints = allocatedPoints.Points;
 
             // Set the split times for the phases
             SetPhaseSplitTime();

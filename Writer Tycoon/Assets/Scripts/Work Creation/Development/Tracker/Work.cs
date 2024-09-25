@@ -50,7 +50,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         /// </summary>
         public void Track()
         {
-            // Exit case - if the Player is not working
+            // Exit case - if there are workers not working
             if (!IsWorkedOn()) return;
 
             // Exit case - if not developing
@@ -80,69 +80,25 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             switch (currentPhase)
             {
                 case DevelopmentPhase.PhaseOne:
-                    // Reset the current day
-                    currentDay = 0;
-
                     // Start the second phase
                     currentPhase = DevelopmentPhase.PhaseTwo;
 
                     // Set the new time estimate
                     currentDayEstimate = phaseTwoDayEstimate;
 
-                    // Update the progress data
-                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                    {
-                        Current = currentDay,
-                        Maximum = currentDayEstimate,
-                    });
-
-                    // Update the Focus Slider phase
-                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
-                    {
-                        Phase = currentPhase
-                    });
-
-                    // Send out the second phase's estimates
-                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
-                    {
-                        TimeEstimate = phaseTwoDayEstimate
-                    });
-
-                    // Open the slider window
-                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+                    // End the phase
+                    EndPhase();
                     break;
 
                 case DevelopmentPhase.PhaseTwo:
-                    // Reset the current day
-                    currentDay = 0;
-
                     // Increment the third phase
                     currentPhase = DevelopmentPhase.PhaseThree;
 
                     // Set the new time estimate
                     currentDayEstimate = phaseThreeDayEstimate;
 
-                    // Update the progress data
-                    EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                    {
-                        Current = currentDay,
-                        Maximum = currentDayEstimate,
-                    });
-
-                    // Update the Focus Slider phase
-                    EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
-                    {
-                        Phase = currentPhase
-                    });
-
-                    // Send out the third phase's estimates
-                    EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
-                    {
-                        TimeEstimate = phaseThreeDayEstimate
-                    });
-
-                    // Open the slider window
-                    EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+                    // End the phase
+                    EndPhase();
                     break;
 
                 case DevelopmentPhase.PhaseThree:
@@ -156,6 +112,41 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         }
 
         /// <summary>
+        /// End the phase
+        /// </summary>
+        private void EndPhase()
+        {
+            // Reset the current day
+            currentDay = 0;
+
+            // Update the progress data
+            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+            {
+                Hash = hash,
+                Current = currentDay,
+                Maximum = currentDayEstimate,
+            });
+
+            // Update the Focus Slider phase
+            EventBus<SetDevelopmentPhase>.Raise(new SetDevelopmentPhase()
+            {
+                Hash = hash,
+                Phase = currentPhase
+            });
+
+            // Send out the third phase's estimates
+            EventBus<SendPhaseTime>.Raise(new SendPhaseTime()
+            {
+
+                Hash = hash,
+                TimeEstimate = phaseThreeDayEstimate
+            });
+
+            // Open the slider window
+            EventBus<OpenSliderWindow>.Raise(new OpenSliderWindow());
+        }
+
+        /// <summary>
         /// Finish development
         /// </summary>
         private void FinishDevelopment()
@@ -165,6 +156,12 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             // Raise the End Development event
             EventBus<EndDevelopment>.Raise(new EndDevelopment()
+            {
+                Hash = hash
+            });
+
+            // Delete the slider data
+            EventBus<DeleteSliderData>.Raise(new DeleteSliderData()
             {
                 Hash = hash
             });
