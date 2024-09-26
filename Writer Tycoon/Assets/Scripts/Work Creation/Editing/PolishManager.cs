@@ -64,7 +64,7 @@ namespace WriterTycoon.WorkCreation.Editing
             passHourEvent = new EventBinding<PassHour>(Polish);
             EventBus<PassHour>.Register(passHourEvent);
 
-            passDayEvent = new EventBinding<PassDay>(SetDailyPolishGoals);
+            passDayEvent = new EventBinding<PassDay>(SetDailyErrorGoals);
             EventBus<PassDay>.Register(passDayEvent);
 
             beginEditingEvent = new EventBinding<BeginEditing>(BeginPolish);
@@ -84,29 +84,20 @@ namespace WriterTycoon.WorkCreation.Editing
         }
 
         /// <summary>
-        /// Callback function for setting variables for polish
+        /// Callback function for setting how many errors should be fixed per day
         /// </summary>
-        private void SetDailyPolishGoals()
+        private void SetDailyErrorGoals()
         {
-            // Exit case - if not working
             if (!working) return;
 
             // Exit case - if not polishing
             if (!polish) return;
 
-            // Check if there are errors to remove
-            if(currentErrors > 0)
+            // Iterate through each Work
+            foreach (KeyValuePair<int, Work> kvp in worksInProgress)
             {
-                // Generate anywhere between 1 - 5% of errors
-                dailyErrorGoal = Random.Range(totalErrors * 0.01f, totalErrors * 0.05f);
-
-                // Reset the current daily errors
-                dailyErrorQuota = 0;
-
-                // Get the error rate for hourly fixes
-                errorRate = dailyErrorGoal / 24f;
-
-                return;
+                // Set the daily error goal for the Work
+                kvp.Value.Polisher.SetDailyErrorGoals();
             }
         }
 

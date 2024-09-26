@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WriterTycoon.WorkCreation.Development.Tracker;
 
 namespace WriterTycoon.WorkCreation.Rater
 {
     [System.Serializable]
     public class ErrorGenerator
     {
+        private Work workParent;
+
         [SerializeField] private int totalErrors;
         [SerializeField] private float currentErrors;
         [SerializeField] private float errorScalar;
@@ -13,8 +16,11 @@ namespace WriterTycoon.WorkCreation.Rater
         private int pathCount;
         private List<float> errorPath;
 
-        public ErrorGenerator(int totalTime, float errorScalar)
+        public ErrorGenerator(Work workParent, int totalTime, float errorScalar)
         {
+            // Set the parent Work object
+            this.workParent = workParent;
+
             // Initialize the error path
             errorPath = new();
             pathCount = 0;
@@ -31,6 +37,9 @@ namespace WriterTycoon.WorkCreation.Rater
         /// </summary>
         public void GenerateErrors()
         {
+            // Exit case - if the Work is not being worked on
+            if (!workParent.IsWorkedOn()) return;
+
             // Exit case - if traversed all the days
             if (pathCount >= errorPath.Count) return;
 

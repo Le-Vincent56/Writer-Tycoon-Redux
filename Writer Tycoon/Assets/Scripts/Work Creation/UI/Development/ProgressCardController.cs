@@ -10,6 +10,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         private Dictionary<int, ProgressCard> progressCards;
 
         private EventBinding<CreateProgressCard> createProgressCardEvent;
+        private EventBinding<DeleteProgressCard> deleteProgressCardEvent;
 
         private void Awake()
         {
@@ -20,13 +21,20 @@ namespace WriterTycoon.WorkCreation.UI.Development
         {
             createProgressCardEvent = new EventBinding<CreateProgressCard>(CreateProgressCard);
             EventBus<CreateProgressCard>.Register(createProgressCardEvent);
+
+            deleteProgressCardEvent = new EventBinding<DeleteProgressCard>(RemoveProgressCard);
+            EventBus<DeleteProgressCard>.Register(deleteProgressCardEvent);
         }
 
         private void OnDisable()
         {
             EventBus<CreateProgressCard>.Deregister(createProgressCardEvent);
+            EventBus<DeleteProgressCard>.Deregister(deleteProgressCardEvent);
         }
 
+        /// <summary>
+        /// Create a progress card
+        /// </summary>
         private void CreateProgressCard(CreateProgressCard eventData)
         {
             // Instantiate the card prefab as a child of this transform
@@ -40,6 +48,18 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
             // Add it to the dictionary
             progressCards.Add(eventData.Hash, cardComponent);
+
+            // Show the card
+            cardComponent.Show();
+        }
+
+        /// <summary>
+        /// Remove a progress card
+        /// </summary>
+        /// <param name="eventData"></param>
+        private void RemoveProgressCard(DeleteProgressCard eventData)
+        {
+            progressCards[eventData.Hash].Hide(true);
         }
     }
 }

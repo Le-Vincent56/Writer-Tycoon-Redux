@@ -3,6 +3,7 @@ using UnityEngine;
 using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
+using WriterTycoon.WorkCreation.Editing;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Rater;
@@ -29,9 +30,11 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
         [SerializeField] private PointGenerator pointGenerator;
         [SerializeField] private ErrorGenerator errorGenerator;
+        [SerializeField] private Polisher polisher;
 
         public PointGenerator PointGenerator { get => pointGenerator; }
         public ErrorGenerator ErrorGenerator { get => errorGenerator; }
+        public Polisher Polisher { get => polisher; }
 
         public Work(List<IWorker> workers, TimeEstimates estimates, List<Genre> chosenGenres, float targetScore, int hash)
         {
@@ -55,8 +58,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             developing = true;
 
             // Initialize the pointGenerator
-            pointGenerator = new PointGenerator(chosenGenres, currentPhase, targetScore);
-            errorGenerator = new ErrorGenerator(estimates.Total, 0.33f);
+            pointGenerator = new PointGenerator(this, chosenGenres, currentPhase, targetScore);
+            errorGenerator = new ErrorGenerator(this, estimates.Total, 0.33f);
+            polisher = new Polisher(this);
 
             // Set the current phase total for the second phase
             pointGenerator.SetCurrentPhaseTotal(phaseOneDayEstimate);

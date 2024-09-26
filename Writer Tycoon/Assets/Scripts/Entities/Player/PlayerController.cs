@@ -206,7 +206,6 @@ namespace WriterTycoon.Entities.Player
                     StartTraversal(() =>
                     {
                         working = true;
-                        eating = false;
 
                         // Check if the first time working
                         if (firstTimeWorking)
@@ -239,7 +238,6 @@ namespace WriterTycoon.Entities.Player
                     // Start traversal to the fridge
                     StartTraversal(() =>
                     {
-                        working = false;
                         eating = true;
                     });
                     break;
@@ -258,6 +256,8 @@ namespace WriterTycoon.Entities.Player
         {
             currentPathIndex = 0;
             moving = true;
+            working = false;
+            eating = false;
             StartCoroutine(TraversePath(onComplete));
         }
 

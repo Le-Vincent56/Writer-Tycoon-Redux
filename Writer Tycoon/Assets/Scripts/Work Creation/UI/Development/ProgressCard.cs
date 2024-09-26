@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
@@ -33,22 +34,17 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
         private StateMachine stateMachine;
 
-        private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkStateEvent;
-        private EventBinding<EndDevelopment> endDevelopmentEvent;
+        private EventBinding<EndEditing> endEditingEvent;
 
         private void OnEnable()
         {
-            confirmPlayerWorkStateEvent = new EventBinding<ConfirmPlayerWorkState>(HandleProgressBar);
-            EventBus<ConfirmPlayerWorkState>.Register(confirmPlayerWorkStateEvent);
-
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(Hide);
-            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
+            endEditingEvent = new EventBinding<EndEditing>(Hide);
+            EventBus<EndEditing>.Register(endEditingEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkStateEvent);
-            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+            EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
         private void Update()
@@ -113,23 +109,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
         }
 
         /// <summary>
-        /// Callback function to handle work state confirmation
-        /// </summary>
-        private void HandleProgressBar(ConfirmPlayerWorkState eventData)
-        {
-            // Check if the player is working
-            if (eventData.Working)
-                // If so, show the progress bar
-                Show();
-            else
-                // Otherwise, hide it
-                Hide();
-        }
-
-        /// <summary>
         /// Show the Progress Bar
         /// </summary>
-        private void Show()
+        public void Show()
         {
             // Ignore the layout
             layoutElement.ignoreLayout = true;
@@ -152,7 +134,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// <summary>
         /// Hide the Progress Bar
         /// </summary>
-        private void Hide()
+        public void Hide(bool destroy = false)
         {
             // Ignore the layout
             layoutElement.ignoreLayout = true;
@@ -161,7 +143,16 @@ namespace WriterTycoon.WorkCreation.UI.Development
             Fade(0f, animateDuration, null, Ease.OutQuint);
 
             // Translate down
-            Translate(-translateValue, animateDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
+            Translate(-translateValue, animateDuration, () => {
+                // Ignore the layout
+                layoutElement.ignoreLayout = false;
+
+                // Check whether or not to destroy the object
+                if (destroy)
+                    // If so, destroy the object
+                    Destroy(this);
+            }, Ease.OutQuint
+            );
         }
 
         /// <summary>

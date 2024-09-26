@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.WorkCreation.UI.Development;
@@ -50,6 +52,11 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public int Hash;
         public string Title;
+    }
+
+    public struct DeleteProgressCard : IEvent
+    {
+        public int Hash;
     }
 
     public struct SetProgressCardTitle : IEvent

@@ -9,6 +9,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
     [System.Serializable]
     public class PointGenerator
     {
+        private Work workParent;
+
         [SerializeField] private DevelopmentPhase currentPhase;
         [SerializeField] private List<Genre> chosenGenres;
         private Dictionary<PointCategory, int> allocatedPoints;
@@ -30,8 +32,11 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         [SerializeField] private float currentScore;
         [SerializeField] private float[] generationRates;
 
-        public PointGenerator(List<Genre> chosenGenres, DevelopmentPhase currentPhase, float targetScore)
+        public PointGenerator(Work workParent, List<Genre> chosenGenres, DevelopmentPhase currentPhase, float targetScore)
         {
+            // Set the parent Work object
+            this.workParent = workParent;
+
             // Set the chosen genres
             this.chosenGenres = chosenGenres;
 
@@ -54,6 +59,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         public void GeneratePoints()
         {
+            // Exit case - if the Work is not being worked on
+            if (!workParent.IsWorkedOn()) return;
+
             // Exit case - if the arrays are not initialized
             if (targetSplitScores == null || generationRates == null) return;
 
@@ -69,6 +77,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         public void ManageSplits()
         {
+            // Exit case - if the Work is not being worked on
+            if (!workParent.IsWorkedOn()) return;
+
             // Exit case - if not supposed to generate points
             if (!generatePoints) return;
 
