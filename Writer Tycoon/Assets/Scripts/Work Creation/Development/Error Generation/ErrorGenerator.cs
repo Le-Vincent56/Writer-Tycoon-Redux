@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
+namespace WriterTycoon.WorkCreation.Rater
 {
-    public class ErrorGenerator : Dedicant
+    [System.Serializable]
+    public class ErrorGenerator
     {
         [SerializeField] private int totalErrors;
         [SerializeField] private float currentErrors;
@@ -14,46 +13,41 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         private int pathCount;
         private List<float> errorPath;
 
-        private EventBinding<PassDay> passDayEvent;
-        private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
-        private EventBinding<EndDevelopment> endDevelopmentEvent;
-
-        public override string Name => "Error Generator";
-        public override DedicantType Type => DedicantType.ErrorGenerator;
-
-        private void Awake()
+        public ErrorGenerator(int totalTime, float errorScalar)
         {
-            // Initialize the error path List
+            // Initialize the error path
             errorPath = new();
             pathCount = 0;
+
+            // Set variables
+            this.errorScalar = errorScalar;
+
+            // Get the total errors
+            GetTotalErrors(totalTime);
         }
 
-        private void OnEnable()
+        /// <summary>
+        /// Generate errors for the Work
+        /// </summary>
+        public void GenerateErrors()
         {
-            passDayEvent = new EventBinding<PassDay>(GenerateErrors);
-            EventBus<PassDay>.Register(passDayEvent);
+            // Exit case - if traversed all the days
+            if (pathCount >= errorPath.Count) return;
 
-            notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(GetTotalErrors);
-            EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+            // Add the number of errors to the path count
+            currentErrors += errorPath[pathCount];
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndReset);
-            EventBus<EndDevelopment>.Register(endDevelopmentEvent);
-        }
-
-        private void OnDisable()
-        {
-            EventBus<PassDay>.Deregister(passDayEvent);
-            EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+            // Increment the path count
+            pathCount++;
         }
 
         /// <summary>
         /// Get the total number of errors for the development phase
         /// </summary>
-        private void GetTotalErrors(NotifySuccessfulCreation eventData)
+        private void GetTotalErrors(int totalTimeEstimate)
         {
             // Get the total amount of time the development will take
-            int totalTime = eventData.ReviewData.TimeEstimates.Total;
+            int totalTime = totalTimeEstimate;
 
             // Calculate the total number of errors
             totalErrors = (int)(totalTime * errorScalar);
@@ -83,7 +77,7 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
             List<float> weights = new();
 
             // Increment over the total amount of days for development
-            for(int i = 0; i < totalTime; i++)
+            for (int i = 0; i < totalTime; i++)
             {
                 // Add a weight for each day
                 weights.Add(Random.Range(0.5f, 1.5f));
@@ -98,7 +92,7 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
             }
 
             // Iterate through each day
-            for(int i = 0; i < totalTime; i++)
+            for (int i = 0; i < totalTime; i++)
             {
                 // Calculate the number of errors for the specific day
                 float errorsForDay = (weights[i] / totalWeight) * totalErrors;
@@ -109,14 +103,14 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
 
             // Check the sum
             float currentSum = 0;
-            foreach(float errors in errorPath)
+            foreach (float errors in errorPath)
             {
                 currentSum += errors;
             }
 
             // Adjust if the sum of the path doesn't match the total errors (usually du to float rounding)
             float difference = totalErrors - currentSum;
-            if(Mathf.Abs(difference) > Mathf.Epsilon)
+            if (Mathf.Abs(difference) > Mathf.Epsilon)
             {
                 // Get a random day from the total time
                 int randomDay = Random.Range(0, totalTime);
@@ -127,13 +121,10 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         }
 
         /// <summary>
-        /// Callback function to send and reset the error variables on the end of development
+        /// Reset the Error Generator
         /// </summary>
-        private void SendAndReset()
+        public void Reset()
         {
-            // Send the errors
-            SendErrors();
-
             // Reset variables
             totalErrors = 0;
             currentErrors = 0;
@@ -142,30 +133,8 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         }
 
         /// <summary>
-        /// Generate the errors for each day
+        /// Get the total errors
         /// </summary>
-        private void GenerateErrors()
-        {
-            // Exit case - if traversed all the days
-            if (pathCount >= errorPath.Count) return;
-
-            // Add the number of errors to the path count
-            currentErrors += errorPath[pathCount];
-
-            // Increment the path count
-            pathCount++;
-        }
-
-        /// <summary>
-        /// Send the total errors
-        /// </summary>
-        private void SendErrors()
-        {
-            Send(new ErrorPayload()
-            {
-                Content = totalErrors
-            }, IsType(DedicantType.Editor)
-            );
-        }
+        public int GetTotalErrors() => totalErrors;
     }
 }

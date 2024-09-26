@@ -60,7 +60,11 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Send out the tracked works
             Send(new TrackerPayload()
                 { Content = worksToTrack },
-                IsType(DedicantType.PointGenerator)
+                AreTypes(new DedicantType[2] 
+                {
+                    DedicantType.PointGenerator,
+                    DedicantType.ErrorGenerator
+                })
             );
         }
 

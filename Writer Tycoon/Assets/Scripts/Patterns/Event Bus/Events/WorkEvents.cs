@@ -19,12 +19,6 @@ namespace WriterTycoon.Patterns.EventBus
         public float Maximum;
     }
 
-    public struct SendPhaseTime : IEvent
-    {
-        public int Hash;
-        public int TimeEstimate;
-    }
-
     public struct SetDevelopmentPhase : IEvent
     {
         public int Hash;
