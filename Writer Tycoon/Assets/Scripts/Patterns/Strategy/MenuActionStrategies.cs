@@ -34,26 +34,6 @@ namespace WriterTycoon.Patterns.Strategy
         }
     }
 
-    public class PublishWorkAction : IMenuActionStrategy
-    {
-        public void PerformAction()
-        {
-            // Close the interact menus
-            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
-
-            // Set the player to not working
-            EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
-            {
-                Working = false
-            });
-
-            // End editing
-            EventBus<EndEditing>.Raise(new EndEditing());
-
-            // TODO: Send score and rate
-        }
-    }
-
     public class EatAction : IMenuActionStrategy
     {
         public void PerformAction()

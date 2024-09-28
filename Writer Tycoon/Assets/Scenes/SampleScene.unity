@@ -416,6 +416,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b52c23a5bd83e439ab6236a0f3ecc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Updated
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[System.Int32, mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimator+<>c,
+        Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimator+<>c,
+        Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__26_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Int32, mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Int32, mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   workType: 0
 --- !u!1 &16952827
 GameObject:
@@ -946,6 +1011,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16218c7fa011daf49bf07b1eac8c4547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   working: 0
   polish: 0
   finishedRemovingErrors: 0
@@ -3698,6 +3772,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637a3d3c83b12c848aeea0b621a6ee62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   inputReader: {fileID: 11400000, guid: 7c0e75d1e26315c458863a6a61eedf80, type: 2}
   currentTitle: 
   currentAuthor: 
@@ -6008,6 +6091,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b886340b607824581758af24cb73e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: worksToTrack
+      Entry: 6
+      Data: 
 --- !u!1 &536390436
 GameObject:
   m_ObjectHideFlags: 0
@@ -8883,6 +8978,107 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907088a9a114a50459cd0254adbc3f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnWorkTypeSelected
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkTypeButton,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkTypeManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkTypeManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__14_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkTypeButton,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkTypeButton, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnWorkTypeCleared
+      Entry: 7
+      Data: 6|UnityEngine.Events.UnityAction, UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__14_1
+    - Name: delegateType
+      Entry: 7
+      Data: 7|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction, UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 8|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   selectedType: 0
   targetScore: 0
 --- !u!1 &748900290
@@ -11603,20 +11799,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e08494a09d2d9040ac896194995792a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chosenGenres: []
-  currentPhase: 0
-  generatePoints: 0
-  componentScore: 0
-  targetSplitScores: []
-  targetScore: 0
-  currentScore: 0
-  generationRates: []
-  currentDay: 0
-  totalPhaseTime: 0
-  split: 0
-  splitOneTime: 0
-  splitTwoTime: 0
-  splitThreeTime: 0
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: worksInProgress
+      Entry: 6
+      Data: 
 --- !u!1 &779672619
 GameObject:
   m_ObjectHideFlags: 0
@@ -11869,6 +12063,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c5952090c7d334b9bdbc635a795235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   topics: []
   genres: []
   audience: 1
@@ -12437,6 +12640,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f9866cb8f89df44b69173bc507ead2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnWorkersUpdated
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.Workers.WorkerManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Workers.WorkerManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__17_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   selectedWorkersMax: 1
 --- !u!1 &866261739
 GameObject:
@@ -13303,6 +13572,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e086967c0b8f004886635d7107f91c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnGenresCreated
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.Genres.GenreManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Genres.GenreManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__20_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnGenresUpdated
+      Entry: 7
+      Data: 6|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.GenreButton,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__20_1
+    - Name: delegateType
+      Entry: 7
+      Data: 7|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.GenreButton,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 8|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 9|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.GenreButton,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   selectedGenresMax: 1
 --- !u!114 &966619566
 MonoBehaviour:
@@ -14382,6 +14765,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7cfaad4f257c94ba8354ec07c1a256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!1 &1113556305
 GameObject:
   m_ObjectHideFlags: 0
@@ -14799,11 +15191,383 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b67734b78f86446822989b4f004eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: workers
+      Entry: 6
+      Data: 
+    - Name: timeEstimates
+      Entry: 7
+      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates, Assembly-CSharp
+    - Name: Total
+      Entry: 3
+      Data: 0
+    - Name: PhaseOne
+      Entry: 3
+      Data: 0
+    - Name: PhaseTwo
+      Entry: 3
+      Data: 0
+    - Name: PhaseThree
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateWorkers
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.Review.IdeaReviewer+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Review.IdeaReviewer+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateAboutData
+      Entry: 7
+      Data: 6|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.About.AboutInfo,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_1
+    - Name: delegateType
+      Entry: 7
+      Data: 7|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.About.AboutInfo,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 8|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 9|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.About.AboutInfo, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateWorkType
+      Entry: 7
+      Data: 10|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_2
+    - Name: delegateType
+      Entry: 7
+      Data: 11|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 12|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 13|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateAudienceType
+      Entry: 7
+      Data: 14|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceType,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_3
+    - Name: delegateType
+      Entry: 7
+      Data: 15|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceType,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 16|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 17|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceType, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateTopics
+      Entry: 7
+      Data: 18|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_4
+    - Name: delegateType
+      Entry: 7
+      Data: 19|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 20|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 21|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateGenres
+      Entry: 7
+      Data: 22|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_5
+    - Name: delegateType
+      Entry: 7
+      Data: 23|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 24|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 25|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnUpdateTimeEstimate
+      Entry: 7
+      Data: 26|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__28_6
+    - Name: delegateType
+      Entry: 7
+      Data: 27|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 28|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 29|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   aboutInfo:
     Title: 
     Author: 
     Description: 
   workType: 0
+  targetScore: 0
   audienceType: 0
   topics: []
   genres: []
@@ -19445,9 +20209,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3d298b585cf3a4f81ee65c772d9624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalErrors: 0
-  currentErrors: 0
-  errorScalar: 0.25
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: worksInProgress
+      Entry: 6
+      Data: 
 --- !u!1 &1294104847
 GameObject:
   m_ObjectHideFlags: 0
@@ -20381,6 +21154,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798fa0abb084c134085f46ea25a8d277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!1 &1365030527
 GameObject:
   m_ObjectHideFlags: 0
@@ -20649,6 +21431,107 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62483872ac745ef40941e170123b3681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnAudienceSelected
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.Audience.AudienceManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__13_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton,
+        Assembly-CSharp]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnAudienceCleared
+      Entry: 7
+      Data: 6|UnityEngine.Events.UnityAction, UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__13_1
+    - Name: delegateType
+      Entry: 7
+      Data: 7|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction, UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 8|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   selectedAudience: 0
 --- !u!1 &1406793483
 GameObject:
@@ -25707,6 +26590,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 356018980309754419148aab9850cb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnTopicsCreated
+      Entry: 7
+      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 7
+      Data: 1|WriterTycoon.WorkCreation.Ideation.Topics.TopicManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: declaringType
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: WriterTycoon.WorkCreation.Ideation.Topics.TopicManager+<>c, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__20_0
+    - Name: delegateType
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 4|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnTopicsUpdated
+      Entry: 7
+      Data: 6|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.TopicButton,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: target
+      Entry: 9
+      Data: 1
+    - Name: declaringType
+      Entry: 9
+      Data: 2
+    - Name: methodName
+      Entry: 1
+      Data: <.ctor>b__20_1
+    - Name: delegateType
+      Entry: 7
+      Data: 7|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.TopicButton,
+        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: signature
+      Entry: 7
+      Data: 8|System.Type[], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 9|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.TopicButton,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   selectedTopicsMax: 3
   topics: []
 --- !u!4 &1746899764
@@ -28810,6 +29807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15426e2966f406d42999a65560203816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windowOpen: 0
   window: {fileID: 1933789792}
   currentHash: 0
   currentPhase: 0
@@ -29882,6 +30880,7 @@ MonoBehaviour:
       Author: 
       Description: 
     WorkType: 0
+    TargetScore: 0
     AudienceType: 0
     Topics: []
     Genres: []

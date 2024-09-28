@@ -44,7 +44,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
             ProgressCard cardComponent = cardObj.GetComponent<ProgressCard>();
 
             // Initialize the card component
-            cardComponent.Initialize(eventData.Title);
+            cardComponent.Initialize(eventData.Hash, eventData.Title);
 
             // Add it to the dictionary
             progressCards.Add(eventData.Hash, cardComponent);
@@ -59,7 +59,11 @@ namespace WriterTycoon.WorkCreation.UI.Development
         /// <param name="eventData"></param>
         private void RemoveProgressCard(DeleteProgressCard eventData)
         {
+            // Hide and destoy the progress card
             progressCards[eventData.Hash].Hide(true);
+
+            // Remove the progress card from the dictionary
+            progressCards.Remove(eventData.Hash);
         }
     }
 }

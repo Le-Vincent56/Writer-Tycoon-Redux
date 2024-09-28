@@ -34,7 +34,6 @@ namespace WriterTycoon.Patterns.Command
             {
                 "New Work" => new MenuActionCommand(new NewWorkAction()),
                 "Continue Work" => new MenuActionCommand(new ContinueWorkAction()),
-                "Publish Work" => new MenuActionCommand(new PublishWorkAction()),
                 "Eat" => new MenuActionCommand(new EatAction()),
                 _ => null
             };

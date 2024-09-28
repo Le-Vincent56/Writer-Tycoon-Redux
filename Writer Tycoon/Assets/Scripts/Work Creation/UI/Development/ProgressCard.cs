@@ -18,6 +18,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
     public class ProgressCard : MonoBehaviour
     {
+        [SerializeField] private int workHash;
         [SerializeField] private ProgressStage currentStage;
         [SerializeField] private ProgressTitle progressTitle;
         [SerializeField] private ProgressBar progressBar;
@@ -34,19 +35,6 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
         private StateMachine stateMachine;
 
-        private EventBinding<EndEditing> endEditingEvent;
-
-        private void OnEnable()
-        {
-            endEditingEvent = new EventBinding<EndEditing>(Hide);
-            EventBus<EndEditing>.Register(endEditingEvent);
-        }
-
-        private void OnDisable()
-        {
-            EventBus<EndEditing>.Deregister(endEditingEvent);
-        }
-
         private void Update()
         {
             // Update the state machine
@@ -59,7 +47,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
             stateMachine.FixedUpdate();
         }
 
-        public void Initialize(string title)
+        public void Initialize(int workHash, string title)
         {
             // Verify the Progress Title
             if (progressTitle == null)
@@ -78,6 +66,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
                 card = GetComponent<CanvasGroup>();
 
             // Set variables
+            this.workHash = workHash;
             originalPosition = rectTransform.localPosition;
             currentStage = ProgressStage.Development;
 
@@ -85,6 +74,30 @@ namespace WriterTycoon.WorkCreation.UI.Development
             progressTitle.Initialize(title);
 
             InitializeStateMachine();
+        }
+
+        /// <summary>
+        /// Publish a work
+        /// </summary>
+        public void Publish()
+        {
+            // Close the interact menus
+            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+
+            // Set the player to not working
+            EventBus<ChangePlayerWorkState>.Raise(new ChangePlayerWorkState()
+            {
+                Working = false
+            });
+
+            // End editing
+            EventBus<EndEditing>.Raise(new EndEditing());
+
+            // Delete this progress card
+            EventBus<DeleteProgressCard>.Raise(new DeleteProgressCard()
+            {
+                Hash = workHash
+            });
         }
 
         /// <summary>
@@ -143,15 +156,16 @@ namespace WriterTycoon.WorkCreation.UI.Development
             Fade(0f, animateDuration, null, Ease.OutQuint);
 
             // Translate down
-            Translate(-translateValue, animateDuration, () => {
-                // Ignore the layout
-                layoutElement.ignoreLayout = false;
+            Translate(-translateValue, animateDuration, 
+                () => {
+                    // Ignore the layout
+                    layoutElement.ignoreLayout = false;
 
-                // Check whether or not to destroy the object
-                if (destroy)
-                    // If so, destroy the object
-                    Destroy(this);
-            }, Ease.OutQuint
+                    // Check whether or not to destroy the object
+                    if (destroy)
+                        // If so, destroy the object
+                        Destroy(this);
+                }, Ease.OutQuint
             );
         }
 
