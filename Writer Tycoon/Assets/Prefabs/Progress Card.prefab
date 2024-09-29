@@ -118,7 +118,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00a74e5b2c922514692119408290f81f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f2a05e4851797b94eb4fb66511868fcd, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438774a0abc2bdb4fb0e1f5bac671439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   lastFillAmount: 0
   currentFillAmount: 0
   timeToReachTarget: 0.25
@@ -250,7 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502f423884851e644a9f7b060d0a6ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   fadeDuration: 0.1
 --- !u!1 &3196802729032390695
 GameObject:
@@ -320,7 +318,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00a74e5b2c922514692119408290f81f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cc095782e46a02d4e93147c94e24a3f4, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -355,7 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438774a0abc2bdb4fb0e1f5bac671439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   lastFillAmount: 0
   currentFillAmount: 0
   timeToReachTarget: 0.25
@@ -596,8 +593,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00a74e5b2c922514692119408290f81f, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: cc095782e46a02d4e93147c94e24a3f4, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -735,7 +732,12 @@ MonoBehaviour:
   workHash: 0
   currentStage: 0
   progressTitle: {fileID: 0}
-  progressBar: {fileID: 364891082278462784}
+  developmentBar: {fileID: 364891082278462784}
+  developmentText: {fileID: 6054529818813283075}
+  errorBar: {fileID: 171386568700694822}
+  errorText: {fileID: 8512148862538982580}
+  polishBar: {fileID: 9218241322714846270}
+  polishText: {fileID: 394706885351290722}
   canvasGroups:
   - {fileID: 3640101252936836517}
   - {fileID: 6450466020629773839}
@@ -834,7 +836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502f423884851e644a9f7b060d0a6ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   fadeDuration: 0.1
 --- !u!1 &4630258931657103596
 GameObject:
@@ -1004,7 +1005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502f423884851e644a9f7b060d0a6ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   fadeDuration: 0.1
 --- !u!1 &5622129377316538940
 GameObject:
@@ -1394,7 +1394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438774a0abc2bdb4fb0e1f5bac671439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressType: 0
   lastFillAmount: 0
   currentFillAmount: 0
   timeToReachTarget: 0.25
@@ -1641,8 +1640,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00a74e5b2c922514692119408290f81f, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: f2a05e4851797b94eb4fb66511868fcd, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

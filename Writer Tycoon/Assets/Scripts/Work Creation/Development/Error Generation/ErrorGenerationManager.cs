@@ -51,11 +51,15 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         /// </summary>
         private void SendAndReset(EndDevelopment eventData)
         {
-            // Send the total errors
-            SendErrors(worksInProgress[eventData.Hash].ErrorGenerator.GetTotalErrors());
+            // Try to get a Work from the hash
+            if(worksInProgress.TryGetValue(eventData.Hash, out Work value))
+            {
+                // Send the total errors
+                SendErrors(eventData.Hash, value.ErrorGenerator.GetTotalErrors());
 
-            // Reset the Error Generator
-            worksInProgress[eventData.Hash].ErrorGenerator.Reset();
+                // Reset the Error Generator
+                value.ErrorGenerator.Reset();
+            }
         }
 
         /// <summary>
@@ -72,11 +76,11 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         /// <summary>
         /// Send the total errors
         /// </summary>
-        private void SendErrors(int totalErrors)
+        private void SendErrors(int hash, int totalErrors)
         {
             Send(new ErrorPayload()
             {
-                Content = totalErrors
+                Content = (hash, totalErrors)
             }, IsType(DedicantType.Editor)
             );
         }

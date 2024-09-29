@@ -8,12 +8,10 @@ namespace WriterTycoon.World.Interactables.UI
     {
         [SerializeField] private MenuActionButton newWorkButton;
         [SerializeField] private MenuActionButton continueWorkButton;
-        [SerializeField] private MenuActionButton publishWorkButton;
         [SerializeField] private MenuActionButton eatButton;
 
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
         private EventBinding<EndDevelopment> endDevelopmentEvent;
-        private EventBinding<EndEditing> onEditingEndEvent;
 
         private void Awake()
         {
@@ -23,12 +21,10 @@ namespace WriterTycoon.World.Interactables.UI
             // Initialize the Menu Action Buttons
             newWorkButton.Initialize(commandFactory.CreateMenuActionCommand("New Work"));
             continueWorkButton.Initialize(commandFactory.CreateMenuActionCommand("Continue Work"));
-            publishWorkButton.Initialize(commandFactory.CreateMenuActionCommand("Publish Work"));
             eatButton.Initialize(commandFactory.CreateMenuActionCommand("Eat"));
 
             // Disable the "Work" button
             continueWorkButton.Disable();
-            publishWorkButton.Disable();
         }
 
         private void OnEnable()
@@ -38,15 +34,11 @@ namespace WriterTycoon.World.Interactables.UI
 
             endDevelopmentEvent = new EventBinding<EndDevelopment>(ChangeButtonsOnDevelopmentEnd);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
-
-            onEditingEndEvent = new EventBinding<EndEditing>(ChangeButtonsOnEditingEnd);
-            EventBus<EndEditing>.Register(onEditingEndEvent);
         }
 
         private void OnDisable()
         {
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
-            EventBus<EndEditing>.Deregister(onEditingEndEvent);
         }
 
         /// <summary>
@@ -59,9 +51,6 @@ namespace WriterTycoon.World.Interactables.UI
 
             // Enable the "Work" button
             continueWorkButton.Enable();
-
-            // Disable the "Publish" button
-            publishWorkButton.Disable();
         }
 
         /// <summary>
@@ -74,24 +63,6 @@ namespace WriterTycoon.World.Interactables.UI
 
             // Enable the "Work" button
             continueWorkButton.Enable();
-
-            // Enable the "Publish" button
-            publishWorkButton.Enable();
-        }
-
-        /// <summary>
-        /// Callback function for changing button interactability after editing end
-        /// </summary>
-        private void ChangeButtonsOnEditingEnd(EndEditing eventData)
-        {
-            // Enable the "New" button
-            newWorkButton.Enable();
-
-            // Disable the "Work" button
-            continueWorkButton.Disable();
-
-            // Disable the "Publish" button
-            publishWorkButton.Disable();
         }
     }
 }

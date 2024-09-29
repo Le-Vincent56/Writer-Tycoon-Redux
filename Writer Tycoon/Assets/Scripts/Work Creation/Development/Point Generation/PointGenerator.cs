@@ -3,6 +3,7 @@ using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Genres;
+using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Development.PointGeneration
 {
@@ -195,7 +196,11 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             generationRates = null;
 
             // Hide the development progress text
-            EventBus<HideProgressText>.Raise(new HideProgressText());
+            EventBus<HideProgressText>.Raise(new HideProgressText()
+            {
+                Hash = workParent.Hash,
+                Stage = ProgressStage.Development
+            });
         }
 
         /// <summary>
@@ -346,8 +351,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             generatePoints = true;
             this.allocatedPoints = allocatedPoints;
 
-            Debug.Log("Set allocated points");
-
             // Set split times
             SetPhaseSplitTime();
         }
@@ -384,6 +387,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Writing Characters"
                             });
                             break;
@@ -391,6 +396,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Outlining Plot"
                             });
                             break;
@@ -398,6 +405,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Building World"
                             });
                             break;
@@ -411,6 +420,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Creating Dialogue"
                             });
                             break;
@@ -418,6 +429,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Stringing Subplots"
                             });
                             break;
@@ -425,6 +438,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Enhancing Descriptions"
                             });
                             break;
@@ -438,6 +453,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 1:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Invoking Emotions"
                             });
                             break;
@@ -445,6 +462,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 2:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Unraveling Twists"
                             });
                             break;
@@ -452,6 +471,8 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                         case 3:
                             EventBus<ShowProgressText>.Raise(new ShowProgressText()
                             {
+                                Hash = workParent.Hash,
+                                Stage = ProgressStage.Development,
                                 Text = "Developing Symbolism"
                             });
                             break;

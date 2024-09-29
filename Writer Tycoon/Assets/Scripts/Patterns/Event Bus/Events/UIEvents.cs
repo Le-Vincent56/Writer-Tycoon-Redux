@@ -66,10 +66,29 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ShowProgressText : IEvent
     {
+        public int Hash;
+        public ProgressStage Stage;
+        public string Text;
+    }
+    
+    public struct UpdateProgressText : IEvent
+    {
+        public int Hash;
+        public ProgressStage Stage;
         public string Text;
     }
 
-    public struct HideProgressText : IEvent { }
+    public struct SetProgressStage : IEvent
+    {
+        public int Hash;
+        public ProgressStage Stage;
+    }
+
+    public struct HideProgressText : IEvent 
+    {
+        public int Hash;
+        public ProgressStage Stage;
+    }
 
     public struct SetCanInteract : IEvent
     {

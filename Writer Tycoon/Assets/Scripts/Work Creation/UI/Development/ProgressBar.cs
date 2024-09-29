@@ -1,42 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.WorkCreation.UI.Development
 {
-    public enum ProgressType
-    {
-        Development,
-        Errors,
-        Polish
-    }
-
     public class ProgressBar : MonoBehaviour
     {
-        [SerializeField] private ProgressType progressType;
         [SerializeField] private float lastFillAmount;
         [SerializeField] private float currentFillAmount;
         [SerializeField] private float timeToReachTarget;
         public Image mask;
-
-        private EventBinding<UpdateProgressData> updateProgressDataEvent;
 
         private void Awake()
         {
             // Verify the Image component
             if(mask == null)
                 mask = GetComponent<Image>();
-        }
-
-        private void OnEnable()
-        {
-            updateProgressDataEvent = new EventBinding<UpdateProgressData>(GetCurrentFill);
-            EventBus<UpdateProgressData>.Register(updateProgressDataEvent);
-        }
-
-        private void OnDisable()
-        {
-            EventBus<UpdateProgressData>.Deregister(updateProgressDataEvent);
         }
 
         private void Update()
@@ -52,12 +30,12 @@ namespace WriterTycoon.WorkCreation.UI.Development
         }
 
         /// <summary>
-        /// Callback function to get the current fill amount for the Progress Bar
+        /// Set the current fill of the Progress Bar
         /// </summary>
-        private void GetCurrentFill(UpdateProgressData eventData)
+        public void SetCurrentFill(float current, float maximum)
         {
             // Calculate the target fill amount based on event data
-            float newFillAmount = eventData.Current / eventData.Maximum;
+            float newFillAmount = current / maximum;
 
             // Update the current fill target, clamping it between 0 and 1
             currentFillAmount = Mathf.Clamp01(newFillAmount);

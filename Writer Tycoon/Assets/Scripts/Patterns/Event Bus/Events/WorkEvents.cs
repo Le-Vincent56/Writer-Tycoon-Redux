@@ -1,6 +1,7 @@
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.Patterns.EventBus
 {
@@ -15,6 +16,7 @@ namespace WriterTycoon.Patterns.EventBus
     public struct UpdateProgressData : IEvent
     {
         public int Hash;
+        public ProgressStage Stage;
         public float Current;
         public float Maximum;
     }

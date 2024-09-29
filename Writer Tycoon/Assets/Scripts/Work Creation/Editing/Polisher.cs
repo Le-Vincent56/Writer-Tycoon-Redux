@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
+using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Editing
 {
@@ -17,8 +19,7 @@ namespace WriterTycoon.WorkCreation.Editing
         [SerializeField] private float totalErrors;
         [SerializeField] private float currentErrors;
         [SerializeField] private float dailyErrorGoal;
-        [SerializeField] private float dailyErrorQuota;
-        [SerializeField] private float previousWholeNumber;
+        [SerializeField] private float errorProgress;
         [SerializeField] private float errorRate;
 
         [Header("Score")]
@@ -38,8 +39,6 @@ namespace WriterTycoon.WorkCreation.Editing
             totalErrors = 0;
             currentErrors = 0;
             dailyErrorGoal = 0;
-            dailyErrorQuota = 0;
-            previousWholeNumber = 0;
             errorRate = 0;
 
             // Set polish variables
@@ -65,14 +64,165 @@ namespace WriterTycoon.WorkCreation.Editing
                 // Generate anywhere between 1 - 5% of errors
                 dailyErrorGoal = Random.Range(totalErrors * 0.01f, totalErrors * 0.05f);
 
-                // Reset the current daily errors
-                dailyErrorQuota = 0;
-
                 // Get the error rate for hourly fixes
                 errorRate = dailyErrorGoal / 24f;
 
                 return;
             }
+        }
+
+        /// <summary>
+        /// Polish a Work
+        /// </summary>
+        public void Polish()
+        {
+            // Exit case - if the Work is not being worked on
+            if (!workParent.IsWorkedOn()) return;
+
+            // Exit case - if not polishing
+            if (!polishing) return;
+
+            // Check if there are errors to remove
+            if (currentErrors > 0 && dailyErrorGoal > 0)
+            {
+                // Subtract from the total errors
+                currentErrors -= errorRate;
+
+                // Add to the daily error goal
+                errorProgress += errorRate;
+
+                // Check if the error progress has reached 1
+                if (errorProgress >= 1)
+                {
+                    // If so, reset back to 0
+                    errorProgress = 0;
+
+                    // Update to show how many errors are left
+                    EventBus<UpdateProgressText>.Raise(new UpdateProgressText()
+                    {
+                        Hash = workParent.Hash,
+                        Stage = ProgressStage.Error,
+                        Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
+                    });
+                }
+
+                // Update the error progress bar
+                EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+                {
+                    Hash = workParent.Hash,
+                    Stage = ProgressStage.Error,
+                    Current = errorProgress,
+                    Maximum = 1
+                });
+
+                return;
+            }
+            // Check if all of the current errors have been removed and 
+            // if we have not yet finished removing errors
+            else if (currentErrors <= 0 && !finishedRemovingErrors)
+            {
+                // Set finished removing errors to true
+                finishedRemovingErrors = true;
+
+                // Update the progress card to the new state
+                EventBus<SetProgressStage>.Raise(new SetProgressStage()
+                {
+                    Hash = workParent.Hash,
+                    Stage = ProgressStage.Polish
+                });
+
+                // Update the polish progress text
+                EventBus<ShowProgressText>.Raise(new ShowProgressText()
+                {
+                    Hash = workParent.Hash,
+                    Stage = ProgressStage.Polish,
+                    Text = $"Polishing"
+                });
+
+                // Set a maximum for the polish burst
+                polishBurstMax = Random.Range(1, 3);
+            }
+
+            // Exit case - if not finished removing errors
+            if (!finishedRemovingErrors) return;
+
+            // Increase the current polish burst
+            currentPolishBurst += polishRate;
+
+            // Update the polish progres bar
+            EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
+            {
+                Hash = workParent.Hash,
+                Stage = ProgressStage.Polish,
+                Current = currentPolishBurst,
+                Maximum = polishBurstMax
+            });
+
+            // Check if the current burst has exceeded the maximum
+            if (currentPolishBurst >= polishBurstMax)
+            {
+                // Reset the current polish burst
+                currentPolishBurst = 0;
+
+                // Add the maximum to the developed points
+                developedPoints += polishBurstMax;
+
+                // Regenerate the new maximum
+                polishBurstMax = Random.Range(1, 3);
+            }
+        }
+
+        /// <summary>
+        /// Begin polishing for a Work
+        /// </summary>
+        public void BeginPolish()
+        {
+            finishedRemovingErrors = false;
+            polishing = true;
+
+            // Update the progress card to the new state
+            EventBus<SetProgressStage>.Raise(new SetProgressStage()
+            {
+                Hash = workParent.Hash,
+                Stage = ProgressStage.Error
+            });
+
+            // Show the errors
+            EventBus<ShowProgressText>.Raise(new ShowProgressText()
+            {
+                Hash = workParent.Hash,
+                Stage = ProgressStage.Error,
+                Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
+            });
+        }
+
+        /// <summary>
+        /// Set the total amount of errors for the Polisher to polish
+        /// </summary>
+        public void SetTotalErrors(int totalErrors)
+        {
+            this.totalErrors = totalErrors;
+            currentErrors = totalErrors;
+        }
+
+        /// <summary>
+        /// Reset the Polisher
+        /// </summary>
+        public void Reset()
+        {
+            polishing = false;
+
+            // Reset error variables
+            finishedRemovingErrors = false;
+            totalErrors = 0;
+            currentErrors = 0;
+            dailyErrorGoal = 0;
+            errorRate = 0;
+
+            // Reset polish variables
+            developedPoints = 0;
+            currentPolishBurst = 0;
+            polishBurstMax = 0;
         }
     }
 }

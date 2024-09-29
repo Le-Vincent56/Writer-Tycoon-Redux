@@ -1,10 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.UI.Development.States;
 
 namespace WriterTycoon.WorkCreation.UI.Development
@@ -21,7 +19,15 @@ namespace WriterTycoon.WorkCreation.UI.Development
         [SerializeField] private int workHash;
         [SerializeField] private ProgressStage currentStage;
         [SerializeField] private ProgressTitle progressTitle;
-        [SerializeField] private ProgressBar progressBar;
+
+        [SerializeField] private ProgressBar developmentBar;
+        [SerializeField] private ProgressText developmentText;
+
+        [SerializeField] private ProgressBar errorBar;
+        [SerializeField] private ProgressText errorText;
+
+        [SerializeField] private ProgressBar polishBar;
+        [SerializeField] private ProgressText polishText;
 
         [SerializeField] private CanvasGroup[] canvasGroups;
         [SerializeField] private float translateValue;
@@ -35,6 +41,39 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
         private StateMachine stateMachine;
 
+        private EventBinding<SetProgressStage> setProgressStageEvent;
+        private EventBinding<UpdateProgressData> updateProgressDataEvent;
+        private EventBinding<ShowProgressText> showProgressTextEvent;
+        private EventBinding<UpdateProgressText> updateProgressTextEvent;
+        private EventBinding<HideProgressText> hideProgressTextEvent;
+
+        private void OnEnable()
+        {
+            setProgressStageEvent = new EventBinding<SetProgressStage>(SetState);
+            EventBus<SetProgressStage>.Register(setProgressStageEvent);
+
+            updateProgressDataEvent = new EventBinding<UpdateProgressData>(UpdateProgressBar);
+            EventBus<UpdateProgressData>.Register(updateProgressDataEvent);
+
+            showProgressTextEvent = new EventBinding<ShowProgressText>(ShowText);
+            EventBus<ShowProgressText>.Register(showProgressTextEvent);
+
+            updateProgressTextEvent = new EventBinding<UpdateProgressText>(UpdateText);
+            EventBus<UpdateProgressText>.Register(updateProgressTextEvent);
+
+            hideProgressTextEvent = new EventBinding<HideProgressText>(HideText);
+            EventBus<HideProgressText>.Register(hideProgressTextEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<SetProgressStage>.Deregister(setProgressStageEvent);
+            EventBus<UpdateProgressData>.Deregister(updateProgressDataEvent);
+            EventBus<ShowProgressText>.Deregister(showProgressTextEvent);
+            EventBus<UpdateProgressText>.Deregister(updateProgressTextEvent);
+            EventBus<HideProgressText>.Deregister(hideProgressTextEvent);
+        }
+
         private void Update()
         {
             // Update the state machine
@@ -47,6 +86,9 @@ namespace WriterTycoon.WorkCreation.UI.Development
             stateMachine.FixedUpdate();
         }
 
+        /// <summary>
+        /// Initialize the Progress Card
+        /// </summary>
         public void Initialize(int workHash, string title)
         {
             // Verify the Progress Title
@@ -73,7 +115,104 @@ namespace WriterTycoon.WorkCreation.UI.Development
             // Initialize the Progress Title
             progressTitle.Initialize(title);
 
+            // Initialize the state machine
             InitializeStateMachine();
+        }
+
+        /// <summary>
+        /// Callback function to update the Progress Bar
+        /// </summary>
+        /// <param name="eventData"></param>
+        private void UpdateProgressBar(UpdateProgressData eventData)
+        {
+            // Exit case - if the event Hash does not equal the card's hash
+            if (eventData.Hash != workHash) return;
+
+            switch (eventData.Stage)
+            {
+                case ProgressStage.Development:
+                    developmentBar.SetCurrentFill(eventData.Current, eventData.Maximum);
+                    break;
+
+                case ProgressStage.Error:
+                    errorBar.SetCurrentFill(eventData.Current, eventData.Maximum);
+                    break;
+
+                case ProgressStage.Polish:
+                    polishBar.SetCurrentFill(eventData.Current, eventData.Maximum);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Callback function to handle showing Progress Text
+        /// </summary>
+        private void ShowText(ShowProgressText eventData)
+        {
+            // Exit case - if the event Hash does not equal the card's hash
+            if (eventData.Hash != workHash) return;
+
+            // Fade in and set text depending on the stage of progress
+            switch (eventData.Stage)
+            {
+                case ProgressStage.Development:
+                    developmentText.FadeInAndSetText(eventData.Text);
+                    break;
+                case ProgressStage.Error:
+                    errorText.FadeInAndSetText(eventData.Text);
+                    break;
+                case ProgressStage.Polish:
+                    polishText.FadeInAndSetText(eventData.Text);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Callback function to handle updating the Progress Text
+        /// </summary>
+        private void UpdateText(UpdateProgressText eventData)
+        {
+            // Exit case - if the event Hash does not equal the card's hash
+            if (eventData.Hash != workHash) return;
+
+            // Update the text (without fading) depending on the stage of progress
+            switch (eventData.Stage)
+            {
+                case ProgressStage.Development:
+                    developmentText.UpdateText(eventData.Text);
+                    break;
+
+                case ProgressStage.Error:
+                    errorText.UpdateText(eventData.Text);
+                    break;
+
+                case ProgressStage.Polish:
+                    polishText.UpdateText(eventData.Text);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Callback function to handle hiding Progress Text
+        /// </summary>
+        private void HideText(HideProgressText eventData)
+        {
+            // Exit case - if the event Hash does not equal the card's hash
+            if (eventData.Hash != workHash) return;
+
+            // Fade out the text depending on the stage of progress
+            switch (eventData.Stage)
+            {
+                case ProgressStage.Development:
+                    developmentText.FadeOutText();
+                    break;
+                case ProgressStage.Error:
+                    errorText.FadeOutText();
+                    break;
+                case ProgressStage.Polish:
+                    polishText.FadeOutText();
+                    break;
+            }
         }
 
         /// <summary>
@@ -119,6 +258,18 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
             // Set an initial state
             stateMachine.SetState(developmentState);
+        }
+
+        /// <summary>
+        /// Callback function to handle state changing
+        /// </summary>
+        public void SetState(SetProgressStage eventData)
+        {
+            // Exit case - if the event Hash does not equal the card's hash
+            if (eventData.Hash != workHash) return;
+
+            // Set the current stage
+            currentStage = eventData.Stage;
         }
 
         /// <summary>

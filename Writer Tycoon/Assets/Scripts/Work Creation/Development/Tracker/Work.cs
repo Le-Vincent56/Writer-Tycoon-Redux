@@ -7,6 +7,7 @@ using WriterTycoon.WorkCreation.Editing;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Rater;
+using WriterTycoon.WorkCreation.UI.Development;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -32,6 +33,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [SerializeField] private ErrorGenerator errorGenerator;
         [SerializeField] private Polisher polisher;
 
+        public int Hash { get => hash; }
         public PointGenerator PointGenerator { get => pointGenerator; }
         public ErrorGenerator ErrorGenerator { get => errorGenerator; }
         public Polisher Polisher { get => polisher; }
@@ -83,6 +85,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Update the progress data
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
+                Hash = hash,
+                Stage = ProgressStage.Development,
                 Current = currentDayPhase,
                 Maximum = currentDayEstimate,
             });
@@ -150,6 +154,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
             {
                 Hash = hash,
+                Stage = ProgressStage.Development,
                 Current = currentDayPhase,
                 Maximum = currentDayEstimate,
             });
@@ -200,8 +205,10 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         /// </summary>
         public bool IsWorkedOn()
         {
+            // Set false as default
             bool isWorkedOn = false;
 
+            // Iterate through each worker
             foreach(IWorker worker in workers)
             {
                 // Check if at least one worker is working

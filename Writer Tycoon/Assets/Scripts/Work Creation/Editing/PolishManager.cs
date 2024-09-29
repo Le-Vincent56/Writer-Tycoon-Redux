@@ -8,27 +8,8 @@ namespace WriterTycoon.WorkCreation.Editing
 {
     public class PolishManager : Dedicant
     {
-        private Dictionary<int, Work> worksInProgress;
+        [SerializeField] private Dictionary<int, Work> worksInProgress;
 
-        [SerializeField] private bool working;
-        [SerializeField] private bool polish;
-
-        [Header("Errors")]
-        [SerializeField] private bool finishedRemovingErrors;
-        [SerializeField] private float totalErrors;
-        [SerializeField] private float currentErrors;
-        [SerializeField] private float dailyErrorGoal;
-        [SerializeField] private float dailyErrorQuota;
-        [SerializeField] private float previousWholeNumber;
-        [SerializeField] private float errorRate;
-
-        [Header("Score")]
-        [SerializeField] private float developedPoints;
-        [SerializeField] private float currentPolishBurst;
-        [SerializeField] private float polishBurstMax;
-        [SerializeField] private float polishRate;
-
-        private EventBinding<ConfirmPlayerWorkState> confirmPlayerWorkState;
         private EventBinding<PassHour> passHourEvent;
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<BeginEditing> beginEditingEvent;
@@ -39,28 +20,12 @@ namespace WriterTycoon.WorkCreation.Editing
 
         private void Awake()
         {
-            polish = false;
-
-            // Set error variables
-            finishedRemovingErrors = false;
-            totalErrors = 0;
-            currentErrors = 0;
-            dailyErrorGoal = 0;
-            dailyErrorQuota = 0;
-            previousWholeNumber = 0;
-            errorRate = 0;
-
-            // Set polish variables
-            developedPoints = 0;
-            currentPolishBurst = 0;
-            polishBurstMax = 0;
+            // Initialize the dictionary
+            worksInProgress = new();
         }
 
         private void OnEnable()
         {
-            confirmPlayerWorkState = new EventBinding<ConfirmPlayerWorkState>(ChangeWorkState);
-            EventBus<ConfirmPlayerWorkState>.Register(confirmPlayerWorkState);
-
             passHourEvent = new EventBinding<PassHour>(Polish);
             EventBus<PassHour>.Register(passHourEvent);
 
@@ -76,7 +41,6 @@ namespace WriterTycoon.WorkCreation.Editing
 
         private void OnDisable()
         {
-            EventBus<ConfirmPlayerWorkState>.Deregister(confirmPlayerWorkState);
             EventBus<PassHour>.Deregister(passHourEvent);
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<BeginEditing>.Deregister(beginEditingEvent);
@@ -88,12 +52,7 @@ namespace WriterTycoon.WorkCreation.Editing
         /// </summary>
         private void SetDailyErrorGoals()
         {
-            if (!working) return;
-
-            // Exit case - if not polishing
-            if (!polish) return;
-
-            // Iterate through each Work
+            // Iterate through each Work in progress
             foreach (KeyValuePair<int, Work> kvp in worksInProgress)
             {
                 // Set the daily error goal for the Work
@@ -106,119 +65,45 @@ namespace WriterTycoon.WorkCreation.Editing
         /// </summary>
         private void Polish()
         {
-            // Exit case - if not working
-            if (!working) return;
-
-            // Exit case - if not polishing
-            if (!polish) return;
-
-            // Check if there are errors to remove
-            if(currentErrors > 0 && dailyErrorGoal > 0)
+            // Iterate through each Work in progress
+            foreach(KeyValuePair<int, Work> kvp in worksInProgress)
             {
-                // Subtract from the total errors
-                currentErrors -= errorRate;
-
-                // Add to the daily error goal
-                dailyErrorQuota += dailyErrorGoal;
-
-                //// Update the error progress bar
-                //EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-                //{
-                //    Current = dailyErrorQuota,
-                //    Maximum = dailyErrorGoal
-                //});
-
-                // Get the lowest whole number
-                int currentErrorInt = Mathf.FloorToInt(dailyErrorQuota);
-
-                // Check if the current whole error number is not equal to 0 and if it does
-                // not equal the last seen whole number
-                if(currentErrorInt != 0 && currentErrorInt != previousWholeNumber)
-                {
-                    // Show how many errors are left
-                    //EventBus<ShowProgressText>.Raise(new ShowProgressText()
-                    //{
-                    //    Type = ProgressType.Errors,
-                    //    Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
-                    //});
-
-                    // Update the previous whole number
-                    previousWholeNumber = currentErrorInt;
-                }
-
-                return;
-            } 
-            // Check if all of the current errors have been removed and 
-            // if we have not yet finished removing errors
-            else if(currentErrors <= 0 && !finishedRemovingErrors)
-            {
-                // Set finished removing errors to true
-                finishedRemovingErrors = true;
-
-                // Hide the errors progress bar and text
-                //EventBus<HideProgressText>.Raise(new HideProgressText()
-                //{
-                //    Type = ProgressType.Errors
-                //});
-
-                // Show the polish progress bar and text
-                //EventBus<ShowProgressText>.Raise(new ShowProgressText()
-                //{
-                //    Type = ProgressType.Polish,
-                //    Text = "Polishing"
-                //});
-                
-                // Set a maximum for the polish burst
-                polishBurstMax = Random.Range(1, 3);
-            }
-
-            // Increase the current polish burst
-            currentPolishBurst += polishRate;
-
-            //// Update the progress bar data
-            //EventBus<UpdateProgressData>.Raise(new UpdateProgressData()
-            //{
-            //    Current = currentPolishBurst,
-            //    Maximum = polishBurstMax
-            //});
-
-            // Check if the current burst has exceeded the maximum
-            if(currentPolishBurst >= polishBurstMax)
-            {
-                // Reset the current polish burst
-                currentPolishBurst = 0;
-
-                // Add the maximum to the developed points
-                developedPoints += polishBurstMax;
-
-                // Regenerate the new maximum
-                polishBurstMax = Random.Range(1, 3);
+                // Polish the Work
+                kvp.Value.Polisher.Polish();
             }
         }
 
         /// <summary>
-        /// Begin polishing
+        /// Begin polishing a work
         /// </summary>
-        private void BeginPolish()
+        private void BeginPolish(BeginEditing eventData)
         {
-            finishedRemovingErrors = false;
-            polish = true;
+            // Try to get a Work from the hash
+            if(worksInProgress.TryGetValue(eventData.Hash, out Work value))
+            {
+                // Begin polishing the work
+                value.Polisher.BeginPolish();
 
-            // Show the progress bar and text
-            //EventBus<ShowProgressText>.Raise(new ShowProgressText()
-            //{
-            //    Type = ProgressType.Errors,
-            //    Text = $"Errors: {Mathf.CeilToInt(currentErrors)}"
-            //});
+                // Update the progress card to the new state
+                EventBus<SetProgressStage>.Raise(new SetProgressStage()
+                {
+                    Hash = eventData.Hash,
+                    Stage = UI.Development.ProgressStage.Error
+                });
+            }
         }
 
         /// <summary>
         /// Set the total errors for the Editing Manager to polish
         /// </summary>
-        public void SetErrors(int totalErrors)
+        public void SetErrors(int hash, int totalErrors)
         {
-            this.totalErrors = totalErrors;
-            currentErrors = totalErrors;
+            // Try to get a Work from the hash
+            if(worksInProgress.TryGetValue(hash, out Work value))
+            {
+                // Set the total errors for the work
+                value.Polisher.SetTotalErrors(totalErrors);
+            }
         }
 
         /// <summary>
@@ -232,34 +117,14 @@ namespace WriterTycoon.WorkCreation.Editing
         /// <summary>
         /// Reset polish variables after editing
         /// </summary>
-        private void ResetPolish()
+        private void ResetPolish(EndEditing eventData)
         {
-            polish = false;
-
-            // Reset error variables
-            finishedRemovingErrors = false;
-            totalErrors = 0;
-            currentErrors = 0;
-            dailyErrorGoal = 0;
-            dailyErrorQuota = 0;
-            previousWholeNumber = 0;
-            errorRate = 0;
-
-            // Reset polish variables
-            developedPoints = 0;
-            currentPolishBurst = 0;
-            polishBurstMax = 0;
-
-            // Hide the polish progress bar and text
-            //EventBus<HideProgressText>.Raise(new HideProgressText()
-            //{
-            //    Type = ProgressType.Polish,
-            //});
+            // Try to get a Work from the hash
+            if(worksInProgress.TryGetValue(eventData.Hash, out Work value))
+            {
+                // Reset the Polisher
+                value.Polisher.Reset();
+            }
         }
-
-        /// <summary>
-        /// Callback event to confirm the player is working
-        /// </summary>
-        private void ChangeWorkState(ConfirmPlayerWorkState eventData) => working = eventData.Working;
     }
 }
