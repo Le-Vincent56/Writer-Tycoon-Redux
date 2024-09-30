@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using WriterTycoon.Patterns.Mediator;
 using WriterTycoon.WorkCreation.Development.ErrorGeneration;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
+using WriterTycoon.WorkCreation.Editing;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -13,6 +14,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Determine mediation routes
             if (visitable is PointGenerationManager pointGenerationManager) pointGenerationManager.SetWorksInProgress(Content);
             if (visitable is ErrorGenerationManager errorGenerationManager) errorGenerationManager.SetWorksInProgress(Content);
+            if (visitable is PolishManager polishManager) polishManager.SetWorksInProgress(Content);
         }
     }
 }

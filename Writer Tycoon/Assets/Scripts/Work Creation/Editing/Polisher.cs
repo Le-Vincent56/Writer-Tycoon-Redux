@@ -25,12 +25,16 @@ namespace WriterTycoon.WorkCreation.Editing
 
         [Header("Score")]
         [SerializeField] private float developedPoints;
+        [SerializeField] private float currentScore;
         [SerializeField] private float currentPolishBurst;
+        [SerializeField] private float maxPolishPointsPossible;
         [SerializeField] private float polishBurstMax;
         [SerializeField] private float basePolishRate;
         [SerializeField] private float polishRate;
 
-        public Polisher(Work workParent)
+        public float EndScore { get => currentScore; }
+
+        public Polisher(Work workParent, float targetScore)
         {
             this.workParent = workParent;
 
@@ -45,6 +49,7 @@ namespace WriterTycoon.WorkCreation.Editing
 
             // Set polish variables
             developedPoints = 0;
+            maxPolishPointsPossible = targetScore * 0.1f; // Only allow the player to get +10% maximum from polish points
             currentPolishBurst = 0;
             polishBurstMax = 0;
 
@@ -136,6 +141,9 @@ namespace WriterTycoon.WorkCreation.Editing
                 // Set finished removing errors to true
                 finishedRemovingErrors = true;
 
+                // Set the current score for polishing
+                currentScore = workParent.PointGenerator.CurrentScore;
+
                 // Update the progress card to the new state
                 EventBus<SetProgressStage>.Raise(new SetProgressStage()
                 {
@@ -176,8 +184,9 @@ namespace WriterTycoon.WorkCreation.Editing
                 // Reset the current polish burst
                 currentPolishBurst = 0;
 
-                // Add the maximum to the developed points
+                // Add the maximum to the developed points and to the current score
                 developedPoints += polishBurstMax;
+                currentScore += polishBurstMax;
 
                 // Regenerate the new maximum
                 polishBurstMax = Random.Range(1, 3);
@@ -189,6 +198,7 @@ namespace WriterTycoon.WorkCreation.Editing
         /// </summary>
         public void BeginPolish()
         {
+            // Set variables
             finishedRemovingErrors = false;
             polishing = true;
 
@@ -240,24 +250,8 @@ namespace WriterTycoon.WorkCreation.Editing
         }
 
         /// <summary>
-        /// Reset the Polisher
+        /// Set the current score for the Polisher
         /// </summary>
-        public void Reset()
-        {
-            polishing = false;
-
-            // Reset error variables
-            finishedRemovingErrors = false;
-            totalErrors = 0;
-            currentErrors = 0;
-            dailyErrorGoal = 0;
-            errorRate = 0;
-
-            // Reset polish variables
-            developedPoints = 0;
-            currentPolishBurst = 0;
-            polishBurstMax = 0;
-            basePolishRate = 0f;
-        }
+        public void SetCurrentScore(float currentScore) => this.currentScore = currentScore;
     }
 }

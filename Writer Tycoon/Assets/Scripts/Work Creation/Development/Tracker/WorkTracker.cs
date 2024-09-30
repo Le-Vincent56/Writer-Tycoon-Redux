@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Mediation;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace WriterTycoon.WorkCreation.Development.Tracker
 {
@@ -21,6 +22,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private EventBinding<EndEditing> endEditingEvent;
 
         private void Awake()
         {
@@ -35,21 +37,27 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(AddWorkToTrack);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+
+            endEditingEvent = new EventBinding<EndEditing>(PublishAndStopTracking);
+            EventBus<EndEditing>.Register(endEditingEvent);
         }
 
         private void OnDisable()
         {
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
+            EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
         /// <summary>
-        /// Callback function to add a new work to track
+        /// Callback function to add a new Work to track
         /// </summary>
-        public void AddWorkToTrack(NotifySuccessfulCreation eventData)
+        private void AddWorkToTrack(NotifySuccessfulCreation eventData)
         {
             // Add a new work to track
             worksToTrack.Add(eventData.ReviewData.Hash, new Work(
+                eventData.ReviewData.AboutInfo.Title,
+                eventData.ReviewData.AboutInfo.Author,
                 eventData.ReviewData.Workers,
                 eventData.ReviewData.TimeEstimates,
                 eventData.ReviewData.Genres,
@@ -66,6 +74,35 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                     DedicantType.ErrorGenerator
                 })
             );
+        }
+
+        /// <summary>
+        /// Callback function to stop tracking a Work
+        /// </summary>
+        private void PublishAndStopTracking(EndEditing eventData)
+        {
+            if(worksToTrack.TryGetValue(eventData.Hash, out Work work))
+            {
+                // Publish the Work
+                EventBus<PublishWork>.Raise(new PublishWork()
+                {
+                    WorkToPublish = work
+                });
+
+                // Remove the work using the hash
+                worksToTrack.Remove(eventData.Hash);
+
+                // Update all the tracked works
+                Send(new TrackerPayload()
+                { Content = worksToTrack },
+                    AreTypes(new DedicantType[3]
+                    {
+                    DedicantType.PointGenerator,
+                    DedicantType.ErrorGenerator,
+                    DedicantType.Editor
+                    })
+                );
+            }
         }
 
         /// <summary>

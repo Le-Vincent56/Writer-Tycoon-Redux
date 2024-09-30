@@ -29,9 +29,13 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         [SerializeField] private bool generatePoints;
         [SerializeField] private float componentScore;
         [SerializeField] private float[] targetSplitScores;
+        [SerializeField] private float totalTargetScore;
         [SerializeField] private float targetScore;
         [SerializeField] private float currentScore;
         [SerializeField] private float[] generationRates;
+
+        public float TotalTargetScore { get => totalTargetScore; }
+        public float CurrentScore { get => currentScore; }
 
         public PointGenerator(Work workParent, List<Genre> chosenGenres, DevelopmentPhase currentPhase, float targetScore)
         {
@@ -183,27 +187,6 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         }
 
         /// <summary>
-        /// Reset the Point Generator
-        /// </summary>
-        public void Reset()
-        {
-            // Clear allocated points
-            allocatedPoints = new();
-            currentPhase = DevelopmentPhase.PhaseOne;
-
-            // Nullify arrays
-            targetSplitScores = null;
-            generationRates = null;
-
-            // Hide the development progress text
-            EventBus<HideProgressText>.Raise(new HideProgressText()
-            {
-                Hash = workParent.Hash,
-                Stage = ProgressStage.Development
-            });
-        }
-
-        /// <summary>
         /// Calculate the split times for each Point Category within a phase
         /// </summary>
         private void CalculateSplitTimes(
@@ -338,6 +321,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         public void SetTargetScore(float totalTargetScore)
         {
             componentScore = totalTargetScore / 9f;
+            this.totalTargetScore = totalTargetScore;
             targetScore = 0;
             currentScore = 0;
         }

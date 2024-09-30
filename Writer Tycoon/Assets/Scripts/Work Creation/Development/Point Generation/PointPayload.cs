@@ -11,7 +11,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         public override void Visit<T>(T visitable)
         {
             // Determine mediation routes
-            if (visitable is PolishManager polishManager) polishManager.SetWorks(Content);
+            if (visitable is PolishManager polishManager) polishManager.SetWorksInProgress(Content);
         }
     }
 }

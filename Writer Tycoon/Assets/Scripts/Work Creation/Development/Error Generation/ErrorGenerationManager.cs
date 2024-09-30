@@ -27,7 +27,7 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
             passDayEvent = new EventBinding<PassDay>(GenerateErrors);
             EventBus<PassDay>.Register(passDayEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndReset);
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendErrors);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
@@ -47,18 +47,19 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
         }
 
         /// <summary>
-        /// Callback function to send and reset the error variables on the end of development
+        /// Callback function to send the error variables on the end of development
         /// </summary>
-        private void SendAndReset(EndDevelopment eventData)
+        private void SendErrors(EndDevelopment eventData)
         {
             // Try to get a Work from the hash
             if(worksInProgress.TryGetValue(eventData.Hash, out Work value))
             {
                 // Send the total errors
-                SendErrors(eventData.Hash, value.ErrorGenerator.GetTotalErrors());
-
-                // Reset the Error Generator
-                value.ErrorGenerator.Reset();
+                Send(new ErrorPayload()
+                    {
+                        Content = (eventData.Hash, value.ErrorGenerator.GetTotalErrors())
+                    }, IsType(DedicantType.Editor)
+                );
             }
         }
 
@@ -71,18 +72,6 @@ namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
             {
                 kvp.Value.ErrorGenerator.GenerateErrors();
             }
-        }
-
-        /// <summary>
-        /// Send the total errors
-        /// </summary>
-        private void SendErrors(int hash, int totalErrors)
-        {
-            Send(new ErrorPayload()
-            {
-                Content = (hash, totalErrors)
-            }, IsType(DedicantType.Editor)
-            );
         }
     }
 }

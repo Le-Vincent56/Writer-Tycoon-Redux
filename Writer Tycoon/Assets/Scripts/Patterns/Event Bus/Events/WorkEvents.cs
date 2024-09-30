@@ -65,5 +65,10 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public int Hash;
     }
+
+    public struct PublishWork : IEvent
+    {
+        public Work WorkToPublish;
+    }
     #endregion
 }

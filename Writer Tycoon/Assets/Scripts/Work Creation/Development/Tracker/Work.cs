@@ -17,17 +17,24 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [SerializeField] private int hash;
         private List<IWorker> workers;
 
+        [Header("Details")]
+        [SerializeField] private string title;
+        [SerializeField] private string author;
+
         [SerializeField] private bool developing;
         [SerializeField] private int currentDayPhase;
 
         [SerializeField] private DevelopmentPhase currentPhase;
 
-        [Header("Phases")]
+        [Header("Time Estimates")]
         [SerializeField] private int currentDayEstimate;
         [SerializeField] private int totalDayEstimate;
         [SerializeField] private int phaseOneDayEstimate;
         [SerializeField] private int phaseTwoDayEstimate;
         [SerializeField] private int phaseThreeDayEstimate;
+
+        [Header("Rating")]
+        [SerializeField] private int daysToWaitBeforeRating;
 
         [SerializeField] private PointGenerator pointGenerator;
         [SerializeField] private ErrorGenerator errorGenerator;
@@ -35,12 +42,20 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
         public int Hash { get => hash; }
         public List<IWorker> Workers { get => workers; }
+        public int DaysToWaitBeforeRating { get => daysToWaitBeforeRating; set => daysToWaitBeforeRating = value; }
         public PointGenerator PointGenerator { get => pointGenerator; }
         public ErrorGenerator ErrorGenerator { get => errorGenerator; }
         public Polisher Polisher { get => polisher; }
 
-        public Work(List<IWorker> workers, TimeEstimates estimates, List<Genre> chosenGenres, float targetScore, int hash)
+        public Work(
+            string title, string author, 
+            List<IWorker> workers, TimeEstimates estimates, 
+            List<Genre> chosenGenres, float targetScore, int hash)
         {
+            // Set the "About" info
+            this.title = title;
+            this.author = author;
+
             // Set the hash
             this.hash = hash;
 
@@ -60,10 +75,13 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Set developing
             developing = true;
 
+            // Set the days to wait before rating
+            daysToWaitBeforeRating = 7;
+
             // Initialize the pointGenerator
             pointGenerator = new PointGenerator(this, chosenGenres, currentPhase, targetScore);
             errorGenerator = new ErrorGenerator(this, estimates.Total, 0.33f);
-            polisher = new Polisher(this);
+            polisher = new Polisher(this, targetScore);
 
             // Set the current phase total for the second phase
             pointGenerator.SetCurrentPhaseTotal(phaseOneDayEstimate);
@@ -199,6 +217,23 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             {
                 Hash = hash
             });
+        }
+
+        /// <summary>
+        /// Get the information necessary for Rating
+        /// </summary>
+        public RatingInfo GetRatingInfo()
+        {
+            // Construct the rate info
+            RatingInfo ratingInfo = new RatingInfo()
+            {
+                Title = title,
+                Author = author,
+                TargetScore = PointGenerator.TotalTargetScore,
+                EndScore = Polisher.EndScore
+            };
+
+            return ratingInfo;
         }
 
         /// <summary>

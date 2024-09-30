@@ -13,7 +13,6 @@ namespace WriterTycoon.WorkCreation.Editing
         private EventBinding<PassHour> passHourEvent;
         private EventBinding<PassDay> passDayEvent;
         private EventBinding<BeginEditing> beginEditingEvent;
-        private EventBinding<EndEditing> endEditingEvent;
 
         public override DedicantType Type => DedicantType.Editor;
         public override string Name => "Editing Manager";
@@ -34,9 +33,6 @@ namespace WriterTycoon.WorkCreation.Editing
 
             beginEditingEvent = new EventBinding<BeginEditing>(BeginPolish);
             EventBus<BeginEditing>.Register(beginEditingEvent);
-
-            endEditingEvent = new EventBinding<EndEditing>(ResetPolish);
-            EventBus<EndEditing>.Register(endEditingEvent);
         }
 
         private void OnDisable()
@@ -44,7 +40,6 @@ namespace WriterTycoon.WorkCreation.Editing
             EventBus<PassHour>.Deregister(passHourEvent);
             EventBus<PassDay>.Deregister(passDayEvent);
             EventBus<BeginEditing>.Deregister(beginEditingEvent);
-            EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
         /// <summary>
@@ -112,22 +107,9 @@ namespace WriterTycoon.WorkCreation.Editing
         /// <summary>
         /// Set the Works in progress
         /// </summary>
-        public void SetWorks(Dictionary<int, Work> worksInProgress)
+        public void SetWorksInProgress(Dictionary<int, Work> worksInProgress)
         {
             this.worksInProgress = worksInProgress;
-        }
-
-        /// <summary>
-        /// Reset polish variables after editing
-        /// </summary>
-        private void ResetPolish(EndEditing eventData)
-        {
-            // Try to get a Work from the hash
-            if(worksInProgress.TryGetValue(eventData.Hash, out Work value))
-            {
-                // Reset the Polisher
-                value.Polisher.Reset();
-            }
         }
     }
 }

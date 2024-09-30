@@ -130,18 +130,6 @@ namespace WriterTycoon.WorkCreation.Rater
         }
 
         /// <summary>
-        /// Reset the Error Generator
-        /// </summary>
-        public void Reset()
-        {
-            // Reset variables
-            totalErrors = 0;
-            currentErrors = 0;
-            pathCount = 0;
-            errorPath.Clear();
-        }
-
-        /// <summary>
         /// Get the total errors
         /// </summary>
         public int GetTotalErrors() => totalErrors;

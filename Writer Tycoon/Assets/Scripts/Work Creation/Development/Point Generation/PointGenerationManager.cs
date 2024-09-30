@@ -38,7 +38,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             setDevelopmentPhaseEvent = new EventBinding<SetDevelopmentPhase>(SetDevelopmentPhase);
             EventBus<SetDevelopmentPhase>.Register(setDevelopmentPhaseEvent);
 
-            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendAndResetGenerator);
+            endDevelopmentEvent = new EventBinding<EndDevelopment>(SendPoints);
             EventBus<EndDevelopment>.Register(endDevelopmentEvent);
         }
 
@@ -80,22 +80,24 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         private void SetDevelopmentPhase(SetDevelopmentPhase eventData)
         {
-            worksInProgress[eventData.Hash].PointGenerator.SetDevelopmentPhase(eventData.Phase);
+            // Try to get a Work from the event Hash
+            if(worksInProgress.TryGetValue(eventData.Hash, out Work work))
+            {
+                // Set the development phase of the Work
+                work.PointGenerator.SetDevelopmentPhase(eventData.Phase);
+            }
         }
 
         /// <summary>
         /// Reset the Point Generator
         /// </summary>
-        private void SendAndResetGenerator(EndDevelopment eventData)
+        private void SendPoints(EndDevelopment eventData)
         {
             // Send the points out for editing
             Send(new PointPayload()
-                { Content = worksInProgress },
+            { Content = worksInProgress },
                 IsType(DedicantType.Editor)
             );
-
-            // Reset the Work in progress
-            worksInProgress[eventData.Hash].PointGenerator.Reset();
         }
 
         /// <summary>
@@ -118,8 +120,12 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         public void SetAllocatedPoints((int Hash, Dictionary<PointCategory, int> Points) allocatedPoints)
         {
-            // Set the allocated points for the given hash
-            worksInProgress[allocatedPoints.Hash].PointGenerator.SetAllocatedPoints(allocatedPoints.Points);
+            // Try to get a Work from the event Hash
+            if (worksInProgress.TryGetValue(allocatedPoints.Hash, out Work work))
+            {
+                // Set the allocated points for the given hash
+                work.PointGenerator.SetAllocatedPoints(allocatedPoints.Points);
+            }
         }
     }
 }
