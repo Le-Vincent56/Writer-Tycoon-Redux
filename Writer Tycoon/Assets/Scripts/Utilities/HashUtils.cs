@@ -6,16 +6,19 @@ namespace WriterTycoon.Utilities.Hash
 {
     public static class HashUtils
     {
-        public static int GenerateHash(string input)
-        {
-            // Use SHA256 for hash generation
-            using(SHA256 sha256 = SHA256.Create())
-            {
-                // Get the UTF-8 bytes from the input
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
+        private static readonly RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
+        public static int GenerateHash()
+        {
+            // Get a unique set of random bytes
+            byte[] randomBytes = new byte[16];
+            rng.GetBytes(randomBytes);
+
+            // Use SHA256 for hash generation
+            using (SHA256 sha256 = SHA256.Create())
+            {
                 // Compute the hash
-                byte[] hashBytes = sha256.ComputeHash(bytes);
+                byte[] hashBytes = sha256.ComputeHash(randomBytes);
 
                 // Convert the bytes to an int
                 int hashInt = BitConverter.ToInt32(hashBytes, 0);

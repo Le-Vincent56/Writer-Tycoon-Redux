@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastFillAmount: 0
   currentFillAmount: 0
-  timeToReachTarget: 0.25
+  timeToReachTarget: 0.05
   mask: {fileID: 0}
 --- !u!1 &2790240493135196182
 GameObject:
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastFillAmount: 0
   currentFillAmount: 0
-  timeToReachTarget: 0.25
+  timeToReachTarget: 0.05
   mask: {fileID: 0}
 --- !u!1 &3563841357351532586
 GameObject:

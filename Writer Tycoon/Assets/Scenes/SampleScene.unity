@@ -15577,6 +15577,8 @@ MonoBehaviour:
   currentPathIndex: 0
   firstTimeWorking: 0
   eating: 0
+  eatValue: 1
+  bathroomValue: 1
   working: 0
   assignedHash: 0
 --- !u!61 &1156749892

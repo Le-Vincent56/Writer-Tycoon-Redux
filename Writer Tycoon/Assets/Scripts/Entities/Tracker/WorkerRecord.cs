@@ -13,6 +13,7 @@ namespace WriterTycoon.Entities.Tracker
         private List<IWorker> availableWorkers;
 
         private EventBinding<NotifySuccessfulCreation> notifySuccessfulCreationEvent;
+        private EventBinding<EndEditing> endEditingEvent;
 
         private void Awake()
         {
@@ -28,11 +29,15 @@ namespace WriterTycoon.Entities.Tracker
         {
             notifySuccessfulCreationEvent = new EventBinding<NotifySuccessfulCreation>(UpdateWorkerHashes);
             EventBus<NotifySuccessfulCreation>.Register(notifySuccessfulCreationEvent);
+
+            endEditingEvent = new EventBinding<EndEditing>(UpdateWorkerHashes);
+            EventBus<EndEditing>.Register(endEditingEvent);
         }
 
         private void OnDisable()
         {
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
+            EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
         /// <summary>
@@ -50,7 +55,6 @@ namespace WriterTycoon.Entities.Tracker
         /// <summary>
         /// Callback function to update Worker hashes after a Work has been initiated
         /// </summary>
-        /// <param name="eventData"></param>
         private void UpdateWorkerHashes(NotifySuccessfulCreation eventData)
         {
             foreach(IWorker eventWorker in eventData.ReviewData.Workers)
@@ -66,6 +70,26 @@ namespace WriterTycoon.Entities.Tracker
             }
 
             // Update available workers
+            UpdateAvailableWorkers();
+        }
+
+        /// <summary>
+        /// Callback function to update Worker hashes after a Work has finished its editing phase
+        /// </summary>
+        private void UpdateWorkerHashes(EndEditing eventData)
+        {
+            foreach(IWorker worker in totalWorkers)
+            {
+                // Check if the worker's assigned hash is equal to the event hash
+                if(worker.AssignedHash == eventData.Hash)
+                {
+                    // If so, reset the worker's assigned hash to make
+                    // them available again
+                    worker.AssignedHash = -1;
+                }
+            }
+
+            // Update the available workers
             UpdateAvailableWorkers();
         }
 

@@ -37,6 +37,8 @@ namespace WriterTycoon.Entities.Player
         [Header("Rest/Recreation")]
         [SerializeField] private bool firstTimeWorking;
         [SerializeField] private bool eating;
+        [SerializeField] private float eatValue;
+        [SerializeField] private float bathroomValue;
 
         [Header("Work")]
         [SerializeField] private bool working;
@@ -259,6 +261,15 @@ namespace WriterTycoon.Entities.Player
             working = false;
             eating = false;
             StartCoroutine(TraversePath(onComplete));
+        }
+
+        /// <summary>
+        /// Get the status of the player
+        /// </summary>
+        public float GetStatus()
+        {
+            // Return the average of the eat and bathroom value
+            return (eatValue + bathroomValue) / 2f;
         }
 
         /// <summary>

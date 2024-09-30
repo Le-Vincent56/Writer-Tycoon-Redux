@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.UI.Development;
@@ -26,6 +27,7 @@ namespace WriterTycoon.WorkCreation.Editing
         [SerializeField] private float developedPoints;
         [SerializeField] private float currentPolishBurst;
         [SerializeField] private float polishBurstMax;
+        [SerializeField] private float basePolishRate;
         [SerializeField] private float polishRate;
 
         public Polisher(Work workParent)
@@ -45,6 +47,16 @@ namespace WriterTycoon.WorkCreation.Editing
             developedPoints = 0;
             currentPolishBurst = 0;
             polishBurstMax = 0;
+
+            // Set the polish rate
+            basePolishRate = 0.4f;
+
+            // Iterate through each Worker after the first
+            for(int i = 1; i < workParent.Workers.Count; i++)
+            {
+                // For each worker, increment the base polish rate
+                basePolishRate += 0.1f;
+            }
         }
 
         /// <summary>
@@ -83,7 +95,7 @@ namespace WriterTycoon.WorkCreation.Editing
             if (!polishing) return;
 
             // Check if there are errors to remove
-            if (currentErrors > 0 && dailyErrorGoal > 0)
+            if (currentErrors > 0 && dailyErrorGoal > 0 && !finishedRemovingErrors)
             {
                 // Subtract from the total errors
                 currentErrors -= errorRate;
@@ -197,6 +209,28 @@ namespace WriterTycoon.WorkCreation.Editing
         }
 
         /// <summary>
+        /// Update the polish rate
+        /// </summary>
+        public void UpdatePolishRate()
+        {
+            float workerStatusTotal = 0f;
+
+            // Iterate through each Worker
+            foreach (IWorker worker in workParent.Workers)
+            {
+                // Add their status to the total
+                workerStatusTotal += worker.GetStatus();
+            }
+
+            // Divide the total by the amount of Workers for the average
+            workerStatusTotal /= workParent.Workers.Count;
+
+            // Set the polish rate to the base polish rate multiplied by the worker status
+            // then divide by 24 as it is used each hour
+            polishRate = (basePolishRate * workerStatusTotal) / 24f;
+        }
+
+        /// <summary>
         /// Set the total amount of errors for the Polisher to polish
         /// </summary>
         public void SetTotalErrors(int totalErrors)
@@ -223,6 +257,7 @@ namespace WriterTycoon.WorkCreation.Editing
             developedPoints = 0;
             currentPolishBurst = 0;
             polishBurstMax = 0;
+            basePolishRate = 0f;
         }
     }
 }

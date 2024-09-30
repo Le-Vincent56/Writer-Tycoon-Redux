@@ -93,7 +93,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
         {
             // Verify the Progress Title
             if (progressTitle == null)
-                progressTitle = GetComponentInChildren<ProgressTitle>();
+                progressTitle ??= GetComponentInChildren<ProgressTitle>();
 
             // Verify the Rect Transform
             if (rectTransform == null)
@@ -230,7 +230,10 @@ namespace WriterTycoon.WorkCreation.UI.Development
             });
 
             // End editing
-            EventBus<EndEditing>.Raise(new EndEditing());
+            EventBus<EndEditing>.Raise(new EndEditing()
+            {
+                Hash = workHash
+            });
 
             // Delete this progress card
             EventBus<DeleteProgressCard>.Raise(new DeleteProgressCard()
@@ -250,7 +253,7 @@ namespace WriterTycoon.WorkCreation.UI.Development
             // Create the states
             ProgressDevelopmentState developmentState = new(canvasGroups[0]);
             ProgressErrorState errorState = new(canvasGroups[1]);
-            ProgressPolishState polishState = new(canvasGroups[2]);
+            ProgressPolishState polishState = new(this, canvasGroups[2]);
 
             // Define state transitions
             stateMachine.At(developmentState, errorState, new FuncPredicate(() => currentStage == ProgressStage.Error));
@@ -270,6 +273,15 @@ namespace WriterTycoon.WorkCreation.UI.Development
 
             // Set the current stage
             currentStage = eventData.Stage;
+        }
+
+        /// <summary>
+        /// Set Canvas Group settings
+        /// </summary>
+        public void SetCanvasGroupSettings(bool interactable, bool blockRaycasts)
+        {
+            card.interactable = interactable;
+            card.blocksRaycasts = blockRaycasts;
         }
 
         /// <summary>

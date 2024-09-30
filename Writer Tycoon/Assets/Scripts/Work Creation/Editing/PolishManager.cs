@@ -57,6 +57,9 @@ namespace WriterTycoon.WorkCreation.Editing
             {
                 // Set the daily error goal for the Work
                 kvp.Value.Polisher.SetDailyErrorGoals();
+
+                // Update the polish rate for the Work
+                kvp.Value.Polisher.UpdatePolishRate();
             }
         }
 

@@ -34,6 +34,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [SerializeField] private Polisher polisher;
 
         public int Hash { get => hash; }
+        public List<IWorker> Workers { get => workers; }
         public PointGenerator PointGenerator { get => pointGenerator; }
         public ErrorGenerator ErrorGenerator { get => errorGenerator; }
         public Polisher Polisher { get => polisher; }

@@ -112,7 +112,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         private void UpdateSuccessUI()
         {
             // Generate a hash
-            int hash = HashUtils.GenerateHash(reviewData.AboutInfo.Title);
+            int hash = HashUtils.GenerateHash();
 
             // Set the hash
             reviewData.Hash = hash;
