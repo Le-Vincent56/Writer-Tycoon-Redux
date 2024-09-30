@@ -4,6 +4,7 @@ using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Editing;
+using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Rater;
@@ -20,6 +21,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [Header("Details")]
         [SerializeField] private string title;
         [SerializeField] private string author;
+        [SerializeField] private CompatibilityInfo compatibilityInfo;
 
         [SerializeField] private bool developing;
         [SerializeField] private int currentDayPhase;
@@ -49,12 +51,16 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
         public Work(
             string title, string author, 
+            CompatibilityInfo compatibilityInfo,
             List<IWorker> workers, TimeEstimates estimates, 
             List<Genre> chosenGenres, float targetScore, int hash)
         {
             // Set the "About" info
             this.title = title;
             this.author = author;
+
+            // Set compatibility info
+            this.compatibilityInfo = compatibilityInfo;
 
             // Set the hash
             this.hash = hash;
@@ -235,6 +241,11 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
 
             return ratingInfo;
         }
+
+        /// <summary>
+        /// Get the Compatibility info for the Work
+        /// </summary>
+        public CompatibilityInfo GetCompatibilityInfo() => compatibilityInfo;
 
         /// <summary>
         /// Check if the Work is being worked on

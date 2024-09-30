@@ -6,6 +6,7 @@ using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
+using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
@@ -26,6 +27,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         public List<Topic> Topics;
         public List<Genre> Genres;
         public TimeEstimates TimeEstimates;
+        public CompatibilityInfo CompatibilityInfo;
     }
 
     public class IdeaReviewer : Dedicant
@@ -38,6 +40,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
         [SerializeField] private TimeEstimates timeEstimates;
+        [SerializeField] private CompatibilityInfo compatibilityInfo;
 
         public UnityAction<List<IWorker>> OnUpdateWorkers = delegate { };
         public UnityAction<AboutInfo> OnUpdateAboutData = delegate { };
@@ -162,6 +165,15 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
             UpdateReviewData();
         }
 
+        public void SetCompatibilityInfo(CompatibilityInfo compatibilityInfo)
+        {
+            // Set data
+            this.compatibilityInfo = compatibilityInfo;
+
+            // Update review data
+            UpdateReviewData();
+        }
+
         /// <summary>
         /// Update and send the Review Data
         /// </summary>
@@ -178,7 +190,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Review
                     AudienceType = audienceType,
                     Topics = topics,
                     Genres = genres,
-                    TimeEstimates = timeEstimates
+                    TimeEstimates = timeEstimates,
+                    CompatibilityInfo = compatibilityInfo
                 }
             });
         }

@@ -12117,6 +12117,7 @@ MonoBehaviour:
   topics: []
   genres: []
   audience: 1
+  compatibilityMultiplier: 2.5
 --- !u!1 &809742094
 GameObject:
   m_ObjectHideFlags: 0
@@ -15209,346 +15210,47 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: compatibilityInfo
+      Entry: 7
+      Data: WriterTycoon.WorkCreation.Ideation.Compatibility.CompatibilityInfo, Assembly-CSharp
+    - Name: TopicGenreTypes
+      Entry: 6
+      Data: 
+    - Name: TopicAudienceTypes
+      Entry: 6
+      Data: 
+    - Name: TopicGenreScore
+      Entry: 4
+      Data: 0
+    - Name: TopicAudienceScore
+      Entry: 4
+      Data: 0
+    - Name: TotalScore
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: OnUpdateWorkers
-      Entry: 7
-      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 7
-      Data: 1|WriterTycoon.WorkCreation.Ideation.Review.IdeaReviewer+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 2|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.Review.IdeaReviewer+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_0
-    - Name: delegateType
-      Entry: 7
-      Data: 3|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 4|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateAboutData
-      Entry: 7
-      Data: 6|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.About.AboutInfo,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_1
-    - Name: delegateType
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.About.AboutInfo,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 8|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 9|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.About.AboutInfo, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateWorkType
-      Entry: 7
-      Data: 10|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_2
-    - Name: delegateType
-      Entry: 7
-      Data: 11|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 12|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 13|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.WorkTypes.WorkType, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateAudienceType
-      Entry: 7
-      Data: 14|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceType,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_3
-    - Name: delegateType
-      Entry: 7
-      Data: 15|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceType,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 16|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 17|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceType, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateTopics
-      Entry: 7
-      Data: 18|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_4
-    - Name: delegateType
-      Entry: 7
-      Data: 19|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 20|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 21|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Topics.Topic,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateGenres
-      Entry: 7
-      Data: 22|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_5
-    - Name: delegateType
-      Entry: 7
-      Data: 23|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 24|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 25|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Collections.Generic.List`1[[WriterTycoon.WorkCreation.Ideation.Genres.Genre,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnUpdateTimeEstimate
-      Entry: 7
-      Data: 26|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__28_6
-    - Name: delegateType
-      Entry: 7
-      Data: 27|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 28|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 29|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
   aboutInfo:
     Title: 

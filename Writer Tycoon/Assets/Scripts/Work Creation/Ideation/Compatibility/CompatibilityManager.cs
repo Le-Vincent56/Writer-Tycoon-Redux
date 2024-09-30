@@ -9,12 +9,21 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
 {
     public enum CompatibilityType
     {
-        None,
-        Excellent,
-        Good,
-        Neutral,
-        Poor,
-        Terrible
+        None = -3,
+        Terrible = -2,
+        Poor = -1,
+        Neutral = 0,
+        Good = 1,
+        Excellent = 2
+    }
+
+    public struct CompatibilityInfo
+    {
+        public List<CompatibilityType> TopicGenreTypes;
+        public List<CompatibilityType> TopicAudienceTypes;
+        public float TopicGenreScore;
+        public float TopicAudienceScore;
+        public float TotalScore;
     }
 
     public class CompatibilityManager : Dedicant
@@ -25,6 +34,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
         [SerializeField] private List<Topic> topics;
         [SerializeField] private List<Genre> genres;
         [SerializeField] private AudienceType audience;
+        [SerializeField] private float compatibilityMultiplier;
 
         public override string Name { get => "Compatibility Manager"; }
         public override DedicantType Type { get => DedicantType.Compatibility; }
@@ -119,60 +129,52 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
         /// <summary>
         /// Calculate the total compatibility score
         /// </summary>
-        public void CalculateCompatibilityScore()
+        public float CalculateCompatibilityScore(List<CompatibilityType> compatibilities)
         {
-            // Get the compatibilities
+            // Set a container for the Genre-Topic compatibility score
+            float compatibilityScore = 0;
+
+            // Iterate through each Genre-Topic compatibility
+            foreach (CompatibilityType compatibilityType in compatibilities)
+            {
+                // Multiply the enum values by the multiplier and add them to the compatibility score
+                compatibilityScore += ((int)compatibilityType) * compatibilityMultiplier;
+            }
+
+            // Return the average
+            return compatibilityScore / compatibilities.Count;
+        }
+
+        /// <summary>
+        /// Send the Compatibility score
+        /// </summary>
+        public void SendCompatibilityScore()
+        {
+            // Get the compatibility types
             List<CompatibilityType> genreTopicCompatibilities = CheckGenreTopicCompatibilities();
             List<CompatibilityType> topicAudienceCompatibilities = CheckTopicAudienceCompatibility();
 
-            string genreTopicString = $"Genre Compatibilities (";
+            // Calculate the compatibility scores
+            float genreTopicScore = CalculateCompatibilityScore(genreTopicCompatibilities);
+            float topicAudienceScore = CalculateCompatibilityScore(CheckTopicAudienceCompatibility());
 
-            for(int i = 0; i < genres.Count; i++)
+            // Calculate the average of the scores and round it down
+            float totalScore = Mathf.FloorToInt((genreTopicScore + topicAudienceScore) / 2f);
+
+            CompatibilityInfo compatibilityInfo = new CompatibilityInfo()
             {
-                genreTopicString += $"{genres[i].Name}";
+                TopicGenreTypes = genreTopicCompatibilities,
+                TopicAudienceTypes = topicAudienceCompatibilities,
+                TopicGenreScore = genreTopicScore,
+                TopicAudienceScore = topicAudienceScore,
+                TotalScore = totalScore,
+            };
 
-                if (i < genres.Count - 1) genreTopicString += "/";
-            }
-
-            genreTopicString += ") ";
-            genreTopicString += " [";
-
-            for(int i = 0; i < topics.Count; i++)
-            {
-                genreTopicString += $"{topics[i].Name}";
-
-                if (i < topics.Count - 1) genreTopicString += ", ";
-            }
-
-            genreTopicString += "]: ";
-
-            for (int i = 0; i < genreTopicCompatibilities.Count; i++)
-            {
-                genreTopicString += $"{genreTopicCompatibilities[i]}";
-
-                if (i < genreTopicCompatibilities.Count - 1) genreTopicString += ", ";
-            }
-
-            string topicAudienceString = $"Audience Compatibilities ({audience}) [";
-
-            for (int i = 0; i < topics.Count; i++)
-            {
-                topicAudienceString += $"{topics[i].Name}";
-
-                if (i < topics.Count - 1) topicAudienceString += ", ";
-            }
-
-            topicAudienceString += "]: ";
-
-            for (int i = 0; i < topicAudienceCompatibilities.Count; i++)
-            {
-                topicAudienceString += $"{topicAudienceCompatibilities[i]}";
-
-                if (i < topicAudienceCompatibilities.Count - 1) topicAudienceString += ", ";
-            }
-
-            Debug.Log(genreTopicString);
-            Debug.Log(topicAudienceString);
+            // Send the Compatibility info
+            Send(new CompatibilityPayload()
+                { Content = compatibilityInfo },
+                IsType(DedicantType.IdeaReviewer)
+            );
         }
     }
 }

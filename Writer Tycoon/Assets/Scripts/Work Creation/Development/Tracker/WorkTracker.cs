@@ -58,6 +58,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             worksToTrack.Add(eventData.ReviewData.Hash, new Work(
                 eventData.ReviewData.AboutInfo.Title,
                 eventData.ReviewData.AboutInfo.Author,
+                eventData.ReviewData.CompatibilityInfo,
                 eventData.ReviewData.Workers,
                 eventData.ReviewData.TimeEstimates,
                 eventData.ReviewData.Genres,

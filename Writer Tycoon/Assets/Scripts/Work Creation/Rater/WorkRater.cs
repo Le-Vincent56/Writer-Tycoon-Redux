@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
+using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Rater
@@ -52,9 +53,16 @@ namespace WriterTycoon.WorkCreation.Rater
         private void Rate(Work workToRate)
         {
             RatingInfo ratingInfo = workToRate.GetRatingInfo();
+            CompatibilityInfo compatibilityInfo = workToRate.GetCompatibilityInfo();
 
             float percentage = Mathf.Clamp01(ratingInfo.EndScore / ratingInfo.TargetScore);
-            Debug.Log(percentage);
+            float roundedPercentage = Mathf.FloorToInt(percentage);
+
+            Debug.Log($"Slider Percentage: {roundedPercentage}");
+            Debug.Log($"Compatibility Score: {compatibilityInfo.TotalScore}");
+
+            // Add the total compatibility score to the Work
+            roundedPercentage += compatibilityInfo.TotalScore;
         }
 
         /// <summary>
