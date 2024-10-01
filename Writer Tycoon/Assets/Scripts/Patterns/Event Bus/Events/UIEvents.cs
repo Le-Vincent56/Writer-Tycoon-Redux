@@ -2,12 +2,22 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Development.Tracker;
+using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.WorkCreation.UI.Development;
 using WriterTycoon.World.Interactables;
 
 namespace WriterTycoon.Patterns.EventBus
 {
+    #region INTERACT UI EVENTS
+    public struct SetInteracting : IEvent
+    {
+        public bool Interacting;
+    }
+
+    public struct CloseInteractMenus : IEvent { }
+    #endregion
+
     #region WORK CREATION UI EVENTS
     public struct OpenCreateWorkMenu : IEvent { }
 
@@ -27,13 +37,6 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public ReviewData ReviewData;
     }
-
-    public struct SetInteracting : IEvent
-    {
-        public bool Interacting;
-    }
-
-    public struct CloseInteractMenus : IEvent { }
 
     public struct OpenSliderWindow : IEvent 
     {
@@ -100,6 +103,24 @@ namespace WriterTycoon.Patterns.EventBus
         public Vector2 CursorPosition;
         public bool Opening;
         public InteractableType InteractableType;
+    }
+    #endregion
+
+    #region RATING UI EVENTS
+    public struct SetReviewText : IEvent
+    {
+        public int ID;
+        public string Text;
+    }
+
+    public struct ShowReviewWindow : IEvent
+    {
+        public AboutInfo AboutInfo;
+    }
+
+    public struct HideReviewWindow : IEvent
+    {
+
     }
     #endregion
 }

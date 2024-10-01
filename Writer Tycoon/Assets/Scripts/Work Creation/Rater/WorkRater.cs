@@ -7,6 +7,15 @@ using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Rater
 {
+    public enum ReviewScore
+    {
+        Terrible = 1,
+        Poor = 2,
+        Neutral = 3,
+        Good = 4,
+        Excellent = 5
+    }
+
     public struct RatingInfo
     {
         public string Title;
@@ -19,6 +28,7 @@ namespace WriterTycoon.WorkCreation.Rater
     {
         [SerializeField] private int daysUntilRate;
         [SerializeField] private Queue<Work> worksToRate;
+        private ReviewTextDatabase reviewTextDatabase;
 
         private EventBinding<PublishWork> publishWorkEvent;
         private EventBinding<PassDay> passDayEvent;
@@ -30,6 +40,9 @@ namespace WriterTycoon.WorkCreation.Rater
         {
             // Initialize the Queue
             worksToRate = new();
+
+            // Initialize the review text database
+            reviewTextDatabase = new ReviewTextDatabase();
         }
 
         private void OnEnable()
@@ -52,19 +65,41 @@ namespace WriterTycoon.WorkCreation.Rater
         /// </summary>
         private void Rate(Work workToRate)
         {
+            // Get the rating and compatibility info from the Work
             RatingInfo ratingInfo = workToRate.GetRatingInfo();
             CompatibilityInfo compatibilityInfo = workToRate.GetCompatibilityInfo();
 
+            // Calculate a percentage between 0-1
             float percentage = Mathf.Clamp01(ratingInfo.EndScore / ratingInfo.TargetScore);
-            float roundedPercentage = Mathf.FloorToInt(percentage * 100f);
 
-            Debug.Log($"Slider Percentage: {roundedPercentage}");
-            Debug.Log($"Compatibility Score: {compatibilityInfo.TotalScore}");
+            // Multiply by 100 to get a random from 0-100 and round to an integer
+            float roundedPercentage = Mathf.RoundToInt(percentage * 100f);
 
             // Add the total compatibility score to the Work
-            roundedPercentage += compatibilityInfo.TotalScore;
+            float finalPercentage = roundedPercentage + compatibilityInfo.TotalScore;
 
-            Debug.Log($"Final Percentage: {roundedPercentage}");
+            // Round the score to be within an integer range of 0-5
+            int intScore = Mathf.RoundToInt(finalPercentage / 20f);
+
+            // Clamp the lower bound to 1
+            intScore = Mathf.Clamp(intScore, 1, 5);
+
+            // Cast the int score to a ReviewSCore
+            ReviewScore reviewScore = (ReviewScore)intScore;
+
+            // Generate four reviews
+            string[] reviewTexts = reviewTextDatabase.GetRandomReviews(reviewScore, 4);
+
+            // Iterate through the array
+            for(int i = 0; i < reviewTexts.Length; i++)
+            {
+                // Send out the review text at the index
+                EventBus<SetReviewText>.Raise(new SetReviewText()
+                {
+                    ID = i,
+                    Text = reviewTexts[i],
+                });
+            }
         }
 
         /// <summary>
