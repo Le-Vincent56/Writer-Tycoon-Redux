@@ -56,13 +56,15 @@ namespace WriterTycoon.WorkCreation.Rater
             CompatibilityInfo compatibilityInfo = workToRate.GetCompatibilityInfo();
 
             float percentage = Mathf.Clamp01(ratingInfo.EndScore / ratingInfo.TargetScore);
-            float roundedPercentage = Mathf.FloorToInt(percentage);
+            float roundedPercentage = Mathf.FloorToInt(percentage * 100f);
 
             Debug.Log($"Slider Percentage: {roundedPercentage}");
             Debug.Log($"Compatibility Score: {compatibilityInfo.TotalScore}");
 
             // Add the total compatibility score to the Work
             roundedPercentage += compatibilityInfo.TotalScore;
+
+            Debug.Log($"Final Percentage: {roundedPercentage}");
         }
 
         /// <summary>

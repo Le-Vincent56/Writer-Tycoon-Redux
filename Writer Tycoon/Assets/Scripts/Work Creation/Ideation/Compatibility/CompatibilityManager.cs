@@ -4,6 +4,7 @@ using WriterTycoon.WorkCreation.Mediation;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.Patterns.EventBus;
 
 namespace WriterTycoon.WorkCreation.Ideation.Compatibility
 {
@@ -36,6 +37,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
         [SerializeField] private AudienceType audience;
         [SerializeField] private float compatibilityMultiplier;
 
+        private EventBinding<CalculateCompatibility> calculateCompatibilityEvent;
+
         public override string Name { get => "Compatibility Manager"; }
         public override DedicantType Type { get => DedicantType.Compatibility; }
 
@@ -44,6 +47,17 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             // Create a new data base for Genre-Topic compatibility
             genreTopicCompatibility = new GenreTopicCompatibility();
             topicAudienceCompatibility = new TopicAudienceCompatibility();
+        }
+
+        private void OnEnable()
+        {
+            calculateCompatibilityEvent = new EventBinding<CalculateCompatibility>(SendCompatibilityScore);
+            EventBus<CalculateCompatibility>.Register(calculateCompatibilityEvent);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<CalculateCompatibility>.Deregister(calculateCompatibilityEvent);
         }
 
         /// <summary>

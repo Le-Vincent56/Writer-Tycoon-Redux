@@ -6,6 +6,8 @@ using WriterTycoon.WorkCreation.UI.Development;
 namespace WriterTycoon.Patterns.EventBus
 {
     #region WORK CREATION EVENTS
+    public struct CalculateCompatibility : IEvent { }
+
     public struct SendReviewData : IEvent
     {
         public ReviewData ReviewData;

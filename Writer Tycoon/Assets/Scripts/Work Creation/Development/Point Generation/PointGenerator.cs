@@ -320,7 +320,10 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         /// </summary>
         public void SetTargetScore(float totalTargetScore)
         {
-            componentScore = totalTargetScore / 9f;
+            // Only allow up to 90% of the score to be received through sliders
+            float maxSliderScore = totalTargetScore * 0.9f;
+
+            componentScore = maxSliderScore / 9f;
             this.totalTargetScore = totalTargetScore;
             targetScore = 0;
             currentScore = 0;
