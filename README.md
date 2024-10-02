@@ -20,11 +20,11 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * Work Creation: Audience---------------------------------------☑ (9/04/2024)
 * Work Creation: Time Estimation--------------------------------☑ (9/13/2024)
 * Work Creation: Sliders----------------------------------------☑ (9/23/2024)
-* Work Creation: Grade/Rating-----------------------------------☐
-* Work Creation: Research/Studying------------------------------☐
+* Work Creation: Grade/Rating-----------------------------------☑ (10/02/2024)
 * Work Creation: Point Generation-------------------------------☑ (9/23/2024)
 * Work Creation: Error Generation-------------------------------☑ (9/22/2024)
 * Work Creation: Editing/Polish---------------------------------☑ (9/23/2024)
+* Work Creation: Assigned Workers-------------------------------☑ (10/02/2024)
 * Player: Movement----------------------------------------------☑ (9/10/2024)
 * Player: Player States-----------------------------------------☑ (9/10/2024)
 * Player: Attributes--------------------------------------------☐
