@@ -12,12 +12,16 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         [SerializeField] private GameObject contentObject;
         [SerializeField] private Text headerText;
         [SerializeField] private Text selectedTopicsText;
+        [SerializeField] private List<TopicButton> topicButtons;
 
         private void Awake()
         {
             // Verify the TopicManager
             if(topicManager == null)
                 topicManager = GetComponent<TopicManager>();
+
+            // Initialize the Topic Button List
+            topicButtons = new();
         }
 
         private void OnEnable()
@@ -25,6 +29,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             // Subscribe to events
             topicManager.OnTopicsCreated += InstantiateTopics;
             topicManager.OnTopicsUpdated += UpdateSelectedTopics;
+            topicManager.OnTopicMasteriesUpdated += UpdateMasteries;
         }
 
         private void OnDisable()
@@ -32,6 +37,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             // Unsubscribe to events
             topicManager.OnTopicsCreated -= InstantiateTopics;
             topicManager.OnTopicsUpdated -= UpdateSelectedTopics;
+            topicManager.OnTopicMasteriesUpdated -= UpdateMasteries;
         }
 
         /// <summary>
@@ -52,6 +58,22 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 // Set button functionality
                 TopicButton topicButton = topicObject.GetComponent<TopicButton>();
                 topicButton.Instantiate(topicManager, topic);
+
+                // Add the Topic Button to the List
+                topicButtons.Add(topicButton);
+            }
+        }
+
+        /// <summary>
+        /// Update the mastery icon for each Topic Button
+        /// </summary>
+        private void UpdateMasteries()
+        {
+            // Iterate through each Topic Button
+            foreach(TopicButton topicButton in topicButtons)
+            {
+                // Update the mastery icon
+                topicButton.UpdateMasteryIcons();
             }
         }
 

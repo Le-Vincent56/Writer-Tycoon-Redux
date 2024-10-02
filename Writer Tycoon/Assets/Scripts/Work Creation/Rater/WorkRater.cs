@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
+using WriterTycoon.WorkCreation.Ideation.Genres;
+using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Rater
@@ -70,8 +71,6 @@ namespace WriterTycoon.WorkCreation.Rater
             RatingInfo ratingInfo = workToRate.GetRatingInfo();
             CompatibilityInfo compatibilityInfo = workToRate.GetCompatibilityInfo();
 
-            Debug.Log("End Score: " + ratingInfo.EndScore);
-
             // Calculate a percentage between 0-1
             float percentage = Mathf.Clamp01(ratingInfo.EndScore / ratingInfo.TargetScore);
 
@@ -110,6 +109,9 @@ namespace WriterTycoon.WorkCreation.Rater
                 Score = Mathf.RoundToInt(finalPercentage),
                 AboutInfo = workToRate.GetAboutInfo()
             });
+
+            // Update masteries
+            UpdateMasteries(workToRate);
         }
 
         /// <summary>
@@ -142,6 +144,25 @@ namespace WriterTycoon.WorkCreation.Rater
         {
             // Enqueue the Work to be rated, and set the days to wait to 7
             worksToRate.Enqueue(eventData.WorkToPublish);
+        }
+
+        /// <summary>
+        /// Update masteries after Work completion
+        /// </summary>
+        private void UpdateMasteries(Work workToUpdate)
+        {
+            // Get the relevant Topics and Genres
+            List<Topic> topicsToUpdate = workToUpdate.GetTopics();
+            List<Genre> genresToUpdate = workToUpdate.GetGenres();
+
+            Send(new RaterPayload()
+                { Content = (topicsToUpdate, genresToUpdate) },
+                AreTypes(new DedicantType[2]
+                {
+                    DedicantType.Topic,
+                    DedicantType.Genre
+                })
+            );
         }
     }
 }

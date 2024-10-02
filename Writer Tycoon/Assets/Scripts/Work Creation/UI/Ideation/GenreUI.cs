@@ -12,12 +12,16 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
         [SerializeField] private GameObject contentObject;
         [SerializeField] private Text headerText;
         [SerializeField] private Text selectedGenresText;
+        [SerializeField] private List<GenreButton> genreButtons;
 
         private void Awake()
         {
             // Verify the TopicManager
             if (genreManager == null)
                 genreManager = GetComponent<GenreManager>();
+
+            // Instantiate the Genre Buttons list
+            genreButtons = new();
         }
 
         private void OnEnable()
@@ -25,6 +29,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             // Subscribe to events
             genreManager.OnGenresCreated += InstantiateGenres;
             genreManager.OnGenresUpdated += UpdateSelectedGenres;
+            genreManager.OnGenreMasteriesUpdated += UpdateMasteries;
         }
 
         private void OnDisable()
@@ -32,6 +37,7 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
             // Unsubscribe to events
             genreManager.OnGenresCreated -= InstantiateGenres;
             genreManager.OnGenresUpdated -= UpdateSelectedGenres;
+            genreManager.OnGenreMasteriesUpdated -= UpdateMasteries;
         }
 
         /// <summary>
@@ -52,6 +58,22 @@ namespace WriterTycoon.WorkCreation.UI.Ideation
                 // Set button functionality
                 GenreButton genreButton = topicObject.GetComponent<GenreButton>();
                 genreButton.Instantiate(genreManager, genre);
+
+                // Add the buttons to the List
+                genreButtons.Add(genreButton);
+            }
+        }
+
+        /// <summary>
+        /// Update the mastery icons for each Genre Button
+        /// </summary>
+        private void UpdateMasteries()
+        {
+            // Iterate through each Genre Button
+            foreach(GenreButton genreButton in genreButtons)
+            {
+                // Update the mastery icon
+                genreButton.UpdateMasteryIcons();
             }
         }
 

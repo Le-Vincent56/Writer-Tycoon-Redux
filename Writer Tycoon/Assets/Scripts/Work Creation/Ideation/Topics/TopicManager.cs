@@ -14,6 +14,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
 
         public UnityAction<List<Topic>> OnTopicsCreated = delegate { };
         public UnityAction<List<TopicButton>> OnTopicsUpdated = delegate { };
+        public UnityAction OnTopicMasteriesUpdated = delegate { };
 
         private EventBinding<ClearIdeation> clearIdeationEvent;
 
@@ -188,6 +189,27 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
 
             // Invoke the event
             OnTopicsUpdated.Invoke(selectedTopicButtons);
+        }
+
+        /// <summary>
+        /// Update Topic masteries
+        /// </summary>
+        public void UpdateMasteries(List<Topic> topicsToUpdate)
+        {
+            // Iterate through eac Topic
+            foreach (Topic topic in topicsToUpdate)
+            {
+                // Attempt to find the Topic within the Topics list
+                Topic foundTopic = topics.Find(t => t == topic);
+
+                // Continue if the Topic was not found
+                if (foundTopic == null) continue;
+
+                // Increase the mastery of the Topic
+                foundTopic.IncreaseMastery();
+            }
+
+            OnTopicMasteriesUpdated.Invoke();
         }
 
         /// <summary>

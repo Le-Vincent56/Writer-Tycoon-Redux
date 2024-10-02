@@ -93,10 +93,10 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             List<CompatibilityType> compatibilities = new();
 
             // Iterate through each genre
-            for(int i = 0; i < genres.Count; i++)
+            for (int i = 0; i < genres.Count; i++)
             {
                 // Iterate through each topic
-                for(int j = 0; j < topics.Count; j++)
+                for (int j = 0; j < topics.Count; j++)
                 {
                     // Ignore if the topic has compatibility ignored
                     if (topics[j].IgnoreGenreCompatibility) continue;
@@ -129,7 +129,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             List<CompatibilityType> compatibilities = new();
 
             // Iterate through each genre
-            for(int i = 0; i < topics.Count; i++)
+            for (int i = 0; i < topics.Count; i++)
             {
                 // Add the compatibility for the Topic-Audience to the list
                 compatibilities.Add(
@@ -167,6 +167,10 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             // Get the compatibility types
             List<CompatibilityType> genreTopicCompatibilities = CheckGenreTopicCompatibilities();
             List<CompatibilityType> topicAudienceCompatibilities = CheckTopicAudienceCompatibility();
+
+            // Exit case - if either of the compatibility lists are empty or null
+            if (genreTopicCompatibilities.Count > 0 || genreTopicCompatibilities == null) return;
+            if (topicAudienceCompatibilities.Count > 0 || topicAudienceCompatibilities == null) return;
 
             // Calculate the compatibility scores
             float genreTopicScore = CalculateCompatibilityScore(genreTopicCompatibilities);

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.Genres
@@ -14,6 +15,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
         public UnityAction<List<Genre>> OnGenresCreated = delegate { };
         public UnityAction<List<GenreButton>> OnGenresUpdated = delegate { };
+        public UnityAction OnGenreMasteriesUpdated = delegate { };
 
         private EventBinding<ClearIdeation> clearIdeationEvent;
 
@@ -104,6 +106,28 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
             // Invoke the event
             OnGenresUpdated.Invoke(selectedGenreButtons);
+        }
+
+        /// <summary>
+        /// Update Genre masteries
+        /// </summary>
+        public void UpdateMasteries(List<Genre> genresToUpdate)
+        {
+            // Iterate through eac Topic
+            foreach (Genre genre in genresToUpdate)
+            {
+                // Attempt to find the Topic within the Topics list
+                Genre foundGenre = genres.Find(t => t == genre);
+
+                // Continue if the Topic was not found
+                if (foundGenre == null) continue;
+
+                // Increase the mastery of the Topic
+                foundGenre.IncreaseMastery();
+            }
+
+            // Invoke the event
+            OnGenreMasteriesUpdated.Invoke();
         }
 
         /// <summary>

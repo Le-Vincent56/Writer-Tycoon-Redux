@@ -8,6 +8,7 @@ using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Rater;
 using WriterTycoon.WorkCreation.UI.Development;
 
@@ -17,7 +18,9 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
     public class Work
     {
         [SerializeField] private int hash;
-        private List<IWorker> workers;
+        private readonly List<IWorker> workers;
+        private readonly List<Topic> topics;
+        private readonly List<Genre> genres;
 
         [Header("Details")]
         [SerializeField] private AboutInfo aboutInfo;
@@ -53,19 +56,16 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             AboutInfo aboutInfo,
             CompatibilityInfo compatibilityInfo,
             List<IWorker> workers, TimeEstimates estimates, 
-            List<Genre> chosenGenres, float targetScore, int hash)
+            List<Topic> topics, List<Genre> genres,
+            float targetScore, int hash)
         {
-            // Set the "About" info
+            // Set variables
             this.aboutInfo = aboutInfo;
-
-            // Set compatibility info
             this.compatibilityInfo = compatibilityInfo;
-
-            // Set the hash
-            this.hash = hash;
-
-            // Set workers
             this.workers = workers;
+            this.topics = topics;
+            this.genres = genres;
+            this.hash = hash;
 
             // Set estimates
             totalDayEstimate = estimates.Total;
@@ -84,7 +84,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             daysToWaitBeforeRating = 7;
 
             // Initialize the pointGenerator
-            pointGenerator = new PointGenerator(this, chosenGenres, currentPhase, targetScore);
+            pointGenerator = new PointGenerator(this, genres, currentPhase, targetScore);
             errorGenerator = new ErrorGenerator(this, estimates.Total, 0.33f);
             polisher = new Polisher(this, targetScore);
 
@@ -250,6 +250,16 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         /// Get the About info for the work
         /// </summary>
         public AboutInfo GetAboutInfo() => aboutInfo;
+
+        /// <summary>
+        /// Get the Work's Genres
+        /// </summary>
+        public List<Genre> GetGenres() => genres;
+
+        /// <summary>
+        /// Get the Work's Topics
+        /// </summary>
+        public List<Topic> GetTopics() => topics;
 
         /// <summary>
         /// Check if the Work is being worked on

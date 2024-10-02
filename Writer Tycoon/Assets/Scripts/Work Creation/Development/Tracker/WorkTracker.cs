@@ -60,6 +60,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                 eventData.ReviewData.CompatibilityInfo,
                 eventData.ReviewData.Workers,
                 eventData.ReviewData.TimeEstimates,
+                eventData.ReviewData.Topics,
                 eventData.ReviewData.Genres,
                 eventData.ReviewData.TargetScore,
                 eventData.ReviewData.Hash
