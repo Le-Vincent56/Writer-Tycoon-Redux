@@ -166,6 +166,9 @@ namespace WriterTycoon.WorkCreation.Editing
             // Exit case - if not finished removing errors
             if (!finishedRemovingErrors) return;
 
+            // Exit case - if developed the max amount of points
+            if (developedPoints >= maxPolishPointsPossible) return;
+
             // Increase the current polish burst
             currentPolishBurst += polishRate;
 
@@ -183,6 +186,17 @@ namespace WriterTycoon.WorkCreation.Editing
             {
                 // Reset the current polish burst
                 currentPolishBurst = 0;
+
+                // Calculate the earned points
+                float earnedPoints = developedPoints + polishBurstMax;
+
+                // Check if the developed points would go over the max polish points possible
+                if(earnedPoints > maxPolishPointsPossible)
+                {
+                    // Subtract the difference from the polish burst max
+                    float difference = earnedPoints - maxPolishPointsPossible;
+                    polishBurstMax -= difference;
+                }
 
                 // Add the maximum to the developed points and to the current score
                 developedPoints += polishBurstMax;

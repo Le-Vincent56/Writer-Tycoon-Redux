@@ -70,6 +70,8 @@ namespace WriterTycoon.WorkCreation.Rater
             RatingInfo ratingInfo = workToRate.GetRatingInfo();
             CompatibilityInfo compatibilityInfo = workToRate.GetCompatibilityInfo();
 
+            Debug.Log("End Score: " + ratingInfo.EndScore);
+
             // Calculate a percentage between 0-1
             float percentage = Mathf.Clamp01(ratingInfo.EndScore / ratingInfo.TargetScore);
 

@@ -15,6 +15,7 @@ namespace WriterTycoon.WorkCreation.UI.Rating
 
         [Header("UI References")]
         [SerializeField] private CanvasGroup window;
+        [SerializeField] private Button exitButton;
         [SerializeField] private Text titleText;
         [SerializeField] private Text authorText;
         [SerializeField] private Text scoreText;
@@ -45,12 +46,19 @@ namespace WriterTycoon.WorkCreation.UI.Rating
             if (window == null)
                 window = GetComponent<CanvasGroup>();
 
+            // Verify the Button component
+            if(exitButton == null)
+                exitButton = GetComponentInChildren<Button>();
+
             // Initialize the queue
             openWindowQueue = new();
 
             // Set variables
             originalPosition = window.transform.localPosition;
             canOpen = true;
+
+            // Set button event
+            exitButton.onClick.AddListener(HideWindow);
         }
 
         private void OnEnable()
@@ -142,6 +150,13 @@ namespace WriterTycoon.WorkCreation.UI.Rating
         /// </summary>
         private void ShowWindow(AboutInfo info, int score)
         {
+            // Pause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false,
+            });
+
             // Set the work info text
             SetWorkInfoText(info.Title, info.Author);
 
@@ -173,10 +188,19 @@ namespace WriterTycoon.WorkCreation.UI.Rating
 
                 // Zoom in the score text sequence while also fading it in
                 reviewTextSequence.Append(
-                    scoreText.transform.DOScale(Vector3.one, 0.4f).From(new Vector3(4f, 4f, 1f))
-                    .SetEase(Ease.OutBounce)
+                    scoreText.transform.DOScale(Vector3.one, 0.4f)
+                        .From(new Vector3(4f, 4f, 1f))
+                        .SetEase(Ease.OutBounce)
                 );
                 reviewTextSequence.Join(scoreText.DOFade(1f, 0.6f).From(0f));
+
+                // Fade in the exit button and set it to interactable when fully faded
+                Tween exitButtonFade = exitButton.image.DOFade(1f, duration).From(0f);
+                exitButtonFade.onComplete += () =>
+                {
+                    exitButton.interactable = true;
+                };
+                reviewTextSequence.Append(exitButtonFade);
             });
 
             // Translate down
@@ -188,6 +212,13 @@ namespace WriterTycoon.WorkCreation.UI.Rating
         /// </summary>
         private void HideWindow()
         {
+            // Unpause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true,
+            });
+
             // Translate up
             Translate(
                 translateValue * (3f / 4f),
@@ -200,6 +231,16 @@ namespace WriterTycoon.WorkCreation.UI.Rating
                         window.interactable = false;
                         window.blocksRaycasts = false;
                         canOpen = true;
+                        exitButton.interactable = false;
+
+                        // Fade out each review
+                        for (int i = 0; i < reviews.Length; i++)
+                        {
+                            reviews[i].Fade(0f);
+                        }
+
+                        // Fade out the button
+                        exitButton.image.DOFade(0f, 0f);
                     }, Ease.OutCirc);
 
                     // And translate downwards
