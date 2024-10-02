@@ -115,6 +115,7 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ShowReviewWindow : IEvent
     {
+        public int Score;
         public AboutInfo AboutInfo;
     }
 

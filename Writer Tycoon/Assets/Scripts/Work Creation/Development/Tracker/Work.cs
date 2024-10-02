@@ -4,6 +4,7 @@ using WriterTycoon.Entities;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Editing;
+using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
@@ -19,8 +20,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         private List<IWorker> workers;
 
         [Header("Details")]
-        [SerializeField] private string title;
-        [SerializeField] private string author;
+        [SerializeField] private AboutInfo aboutInfo;
         [SerializeField] private CompatibilityInfo compatibilityInfo;
 
         [SerializeField] private bool developing;
@@ -50,14 +50,13 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         public Polisher Polisher { get => polisher; }
 
         public Work(
-            string title, string author, 
+            AboutInfo aboutInfo,
             CompatibilityInfo compatibilityInfo,
             List<IWorker> workers, TimeEstimates estimates, 
             List<Genre> chosenGenres, float targetScore, int hash)
         {
             // Set the "About" info
-            this.title = title;
-            this.author = author;
+            this.aboutInfo = aboutInfo;
 
             // Set compatibility info
             this.compatibilityInfo = compatibilityInfo;
@@ -233,8 +232,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             // Construct the rate info
             RatingInfo ratingInfo = new RatingInfo()
             {
-                Title = title,
-                Author = author,
+                Title = aboutInfo.Title,
+                Author = aboutInfo.Author,
                 TargetScore = PointGenerator.TotalTargetScore,
                 EndScore = Polisher.EndScore
             };
@@ -246,6 +245,11 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         /// Get the Compatibility info for the Work
         /// </summary>
         public CompatibilityInfo GetCompatibilityInfo() => compatibilityInfo;
+
+        /// <summary>
+        /// Get the About info for the work
+        /// </summary>
+        public AboutInfo GetAboutInfo() => aboutInfo;
 
         /// <summary>
         /// Check if the Work is being worked on

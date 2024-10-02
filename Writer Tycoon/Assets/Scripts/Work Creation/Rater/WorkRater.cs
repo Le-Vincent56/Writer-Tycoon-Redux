@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
+using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Mediation;
 
@@ -100,6 +101,13 @@ namespace WriterTycoon.WorkCreation.Rater
                     Text = reviewTexts[i],
                 });
             }
+
+            // Show the Review Window
+            EventBus<ShowReviewWindow>.Raise(new ShowReviewWindow()
+            {
+                Score = Mathf.RoundToInt(finalPercentage),
+                AboutInfo = workToRate.GetAboutInfo()
+            });
         }
 
         /// <summary>

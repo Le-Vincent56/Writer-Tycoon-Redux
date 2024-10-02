@@ -190,7 +190,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1628839}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &9819401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,7 +1727,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134003867}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1742,16 +1743,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19ef3790f0edd8408f4fd76ca66fd84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canOpen: 0
   window: {fileID: 0}
   titleText: {fileID: 949755475}
   authorText: {fileID: 1461682229}
+  scoreText: {fileID: 365072940}
+  terribleColor: {r: 0.69803923, g: 0, b: 0, a: 0}
+  poorColor: {r: 0.90588236, g: 0.42745098, b: 0, a: 0}
+  neutralColor: {r: 0.8901961, g: 0.8235294, b: 0, a: 0}
+  goodColor: {r: 0.6156863, g: 0.7372549, b: 0, a: 0}
+  excellentColor: {r: 0.20392157, g: 0.7137255, b: 0, a: 0}
   reviews:
   - {fileID: 1628843}
   - {fileID: 935426346}
   - {fileID: 1078666217}
   - {fileID: 2004642503}
-  translateValue: 0
-  duration: 0
+  translateValue: 100
+  duration: 0.4
 --- !u!1 &138716714
 GameObject:
   m_ObjectHideFlags: 0
@@ -3810,8 +3818,8 @@ RectTransform:
   - {fileID: 1461682228}
   m_Father: {fileID: 134003868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.225, y: 0.76078475}
-  m_AnchorMax: {x: 0.77500004, y: 0.8375695}
+  m_AnchorMin: {x: 0.225, y: 0.75243056}
+  m_AnchorMax: {x: 0.77500004, y: 0.8292153}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4607,7 +4615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.16707003, g: 0.93207544, b: 0.23859157, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6340,7 +6348,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.12578613, g: 0.12578613, b: 0.12578613, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -14219,7 +14227,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935426342}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -14236,6 +14244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &949755473
 GameObject:
   m_ObjectHideFlags: 0
@@ -15540,7 +15549,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078666213}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -15557,6 +15566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &1085378308
 GameObject:
   m_ObjectHideFlags: 0
@@ -31828,7 +31838,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004642499}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -31845,6 +31855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &2014134738
 GameObject:
   m_ObjectHideFlags: 0

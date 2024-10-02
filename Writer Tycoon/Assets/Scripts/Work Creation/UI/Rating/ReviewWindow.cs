@@ -11,12 +11,19 @@ namespace WriterTycoon.WorkCreation.UI.Rating
     {
         [Header("Review Window Queue")]
         [SerializeField] private bool canOpen;
-        [SerializeField] private Queue<(bool CanOpen, AboutInfo Info)> openWindowQueue;
+        [SerializeField] private Queue<(bool CanOpen, AboutInfo Info, int Score)> openWindowQueue;
 
         [Header("UI References")]
         [SerializeField] private CanvasGroup window;
         [SerializeField] private Text titleText;
         [SerializeField] private Text authorText;
+        [SerializeField] private Text scoreText;
+
+        [SerializeField] private Color terribleColor;
+        [SerializeField] private Color poorColor;
+        [SerializeField] private Color neutralColor;
+        [SerializeField] private Color goodColor;
+        [SerializeField] private Color excellentColor;
 
         [Header("Review Objects")]
         [SerializeField] private Review[] reviews;
@@ -37,6 +44,9 @@ namespace WriterTycoon.WorkCreation.UI.Rating
             // Verify the Canvas Group component
             if (window == null)
                 window = GetComponent<CanvasGroup>();
+
+            // Initialize the queue
+            openWindowQueue = new();
 
             // Set variables
             originalPosition = window.transform.localPosition;
@@ -67,10 +77,10 @@ namespace WriterTycoon.WorkCreation.UI.Rating
             if (openWindowQueue.Count <= 0) return;
 
             // Dequeue the item
-            (bool CanOpen, AboutInfo Info) = openWindowQueue.Dequeue();
+            (bool CanOpen, AboutInfo Info, int Score) = openWindowQueue.Dequeue();
 
             // Show the window
-            ShowWindow(Info);
+            ShowWindow(Info, Score);
 
             // Don't allow the window to open
             canOpen = CanOpen;
@@ -87,21 +97,56 @@ namespace WriterTycoon.WorkCreation.UI.Rating
         }
 
         /// <summary>
+        /// Set the score text
+        /// </summary>
+        private void SetScoreText(int score)
+        {
+            scoreText.text = $"{score}%";
+
+            // Set the color of the score text depending on the score
+            switch(score)
+            {
+                case <= 20:
+                    scoreText.color = terribleColor;
+                    break;
+
+                case <= 40:
+                    scoreText.color = poorColor;
+                    break;
+
+                case <= 60:
+                    scoreText.color = neutralColor;
+                    break;
+
+                case <= 80:
+                    scoreText.color = goodColor;
+                    break;
+
+                case <= 100:
+                    scoreText.color = excellentColor;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Callback function to enqueue a window opening
         /// </summary>
         private void EnqueueWindow(ShowReviewWindow eventData)
         {
             // Enqueue to open the window
-            openWindowQueue.Enqueue((false, eventData.AboutInfo));
+            openWindowQueue.Enqueue((false, eventData.AboutInfo, eventData.Score));
         }
 
         /// <summary>
         /// Show the Review window
         /// </summary>
-        private void ShowWindow(AboutInfo info)
+        private void ShowWindow(AboutInfo info, int score)
         {
             // Set the work info text
             SetWorkInfoText(info.Title, info.Author);
+
+            // Set the score text
+            SetScoreText(score);
 
             // Set the window's initial position to be off-screen above (adjust this value as needed)
             Vector3 startPos = new(
@@ -120,11 +165,18 @@ namespace WriterTycoon.WorkCreation.UI.Rating
                 reviewTextSequence = DOTween.Sequence();
 
                 // Iterate through each review group
-                for(int i = 0; i < reviews.Length; i++)
+                for (int i = 0; i < reviews.Length; i++)
                 {
                     // Fade them in consecutively
                     reviewTextSequence.Append(reviews[i].Fade(1f));
                 }
+
+                // Zoom in the score text sequence while also fading it in
+                reviewTextSequence.Append(
+                    scoreText.transform.DOScale(Vector3.one, 0.4f).From(new Vector3(4f, 4f, 1f))
+                    .SetEase(Ease.OutBounce)
+                );
+                reviewTextSequence.Join(scoreText.DOFade(1f, 0.6f).From(0f));
             });
 
             // Translate down
