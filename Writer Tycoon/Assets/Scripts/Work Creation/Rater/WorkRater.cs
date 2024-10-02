@@ -80,6 +80,62 @@ namespace WriterTycoon.WorkCreation.Rater
             // Add the total compatibility score to the Work
             float finalPercentage = roundedPercentage + compatibilityInfo.TotalScore;
 
+            // Add the mastery percentage to the Work
+            finalPercentage += GetMasteryPercentage(workToRate);
+
+            // Display the rating
+            DisplayUI(workToRate, finalPercentage);
+
+            // Update masteries
+            UpdateMasteries(workToRate);
+        }
+
+        /// <summary>
+        /// Get the Mastery percentage of a Work
+        /// </summary>
+        private float GetMasteryPercentage(Work workToRate)
+        {
+            // Get the Topics and Genres list
+            List<Topic> topics = workToRate.GetTopics();
+            List<Genre> genres = workToRate.GetGenres();
+
+            // Get the highest mastery points from the Topics list
+            float averageTopicMastery = 0f;
+
+            // Iterate through each Topic
+            foreach (Topic topic in topics)
+            {
+                // Add the mastery percentage to the total
+                averageTopicMastery += topic.GetMasteryPercentage();
+            }
+
+            // Divide by the count to get the average
+            averageTopicMastery /= topics.Count;
+
+            // Get the highest mastery points from the Genres list
+            float averageGenreMastery = 0f;
+
+            // Iterate through each Genre
+            foreach (Genre genre in genres)
+            {
+                // Add the mastery percentage to the total
+                averageGenreMastery += genre.GetMasteryPercentage();
+            }
+
+            // Divide by the count to get the average
+            averageGenreMastery /= genres.Count;
+
+            // Round the mastery score down after adding
+            float totalMasteryScore = Mathf.FloorToInt(averageTopicMastery + averageGenreMastery);
+
+            return totalMasteryScore;
+        }
+
+        /// <summary>
+        /// Display the rating within a UI window
+        /// </summary>
+        private void DisplayUI(Work workToRate, float finalPercentage)
+        {
             // Round the score to be within an integer range of 0-5
             int intScore = Mathf.RoundToInt(finalPercentage / 20f);
 
@@ -93,7 +149,7 @@ namespace WriterTycoon.WorkCreation.Rater
             string[] reviewTexts = reviewTextDatabase.GetRandomReviews(reviewScore, 4);
 
             // Iterate through the array
-            for(int i = 0; i < reviewTexts.Length; i++)
+            for (int i = 0; i < reviewTexts.Length; i++)
             {
                 // Send out the review text at the index
                 EventBus<SetReviewText>.Raise(new SetReviewText()
@@ -109,9 +165,6 @@ namespace WriterTycoon.WorkCreation.Rater
                 Score = Mathf.RoundToInt(finalPercentage),
                 AboutInfo = workToRate.GetAboutInfo()
             });
-
-            // Update masteries
-            UpdateMasteries(workToRate);
         }
 
         /// <summary>

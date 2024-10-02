@@ -38,7 +38,6 @@ namespace WriterTycoon.WorkCreation.UI.Rating
         private Sequence reviewTextSequence;
 
         private EventBinding<ShowReviewWindow> showReviewWindowEvent;
-        private EventBinding<HideReviewWindow> hideReviewWindowEvent;
 
         private void Awake()
         {
@@ -65,15 +64,11 @@ namespace WriterTycoon.WorkCreation.UI.Rating
         {
             showReviewWindowEvent = new EventBinding<ShowReviewWindow>(EnqueueWindow);
             EventBus<ShowReviewWindow>.Register(showReviewWindowEvent);
-
-            hideReviewWindowEvent = new EventBinding<HideReviewWindow>(HideWindow);
-            EventBus<HideReviewWindow>.Register(hideReviewWindowEvent);
         }
 
         private void OnDisable()
         {
             EventBus<ShowReviewWindow>.Deregister(showReviewWindowEvent);
-            EventBus<HideReviewWindow>.Deregister(hideReviewWindowEvent);
         }
 
         private void Update()

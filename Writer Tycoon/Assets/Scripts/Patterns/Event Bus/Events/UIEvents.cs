@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Review;
@@ -117,11 +115,6 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public int Score;
         public AboutInfo AboutInfo;
-    }
-
-    public struct HideReviewWindow : IEvent
-    {
-
     }
     #endregion
 }
