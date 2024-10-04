@@ -132,8 +132,6 @@ namespace WriterTycoon.WorkCreation.Publication
         /// </summary>
         public void CalculateSales()
         {
-            Debug.Log($"Weeks since release less than peak week: {weeksSinceRelease < peakWeek}");
-
             // Check if in the growing or decaying phase
             if(weeksSinceRelease < peakWeek)
             {

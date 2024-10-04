@@ -32174,7 +32174,7 @@ MonoBehaviour:
     - Name: sellingWorksDict
       Entry: 6
       Data: 
-  baseCopies: 0
+  baseCopies: 10
   scoreExponent: 2.968
   decayFactor: 1
   decayRate: 0
