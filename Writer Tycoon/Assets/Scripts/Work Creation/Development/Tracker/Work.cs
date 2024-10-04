@@ -5,10 +5,12 @@ using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Editing;
 using WriterTycoon.WorkCreation.Ideation.About;
+using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 using WriterTycoon.WorkCreation.Rater;
 using WriterTycoon.WorkCreation.UI.Development;
 
@@ -21,6 +23,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         private readonly List<IWorker> workers;
         private readonly List<Topic> topics;
         private readonly List<Genre> genres;
+        private readonly AudienceType audienceType;
+        private readonly WorkType workType;
 
         [Header("Details")]
         [SerializeField] private AboutInfo aboutInfo;
@@ -57,6 +61,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             CompatibilityInfo compatibilityInfo,
             List<IWorker> workers, TimeEstimates estimates, 
             List<Topic> topics, List<Genre> genres,
+            AudienceType audienceType, WorkType workType,
             float targetScore, int hash)
         {
             // Set variables
@@ -65,6 +70,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             this.workers = workers;
             this.topics = topics;
             this.genres = genres;
+            this.audienceType = audienceType;
+            this.workType = workType;
             this.hash = hash;
 
             // Set estimates
@@ -260,6 +267,16 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         /// Get the Work's Topics
         /// </summary>
         public List<Topic> GetTopics() => topics;
+
+        /// <summary>
+        /// Get the Work's Audience
+        /// </summary>
+        public AudienceType GetAudience() => audienceType;
+
+        /// <summary>
+        /// Get the Work's Type
+        /// </summary>
+        public WorkType GetWorkType() => workType;
 
         /// <summary>
         /// Check if the Work is being worked on

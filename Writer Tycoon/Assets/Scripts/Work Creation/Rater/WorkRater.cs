@@ -32,7 +32,7 @@ namespace WriterTycoon.WorkCreation.Rater
         [SerializeField] private Queue<Work> worksToRate;
         private ReviewTextDatabase reviewTextDatabase;
 
-        private EventBinding<PublishWork> publishWorkEvent;
+        private EventBinding<RateWork> publishWorkEvent;
         private EventBinding<PassDay> passDayEvent;
 
         public override string Name { get => "Work Rater"; }
@@ -49,8 +49,8 @@ namespace WriterTycoon.WorkCreation.Rater
 
         private void OnEnable()
         {
-            publishWorkEvent = new EventBinding<PublishWork>(QueueWorkToRate);
-            EventBus<PublishWork>.Register(publishWorkEvent);
+            publishWorkEvent = new EventBinding<RateWork>(QueueWorkToRate);
+            EventBus<RateWork>.Register(publishWorkEvent);
 
             passDayEvent = new EventBinding<PassDay>(PassDaysUntilRating);
             EventBus<PassDay>.Register(passDayEvent);
@@ -58,7 +58,7 @@ namespace WriterTycoon.WorkCreation.Rater
 
         private void OnDisable()
         {
-            EventBus<PublishWork>.Deregister(publishWorkEvent);
+            EventBus<RateWork>.Deregister(publishWorkEvent);
             EventBus<PassDay>.Deregister(passDayEvent);
         }
 
@@ -83,11 +83,21 @@ namespace WriterTycoon.WorkCreation.Rater
             // Add the mastery percentage to the Work
             finalPercentage += GetMasteryPercentage(workToRate);
 
+            // Clamp the final percentage to a maximum of 100 and a minimum of 0
+            finalPercentage = Mathf.Clamp(finalPercentage, 0, 100);
+
             // Display the rating
             DisplayUI(workToRate, finalPercentage);
 
             // Update masteries
             UpdateMasteries(workToRate);
+
+            // Publish the work
+            EventBus<PublishWork>.Raise(new PublishWork()
+            {
+                FinalScore = finalPercentage,
+                WorkToPublish = workToRate
+            });
         }
 
         /// <summary>
@@ -193,7 +203,7 @@ namespace WriterTycoon.WorkCreation.Rater
         /// <summary>
         /// Callback function to queue a published Work to rate
         /// </summary>
-        private void QueueWorkToRate(PublishWork eventData)
+        private void QueueWorkToRate(RateWork eventData)
         {
             // Enqueue the Work to be rated, and set the days to wait to 7
             worksToRate.Enqueue(eventData.WorkToPublish);

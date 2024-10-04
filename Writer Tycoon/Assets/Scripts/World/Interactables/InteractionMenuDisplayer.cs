@@ -135,13 +135,6 @@ namespace WriterTycoon.World.Interactables.UI
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
             });
-
-            // Unpause the Calendar
-            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
-            {
-                Paused = false,
-                AllowSpeedChanges = true
-            });
         }
 
         /// <summary>

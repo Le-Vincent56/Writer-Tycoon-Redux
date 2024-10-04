@@ -169,8 +169,8 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             List<CompatibilityType> topicAudienceCompatibilities = CheckTopicAudienceCompatibility();
 
             // Exit case - if either of the compatibility lists are empty or null
-            if (genreTopicCompatibilities.Count <= 0 || genreTopicCompatibilities == null) return;
-            if (topicAudienceCompatibilities.Count <= 0 || topicAudienceCompatibilities == null) return;
+            if (genreTopicCompatibilities == null || genreTopicCompatibilities.Count <= 0) return;
+            if (topicAudienceCompatibilities == null || topicAudienceCompatibilities.Count <= 0) return;
 
             // Calculate the compatibility scores
             float genreTopicScore = CalculateCompatibilityScore(genreTopicCompatibilities);

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WriterTycoon.Input;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.Timers;
 
 namespace WriterTycoon.World.Calendar
@@ -50,12 +51,23 @@ namespace WriterTycoon.World.Calendar
         private int currentMonth;
         private int currentYear;
         private int daysInMonth;
+        private int daysUntilWeekPass;
 
         [SerializeField] private Text dateText;
         private VariableFrequencyTimer hourTimer;
         private VariableFrequencyTimer dayTimer;
 
         private EventBinding<ChangeCalendarPauseState> changeCalendarPauseStateEvent;
+
+        public int Day { get => currentDay; }
+        public int Month { get => currentMonth; }
+        public int Year { get => currentYear; }
+
+        private void Awake()
+        {
+            // Register to the global service locator
+            ServiceLocator.ForSceneOf(this).Register(this);
+        }
 
         private void OnEnable()
         {
@@ -88,6 +100,7 @@ namespace WriterTycoon.World.Calendar
             currentDay = 1;
             currentMonth = 1;
             currentYear = 2024;
+            daysUntilWeekPass = 0;
 
             // Check for leap year
             CheckForLeapYear();
@@ -152,6 +165,7 @@ namespace WriterTycoon.World.Calendar
 
             // Increment the current day
             currentDay++;
+            daysUntilWeekPass++;
 
             // Check if the current day surpasses the days in the month
             if(currentDay > daysInMonth)
@@ -187,6 +201,16 @@ namespace WriterTycoon.World.Calendar
 
             // Raise the Pass Day event
             EventBus<PassDay>.Raise(new PassDay());
+
+            // Check if a week has passed
+            if(daysUntilWeekPass >= 7)
+            {
+                // If so, reset the counter
+                daysUntilWeekPass = 0;
+
+                // Raise the Pass Week event
+                EventBus<PassWeek>.Raise(new PassWeek());
+            }
         }
 
         /// <summary>

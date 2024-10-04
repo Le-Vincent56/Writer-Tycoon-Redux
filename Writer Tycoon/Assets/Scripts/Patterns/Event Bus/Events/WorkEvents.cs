@@ -68,8 +68,14 @@ namespace WriterTycoon.Patterns.EventBus
         public int Hash;
     }
 
+    public struct RateWork : IEvent
+    {
+        public Work WorkToPublish;
+    }
+
     public struct PublishWork : IEvent
     {
+        public float FinalScore;
         public Work WorkToPublish;
     }
     #endregion

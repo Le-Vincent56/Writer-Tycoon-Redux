@@ -4,6 +4,8 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct PassDay : IEvent { }
 
+    public struct PassWeek : IEvent { }
+
     public struct CalendarPauseStateChanged : IEvent
     {
         public bool Paused;

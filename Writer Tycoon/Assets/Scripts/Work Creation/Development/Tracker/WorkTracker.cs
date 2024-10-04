@@ -62,6 +62,8 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
                 eventData.ReviewData.TimeEstimates,
                 eventData.ReviewData.Topics,
                 eventData.ReviewData.Genres,
+                eventData.ReviewData.AudienceType,
+                eventData.ReviewData.WorkType,
                 eventData.ReviewData.TargetScore,
                 eventData.ReviewData.Hash
             ));
@@ -85,7 +87,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             if(worksToTrack.TryGetValue(eventData.Hash, out Work work))
             {
                 // Publish the Work
-                EventBus<PublishWork>.Raise(new PublishWork()
+                EventBus<RateWork>.Raise(new RateWork()
                 {
                     WorkToPublish = work
                 });
