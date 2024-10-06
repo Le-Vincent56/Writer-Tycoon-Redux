@@ -13,7 +13,7 @@ namespace WriterTycoon.World.Economy
         private Calendar.Calendar calendar;
 
         [Header("Sell Variables")]
-        [SerializeField] private float baseCopies;
+        [SerializeField] private float peakCopies;
         [SerializeField] private float scoreExponent;
         [SerializeField] private float decayFactor;
         [SerializeField] private float decayRate;
@@ -86,11 +86,11 @@ namespace WriterTycoon.World.Economy
         {
             // Calculate the peak number of sales
             float scoreRatio = Mathf.Pow(publishedWork.Score / 100f, scoreExponent);
-            float peakSales = baseCopies * scoreRatio;
+            float peakSales = peakCopies * scoreRatio;
             publishedWork.PeakSales = Mathf.RoundToInt(peakSales);
 
             // Determine the growth rate and decay rate
-            publishedWork.GrowthRate = Mathf.Lerp(100f, 1000f, (float)publishedWork.Score / 100f);
+            publishedWork.GrowthRate = Mathf.Lerp(100f, 5000f, (float)publishedWork.Score / 100f);
             publishedWork.DecayRate = Mathf.Lerp(50f, 300f, 1f - ((float)publishedWork.Score / 100f));
 
             // Determine when the peak week is
