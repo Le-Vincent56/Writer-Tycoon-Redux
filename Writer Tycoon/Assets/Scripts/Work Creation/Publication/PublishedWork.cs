@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.WorkCreation.Ideation.WorkTypes;
-using WriterTycoon.World.Economy;
 
 namespace WriterTycoon.WorkCreation.Publication
 {
@@ -27,15 +24,7 @@ namespace WriterTycoon.WorkCreation.Publication
 
         [Header("Selling Info")]
         [SerializeField] private bool isSelling;
-        [SerializeField] private int weeksSinceRelease;
-        [SerializeField] private int peakWeek;
-        [SerializeField] private int peakSales;
-        [SerializeField] private float growthRate;
-        [SerializeField] private float decayRate;
-        [SerializeField] private float currentSales;
-        [SerializeField] private List<SalesData> salesHistory;
-
-        public UnityAction<List<SalesData>> UpdateSalesHistory = delegate { };
+        [SerializeField] private int cumulativeSales;
 
         public int Hash { get => hash; }
         public string Title { get => aboutInfo.Title; }
@@ -49,12 +38,7 @@ namespace WriterTycoon.WorkCreation.Publication
         public float Price { get => price; }
         public (int Day, int Month, int Year) ReleaseDate { get => releaseDate; }
         public bool IsSelling { get => isSelling; }
-        public int WeeksSinceRelease { get => weeksSinceRelease; set => weeksSinceRelease = value; }
-        public int PeakWeek { get => peakWeek; set => peakWeek = value; }
-        public int PeakSales { get => peakSales; set => peakSales = value; }
-        public float DecayRate { get => decayRate; set => decayRate = value; }
-        public float GrowthRate { get => growthRate; set => growthRate = value; }
-        public float CurrentSales { get => currentSales; set => currentSales = value; }
+        public int CumulativeSales { get =>  cumulativeSales; }
 
         public PublishedWork
         (   
@@ -72,8 +56,6 @@ namespace WriterTycoon.WorkCreation.Publication
             this.audience = audience;
             this.type = type;
             this.score = score;
-
-            currentSales = 0f;
 
             // Calcualte the price based on the work type
             switch (type)
@@ -107,8 +89,8 @@ namespace WriterTycoon.WorkCreation.Publication
                     break;
             }
 
-            // Initialize the sales history
-            salesHistory = new();
+            // Set an initial cumulative sales of 0
+            cumulativeSales = 0;
         }
 
         /// <summary>
@@ -128,41 +110,8 @@ namespace WriterTycoon.WorkCreation.Publication
         }
 
         /// <summary>
-        /// Calculate the current sales for the Published Work
+        /// Add to the cumulative sales of the Published Work
         /// </summary>
-        public void CalculateSales()
-        {
-            // Check if in the growing or decaying phase
-            if(weeksSinceRelease < peakWeek)
-            {
-                // Add the growth rate to the current sales
-                currentSales += growthRate;
-
-                // Ensure sales do not exceed peak sales
-                if (currentSales > peakSales)
-                    currentSales = peakSales;
-            }
-            else
-            {
-                // Deecay the current sales
-                currentSales -= decayRate;
-
-                // Ensure sales do not go below 0
-                if(currentSales < 0f)
-                    currentSales = 0f;
-            }
-        }
-
-        /// <summary>
-        /// Add a new SalesData to the sales history
-        /// </summary>
-        public void AddSalesData(int copiesSold, float income)
-        {
-            // Add new data to the sales history
-            salesHistory.Add(new SalesData(weeksSinceRelease, copiesSold, income));
-
-            // Invoke the event
-            UpdateSalesHistory.Invoke(salesHistory);
-        }
+        public void AddSales(int sales) => cumulativeSales += sales;
     }
 }

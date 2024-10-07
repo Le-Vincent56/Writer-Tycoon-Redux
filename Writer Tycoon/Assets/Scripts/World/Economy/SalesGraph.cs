@@ -58,9 +58,6 @@ namespace WriterTycoon.World.Economy
 
             // Set the title text
             titleText.text = workToGraph.Title;
-
-            // Subscribe to the events
-            workToGraph.UpdateSalesHistory += UpdateSalesGraph;
         }
 
         /// <summary>
@@ -96,9 +93,6 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         private void DestroyGraph()
         {
-            // Unsubscribe to events
-            workToGraph.UpdateSalesHistory -= UpdateSalesGraph;
-
             // Destroy the object
             Destroy(this);
         }

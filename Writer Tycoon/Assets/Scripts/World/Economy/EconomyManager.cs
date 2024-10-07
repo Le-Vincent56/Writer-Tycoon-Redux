@@ -10,14 +10,24 @@ namespace WriterTycoon.World.Economy
     public class EconomyManager : SerializedMonoBehaviour
     {
         [SerializeField] private Dictionary<int, PublishedWork> sellingWorksDict;
+        [SerializeField] private Dictionary<int, PublishedWorkLifecycle> lifecycleDict;
         private Calendar.Calendar calendar;
 
         [Header("Sell Variables")]
-        [SerializeField] private float peakCopies;
-        [SerializeField] private float scoreExponent;
-        [SerializeField] private float decayFactor;
-        [SerializeField] private float decayRate;
-        [SerializeField] private float minDecayFactor;
+        [SerializeField] private float peakCopies = 500f;
+        [SerializeField] private float scoreExponent = 1.0f;
+
+        // Determines the rate at which sales decline during the Decay phase
+        // - decayFactor < 1: exponential decay; sales decrease rapidly at first then level off
+        // - decayFactor = 1: no decay; sales remain constant indefinitely
+        // - decayFactor > 1: exponential growth during decay
+        [SerializeField] private float decayFactor = 0.5f;
+
+        // Serves as a lower bound for the decay multiplier, ensuring that a Work
+        // still generates some minimal sales, preventing it from abruptly dropping to 0
+        // - Higer minDecayMult: Sustains higher sales at the end of the Decay phase
+        // - Lower minDecayMult: Allows sales to approach zero more closely
+        [SerializeField] private float minDecayMult = 0.05f;
 
         [SerializeField] private float playerBank;
 
@@ -26,8 +36,9 @@ namespace WriterTycoon.World.Economy
 
         private void Awake()
         {
-            // Initialize the dictionary
+            // Initialize the dictionaries
             sellingWorksDict = new();
+            lifecycleDict = new();
         }
 
         private void OnEnable()
@@ -65,36 +76,23 @@ namespace WriterTycoon.World.Economy
             // Set the release date
             publishedWork.SetReleaseDate(calendar.Day, calendar.Month, calendar.Year);
 
-            // Assign the Published Works' sales lifecycle parameters
-            AssignLifecycleParameters(publishedWork);
-
             // Add the Published Work to the dictionary
             sellingWorksDict.Add(publishedWork.Hash, publishedWork);
+
+            // Get the weekly sales of the Published WOrk
+            List<int> weeklySales = GenerateWeeklySales(publishedWork.Score);
+
+            // Create a work lifecycle
+            PublishedWorkLifecycle lifecycle = new PublishedWorkLifecycle(publishedWork, weeklySales);
+
+            // Add to the lifecycle dictionary
+            lifecycleDict.Add(publishedWork.Hash, lifecycle);
 
             // Send out the selling works
             EventBus<CreateSalesGraph>.Raise(new CreateSalesGraph()
             {
                 WorkToGraph = publishedWork
             });
-        }
-
-        /// <summary>
-        /// Assign the selling lifecycle parameters for each book
-        /// </summary>
-        /// <param name="publishedWork"></param>
-        private void AssignLifecycleParameters(PublishedWork publishedWork)
-        {
-            // Calculate the peak number of sales
-            float scoreRatio = Mathf.Pow(publishedWork.Score / 100f, scoreExponent);
-            float peakSales = peakCopies * scoreRatio;
-            publishedWork.PeakSales = Mathf.RoundToInt(peakSales);
-
-            // Determine the growth rate and decay rate
-            publishedWork.GrowthRate = Mathf.Lerp(100f, 5000f, (float)publishedWork.Score / 100f);
-            publishedWork.DecayRate = Mathf.Lerp(50f, 300f, 1f - ((float)publishedWork.Score / 100f));
-
-            // Determine when the peak week is
-            publishedWork.PeakWeek = Mathf.RoundToInt(Mathf.Lerp(6f, 20f, (float)publishedWork.Score / 100f));
         }
 
         /// <summary>
@@ -105,84 +103,131 @@ namespace WriterTycoon.World.Economy
             // Exit case - there are no Works selling
             if (sellingWorksDict.Count <= 0) return;
 
+            // Create a list to hold hashes of works whose lifecycles have ended
+            List<int> completedHashes = new();
+
             foreach(KeyValuePair<int, PublishedWork> kvp in  sellingWorksDict)
             {
-                // Increment how many weeks it's been since the Work's release
-                kvp.Value.WeeksSinceRelease++;
+                // Get the hash and work
+                int hash = kvp.Key;
+                PublishedWork work = kvp.Value;
 
-                // Calculate the number of copies sold
-                int copiesSold = CalculateWeeklySales(kvp.Value);
+                // Exit case - the lifecycle object does not exist within the dictionary
+                if (!lifecycleDict.TryGetValue(hash, out PublishedWorkLifecycle lifecycle))
+                    return;
 
-                // Calculate the income
-                float income = copiesSold * kvp.Value.Price;
+                // Get the sales for the current week
+                int weeklySales = lifecycle.GetSalesForCurrentWeek();
 
-                // Add the income to the player bank
-                playerBank += income;
+                // Calculate revenue
+                float revenue = weeklySales * work.Price;
 
-                // Update the Published Work's sales history
-                kvp.Value.AddSalesData(copiesSold, income);
+                // Add the weekl sales to the Published Work for data
+                work.AddSales(weeklySales);
 
-                // Check if no copies are sold
-                if (copiesSold < 1 && kvp.Value.PeakWeek != 0)
-                {
-                    // Stop selling the Work
-                    kvp.Value.SetIsSelling(false);
-                }
+                // Update the player's bank
+                playerBank += revenue;
+
+                // Advance the lifecycle week
+                lifecycle.AdvanceWeek();
+
+                // Check if the lifecycle has ended
+                if (lifecycle.IsLifecycleEnded())
+                    // If so, mark for removal
+                    completedHashes.Add(hash);
             }
-
-            // Update which Works are being sold
-            //UpdateSellingWorks();
-        }
-
-        /// <summary>
-        /// Calcualte the weekly sales for the Published Work
-        /// </summary>
-        /// <param name="publishedWork"></param>
-        /// <returns></returns>
-        private int CalculateWeeklySales(PublishedWork publishedWork)
-        {
-            // Calculate the sales for the Published Work
-            publishedWork.CalculateSales();
-
-            return Mathf.RoundToInt(publishedWork.CurrentSales);
-        }
-
-        /// <summary>
-        /// Update which Works are being sold
-        /// </summary>
-        private void UpdateSellingWorks()
-        {
-            // Create a HashSet to store the hashes of Published Works that are
-            // no longer selling
-            HashSet<int> notSellingHashes = new();
-
-            // Iterate through the Dictionary
-            foreach(KeyValuePair<int, PublishedWork> kvp in sellingWorksDict)
+            
+            // Iterate through each completed hash
+            foreach(int hash in completedHashes)
             {
-                Debug.Log("Is Selling: " + kvp.Value.IsSelling);
+                // Exit case - the dictionaries don't contain the hash
+                if (!sellingWorksDict.TryGetValue(hash, out PublishedWork work))
+                    return;
 
-                // Skip if the Published Work is selling
-                if (kvp.Value.IsSelling) continue;
+                if (!lifecycleDict.TryGetValue(hash, out PublishedWorkLifecycle lifecycle))
+                    return;
 
-                // If not selling, add the Hash to the HashSet
-                notSellingHashes.Add(kvp.Key);
-            }
+                // Set the Published Work to no longer selling
+                work.SetIsSelling(false);
 
-            // Exit case - there are no hashes to remove
-            if (notSellingHashes.Count <= 0) return;
-
-            // Iterate through each hash
-            foreach (int hash in notSellingHashes)
-            {
-                // Remove the hash from the selling works Dictionary
+                // Remove the Published Work from the 
                 sellingWorksDict.Remove(hash);
 
-                // Destroy it's Sales Graph
+                // Remove the lifecycle object from the dictionary
+                lifecycleDict.Remove(hash);
+
                 EventBus<DestroySalesGraph>.Raise(new DestroySalesGraph()
                 {
                     Hash = hash
                 });
             }
+        }
+
+        /// <summary>
+        /// Generate the weekly sales lifecycle according to a score
+        /// </summary>
+        private List<int> GenerateWeeklySales(float score)
+        {
+            // Calculate the maximum weekly sales
+            float salesMax = peakCopies * Mathf.Pow(score / 100f, scoreExponent);
+
+            // Determine the total lifecycle duration
+            float baseDuration = 20f;   // Base weeks for a medium score
+            float durationTotal = baseDuration * (1f + (score / 100f));
+
+            // Define phase proportions
+            float growthProportion = 0.2f + 0.1f * (score / 100f);              // 20% to 30% of the lifecycle
+            float peakProportion = 0.5f + 0.2f * (score / 100f);                // 50% to 70% of the lifecycle
+            float decayProportion = 1.0f - growthProportion - peakProportion;   // Remainder of the life cycle
+
+            // Calculate phase durations
+            int growthDuration = Mathf.RoundToInt(durationTotal * growthProportion);
+            int peakDuration = Mathf.RoundToInt(durationTotal * peakProportion);
+            int decayDuration = Mathf.RoundToInt(durationTotal * decayProportion);
+
+            // Generate weekly sales
+            List<int> weeklySales = new();
+
+            // Get weekly sales for the growth phase
+            for(int i = 0; i < growthDuration; i++)
+            {
+                // Linear growth
+                float progress = (float)(i + 1) / growthDuration;
+                int sales = Mathf.RoundToInt(salesMax * progress);
+                weeklySales.Add(sales);
+            }
+
+            // Get weekly sales for the peak phase
+            for(int i = 0; i < peakDuration; i++)
+            {
+                // Create random variation around the sales
+                float variation = 0.1f; // +- 10$%
+                float randomFactor = 1f + Random.Range(-variation, variation);
+                int sales = Mathf.RoundToInt(salesMax * randomFactor);
+                weeklySales.Add(sales);
+            }
+
+            // Get weekly sales for the decay phase
+            for(int i = 0; i < decayDuration; i++)
+            {
+                float decayProgress = (float)(i + 1) / decayDuration;
+                float decayMultiplier = Mathf.Max(Mathf.Pow(decayFactor, decayProgress), minDecayMult);
+                int sales = Mathf.RoundToInt(salesMax * decayMultiplier);
+
+                // Ensure sales don't go negative
+                sales = Mathf.Max(sales, 0);
+
+                weeklySales.Add(sales);
+            }
+
+            // Add a number of weeks to confirm no sales
+            int confirmationWeeks = 2;
+            for(int i = 0; i < confirmationWeeks; i++)
+            {
+                weeklySales.Add(0);
+            }
+
+            return weeklySales;
         }
     }
 }

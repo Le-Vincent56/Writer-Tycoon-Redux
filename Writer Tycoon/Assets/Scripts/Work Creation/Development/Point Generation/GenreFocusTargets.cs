@@ -140,9 +140,9 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 { PointCategory.Dialogue, 3 },
                 { PointCategory.Subplots, 2 },
                 { PointCategory.Descriptions, 10 },
-                { PointCategory.Emotions, 6 },
+                { PointCategory.Emotions, 1 },
                 { PointCategory.Twists, 8 },
-                { PointCategory.Symbolism, 1 },
+                { PointCategory.Symbolism, 6 },
             };
 
             genreTargets.Add(GenreType.Horror, targets);
