@@ -88,10 +88,9 @@ namespace WriterTycoon.World.Economy
             // Add to the lifecycle dictionary
             lifecycleDict.Add(publishedWork.Hash, lifecycle);
 
-            // Send out the selling works
             EventBus<CreateSalesGraph>.Raise(new CreateSalesGraph()
             {
-                WorkToGraph = publishedWork
+                WorkToGraph = publishedWork,
             });
         }
 
@@ -131,6 +130,13 @@ namespace WriterTycoon.World.Economy
                 // Advance the lifecycle week
                 lifecycle.AdvanceWeek();
 
+                // Update the associated Sales Graph
+                EventBus<UpdateSalesGraph>.Raise(new UpdateSalesGraph()
+                {
+                    Hash = hash,
+                    Sales = weeklySales
+                });
+
                 // Check if the lifecycle has ended
                 if (lifecycle.IsLifecycleEnded())
                     // If so, mark for removal
@@ -155,11 +161,6 @@ namespace WriterTycoon.World.Economy
 
                 // Remove the lifecycle object from the dictionary
                 lifecycleDict.Remove(hash);
-
-                EventBus<DestroySalesGraph>.Raise(new DestroySalesGraph()
-                {
-                    Hash = hash
-                });
             }
         }
 

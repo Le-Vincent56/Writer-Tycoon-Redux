@@ -13,6 +13,12 @@ namespace WriterTycoon.Patterns.EventBus
         public PublishedWork WorkToGraph;
     }
 
+    public struct UpdateSalesGraph : IEvent
+    {
+        public int Hash;
+        public int Sales;
+    }
+
     public struct DestroySalesGraph : IEvent
     {
         public int Hash;

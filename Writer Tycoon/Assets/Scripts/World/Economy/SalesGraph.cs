@@ -3,43 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.WorkCreation.Publication;
-using WriterTycoon.WorkCreation.UI.Development;
-using WriterTycoon.World.Interactables;
 
 namespace WriterTycoon.World.Economy
 {
     public class SalesGraph : MonoBehaviour
     {
-        private PublishedWork workToGraph;
-
-        [Header("Tweening Variables")]
-        [SerializeField] private float translateValue;
-        [SerializeField] private float animateDuration;
-
-        [Header("Graph Variables")]
-        [SerializeField] private float xSpacing;
-        [SerializeField] private float yScale;
         private LineRenderer lineRenderer;
-
-        private Text titleText;
+        private Text workTitle;
         private RectTransform rectTransform;
         private LayoutElement layoutElement;
         private CanvasGroup card;
+
+        [Header("Graph Variables")]
+        [SerializeField] private int maxPoints = 50;
+        [SerializeField] private float xSpacing = 10f;
+
+        [Header("Tweening Variables")]
+        [SerializeField] private float animateDuration;
         private Tween fadeTween;
 
+        private List<int> salesData;
+
         /// <summary>
-        /// Initialize the Sales Graph
+        /// Initialize the graph with existing sales data
         /// </summary>
-        public void Initialize(PublishedWork workToGraph)
+        /// <param name="title"></param>
+        /// <param name="initialData"></param>
+        public void Iniitalize(string title)
         {
-            // Verif the LineRenderer component
+            // Verify the LineRenderer component
             if (lineRenderer == null)
                 lineRenderer = GetComponentInChildren<LineRenderer>();
 
             // Verify the Text component
-            if(titleText == null)
-                titleText = GetComponentInChildren<Text>();
+            if (workTitle == null)
+                workTitle = GetComponentInChildren<Text>();
 
             // Verify the Rect Transform component
             if (rectTransform == null)
@@ -53,48 +51,51 @@ namespace WriterTycoon.World.Economy
             if (card == null)
                 card = GetComponent<CanvasGroup>();
 
-            // Set the work to graph
-            this.workToGraph = workToGraph;
+            // Set the title
+            workTitle.text = title;
 
-            // Set the title text
-            titleText.text = workToGraph.Title;
+            // Initialize the list
+            salesData = new();
+
+            // Update the graph
+            UpdateGraph();
+        }
+
+        public void AddPoint(int newSale)
+        {
+            // Add the sale to the list
+            salesData.Add(newSale);
+
+            // Check if the list count exceeds the max amount
+            // of points to display
+            if(salesData.Count > maxPoints)
+                // If so, remove the oldest piece of data
+                salesData.RemoveAt(0);
+
+            // Update the graph
+            UpdateGraph();
         }
 
         /// <summary>
-        /// Update the Sales graph according to a set of SalesData
+        /// Update the Sales Graph with the current sales data
         /// </summary>
-        private void UpdateSalesGraph(List<SalesData> salesHistory)
+        private void UpdateGraph()
         {
-            // Exit case - there's nothing to graph
-            if (salesHistory.Count <= 0) return;
+            // Set the position count
+            lineRenderer.positionCount = salesData.Count;
+            Vector3[] positions = new Vector3[salesData.Count];
 
-            // Create a list to store the points
-            List<Vector3> points = new();
-
-            foreach(SalesData salesData in salesHistory)
+            // Iterate through each sale data
+            for(int i = 0; i < salesData.Count; i++)
             {
-                // Calculate the point to graph
-                float x = salesData.WeekNumber * xSpacing;
-                float y = salesData.CopiesSold * yScale;
-
-                // Add the point to the list
-                points.Add(new Vector3(x, y, 0));
+                // Create the point
+                float x = i * xSpacing;
+                float y = salesData[i];
+                positions[i] = new Vector3(x, y, 0);
             }
 
-            // Set the position count
-            lineRenderer.positionCount = points.Count;
-
             // Set the positions
-            lineRenderer.SetPositions(points.ToArray());
-        }
-
-        /// <summary>
-        /// Destroy the Sales Graph
-        /// </summary>
-        private void DestroyGraph()
-        {
-            // Destroy the object
-            Destroy(this);
+            lineRenderer.SetPositions(positions);
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace WriterTycoon.World.Economy
             layoutElement.ignoreLayout = true;
 
             // Fade in
-            Fade(1f, animateDuration);
+            Fade(1f, animateDuration, () => layoutElement.ignoreLayout = false);
         }
 
         /// <summary>
@@ -118,11 +119,11 @@ namespace WriterTycoon.World.Economy
             layoutElement.ignoreLayout = true;
 
             // Fade out
-            Fade(0f, animateDuration, null, Ease.OutQuint);
+            Fade(0f, animateDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
 
             // Check whether or not to destroy the graph
             if (destroy)
-                DestroyGraph();
+                Destroy(this);
         }
 
         /// <summary>

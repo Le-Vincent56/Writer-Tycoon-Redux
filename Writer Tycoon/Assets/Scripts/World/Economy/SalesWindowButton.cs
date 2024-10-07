@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +18,7 @@ namespace WriterTycoon.World.Economy
         private void Awake()
         {
             // Verify the Button component
-            if(button == null)
+            if (button == null)
                 button = GetComponent<Button>();
 
             // Set open to false
@@ -61,7 +59,8 @@ namespace WriterTycoon.World.Economy
 
                 // Assign the updated sprite state
                 button.spriteState = spriteState;
-            } else
+            }
+            else
             {
                 // Hide the window
                 controller.Hide();

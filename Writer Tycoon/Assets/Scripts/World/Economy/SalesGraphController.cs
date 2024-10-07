@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
@@ -8,102 +9,125 @@ namespace WriterTycoon.World.Economy
 {
     public class SalesGraphController : SerializedMonoBehaviour
     {
-        [SerializeField] private GameObject cardPrefab;
-        [SerializeField] private Dictionary<int, SalesGraph> graphedWorks;
-
-        [SerializeField] private GameObject cardContainer;
+        [Header("References")]
+        [SerializeField] private GameObject salesGraphPrefab;
+        [SerializeField] private Transform container;
         [SerializeField] private SalesWindowButton button;
 
         private bool showing;
-
         private RectTransform rectTransform;
 
+        [Header("Tweening Values")]
         [SerializeField] private float translateValue;
         [SerializeField] private float animateDuration;
         private Tween translateTween;
 
+        [Header("Sales Graphs")]
+        [SerializeField] private Dictionary<int, SalesGraph> salesGraphsDict;
+
         private EventBinding<CreateSalesGraph> createSalesGraphEvent;
+        private EventBinding<UpdateSalesGraph> updateSaleGraphEvent;
         private EventBinding<DestroySalesGraph> destroySalesGraphEvent;
 
         private void Awake()
         {
-            // Verify the Rect Transform component
-            if(rectTransform == null)
+            // Verify the SalesWindowButton component
+            if (button == null)
+                button = GetComponentInChildren<SalesWindowButton>();
+
+            // Verify the RectTransform component
+            if (rectTransform == null)
                 rectTransform = GetComponent<RectTransform>();
 
-            // Set showing to false
-            showing = false;
-
             // Initialize the dictionary
-            graphedWorks = new();
+            salesGraphsDict = new();
 
             // Initialize the button
             button.Initialize(this);
+
+            // Start off screen
+            Translate(-translateValue, 0f);
+
+            showing = false;
         }
 
         private void OnEnable()
         {
-            createSalesGraphEvent = new EventBinding<CreateSalesGraph>(CreateSalesGraph);
+            createSalesGraphEvent = new EventBinding<CreateSalesGraph>(CreateGraph);
             EventBus<CreateSalesGraph>.Register(createSalesGraphEvent);
 
-            destroySalesGraphEvent = new EventBinding<DestroySalesGraph>(RemoveSalesGraph);
+            updateSaleGraphEvent = new EventBinding<UpdateSalesGraph>(UpdateGraph);
+            EventBus<UpdateSalesGraph>.Register(updateSaleGraphEvent);
+
+            destroySalesGraphEvent = new EventBinding<DestroySalesGraph>(DestroyGraph);
             EventBus<DestroySalesGraph>.Register(destroySalesGraphEvent);
         }
 
         private void OnDisable()
         {
             EventBus<CreateSalesGraph>.Deregister(createSalesGraphEvent);
+            EventBus<UpdateSalesGraph>.Deregister(updateSaleGraphEvent);
             EventBus<DestroySalesGraph>.Deregister(destroySalesGraphEvent);
         }
 
-        /// <summary>
-        /// Create a progress card
-        /// </summary>
-        private void CreateSalesGraph(CreateSalesGraph eventData)
+        private void CreateGraph(CreateSalesGraph eventData)
         {
-            // Instantiate the card prefab as a child of this transform
-            GameObject cardObj = Instantiate(cardPrefab, cardContainer.transform);
+            // Create and initialize the SalesGraph
+            GameObject graphObj = Instantiate(salesGraphPrefab, container);
+            SalesGraph salesGraph = graphObj.GetComponent<SalesGraph>();
+            salesGraph.Iniitalize(eventData.WorkToGraph.Title);
 
-            // Extract the ProgressCard component
-            SalesGraph cardComponent = cardObj.GetComponent<SalesGraph>();
+            // Add to the dictionary
+            salesGraphsDict.Add(eventData.WorkToGraph.Hash, salesGraph);
+        }
 
-            // Initialize the card component
-            cardComponent.Initialize(eventData.WorkToGraph);
+        private void UpdateGraph(UpdateSalesGraph eventData)
+        {
+            // Exit case - the SalesGraph doesn't exist within the dictionary
+            if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
+                return;
 
-            // Add it to the dictionary
-            graphedWorks.Add(eventData.WorkToGraph.Hash, cardComponent);
+            // Add a point to the graph
+            salesGraph.AddPoint(eventData.Sales);
 
             // Show the graph area if not already shown
-            if(!showing)
+            if (!showing)
                 Show();
 
-            // Show the card component
-            cardComponent.Show();
+            salesGraph.Show();
+        }
+
+        private void DestroyGraph(DestroySalesGraph eventData)
+        {
+            // Exit case - the SalesGraph doesn't exist within the dictionary
+            if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
+                return;
+
+            salesGraph.Hide(true);
+
+            salesGraphsDict.Remove(eventData.Hash);
         }
 
         /// <summary>
-        /// Remove a progress card
+        /// Show the window
         /// </summary>
-        /// <param name="eventData"></param>
-        private void RemoveSalesGraph(DestroySalesGraph eventData)
-        {
-            // Hide and destoy the progress card
-            graphedWorks[eventData.Hash].Hide(true);
-
-            // Remove the progress card from the dictionary
-            graphedWorks.Remove(eventData.Hash);
-        }
-
         public void Show()
         {
-            // Translate in
+            // Animate
             Translate(translateValue, animateDuration);
+
+            showing = true;
         }
 
+        /// <summary>
+        /// Hide the window
+        /// </summary>
         public void Hide()
         {
-            // Translate out
+            // Animate
             Translate(-translateValue, animateDuration);
+
+            showing = false;
         }
 
         /// <summary>
