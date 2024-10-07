@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,16 +18,15 @@ namespace WriterTycoon.World.Economy
         [SerializeField] private float xSpacing = 10f;
 
         [Header("Tweening Variables")]
-        [SerializeField] private float animateDuration;
+        [SerializeField] private float fadeDuration;
+        [SerializeField] private float animationDuration;
         private Tween fadeTween;
 
-        private List<int> salesData;
+        [SerializeField] private List<int> salesData;
 
         /// <summary>
         /// Initialize the graph with existing sales data
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="initialData"></param>
+        /// </summary>>
         public void Iniitalize(string title)
         {
             // Verify the LineRenderer component
@@ -56,11 +54,11 @@ namespace WriterTycoon.World.Economy
 
             // Initialize the list
             salesData = new();
-
-            // Update the graph
-            UpdateGraph();
         }
 
+        /// <summary>
+        /// Add a point to the Sales Graph
+        /// </summary>
         public void AddPoint(int newSale)
         {
             // Add the sale to the list
@@ -68,9 +66,11 @@ namespace WriterTycoon.World.Economy
 
             // Check if the list count exceeds the max amount
             // of points to display
-            if(salesData.Count > maxPoints)
+            if (salesData.Count > maxPoints)
+            {
                 // If so, remove the oldest piece of data
                 salesData.RemoveAt(0);
+            }
 
             // Update the graph
             UpdateGraph();
@@ -86,7 +86,7 @@ namespace WriterTycoon.World.Economy
             Vector3[] positions = new Vector3[salesData.Count];
 
             // Iterate through each sale data
-            for(int i = 0; i < salesData.Count; i++)
+            for (int i = 0; i < salesData.Count; i++)
             {
                 // Create the point
                 float x = i * xSpacing;
@@ -107,7 +107,7 @@ namespace WriterTycoon.World.Economy
             layoutElement.ignoreLayout = true;
 
             // Fade in
-            Fade(1f, animateDuration, () => layoutElement.ignoreLayout = false);
+            Fade(1f, fadeDuration, () => layoutElement.ignoreLayout = false);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace WriterTycoon.World.Economy
             layoutElement.ignoreLayout = true;
 
             // Fade out
-            Fade(0f, animateDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
+            Fade(0f, fadeDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
 
             // Check whether or not to destroy the graph
             if (destroy)
