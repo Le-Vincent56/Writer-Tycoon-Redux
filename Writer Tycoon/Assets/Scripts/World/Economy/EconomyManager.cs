@@ -156,6 +156,12 @@ namespace WriterTycoon.World.Economy
                 // Set the Published Work to no longer selling
                 work.SetIsSelling(false);
 
+                // Destroy the sales graph
+                EventBus<DestroySalesGraph>.Raise(new DestroySalesGraph()
+                {
+                    Hash = hash
+                });
+
                 // Remove the Published Work from the 
                 sellingWorksDict.Remove(hash);
 
@@ -177,8 +183,8 @@ namespace WriterTycoon.World.Economy
             float durationTotal = baseDuration * (1f + (score / 100f));
 
             // Define phase proportions
-            float growthProportion = 0.2f + 0.1f * (score / 100f);              // 20% to 30% of the lifecycle
-            float peakProportion = 0.5f + 0.2f * (score / 100f);                // 50% to 70% of the lifecycle
+            float growthProportion = 0.15f + (0.1f * (score / 100f));              // 15% to 25% of the lifecycle
+            float peakProportion = 0.5f + (0.1f * (score / 100f));                // 50% to 60% of the lifecycle
             float decayProportion = 1.0f - growthProportion - peakProportion;   // Remainder of the life cycle
 
             // Calculate phase durations
@@ -190,16 +196,25 @@ namespace WriterTycoon.World.Economy
             List<int> weeklySales = new();
 
             // Get weekly sales for the growth phase
-            for(int i = 0; i < growthDuration; i++)
+            for (int i = 0; i < growthDuration; i++)
             {
-                // Linear growth
+                // Linear growth with random fluctuation
                 float progress = (float)(i + 1) / growthDuration;
-                int sales = Mathf.RoundToInt(salesMax * progress);
+
+                // Introduce some randomness in the growth (+- 20%)
+                float randomFactor = 1f + Random.Range(-0.2f, 0.2f);
+
+                // Adjust the sales value by applying random fluctuation
+                int sales = Mathf.RoundToInt(salesMax * progress * randomFactor);
+
+                // Ensure sales remain non-negative
+                sales = Mathf.Max(sales, 0);
+
                 weeklySales.Add(sales);
             }
 
             // Get weekly sales for the peak phase
-            for(int i = 0; i < peakDuration; i++)
+            for (int i = 0; i < peakDuration; i++)
             {
                 // Create random variation around the sales
                 float variation = 0.1f; // +- 10$%
@@ -211,8 +226,13 @@ namespace WriterTycoon.World.Economy
             // Get weekly sales for the decay phase
             for(int i = 0; i < decayDuration; i++)
             {
+                // Decay progress (from 0 to 1 across the decay phase)
                 float decayProgress = (float)(i + 1) / decayDuration;
-                float decayMultiplier = Mathf.Max(Mathf.Pow(decayFactor, decayProgress), minDecayMult);
+
+                // Calculate the decay multiplier using smooth decay towards 0
+                float decayMultiplier = Mathf.Lerp(1f, 0f, decayProgress);
+
+                // Apply the decay multiplier to reduce sales towards 0
                 int sales = Mathf.RoundToInt(salesMax * decayMultiplier);
 
                 // Ensure sales don't go negative
@@ -222,7 +242,7 @@ namespace WriterTycoon.World.Economy
             }
 
             // Add a number of weeks to confirm no sales
-            int confirmationWeeks = 2;
+            int confirmationWeeks = 5;
             for(int i = 0; i < confirmationWeeks; i++)
             {
                 weeklySales.Add(0);

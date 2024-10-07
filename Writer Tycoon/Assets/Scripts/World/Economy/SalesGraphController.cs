@@ -70,6 +70,9 @@ namespace WriterTycoon.World.Economy
             EventBus<DestroySalesGraph>.Deregister(destroySalesGraphEvent);
         }
 
+        /// <summary>
+        /// Callback function to create a graph
+        /// </summary>
         private void CreateGraph(CreateSalesGraph eventData)
         {
             // Create and initialize the SalesGraph
@@ -79,8 +82,18 @@ namespace WriterTycoon.World.Economy
 
             // Add to the dictionary
             salesGraphsDict.Add(eventData.WorkToGraph.Hash, salesGraph);
+
+            // Show the graph area if not already shown
+            if (!showing)
+                Show();
+
+            // Show the Sales Graph
+            salesGraph.Show();
         }
 
+        /// <summary>
+        /// Callback function to update the graph
+        /// </summary>
         private void UpdateGraph(UpdateSalesGraph eventData)
         {
             // Exit case - the SalesGraph doesn't exist within the dictionary
@@ -89,22 +102,21 @@ namespace WriterTycoon.World.Economy
 
             // Add a point to the graph
             salesGraph.AddPoint(eventData.Sales);
-
-            // Show the graph area if not already shown
-            if (!showing)
-                Show();
-
-            salesGraph.Show();
         }
 
+        /// <summary>
+        /// Callback function to destroy the graph
+        /// </summary>
         private void DestroyGraph(DestroySalesGraph eventData)
         {
             // Exit case - the SalesGraph doesn't exist within the dictionary
             if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
                 return;
 
+            // Hide the graph and destroy it
             salesGraph.Hide(true);
 
+            // Remove it from the dictionary
             salesGraphsDict.Remove(eventData.Hash);
         }
 
@@ -113,6 +125,9 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         public void Show()
         {
+            // Exit case - if already showing
+            if (showing) return;
+
             // Animate
             Translate(translateValue, animateDuration);
 
@@ -124,6 +139,9 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         public void Hide()
         {
+            // Exit case - if not showing
+            if (!showing) return;
+
             // Animate
             Translate(-translateValue, animateDuration);
 
