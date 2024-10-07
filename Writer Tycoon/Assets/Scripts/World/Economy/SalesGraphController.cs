@@ -132,6 +132,7 @@ namespace WriterTycoon.World.Economy
             Translate(translateValue, animateDuration);
 
             showing = true;
+            button.SetOpen(true);
         }
 
         /// <summary>
@@ -146,6 +147,7 @@ namespace WriterTycoon.World.Economy
             Translate(-translateValue, animateDuration);
 
             showing = false;
+            button.SetOpen(false);
         }
 
         /// <summary>

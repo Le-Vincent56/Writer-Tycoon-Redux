@@ -37,13 +37,15 @@ namespace WriterTycoon.World.Economy
         }
 
         /// <summary>
+        /// Set whether or not the Button should be opening or closing the window
+        /// </summary>
+        public void SetOpen(bool open) => this.open = open;
+
+        /// <summary>
         /// Toggle the Button sprite
         /// </summary>
         private void ToggleSprite()
         {
-            // Toggle whether the window is open or not
-            open = !open;
-
             // Change the sprite depending on whether or not the window is open or not
             if (open)
             {
