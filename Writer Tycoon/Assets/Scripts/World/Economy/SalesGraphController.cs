@@ -27,7 +27,10 @@ namespace WriterTycoon.World.Economy
 
         private EventBinding<CreateSalesGraph> createSalesGraphEvent;
         private EventBinding<UpdateSalesGraph> updateSaleGraphEvent;
+        private EventBinding<StopSalesGraph> stopSalesGraphEvent;
         private EventBinding<DestroySalesGraph> destroySalesGraphEvent;
+
+        public bool Showing { get => showing; set => showing = value; }
 
         private void Awake()
         {
@@ -59,6 +62,9 @@ namespace WriterTycoon.World.Economy
             updateSaleGraphEvent = new EventBinding<UpdateSalesGraph>(UpdateGraph);
             EventBus<UpdateSalesGraph>.Register(updateSaleGraphEvent);
 
+            stopSalesGraphEvent = new EventBinding<StopSalesGraph>(StopGraph);
+            EventBus<StopSalesGraph>.Register(stopSalesGraphEvent);
+
             destroySalesGraphEvent = new EventBinding<DestroySalesGraph>(DestroyGraph);
             EventBus<DestroySalesGraph>.Register(destroySalesGraphEvent);
         }
@@ -67,11 +73,12 @@ namespace WriterTycoon.World.Economy
         {
             EventBus<CreateSalesGraph>.Deregister(createSalesGraphEvent);
             EventBus<UpdateSalesGraph>.Deregister(updateSaleGraphEvent);
+            EventBus<StopSalesGraph>.Deregister(stopSalesGraphEvent);
             EventBus<DestroySalesGraph>.Deregister(destroySalesGraphEvent);
         }
 
         /// <summary>
-        /// Callback function to create a graph
+        /// Callback function to create a Graph
         /// </summary>
         private void CreateGraph(CreateSalesGraph eventData)
         {
@@ -92,7 +99,7 @@ namespace WriterTycoon.World.Economy
         }
 
         /// <summary>
-        /// Callback function to update the graph
+        /// Callback function to update the Graph
         /// </summary>
         private void UpdateGraph(UpdateSalesGraph eventData)
         {
@@ -105,7 +112,20 @@ namespace WriterTycoon.World.Economy
         }
 
         /// <summary>
-        /// Callback function to destroy the graph
+        /// Callback function to stop updating a Graph
+        /// </summary>
+        private void StopGraph(StopSalesGraph eventData)
+        {
+            // Exit case - the SalesGraph doesn't exist within the dictionary
+            if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
+                return;
+
+            // Stop the Sales Graph from updating
+            salesGraph.Stop();
+        }
+
+        /// <summary>
+        /// Callback function to destroy the Graph
         /// </summary>
         private void DestroyGraph(DestroySalesGraph eventData)
         {
@@ -131,8 +151,11 @@ namespace WriterTycoon.World.Economy
             // Animate
             Translate(translateValue, animateDuration);
 
+            // Set to showing
             showing = true;
-            button.SetOpen(true);
+
+            // Set button sprites
+            button.SetToCloseSprites();
         }
 
         /// <summary>
@@ -146,8 +169,11 @@ namespace WriterTycoon.World.Economy
             // Animate
             Translate(-translateValue, animateDuration);
 
+            // Set to not showing
             showing = false;
-            button.SetOpen(false);
+
+            // Set button sprites
+            button.SetToOpenSprites();
         }
 
         /// <summary>

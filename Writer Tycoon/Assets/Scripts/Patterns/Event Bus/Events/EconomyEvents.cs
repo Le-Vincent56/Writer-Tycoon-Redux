@@ -8,6 +8,12 @@ namespace WriterTycoon.Patterns.EventBus
         public PublishedWork WorkToSell;
     }
 
+    public struct  UpdatePlayerIncome : IEvent
+    {
+        public float BankAmount;
+        public float Revenue;
+    }
+
     public struct CreateSalesGraph : IEvent
     {
         public PublishedWork WorkToGraph;
@@ -17,6 +23,11 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public int Hash;
         public int Sales;
+    }
+
+    public struct StopSalesGraph : IEvent
+    {
+        public int Hash;
     }
 
     public struct DestroySalesGraph : IEvent

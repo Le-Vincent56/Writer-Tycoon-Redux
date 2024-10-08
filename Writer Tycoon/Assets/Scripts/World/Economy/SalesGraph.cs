@@ -14,6 +14,7 @@ namespace WriterTycoon.World.Economy
         private CanvasGroup card;
 
         [Header("Graph Variables")]
+        [SerializeField] private bool updateGraph;
         [SerializeField] private int maxPoints = 50;
         [SerializeField] private float xSpacing = 10f;
 
@@ -50,6 +51,9 @@ namespace WriterTycoon.World.Economy
 
             // Initialize the list
             salesData = new();
+
+            // Set to update the graph
+            updateGraph = true;
         }
 
         /// <summary>
@@ -57,6 +61,9 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         public void AddPoint(int newSale)
         {
+            // Exit case - if not supposed to update the graph
+            if (!updateGraph) return;
+
             // Add the sale to the list
             salesData.Add(newSale);
 
@@ -77,6 +84,9 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         private void UpdateGraph()
         {
+            // Exit case - if not supposed to update the graph
+            if (!updateGraph) return;
+
             // Set the position count
             lineRenderer.positionCount = salesData.Count;
 
@@ -135,6 +145,11 @@ namespace WriterTycoon.World.Economy
         }
 
         /// <summary>
+        /// Stop the Sales Graph from updating
+        /// </summary>
+        public void Stop() => updateGraph = false;
+
+        /// <summary>
         /// Show the Progress Bar
         /// </summary>
         public void Show()
@@ -154,14 +169,25 @@ namespace WriterTycoon.World.Economy
             // Ignore the layout
             layoutElement.ignoreLayout = true;
 
-            // Fade out
-            Fade(0f, fadeDuration, () => layoutElement.ignoreLayout = false, Ease.OutQuint);
+            Color2 startColor = new Color2(lineRenderer.startColor, lineRenderer.endColor);
+            Color2 invisible = new Color2(new Color(1f, 1f, 1f, 0f), new Color(1f, 1f, 1f, 0f));
 
-            // Check whether or not to destroy the graph
-            if (destroy)
-                DestroyGraph();
+            lineRenderer.DOColor(startColor, invisible, animationDuration).SetEase(Ease.OutQuint);
+
+            // Fade out
+            Fade(0f, fadeDuration, () =>
+            {
+                layoutElement.ignoreLayout = false;
+
+                // Check whether or not to destroy the graph
+                if (destroy)
+                        DestroyGraph();
+            }, Ease.OutQuint);
         }
 
+        /// <summary>
+        /// Destroy the Sales Graph
+        /// </summary>
         private void DestroyGraph()
         {
             // Clear the linerenderer

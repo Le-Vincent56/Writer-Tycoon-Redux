@@ -17,18 +17,6 @@ namespace WriterTycoon.World.Economy
         [SerializeField] private float peakCopies = 500f;
         [SerializeField] private float scoreExponent = 1.0f;
 
-        // Determines the rate at which sales decline during the Decay phase
-        // - decayFactor < 1: exponential decay; sales decrease rapidly at first then level off
-        // - decayFactor = 1: no decay; sales remain constant indefinitely
-        // - decayFactor > 1: exponential growth during decay
-        [SerializeField] private float decayFactor = 0.5f;
-
-        // Serves as a lower bound for the decay multiplier, ensuring that a Work
-        // still generates some minimal sales, preventing it from abruptly dropping to 0
-        // - Higer minDecayMult: Sustains higher sales at the end of the Decay phase
-        // - Lower minDecayMult: Allows sales to approach zero more closely
-        [SerializeField] private float minDecayMult = 0.05f;
-
         [SerializeField] private float playerBank;
 
         private EventBinding<SellWork> sellWorkEvent;
@@ -130,17 +118,32 @@ namespace WriterTycoon.World.Economy
                 // Advance the lifecycle week
                 lifecycle.AdvanceWeek();
 
+                // Check if the lifecycle has ended
+                if (lifecycle.IsLifecycleEnded())
+                {
+                    // If so, mark for removal
+                    completedHashes.Add(hash);
+
+                    // Stop the sales graph to prevent update errors
+                    EventBus<StopSalesGraph>.Raise(new StopSalesGraph()
+                    {
+                        Hash = hash
+                    });
+                }
+
+                // Update the player income
+                EventBus<UpdatePlayerIncome>.Raise(new UpdatePlayerIncome()
+                {
+                    BankAmount = playerBank,
+                    Revenue = revenue
+                });
+
                 // Update the associated Sales Graph
                 EventBus<UpdateSalesGraph>.Raise(new UpdateSalesGraph()
                 {
                     Hash = hash,
                     Sales = weeklySales
                 });
-
-                // Check if the lifecycle has ended
-                if (lifecycle.IsLifecycleEnded())
-                    // If so, mark for removal
-                    completedHashes.Add(hash);
             }
             
             // Iterate through each completed hash
