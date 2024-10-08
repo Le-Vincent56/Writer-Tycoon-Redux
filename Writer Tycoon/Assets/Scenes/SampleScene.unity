@@ -22142,7 +22142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef3560ca6ea1394e8f14b0ca999ac6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.2
+  animationDuration: 0.4
   normalColor: {r: 0, g: 0, b: 0, a: 1}
   incomeColor: {r: 0.023529412, g: 0.47058824, b: 0, a: 1}
   debtColor: {r: 0.81960785, g: 0, b: 0.023529412, a: 1}
@@ -25374,7 +25374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2cce4c93b535548a688772604a8be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  open: 0
   openButton: {fileID: 21300000, guid: 55d52133713341a4e8d3818105435a69, type: 2}
   openButtonPressed: {fileID: 21300000, guid: b637e13303180aa4cb4b685ad531ada1, type: 2}
   closeButton: {fileID: 21300000, guid: 33281eded55a7744eaae6e147f10e994, type: 2}
@@ -32469,8 +32468,6 @@ MonoBehaviour:
       Data: 
   peakCopies: 500
   scoreExponent: 2.968
-  decayFactor: 0.75
-  minDecayMult: 0.05
   playerBank: 0
 --- !u!1 &2004642499
 GameObject:
