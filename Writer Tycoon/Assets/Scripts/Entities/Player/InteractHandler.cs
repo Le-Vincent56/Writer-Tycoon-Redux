@@ -47,11 +47,12 @@ namespace WriterTycoon.Entities.Player
             // Set within the trigger
             inTrigger = true;
 
-            // Try to get an Interactable from the collision object
-            IInteractable interactable = collision.GetComponent<IInteractable>();
-
             // Exit case - if the collision object is not an Interactable
-            if (interactable == null) return;
+            if (!collision.TryGetComponent(out IInteractable interactable)) return;
+
+            // If a current interactable exists, remove its highlight and reset it
+            currentInteractable?.RemoveHighlight();
+            currentInteractable?.ResetInteractable();
 
             // Set the current Interactable
             currentInteractable = interactable;
@@ -81,10 +82,10 @@ namespace WriterTycoon.Entities.Player
             if (inTrigger) return;
 
             // Remove the highlight from the current Interactable
-            currentInteractable.RemoveHighlight();
+            currentInteractable?.RemoveHighlight();
 
             // Nullify the current Interactable
-            currentInteractable.ResetInteractable();
+            currentInteractable?.ResetInteractable();
             currentInteractable = null;
             currentInteractableName = string.Empty;
         }
@@ -120,14 +121,13 @@ namespace WriterTycoon.Entities.Player
         /// <summary>
         /// Callback function to set interacting
         /// </summary>
-        /// <param name="eventData"></param>
         private void SetInteracting(SetInteracting eventData)
         {
             interacting = eventData.Interacting;
 
-            // Check if still interacting
-            if(!interacting)
-                // If not, then remove the interactor
+            // Check if not interacting
+            if (!interacting)
+                // If so, check to remove
                 CheckRemoveInteractor();
         }
     }

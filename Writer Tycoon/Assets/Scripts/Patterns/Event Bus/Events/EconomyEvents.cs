@@ -8,7 +8,7 @@ namespace WriterTycoon.Patterns.EventBus
         public PublishedWork WorkToSell;
     }
 
-    public struct  UpdatePlayerIncome : IEvent
+    public struct UpdatePlayerIncome : IEvent
     {
         public float BankAmount;
         public float Revenue;

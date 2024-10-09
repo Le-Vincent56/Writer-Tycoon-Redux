@@ -14,6 +14,8 @@ namespace WriterTycoon.Patterns.EventBus
     }
 
     public struct CloseInteractMenus : IEvent { }
+
+    public struct OpenPublicationHistory : IEvent { }
     #endregion
 
     #region WORK CREATION UI EVENTS
@@ -98,6 +100,7 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ToggleInteractMenu : IEvent
     {
+        public Interactable Interactable;
         public Vector2 CursorPosition;
         public bool Opening;
         public InteractableType InteractableType;

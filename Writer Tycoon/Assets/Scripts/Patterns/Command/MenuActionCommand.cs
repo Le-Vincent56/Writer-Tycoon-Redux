@@ -32,6 +32,7 @@ namespace WriterTycoon.Patterns.Command
         {
             return commandName switch
             {
+                "Publication History" => new MenuActionCommand(new PublicationHistoryAction()),
                 "New Work" => new MenuActionCommand(new NewWorkAction()),
                 "Continue Work" => new MenuActionCommand(new ContinueWorkAction()),
                 "Eat" => new MenuActionCommand(new EatAction()),

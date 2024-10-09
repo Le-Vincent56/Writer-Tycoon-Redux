@@ -9,6 +9,15 @@ namespace WriterTycoon.Patterns.Strategy
         void PerformAction();
     }
 
+    public class PublicationHistoryAction : IMenuActionStrategy
+    {
+        public void PerformAction()
+        {
+            // Open the Publication History
+            EventBus<OpenPublicationHistory>.Raise(new OpenPublicationHistory());
+        }
+    }
+
     public class NewWorkAction : IMenuActionStrategy
     {
         public void PerformAction()
