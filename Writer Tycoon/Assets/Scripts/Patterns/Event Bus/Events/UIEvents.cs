@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.Publication;
 using WriterTycoon.WorkCreation.UI.Development;
 using WriterTycoon.World.Interactables;
 
@@ -119,5 +121,20 @@ namespace WriterTycoon.Patterns.EventBus
         public int Score;
         public AboutInfo AboutInfo;
     }
+    #endregion
+
+    #region PUBLICATION HISTORY EVENTS
+    public struct CreatePublicationCard : IEvent
+    {
+        public PublishedWork PublishedWork;
+    }
+
+    public struct UpdatePublicationCard : IEvent
+    {
+        public int Hash;
+        public PublishedWork PublishedWork;
+    }
+
+    public struct ClosePublicationHistory : IEvent { }
     #endregion
 }

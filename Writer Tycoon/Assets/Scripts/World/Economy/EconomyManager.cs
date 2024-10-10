@@ -144,6 +144,13 @@ namespace WriterTycoon.World.Economy
                     Hash = hash,
                     Sales = weeklySales
                 });
+
+                // Update the Publication Card
+                EventBus<UpdatePublicationCard>.Raise(new UpdatePublicationCard()
+                {
+                    Hash = hash,
+                    PublishedWork = work
+                });
             }
             
             // Iterate through each completed hash
