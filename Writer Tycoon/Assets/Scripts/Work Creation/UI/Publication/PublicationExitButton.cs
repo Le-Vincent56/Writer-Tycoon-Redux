@@ -24,6 +24,13 @@ namespace WriterTycoon.WorkCreation.UI.Publication
         {
             // Close the Publication History window
             EventBus<ClosePublicationHistory>.Raise(new ClosePublicationHistory());
+
+            // Unpause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
+            });
         }
     }
 }

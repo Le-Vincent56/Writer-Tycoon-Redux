@@ -1,33 +1,40 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Publication;
+using WriterTycoon.Patterns.StateMachine;
+using WriterTycoon.WorkCreation.UI.Publication.States;
 
 namespace WriterTycoon.WorkCreation.UI.Publication
 {
     public class PublicationHistoryWindow : MonoBehaviour
     {
+        private bool cardSelected;
+        private Dictionary<int, PublicationCard> publicationCardsDict;
+
         [Header("Instantiation")]
         [SerializeField] private GameObject publishedWorkCard;
         [SerializeField] private Transform container;
 
+        [SerializeField] private List<CanvasGroup> canvasGroups;
         private CanvasGroup window;
         private Vector3 originalPosition;
 
+        [Header("Tweening Variables")]
         [SerializeField] private float translateValue;
         [SerializeField] private float animationDuration;
         private Tween fadeTween;
         private Tween translateTween;
 
-        private Dictionary<int, PublicationCard> publicationCardsDict;
+        private StateMachine stateMachine;
 
         private EventBinding<OpenPublicationHistory> openPublicationHistoryEvent;
         private EventBinding<CreatePublicationCard> createPublicationCardEvent;
         private EventBinding<UpdatePublicationCard> updatePublicationCardsEvent;
         private EventBinding<ClosePublicationHistory> closePublicationHistoryEvent;
+
+        public int SHELF { get => 1; }
+        public int DETAILS { get => 2; }
 
         private void Awake()
         {
@@ -40,6 +47,20 @@ namespace WriterTycoon.WorkCreation.UI.Publication
 
             // Set the original window position
             originalPosition = window.transform.localPosition;
+
+            // Initialize the state machine
+            stateMachine = new();
+
+            // Create states
+            ShelfState shelfState = new ShelfState(canvasGroups[SHELF]);
+            DetailsState detailsState = new DetailsState(canvasGroups[DETAILS]);
+
+            // Define state transitions
+            stateMachine.At(shelfState, detailsState, new FuncPredicate(() => cardSelected));
+            stateMachine.At(detailsState, shelfState, new FuncPredicate(() => !cardSelected));
+
+            // Set an initial state
+            stateMachine.SetState(shelfState);
         }
 
         private void OnEnable()
