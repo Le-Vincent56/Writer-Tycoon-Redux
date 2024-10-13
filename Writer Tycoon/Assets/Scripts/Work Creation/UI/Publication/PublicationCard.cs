@@ -1,6 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Publication;
 
 namespace WriterTycoon.WorkCreation.UI.Publication
@@ -38,6 +40,27 @@ namespace WriterTycoon.WorkCreation.UI.Publication
 
             // Set the data
             SetData(publishedWork);
+
+            // Set an onClick listener
+            button.onClick.AddListener(SetDisplayData);
+        }
+
+        /// <summary>
+        /// Set the display data
+        /// </summary>
+        private void SetDisplayData()
+        {
+            // Set the data
+            EventBus<SetPublicationDisplayData>.Raise(new SetPublicationDisplayData()
+            {
+                PublishedWork = publishedWork
+            });
+
+            // Set to the display state
+            EventBus<SetPublicationHistoryState>.Raise(new SetPublicationHistoryState()
+            {
+                State = 1
+            });
         }
 
         /// <summary>

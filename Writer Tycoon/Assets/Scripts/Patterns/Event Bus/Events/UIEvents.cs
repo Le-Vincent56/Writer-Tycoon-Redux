@@ -40,7 +40,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ReviewData ReviewData;
     }
 
-    public struct OpenSliderWindow : IEvent 
+    public struct OpenSliderWindow : IEvent
     {
         public int Hash;
     }
@@ -53,7 +53,7 @@ namespace WriterTycoon.Patterns.EventBus
         public int PointsRemaining;
     }
 
-    public struct CreateProgressCard : IEvent 
+    public struct CreateProgressCard : IEvent
     {
         public int Hash;
         public string Title;
@@ -75,7 +75,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ProgressStage Stage;
         public string Text;
     }
-    
+
     public struct UpdateProgressText : IEvent
     {
         public int Hash;
@@ -89,7 +89,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ProgressStage Stage;
     }
 
-    public struct HideProgressText : IEvent 
+    public struct HideProgressText : IEvent
     {
         public int Hash;
         public ProgressStage Stage;
@@ -133,6 +133,16 @@ namespace WriterTycoon.Patterns.EventBus
     {
         public int Hash;
         public PublishedWork PublishedWork;
+    }
+
+    public struct SetPublicationDisplayData : IEvent
+    {
+        public PublishedWork PublishedWork;
+    }
+
+    public struct SetPublicationHistoryState : IEvent 
+    {
+        public int State;
     }
 
     public struct ClosePublicationHistory : IEvent { }

@@ -9,7 +9,8 @@ namespace WriterTycoon.WorkCreation.UI.Publication
 {
     public class PublicationHistoryWindow : MonoBehaviour
     {
-        private bool cardSelected;
+        [Header("State")]
+        [SerializeField] private int state;
         private Dictionary<int, PublicationCard> publicationCardsDict;
 
         [Header("Instantiation")]
@@ -29,12 +30,13 @@ namespace WriterTycoon.WorkCreation.UI.Publication
         private StateMachine stateMachine;
 
         private EventBinding<OpenPublicationHistory> openPublicationHistoryEvent;
+        private EventBinding<SetPublicationHistoryState> setPublicationHistoryEvent;
         private EventBinding<CreatePublicationCard> createPublicationCardEvent;
         private EventBinding<UpdatePublicationCard> updatePublicationCardsEvent;
         private EventBinding<ClosePublicationHistory> closePublicationHistoryEvent;
 
-        public int SHELF { get => 1; }
-        public int DETAILS { get => 2; }
+        public int SHELF { get => 0; }
+        public int DETAILS { get => 1; }
 
         private void Awake()
         {
@@ -56,10 +58,11 @@ namespace WriterTycoon.WorkCreation.UI.Publication
             DetailsState detailsState = new DetailsState(canvasGroups[DETAILS]);
 
             // Define state transitions
-            stateMachine.At(shelfState, detailsState, new FuncPredicate(() => cardSelected));
-            stateMachine.At(detailsState, shelfState, new FuncPredicate(() => !cardSelected));
+            stateMachine.At(shelfState, detailsState, new FuncPredicate(() => state == 1));
+            stateMachine.At(detailsState, shelfState, new FuncPredicate(() => state == 0));
 
             // Set an initial state
+            state = 0;
             stateMachine.SetState(shelfState);
         }
 
@@ -67,6 +70,9 @@ namespace WriterTycoon.WorkCreation.UI.Publication
         {
             openPublicationHistoryEvent = new EventBinding<OpenPublicationHistory>(ShowWindow);
             EventBus<OpenPublicationHistory>.Register(openPublicationHistoryEvent);
+
+            setPublicationHistoryEvent = new EventBinding<SetPublicationHistoryState>(SetState);
+            EventBus<SetPublicationHistoryState>.Register(setPublicationHistoryEvent);
 
             createPublicationCardEvent = new EventBinding<CreatePublicationCard>(CreatePublicationCard);
             EventBus<CreatePublicationCard>.Register(createPublicationCardEvent);
@@ -81,9 +87,25 @@ namespace WriterTycoon.WorkCreation.UI.Publication
         private void OnDisable()
         {
             EventBus<OpenPublicationHistory>.Deregister(openPublicationHistoryEvent);
+            EventBus<SetPublicationHistoryState>.Deregister(setPublicationHistoryEvent);
             EventBus<CreatePublicationCard>.Deregister(createPublicationCardEvent);
             EventBus<UpdatePublicationCard>.Deregister(updatePublicationCardsEvent);
             EventBus<ClosePublicationHistory>.Deregister(closePublicationHistoryEvent);
+        }
+
+        private void Update()
+        {
+            // Update the state machine
+            stateMachine.Update();
+        }
+
+        /// <summary>
+        /// Callback function set the Publication History state
+        /// </summary>
+        /// <param name="eventData"></param>
+        private void SetState(SetPublicationHistoryState eventData)
+        {
+            state = eventData.State;
         }
 
         /// <summary>
