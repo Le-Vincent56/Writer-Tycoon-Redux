@@ -15,7 +15,7 @@ namespace WriterTycoon.World.Economy
         [SerializeField] private Color debtColor;
         private Tween colorTween;
 
-        private EventBinding<UpdatePlayerIncome> updatePlayerIncomeEvent;
+        private EventBinding<DisplayPlayerIncome> updatePlayerIncomeEvent;
 
         private void Awake()
         {
@@ -29,19 +29,19 @@ namespace WriterTycoon.World.Economy
 
         private void OnEnable()
         {
-            updatePlayerIncomeEvent = new EventBinding<UpdatePlayerIncome>(UpdateDisplayText);
-            EventBus<UpdatePlayerIncome>.Register(updatePlayerIncomeEvent);
+            updatePlayerIncomeEvent = new EventBinding<DisplayPlayerIncome>(UpdateDisplayText);
+            EventBus<DisplayPlayerIncome>.Register(updatePlayerIncomeEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<UpdatePlayerIncome>.Deregister(updatePlayerIncomeEvent);
+            EventBus<DisplayPlayerIncome>.Deregister(updatePlayerIncomeEvent);
         }
 
         /// <summary>
         /// Update the text display of the Bank
         /// </summary>
-        private void UpdateDisplayText(UpdatePlayerIncome eventData)
+        private void UpdateDisplayText(DisplayPlayerIncome eventData)
         {
             // Display the text
             displayText.text = $"{eventData.BankAmount}";

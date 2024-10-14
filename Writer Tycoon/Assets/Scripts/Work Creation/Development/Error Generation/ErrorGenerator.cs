@@ -117,7 +117,7 @@ namespace WriterTycoon.WorkCreation.Rater
                 currentSum += errors;
             }
 
-            // Adjust if the sum of the path doesn't match the total errors (usually du to float rounding)
+            // Adjust if the sum of the path doesn't match the total errors (usually due to float rounding)
             float difference = totalErrors - currentSum;
             if (Mathf.Abs(difference) > Mathf.Epsilon)
             {

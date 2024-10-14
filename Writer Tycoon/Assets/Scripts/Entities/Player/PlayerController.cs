@@ -138,7 +138,7 @@ namespace WriterTycoon.Entities.Player
 
             // Get the worker record to use as a service
             workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
-            workerRecord.RecordWorker(this);
+            workerRecord.RecordWorker(this, true);
         }
 
         private void Update()

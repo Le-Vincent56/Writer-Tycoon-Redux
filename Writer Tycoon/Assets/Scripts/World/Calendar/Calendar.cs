@@ -177,6 +177,9 @@ namespace WriterTycoon.World.Calendar
                 currentDay = 1;
 
                 newMonth = true;
+
+                // Raise the Pass Month event
+                EventBus<PassMonth>.Raise(new PassMonth());
             }
 
             // Check if it is a new month

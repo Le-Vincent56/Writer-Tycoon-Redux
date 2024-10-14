@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -40,6 +39,10 @@ namespace WriterTycoon.WorkCreation.UI.Publication
 
             // Set the data
             SetData(publishedWork);
+
+            // Set the card title and author
+            titleText.text = publishedWork.Title;
+            authorText.text = publishedWork.Author;
 
             // Set an onClick listener
             button.onClick.AddListener(SetDisplayData);
