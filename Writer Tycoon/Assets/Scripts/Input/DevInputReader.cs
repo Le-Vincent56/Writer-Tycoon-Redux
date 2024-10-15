@@ -8,7 +8,7 @@ namespace WriterTycoon.Input
     [CreateAssetMenu(fileName = "DevInputReader", menuName = "Input/Development Input Reader")]
     public class DevInputReader : ScriptableObject, IDevelopmentToolsActions, IInputReader
     {
-        public event UnityAction CreatePerfectWork = delegate { };
+        public event UnityAction CreateExcellentWork = delegate { };
         public event UnityAction CreateMediocreWork = delegate { };
         public event UnityAction CreateTerribleWork = delegate { };
         public event UnityAction DeactivateDevTools = delegate { };
@@ -39,9 +39,9 @@ namespace WriterTycoon.Input
         /// </summary>
         public void Disable() => inputActions.Disable();
 
-        public void OnCreatePerfectWork(InputAction.CallbackContext context)
+        public void OnCreateExcellentWork(InputAction.CallbackContext context)
         {
-            if (context.canceled) CreatePerfectWork.Invoke();
+            if (context.canceled) CreateExcellentWork.Invoke();
         }
 
         public void OnCreateMediocreWork(InputAction.CallbackContext context)

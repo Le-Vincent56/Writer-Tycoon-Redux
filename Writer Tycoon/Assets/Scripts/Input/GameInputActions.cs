@@ -222,7 +222,7 @@ namespace WriterTycoon.Input
             ""id"": ""a5982c84-1f85-4fd2-9062-ee8f016577a8"",
             ""actions"": [
                 {
-                    ""name"": ""CreatePerfectWork"",
+                    ""name"": ""CreateExcellentWork"",
                     ""type"": ""Button"",
                     ""id"": ""fb2ced1e-e570-4ed8-a8de-9a7304b2bfca"",
                     ""expectedControlType"": ""Button"",
@@ -266,7 +266,7 @@ namespace WriterTycoon.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CreatePerfectWork"",
+                    ""action"": ""CreateExcellentWork"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -319,7 +319,7 @@ namespace WriterTycoon.Input
             m_PlayerControls_ActivateDevTools = m_PlayerControls.FindAction("ActivateDevTools", throwIfNotFound: true);
             // DevelopmentTools
             m_DevelopmentTools = asset.FindActionMap("DevelopmentTools", throwIfNotFound: true);
-            m_DevelopmentTools_CreatePerfectWork = m_DevelopmentTools.FindAction("CreatePerfectWork", throwIfNotFound: true);
+            m_DevelopmentTools_CreateExcellentWork = m_DevelopmentTools.FindAction("CreateExcellentWork", throwIfNotFound: true);
             m_DevelopmentTools_CreateMediocreWork = m_DevelopmentTools.FindAction("CreateMediocreWork", throwIfNotFound: true);
             m_DevelopmentTools_CreateTerribleWork = m_DevelopmentTools.FindAction("CreateTerribleWork", throwIfNotFound: true);
             m_DevelopmentTools_DeactivateDevTools = m_DevelopmentTools.FindAction("DeactivateDevTools", throwIfNotFound: true);
@@ -478,7 +478,7 @@ namespace WriterTycoon.Input
         // DevelopmentTools
         private readonly InputActionMap m_DevelopmentTools;
         private List<IDevelopmentToolsActions> m_DevelopmentToolsActionsCallbackInterfaces = new List<IDevelopmentToolsActions>();
-        private readonly InputAction m_DevelopmentTools_CreatePerfectWork;
+        private readonly InputAction m_DevelopmentTools_CreateExcellentWork;
         private readonly InputAction m_DevelopmentTools_CreateMediocreWork;
         private readonly InputAction m_DevelopmentTools_CreateTerribleWork;
         private readonly InputAction m_DevelopmentTools_DeactivateDevTools;
@@ -486,7 +486,7 @@ namespace WriterTycoon.Input
         {
             private @GameInputActions m_Wrapper;
             public DevelopmentToolsActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @CreatePerfectWork => m_Wrapper.m_DevelopmentTools_CreatePerfectWork;
+            public InputAction @CreateExcellentWork => m_Wrapper.m_DevelopmentTools_CreateExcellentWork;
             public InputAction @CreateMediocreWork => m_Wrapper.m_DevelopmentTools_CreateMediocreWork;
             public InputAction @CreateTerribleWork => m_Wrapper.m_DevelopmentTools_CreateTerribleWork;
             public InputAction @DeactivateDevTools => m_Wrapper.m_DevelopmentTools_DeactivateDevTools;
@@ -499,9 +499,9 @@ namespace WriterTycoon.Input
             {
                 if (instance == null || m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Add(instance);
-                @CreatePerfectWork.started += instance.OnCreatePerfectWork;
-                @CreatePerfectWork.performed += instance.OnCreatePerfectWork;
-                @CreatePerfectWork.canceled += instance.OnCreatePerfectWork;
+                @CreateExcellentWork.started += instance.OnCreateExcellentWork;
+                @CreateExcellentWork.performed += instance.OnCreateExcellentWork;
+                @CreateExcellentWork.canceled += instance.OnCreateExcellentWork;
                 @CreateMediocreWork.started += instance.OnCreateMediocreWork;
                 @CreateMediocreWork.performed += instance.OnCreateMediocreWork;
                 @CreateMediocreWork.canceled += instance.OnCreateMediocreWork;
@@ -515,9 +515,9 @@ namespace WriterTycoon.Input
 
             private void UnregisterCallbacks(IDevelopmentToolsActions instance)
             {
-                @CreatePerfectWork.started -= instance.OnCreatePerfectWork;
-                @CreatePerfectWork.performed -= instance.OnCreatePerfectWork;
-                @CreatePerfectWork.canceled -= instance.OnCreatePerfectWork;
+                @CreateExcellentWork.started -= instance.OnCreateExcellentWork;
+                @CreateExcellentWork.performed -= instance.OnCreateExcellentWork;
+                @CreateExcellentWork.canceled -= instance.OnCreateExcellentWork;
                 @CreateMediocreWork.started -= instance.OnCreateMediocreWork;
                 @CreateMediocreWork.performed -= instance.OnCreateMediocreWork;
                 @CreateMediocreWork.canceled -= instance.OnCreateMediocreWork;
@@ -556,7 +556,7 @@ namespace WriterTycoon.Input
         }
         public interface IDevelopmentToolsActions
         {
-            void OnCreatePerfectWork(InputAction.CallbackContext context);
+            void OnCreateExcellentWork(InputAction.CallbackContext context);
             void OnCreateMediocreWork(InputAction.CallbackContext context);
             void OnCreateTerribleWork(InputAction.CallbackContext context);
             void OnDeactivateDevTools(InputAction.CallbackContext context);

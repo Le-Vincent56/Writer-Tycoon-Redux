@@ -198,7 +198,7 @@
             "id": "a5982c84-1f85-4fd2-9062-ee8f016577a8",
             "actions": [
                 {
-                    "name": "CreatePerfectWork",
+                    "name": "CreateExcellentWork",
                     "type": "Button",
                     "id": "fb2ced1e-e570-4ed8-a8de-9a7304b2bfca",
                     "expectedControlType": "Button",
@@ -242,7 +242,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CreatePerfectWork",
+                    "action": "CreateExcellentWork",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

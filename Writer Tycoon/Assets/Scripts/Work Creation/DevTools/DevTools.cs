@@ -39,7 +39,7 @@ namespace WriterTycoon.WorkCreation.DevTools
             gameInputReader.ActivateDevTools += ActivateDevTools;
 
             devInputReader.DeactivateDevTools += DeactivateDevTools;
-            devInputReader.CreatePerfectWork += CreatePerfectWork;
+            devInputReader.CreateExcellentWork += CreateExcellentWork;
             devInputReader.CreateMediocreWork += CreateMediocreWork;
             devInputReader.CreateTerribleWork += CreateTerribleWork;
         }
@@ -49,7 +49,7 @@ namespace WriterTycoon.WorkCreation.DevTools
             gameInputReader.ActivateDevTools -= ActivateDevTools;
 
             devInputReader.DeactivateDevTools -= DeactivateDevTools;
-            devInputReader.CreatePerfectWork -= CreatePerfectWork;
+            devInputReader.CreateExcellentWork -= CreateExcellentWork;
             devInputReader.CreateMediocreWork -= CreateMediocreWork;
             devInputReader.CreateTerribleWork -= CreateTerribleWork;
         }
@@ -83,13 +83,13 @@ namespace WriterTycoon.WorkCreation.DevTools
         /// <summary>
         /// Create a Perfect Work
         /// </summary>
-        private void CreatePerfectWork()
+        private void CreateExcellentWork()
         {
             // Exit case - if Development Tools are not active
             if (!active) return;
 
             // Create the Work object
-            Work perfectWork = new Work
+            Work excellentWork = new Work
                 (
                     new AboutInfo()
                     {
@@ -136,15 +136,16 @@ namespace WriterTycoon.WorkCreation.DevTools
                     HashUtils.GenerateHash()
                  );
 
-            // Set a perfect score
-            perfectWork.Polisher.EndScore = 15000;
+            // Set an excellent score
+            int excellentScore = Random.Range(13500, 15000);
+            excellentWork.Polisher.EndScore = excellentScore;
 
             // Set a day wait of 1
-            perfectWork.DaysToWaitBeforeRating = 1;
+            excellentWork.DaysToWaitBeforeRating = 1;
 
             EventBus<RateWork>.Raise(new RateWork()
             {
-                WorkToPublish = perfectWork
+                WorkToPublish = excellentWork
             });
         }
 
@@ -205,7 +206,8 @@ namespace WriterTycoon.WorkCreation.DevTools
                  );
 
             // Set a mediocre score
-            mediocreWork.Polisher.EndScore = 7500;
+            int mediocreScore = Random.Range(7500, 11250);
+            mediocreWork.Polisher.EndScore = mediocreScore;
 
             // Set a day wait of 1
             mediocreWork.DaysToWaitBeforeRating = 1;
@@ -276,7 +278,8 @@ namespace WriterTycoon.WorkCreation.DevTools
                  );
 
             // Set a terrible score
-            terribleWork.Polisher.EndScore = 1500;
+            int terribleScore = Random.Range(1500, 3750);
+            terribleWork.Polisher.EndScore = terribleScore;
 
             // Set a day wait of 1
             terribleWork.DaysToWaitBeforeRating = 1;
