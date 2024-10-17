@@ -111,7 +111,7 @@ namespace WriterTycoon.World.Economy
                 work.AddSales(weeklySales);
 
                 // Update the owner's money
-                work.Owner.IncreaseMoney(revenue);
+                work.Owner.CalculateSales(revenue);
 
                 // Advance the lifecycle week
                 lifecycle.AdvanceWeek();

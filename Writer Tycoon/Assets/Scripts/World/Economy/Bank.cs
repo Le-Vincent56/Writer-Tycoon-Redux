@@ -1,14 +1,10 @@
 using UnityEngine;
 using WriterTycoon.Entities;
-using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
 
-public class Bank : MonoBehaviour, ICompetitor
+public class Bank : MonoBehaviour
 {
-    private CompetitorRecord competitorRecord;
-
-    [SerializeField] private bool isPlayer;
+    [SerializeField] private ICompetitor competitor;
     [SerializeField] private float bank;
     [SerializeField] private float rent;
 
@@ -25,17 +21,15 @@ public class Bank : MonoBehaviour, ICompetitor
         EventBus<PassMonth>.Deregister(passMonthEvent);
     }
 
-    private void Start()
-    {
-        // Get the competitor record to use as a service
-        competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
-        competitorRecord.RecordCompetitor(this, isPlayer);
-    }
+    /// <summary>
+    /// Link the Bank's competitor
+    /// </summary>
+    public void LinkCompetitor(ICompetitor competitor) => this.competitor = competitor;
 
     /// <summary>
     /// Increase the amount of money within the bank
     /// </summary>
-    public void IncreaseMoney(float amount)
+    public void AddAmount(float amount)
     {
         // Increase the player money
         bank += amount;
@@ -43,7 +37,7 @@ public class Bank : MonoBehaviour, ICompetitor
         // Update the player income
         EventBus<DisplayBank>.Raise(new DisplayBank()
         {
-            Competitor = this,
+            Competitor = competitor,
             BankAmount = bank,
             Revenue = amount
         });
@@ -60,7 +54,7 @@ public class Bank : MonoBehaviour, ICompetitor
         // Update the display
         EventBus<DisplayBank>.Raise(new DisplayBank()
         {
-            Competitor = this,
+            Competitor = competitor,
             BankAmount = bank,
             Revenue = rent,
         });

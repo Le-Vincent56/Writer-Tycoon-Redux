@@ -18,7 +18,7 @@ namespace WriterTycoon.Entities.Player
         Fridge
     }
 
-    public class PlayerController : MonoBehaviour, IWorker
+    public class PlayerController : MonoBehaviour, IWorker, ICompetitor
     {
         [Header("General")]
         [SerializeField] private string playerName;
@@ -45,9 +45,11 @@ namespace WriterTycoon.Entities.Player
         [SerializeField] private int assignedHash;
 
         private Animator animator;
+        private Bank bank;
         private SpriteRenderer spriteRenderer;
         private WorkerRecord workerRecord;
-        
+        private CompetitorRecord competitorRecord;
+
 
         private StateMachine stateMachine;
 
@@ -64,6 +66,7 @@ namespace WriterTycoon.Entities.Player
         private void Awake()
         {
             // Get components
+            bank = GetComponent<Bank>();
             animator = GetComponentInChildren<Animator>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
@@ -140,6 +143,13 @@ namespace WriterTycoon.Entities.Player
             // Get the worker record to use as a service
             workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
             workerRecord.RecordWorker(this, true);
+
+            // Get the competitor record to use as a service
+            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
+            competitorRecord.RecordCompetitor(this, true);
+
+            // Link the bank's competitor
+            bank.LinkCompetitor(this);
         }
 
         private void Update()
@@ -321,5 +331,10 @@ namespace WriterTycoon.Entities.Player
 
             onComplete.Invoke();
         }
+
+        /// <summary>
+        /// Calculate the sales for the Player
+        /// </summary>
+        public void CalculateSales(float amount) => bank.AddAmount(amount);
     }
 }
