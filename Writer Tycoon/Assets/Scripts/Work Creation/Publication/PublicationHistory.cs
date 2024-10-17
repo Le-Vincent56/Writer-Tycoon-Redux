@@ -41,6 +41,7 @@ namespace WriterTycoon.WorkCreation.Publication
             // Create a Published Work object
             PublishedWork publishedWork = new(
                 workToPublish.Hash,
+                workToPublish.Owner,
                 workToPublish.GetAboutInfo(),
                 workToPublish.GetTopics(),
                 workToPublish.GetGenres(),

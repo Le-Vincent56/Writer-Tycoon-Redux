@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.WorkCreation.Mediation;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -16,6 +18,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
     public class WorkTracker : Dedicant
     {
         [SerializeField] private Dictionary<int, Work> worksToTrack;
+        private CompetitorRecord competitorRecord;
 
         public override string Name => "Work Tracker";
         public override DedicantType Type => DedicantType.Tracker;
@@ -49,6 +52,12 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
+        private void Start()
+        {
+            // Get the competitor record to use as a service
+            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
+        }
+
         /// <summary>
         /// Callback function to add a new Work to track
         /// </summary>
@@ -56,6 +65,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         {
             // Add a new work to track
             worksToTrack.Add(eventData.ReviewData.Hash, new Work(
+                competitorRecord.GetPlayer(),
                 eventData.ReviewData.AboutInfo,
                 eventData.ReviewData.CompatibilityInfo,
                 eventData.ReviewData.Workers,

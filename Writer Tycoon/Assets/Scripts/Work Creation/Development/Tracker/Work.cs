@@ -20,6 +20,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
     public class Work
     {
         [SerializeField] private int hash;
+        private readonly ICompetitor owner;
         private readonly List<IWorker> workers;
         private readonly List<Topic> topics;
         private readonly List<Genre> genres;
@@ -50,6 +51,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         [SerializeField] private Polisher polisher;
 
         public int Hash { get => hash; }
+        public ICompetitor Owner { get => owner; }
         public List<IWorker> Workers { get => workers; }
         public int DaysToWaitBeforeRating { get => daysToWaitBeforeRating; set => daysToWaitBeforeRating = value; }
         public PointGenerator PointGenerator { get => pointGenerator; }
@@ -57,6 +59,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
         public Polisher Polisher { get => polisher; }
 
         public Work(
+            ICompetitor owner,
             AboutInfo aboutInfo,
             CompatibilityInfo compatibilityInfo,
             List<IWorker> workers, TimeEstimates estimates, 
@@ -65,6 +68,7 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             float targetScore, int hash)
         {
             // Set variables
+            this.owner = owner;
             this.aboutInfo = aboutInfo;
             this.compatibilityInfo = compatibilityInfo;
             this.workers = workers;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WriterTycoon.Entities;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
@@ -13,6 +14,7 @@ namespace WriterTycoon.WorkCreation.Publication
 
         [Header("Work Info")]
         [SerializeField] private readonly int hash;
+        [SerializeField] private ICompetitor owner;
         [SerializeField] private readonly AboutInfo aboutInfo;
         [SerializeField] private readonly List<Topic> topics;
         [SerializeField] private readonly List<Genre> genres;
@@ -27,6 +29,7 @@ namespace WriterTycoon.WorkCreation.Publication
         [SerializeField] private int cumulativeSales;
 
         public int Hash { get => hash; }
+        public ICompetitor Owner { get => owner; }
         public string Title { get => aboutInfo.Title; }
         public string Author { get => aboutInfo.Author; }
         public string Description { get => aboutInfo.Description; }
@@ -43,6 +46,7 @@ namespace WriterTycoon.WorkCreation.Publication
         public PublishedWork
         (   
             int hash, 
+            ICompetitor owner,
             AboutInfo aboutInfo, 
             List<Topic> topics, List<Genre> genres, 
             AudienceType audience, WorkType type, 
@@ -50,6 +54,7 @@ namespace WriterTycoon.WorkCreation.Publication
         )
         {
             this.hash = hash;
+            this.owner = owner;
             this.aboutInfo = aboutInfo;
             this.topics = topics;
             this.genres = genres;

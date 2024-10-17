@@ -124,8 +124,8 @@ namespace WriterTycoon.World.Economy
                 // Add the weekl sales to the Published Work for data
                 work.AddSales(weeklySales);
 
-                // Update the player's bank
-                playerBank += revenue;
+                // Update the owner's money
+                //work.Owner.IncreaseMoney(revenue);
 
                 // Advance the lifecycle week
                 lifecycle.AdvanceWeek();
