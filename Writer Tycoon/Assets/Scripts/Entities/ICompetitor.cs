@@ -6,6 +6,6 @@ namespace WriterTycoon.Entities
 {
     public interface ICompetitor
     {
-        void IncreaseMoney(int amount);
+        void IncreaseMoney(float amount);
     }
 }

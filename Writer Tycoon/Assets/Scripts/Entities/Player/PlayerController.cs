@@ -47,6 +47,7 @@ namespace WriterTycoon.Entities.Player
         private Animator animator;
         private SpriteRenderer spriteRenderer;
         private WorkerRecord workerRecord;
+        
 
         private StateMachine stateMachine;
 

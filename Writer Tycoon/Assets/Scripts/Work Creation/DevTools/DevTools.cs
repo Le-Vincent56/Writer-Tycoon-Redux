@@ -27,11 +27,13 @@ namespace WriterTycoon.WorkCreation.DevTools
         [SerializeField] private bool active;
 
         private WorkerRecord workerRecord;
+        private CompetitorRecord competitorRecord;
 
         private void Start()
         {
             // Get the Worker Record
             workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
+            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
         }
 
         private void OnEnable()
@@ -91,6 +93,7 @@ namespace WriterTycoon.WorkCreation.DevTools
             // Create the Work object
             Work excellentWork = new Work
                 (
+                    competitorRecord.GetPlayer(),
                     new AboutInfo()
                     {
                         Title = "Perfect Work",
@@ -160,6 +163,7 @@ namespace WriterTycoon.WorkCreation.DevTools
             // Create the Work object
             Work mediocreWork = new Work
                 (
+                    competitorRecord.GetPlayer(),
                     new AboutInfo()
                     {
                         Title = "Mediocre Work",
@@ -232,6 +236,7 @@ namespace WriterTycoon.WorkCreation.DevTools
             // Create the Work object
             Work terribleWork = new Work
                 (
+                    competitorRecord.GetPlayer(),
                     new AboutInfo()
                     {
                         Title = "Mediocre Work",

@@ -52,8 +52,10 @@ namespace WriterTycoon.WorkCreation.Development.Tracker
             EventBus<EndEditing>.Deregister(endEditingEvent);
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             // Get the competitor record to use as a service
             competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
         }

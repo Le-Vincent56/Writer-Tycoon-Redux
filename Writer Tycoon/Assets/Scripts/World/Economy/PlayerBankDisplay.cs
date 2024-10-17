@@ -1,12 +1,15 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 
 namespace WriterTycoon.World.Economy
 {
-    public class BankDisplay : MonoBehaviour
+    public class PlayerBankDisplay : MonoBehaviour
     {
+        private CompetitorRecord competitorRecord;
         private Text displayText;
 
         [SerializeField] private float animationDuration;
@@ -15,7 +18,7 @@ namespace WriterTycoon.World.Economy
         [SerializeField] private Color debtColor;
         private Tween colorTween;
 
-        private EventBinding<DisplayPlayerIncome> updatePlayerIncomeEvent;
+        private EventBinding<DisplayBank> updatePlayerIncomeEvent;
 
         private void Awake()
         {
@@ -29,20 +32,29 @@ namespace WriterTycoon.World.Economy
 
         private void OnEnable()
         {
-            updatePlayerIncomeEvent = new EventBinding<DisplayPlayerIncome>(UpdateDisplayText);
-            EventBus<DisplayPlayerIncome>.Register(updatePlayerIncomeEvent);
+            updatePlayerIncomeEvent = new EventBinding<DisplayBank>(UpdateDisplayText);
+            EventBus<DisplayBank>.Register(updatePlayerIncomeEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<DisplayPlayerIncome>.Deregister(updatePlayerIncomeEvent);
+            EventBus<DisplayBank>.Deregister(updatePlayerIncomeEvent);
+        }
+
+        private void Start()
+        {
+            // Get the competitor record to use as a service
+            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
         }
 
         /// <summary>
         /// Update the text display of the Bank
         /// </summary>
-        private void UpdateDisplayText(DisplayPlayerIncome eventData)
+        private void UpdateDisplayText(DisplayBank eventData)
         {
+            // Exit case - if not the player
+            if (eventData.Competitor != competitorRecord.GetPlayer()) return;
+
             // Display the text
             displayText.text = $"{eventData.BankAmount}";
 

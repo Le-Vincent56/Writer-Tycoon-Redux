@@ -17,13 +17,8 @@ namespace WriterTycoon.World.Economy
         [SerializeField] private float peakCopies = 500f;
         [SerializeField] private float scoreExponent = 1.0f;
 
-        [Header("Player Variables")]
-        [SerializeField] private float playerBank;
-        [SerializeField] private float playerRent;
-
         private EventBinding<SellWork> sellWorkEvent;
         private EventBinding<PassWeek> passWeekEvent;
-        private EventBinding<PassMonth> passMonthEvent;
 
         private void Awake()
         {
@@ -39,16 +34,12 @@ namespace WriterTycoon.World.Economy
 
             passWeekEvent = new EventBinding<PassWeek>(ProcessWeeklySales);
             EventBus<PassWeek>.Register(passWeekEvent);
-
-            passMonthEvent = new EventBinding<PassMonth>(PayRent);
-            EventBus<PassMonth>.Register(passMonthEvent);
         }
 
         private void OnDisable()
         {
             EventBus<SellWork>.Deregister(sellWorkEvent);
             EventBus<PassWeek>.Deregister(passWeekEvent);
-            EventBus<PassMonth>.Deregister(passMonthEvent);
         }
 
         private void Start()
@@ -120,7 +111,7 @@ namespace WriterTycoon.World.Economy
                 work.AddSales(weeklySales);
 
                 // Update the owner's money
-                //work.Owner.IncreaseMoney(revenue);
+                work.Owner.IncreaseMoney(revenue);
 
                 // Advance the lifecycle week
                 lifecycle.AdvanceWeek();
@@ -137,13 +128,6 @@ namespace WriterTycoon.World.Economy
                         Hash = hash
                     });
                 }
-
-                // Update the player income
-                EventBus<DisplayPlayerIncome>.Raise(new DisplayPlayerIncome()
-                {
-                    BankAmount = playerBank,
-                    Revenue = revenue
-                });
 
                 // Update the associated Sales Graph
                 EventBus<UpdateSalesGraph>.Raise(new UpdateSalesGraph()
@@ -266,22 +250,6 @@ namespace WriterTycoon.World.Economy
             }
 
             return weeklySales;
-        }
-
-        /// <summary>
-        /// Pay player rent
-        /// </summary>
-        private void PayRent()
-        {
-            // Subtract the rent from the player's bank
-            playerBank -= playerRent;
-
-            // Update the player income
-            EventBus<DisplayPlayerIncome>.Raise(new DisplayPlayerIncome()
-            {
-                BankAmount = playerBank,
-                Revenue = -playerRent
-            });
         }
     }
 }

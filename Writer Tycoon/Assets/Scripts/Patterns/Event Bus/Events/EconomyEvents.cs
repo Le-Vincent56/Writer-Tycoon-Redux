@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WriterTycoon.Entities;
 using WriterTycoon.WorkCreation.Publication;
 
 namespace WriterTycoon.Patterns.EventBus
@@ -8,8 +9,9 @@ namespace WriterTycoon.Patterns.EventBus
         public PublishedWork WorkToSell;
     }
 
-    public struct DisplayPlayerIncome : IEvent
+    public struct DisplayBank : IEvent
     {
+        public ICompetitor Competitor;
         public float BankAmount;
         public float Revenue;
     }
