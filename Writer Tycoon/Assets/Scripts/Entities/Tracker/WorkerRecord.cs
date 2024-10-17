@@ -7,6 +7,7 @@ namespace WriterTycoon.Entities.Tracker
 {
     public class WorkerRecord : MonoBehaviour
     {
+        private IWorker playerWorker;
         private List<IWorker> totalWorkers;
         private List<IWorker> availableWorkers;
 
@@ -41,14 +42,24 @@ namespace WriterTycoon.Entities.Tracker
         /// <summary>
         /// Record a worker
         /// </summary>
-        public void RecordWorker(IWorker worker)
+        public void RecordWorker(IWorker worker, bool isPlayer = false)
         {
             // Add the worker to the list
             totalWorkers.Add(worker);
 
+            // Check if the player is registering
+            if (isPlayer)
+                // If so, set the player worker
+                playerWorker = worker;
+
             // Update the available workers
             UpdateAvailableWorkers();
         }
+
+        /// <summary>
+        /// Get the Player Worker
+        /// </summary>
+        public IWorker GetPlayerWorker() => playerWorker;
 
         /// <summary>
         /// Callback function to update Worker hashes after a Work has been initiated

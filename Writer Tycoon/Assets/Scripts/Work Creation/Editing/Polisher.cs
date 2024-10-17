@@ -32,7 +32,7 @@ namespace WriterTycoon.WorkCreation.Editing
         [SerializeField] private float basePolishRate;
         [SerializeField] private float polishRate;
 
-        public float EndScore { get => currentScore; }
+        public float EndScore { get => currentScore; set => currentScore = value; }
 
         public Polisher(Work workParent, float targetScore)
         {

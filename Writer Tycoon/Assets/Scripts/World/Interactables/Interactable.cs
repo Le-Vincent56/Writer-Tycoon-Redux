@@ -5,6 +5,8 @@ namespace WriterTycoon.World.Interactables
 {
     public enum InteractableType
     {
+        None,
+        Bookshelf,
         Computer,
         Fridge
     }
@@ -44,20 +46,26 @@ namespace WriterTycoon.World.Interactables
             EventBus<CloseInteractMenus>.Deregister(closeInteractMenusEvent);
         }
 
+        /// <summary>
+        /// Interact with the Interactable
+        /// </summary>
         public virtual void Interact(Vector2 cursorPosition)
         {
             // Exit case - if cannot be interacted with
             if (!interactable) return;
 
+            EventBus<SetInteracting>.Raise(new SetInteracting()
+            {
+                Interacting = true,
+            });
+
             EventBus<ToggleInteractMenu>.Raise(new ToggleInteractMenu()
             {
+                Interactable = this,
                 CursorPosition = cursorPosition,
                 Opening = openMenu,
                 InteractableType = type
             });
-
-            // Toggle open menu
-            openMenu = !openMenu;
         }
 
         /// <summary>
@@ -69,14 +77,28 @@ namespace WriterTycoon.World.Interactables
             ResetInteractable();
         }
 
+        /// <summary>
+        /// Reset the Interactable
+        /// </summary>
         public void ResetInteractable()
         {
             // Set open menu to true as it would have closed
             openMenu = true;
         }
 
+        /// <summary>
+        /// Set whether or not the Interactable's menu should open on interact
+        /// </summary>
+        public void SetOpenMenu(bool openMenu) => this.openMenu = openMenu;
+
+        /// <summary>
+        /// Highlight the Interactable
+        /// </summary>
         public virtual void Highlight() => spriteRenderer.material = highlightMaterial;
 
+        /// <summary>
+        /// Remove the Interactable's highlight
+        /// </summary>
         public virtual void RemoveHighlight() => spriteRenderer.material = defaultMaterial;
     }
 }

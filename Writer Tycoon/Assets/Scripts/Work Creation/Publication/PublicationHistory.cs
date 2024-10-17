@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.WorkCreation.Development.Tracker;
@@ -58,6 +59,12 @@ namespace WriterTycoon.WorkCreation.Publication
 
             // Add the published work to the Dictionary
             publicationDict.Add(workToPublish.Hash, publishedWork);
+
+            // Create a Publication Card
+            EventBus<CreatePublicationCard>.Raise(new CreatePublicationCard()
+            {
+                PublishedWork = publishedWork
+            });
         }
     }
 }

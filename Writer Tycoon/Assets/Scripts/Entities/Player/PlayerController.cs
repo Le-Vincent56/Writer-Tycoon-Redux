@@ -18,11 +18,10 @@ namespace WriterTycoon.Entities.Player
         Fridge
     }
 
-    public class PlayerController : MonoBehaviour, IWorker, ICompetitor
+    public class PlayerController : MonoBehaviour, IWorker
     {
         [Header("General")]
         [SerializeField] private string playerName;
-        [SerializeField] private int bank;
 
         [Header("Locomotion")]
         [SerializeField] private bool canMove;
@@ -48,7 +47,6 @@ namespace WriterTycoon.Entities.Player
         private Animator animator;
         private SpriteRenderer spriteRenderer;
         private WorkerRecord workerRecord;
-        private CompetitorRecord competitorRecord;
 
         private StateMachine stateMachine;
 
@@ -140,11 +138,7 @@ namespace WriterTycoon.Entities.Player
 
             // Get the worker record to use as a service
             workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
-            workerRecord.RecordWorker(this);
-
-            // Get the competitor record to use as a service
-            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
-            competitorRecord.RecordCompetitor(this);
+            workerRecord.RecordWorker(this, true);
         }
 
         private void Update()
@@ -276,14 +270,6 @@ namespace WriterTycoon.Entities.Player
         {
             // Return the average of the eat and bathroom value
             return (eatValue + bathroomValue) / 2f;
-        }
-
-        /// <summary>
-        /// Increase the amount of money in the Player's bank
-        /// </summary>
-        public void IncreaseMoney(int amount)
-        {
-            bank += amount;
         }
 
         /// <summary>

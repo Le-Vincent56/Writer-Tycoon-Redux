@@ -82,6 +82,15 @@ namespace WriterTycoon.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActivateDevTools"",
+                    ""type"": ""Button"",
+                    ""id"": ""21be32f5-4499-42d0-85c2-874321076a98"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,105 @@ namespace WriterTycoon.Input
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""289c0a77-f9d9-4af4-aeb7-7d095d6fc349"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivateDevTools"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""DevelopmentTools"",
+            ""id"": ""a5982c84-1f85-4fd2-9062-ee8f016577a8"",
+            ""actions"": [
+                {
+                    ""name"": ""CreateExcellentWork"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb2ced1e-e570-4ed8-a8de-9a7304b2bfca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CreateMediocreWork"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8c6e212-2c44-4b12-99c1-2955a7723b29"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CreateTerribleWork"",
+                    ""type"": ""Button"",
+                    ""id"": ""82563e40-c01c-4778-95a2-b5cba37f92f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeactivateDevTools"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6357cd6-83f9-486e-a7f9-34414831279f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8bf1e781-dbd8-4ea0-abdf-997e4cdecbb5"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CreateExcellentWork"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""184f3995-10b9-447d-a3b9-41bc134397de"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CreateMediocreWork"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e601c371-2960-4dc1-8e9b-ef4ab5a40b5c"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CreateTerribleWork"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32e12d40-6d0d-4377-8552-ea605c3acd39"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeactivateDevTools"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +316,13 @@ namespace WriterTycoon.Input
             m_PlayerControls_PauseCalendar = m_PlayerControls.FindAction("PauseCalendar", throwIfNotFound: true);
             m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
             m_PlayerControls_Interact = m_PlayerControls.FindAction("Interact", throwIfNotFound: true);
+            m_PlayerControls_ActivateDevTools = m_PlayerControls.FindAction("ActivateDevTools", throwIfNotFound: true);
+            // DevelopmentTools
+            m_DevelopmentTools = asset.FindActionMap("DevelopmentTools", throwIfNotFound: true);
+            m_DevelopmentTools_CreateExcellentWork = m_DevelopmentTools.FindAction("CreateExcellentWork", throwIfNotFound: true);
+            m_DevelopmentTools_CreateMediocreWork = m_DevelopmentTools.FindAction("CreateMediocreWork", throwIfNotFound: true);
+            m_DevelopmentTools_CreateTerribleWork = m_DevelopmentTools.FindAction("CreateTerribleWork", throwIfNotFound: true);
+            m_DevelopmentTools_DeactivateDevTools = m_DevelopmentTools.FindAction("DeactivateDevTools", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -275,6 +390,7 @@ namespace WriterTycoon.Input
         private readonly InputAction m_PlayerControls_PauseCalendar;
         private readonly InputAction m_PlayerControls_Move;
         private readonly InputAction m_PlayerControls_Interact;
+        private readonly InputAction m_PlayerControls_ActivateDevTools;
         public struct PlayerControlsActions
         {
             private @GameInputActions m_Wrapper;
@@ -285,6 +401,7 @@ namespace WriterTycoon.Input
             public InputAction @PauseCalendar => m_Wrapper.m_PlayerControls_PauseCalendar;
             public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
             public InputAction @Interact => m_Wrapper.m_PlayerControls_Interact;
+            public InputAction @ActivateDevTools => m_Wrapper.m_PlayerControls_ActivateDevTools;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -312,6 +429,9 @@ namespace WriterTycoon.Input
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @ActivateDevTools.started += instance.OnActivateDevTools;
+                @ActivateDevTools.performed += instance.OnActivateDevTools;
+                @ActivateDevTools.canceled += instance.OnActivateDevTools;
             }
 
             private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -334,6 +454,9 @@ namespace WriterTycoon.Input
                 @Interact.started -= instance.OnInteract;
                 @Interact.performed -= instance.OnInteract;
                 @Interact.canceled -= instance.OnInteract;
+                @ActivateDevTools.started -= instance.OnActivateDevTools;
+                @ActivateDevTools.performed -= instance.OnActivateDevTools;
+                @ActivateDevTools.canceled -= instance.OnActivateDevTools;
             }
 
             public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -351,6 +474,76 @@ namespace WriterTycoon.Input
             }
         }
         public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+        // DevelopmentTools
+        private readonly InputActionMap m_DevelopmentTools;
+        private List<IDevelopmentToolsActions> m_DevelopmentToolsActionsCallbackInterfaces = new List<IDevelopmentToolsActions>();
+        private readonly InputAction m_DevelopmentTools_CreateExcellentWork;
+        private readonly InputAction m_DevelopmentTools_CreateMediocreWork;
+        private readonly InputAction m_DevelopmentTools_CreateTerribleWork;
+        private readonly InputAction m_DevelopmentTools_DeactivateDevTools;
+        public struct DevelopmentToolsActions
+        {
+            private @GameInputActions m_Wrapper;
+            public DevelopmentToolsActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CreateExcellentWork => m_Wrapper.m_DevelopmentTools_CreateExcellentWork;
+            public InputAction @CreateMediocreWork => m_Wrapper.m_DevelopmentTools_CreateMediocreWork;
+            public InputAction @CreateTerribleWork => m_Wrapper.m_DevelopmentTools_CreateTerribleWork;
+            public InputAction @DeactivateDevTools => m_Wrapper.m_DevelopmentTools_DeactivateDevTools;
+            public InputActionMap Get() { return m_Wrapper.m_DevelopmentTools; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(DevelopmentToolsActions set) { return set.Get(); }
+            public void AddCallbacks(IDevelopmentToolsActions instance)
+            {
+                if (instance == null || m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Add(instance);
+                @CreateExcellentWork.started += instance.OnCreateExcellentWork;
+                @CreateExcellentWork.performed += instance.OnCreateExcellentWork;
+                @CreateExcellentWork.canceled += instance.OnCreateExcellentWork;
+                @CreateMediocreWork.started += instance.OnCreateMediocreWork;
+                @CreateMediocreWork.performed += instance.OnCreateMediocreWork;
+                @CreateMediocreWork.canceled += instance.OnCreateMediocreWork;
+                @CreateTerribleWork.started += instance.OnCreateTerribleWork;
+                @CreateTerribleWork.performed += instance.OnCreateTerribleWork;
+                @CreateTerribleWork.canceled += instance.OnCreateTerribleWork;
+                @DeactivateDevTools.started += instance.OnDeactivateDevTools;
+                @DeactivateDevTools.performed += instance.OnDeactivateDevTools;
+                @DeactivateDevTools.canceled += instance.OnDeactivateDevTools;
+            }
+
+            private void UnregisterCallbacks(IDevelopmentToolsActions instance)
+            {
+                @CreateExcellentWork.started -= instance.OnCreateExcellentWork;
+                @CreateExcellentWork.performed -= instance.OnCreateExcellentWork;
+                @CreateExcellentWork.canceled -= instance.OnCreateExcellentWork;
+                @CreateMediocreWork.started -= instance.OnCreateMediocreWork;
+                @CreateMediocreWork.performed -= instance.OnCreateMediocreWork;
+                @CreateMediocreWork.canceled -= instance.OnCreateMediocreWork;
+                @CreateTerribleWork.started -= instance.OnCreateTerribleWork;
+                @CreateTerribleWork.performed -= instance.OnCreateTerribleWork;
+                @CreateTerribleWork.canceled -= instance.OnCreateTerribleWork;
+                @DeactivateDevTools.started -= instance.OnDeactivateDevTools;
+                @DeactivateDevTools.performed -= instance.OnDeactivateDevTools;
+                @DeactivateDevTools.canceled -= instance.OnDeactivateDevTools;
+            }
+
+            public void RemoveCallbacks(IDevelopmentToolsActions instance)
+            {
+                if (m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IDevelopmentToolsActions instance)
+            {
+                foreach (var item in m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_DevelopmentToolsActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public DevelopmentToolsActions @DevelopmentTools => new DevelopmentToolsActions(this);
         public interface IPlayerControlsActions
         {
             void OnSetDefaultSpeed(InputAction.CallbackContext context);
@@ -359,6 +552,14 @@ namespace WriterTycoon.Input
             void OnPauseCalendar(InputAction.CallbackContext context);
             void OnMove(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
+            void OnActivateDevTools(InputAction.CallbackContext context);
+        }
+        public interface IDevelopmentToolsActions
+        {
+            void OnCreateExcellentWork(InputAction.CallbackContext context);
+            void OnCreateMediocreWork(InputAction.CallbackContext context);
+            void OnCreateTerribleWork(InputAction.CallbackContext context);
+            void OnDeactivateDevTools(InputAction.CallbackContext context);
         }
     }
 }

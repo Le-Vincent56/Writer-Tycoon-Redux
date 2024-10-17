@@ -27,7 +27,10 @@ namespace WriterTycoon.World.Economy
 
         private EventBinding<CreateSalesGraph> createSalesGraphEvent;
         private EventBinding<UpdateSalesGraph> updateSaleGraphEvent;
+        private EventBinding<StopSalesGraph> stopSalesGraphEvent;
         private EventBinding<DestroySalesGraph> destroySalesGraphEvent;
+
+        public bool Showing { get => showing; set => showing = value; }
 
         private void Awake()
         {
@@ -59,6 +62,9 @@ namespace WriterTycoon.World.Economy
             updateSaleGraphEvent = new EventBinding<UpdateSalesGraph>(UpdateGraph);
             EventBus<UpdateSalesGraph>.Register(updateSaleGraphEvent);
 
+            stopSalesGraphEvent = new EventBinding<StopSalesGraph>(StopGraph);
+            EventBus<StopSalesGraph>.Register(stopSalesGraphEvent);
+
             destroySalesGraphEvent = new EventBinding<DestroySalesGraph>(DestroyGraph);
             EventBus<DestroySalesGraph>.Register(destroySalesGraphEvent);
         }
@@ -67,9 +73,13 @@ namespace WriterTycoon.World.Economy
         {
             EventBus<CreateSalesGraph>.Deregister(createSalesGraphEvent);
             EventBus<UpdateSalesGraph>.Deregister(updateSaleGraphEvent);
+            EventBus<StopSalesGraph>.Deregister(stopSalesGraphEvent);
             EventBus<DestroySalesGraph>.Deregister(destroySalesGraphEvent);
         }
 
+        /// <summary>
+        /// Callback function to create a Graph
+        /// </summary>
         private void CreateGraph(CreateSalesGraph eventData)
         {
             // Create and initialize the SalesGraph
@@ -79,8 +89,18 @@ namespace WriterTycoon.World.Economy
 
             // Add to the dictionary
             salesGraphsDict.Add(eventData.WorkToGraph.Hash, salesGraph);
+
+            // Show the graph area if not already shown
+            if (!showing)
+                Show();
+
+            // Show the Sales Graph
+            salesGraph.Show();
         }
 
+        /// <summary>
+        /// Callback function to update the Graph
+        /// </summary>
         private void UpdateGraph(UpdateSalesGraph eventData)
         {
             // Exit case - the SalesGraph doesn't exist within the dictionary
@@ -89,22 +109,34 @@ namespace WriterTycoon.World.Economy
 
             // Add a point to the graph
             salesGraph.AddPoint(eventData.Sales);
-
-            // Show the graph area if not already shown
-            if (!showing)
-                Show();
-
-            salesGraph.Show();
         }
 
+        /// <summary>
+        /// Callback function to stop updating a Graph
+        /// </summary>
+        private void StopGraph(StopSalesGraph eventData)
+        {
+            // Exit case - the SalesGraph doesn't exist within the dictionary
+            if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
+                return;
+
+            // Stop the Sales Graph from updating
+            salesGraph.Stop();
+        }
+
+        /// <summary>
+        /// Callback function to destroy the Graph
+        /// </summary>
         private void DestroyGraph(DestroySalesGraph eventData)
         {
             // Exit case - the SalesGraph doesn't exist within the dictionary
             if (!salesGraphsDict.TryGetValue(eventData.Hash, out SalesGraph salesGraph))
                 return;
 
+            // Hide the graph and destroy it
             salesGraph.Hide(true);
 
+            // Remove it from the dictionary
             salesGraphsDict.Remove(eventData.Hash);
         }
 
@@ -113,10 +145,17 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         public void Show()
         {
+            // Exit case - if already showing
+            if (showing) return;
+
             // Animate
             Translate(translateValue, animateDuration);
 
+            // Set to showing
             showing = true;
+
+            // Set button sprites
+            button.SetToCloseSprites();
         }
 
         /// <summary>
@@ -124,10 +163,17 @@ namespace WriterTycoon.World.Economy
         /// </summary>
         public void Hide()
         {
+            // Exit case - if not showing
+            if (!showing) return;
+
             // Animate
             Translate(-translateValue, animateDuration);
 
+            // Set to not showing
             showing = false;
+
+            // Set button sprites
+            button.SetToOpenSprites();
         }
 
         /// <summary>

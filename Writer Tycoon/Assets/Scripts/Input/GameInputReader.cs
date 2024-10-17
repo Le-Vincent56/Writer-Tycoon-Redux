@@ -16,12 +16,13 @@ namespace WriterTycoon.Input
         public event UnityAction FasterSpeed = delegate { };
         public event UnityAction FastestSpeed = delegate { };
         public event UnityAction PauseCalendar = delegate { };
+        public event UnityAction ActivateDevTools = delegate { };
 
         public bool DisableMovement { get; set; }
         public int NormMoveX { get; private set; }
         public int NormMoveY { get; private set; }
 
-        GameInputActions inputActions;
+        private GameInputActions inputActions;
 
         private void OnEnable()
         {
@@ -97,6 +98,12 @@ namespace WriterTycoon.Input
         {
             // If the button has been lifted, invoke the event
             if (context.canceled) PauseCalendar.Invoke();
+        }
+
+        public void OnActivateDevTools(InputAction.CallbackContext context)
+        {
+            // If the button has been lifted, invoke the event
+            if (context.canceled) ActivateDevTools.Invoke();
         }
     }
 }

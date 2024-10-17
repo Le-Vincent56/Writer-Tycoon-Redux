@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Review;
+using WriterTycoon.WorkCreation.Publication;
 using WriterTycoon.WorkCreation.UI.Development;
 using WriterTycoon.World.Interactables;
 
@@ -14,6 +16,8 @@ namespace WriterTycoon.Patterns.EventBus
     }
 
     public struct CloseInteractMenus : IEvent { }
+
+    public struct OpenPublicationHistory : IEvent { }
     #endregion
 
     #region WORK CREATION UI EVENTS
@@ -36,7 +40,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ReviewData ReviewData;
     }
 
-    public struct OpenSliderWindow : IEvent 
+    public struct OpenSliderWindow : IEvent
     {
         public int Hash;
     }
@@ -49,7 +53,7 @@ namespace WriterTycoon.Patterns.EventBus
         public int PointsRemaining;
     }
 
-    public struct CreateProgressCard : IEvent 
+    public struct CreateProgressCard : IEvent
     {
         public int Hash;
         public string Title;
@@ -71,7 +75,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ProgressStage Stage;
         public string Text;
     }
-    
+
     public struct UpdateProgressText : IEvent
     {
         public int Hash;
@@ -85,7 +89,7 @@ namespace WriterTycoon.Patterns.EventBus
         public ProgressStage Stage;
     }
 
-    public struct HideProgressText : IEvent 
+    public struct HideProgressText : IEvent
     {
         public int Hash;
         public ProgressStage Stage;
@@ -98,6 +102,7 @@ namespace WriterTycoon.Patterns.EventBus
 
     public struct ToggleInteractMenu : IEvent
     {
+        public Interactable Interactable;
         public Vector2 CursorPosition;
         public bool Opening;
         public InteractableType InteractableType;
@@ -116,5 +121,30 @@ namespace WriterTycoon.Patterns.EventBus
         public int Score;
         public AboutInfo AboutInfo;
     }
+    #endregion
+
+    #region PUBLICATION HISTORY EVENTS
+    public struct CreatePublicationCard : IEvent
+    {
+        public PublishedWork PublishedWork;
+    }
+
+    public struct UpdatePublicationCard : IEvent
+    {
+        public int Hash;
+        public PublishedWork PublishedWork;
+    }
+
+    public struct SetPublicationDisplayData : IEvent
+    {
+        public PublishedWork PublishedWork;
+    }
+
+    public struct SetPublicationHistoryState : IEvent 
+    {
+        public int State;
+    }
+
+    public struct ClosePublicationHistory : IEvent { }
     #endregion
 }

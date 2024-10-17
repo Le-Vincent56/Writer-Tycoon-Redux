@@ -1,5 +1,4 @@
 using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Ideation.Review;
 using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 

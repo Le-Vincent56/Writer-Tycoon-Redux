@@ -37,9 +37,9 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * Research: Sequels---------------------------------------------☐
 * Research: Franchises------------------------------------------☐
 * Research: Media Forms-----------------------------------------☐
-* Economy: Book Sales Calculation-------------------------------☐
-* Economy: Timely Deductions------------------------------------☐
-* Economy: Displaying Statistics--------------------------------☐
+* Economy: Book Sales Calculation-------------------------------☑ (10/7/2024)
+* Economy: Timely Deductions------------------------------------☑ (10/7/2024)
+* Economy: Displaying Statistics--------------------------------☑ (10/7/2024)
 * Economy: Market Fluctuations----------------------------------☐
 * Workplace: Hiring---------------------------------------------☐
 * Workplace: Employee Leveling/Growth---------------------------☐

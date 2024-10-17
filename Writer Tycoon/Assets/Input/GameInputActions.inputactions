@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ActivateDevTools",
+                    "type": "Button",
+                    "id": "21be32f5-4499-42d0-85c2-874321076a98",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -168,6 +177,105 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "289c0a77-f9d9-4af4-aeb7-7d095d6fc349",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ActivateDevTools",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "DevelopmentTools",
+            "id": "a5982c84-1f85-4fd2-9062-ee8f016577a8",
+            "actions": [
+                {
+                    "name": "CreateExcellentWork",
+                    "type": "Button",
+                    "id": "fb2ced1e-e570-4ed8-a8de-9a7304b2bfca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CreateMediocreWork",
+                    "type": "Button",
+                    "id": "b8c6e212-2c44-4b12-99c1-2955a7723b29",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CreateTerribleWork",
+                    "type": "Button",
+                    "id": "82563e40-c01c-4778-95a2-b5cba37f92f5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeactivateDevTools",
+                    "type": "Button",
+                    "id": "f6357cd6-83f9-486e-a7f9-34414831279f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8bf1e781-dbd8-4ea0-abdf-997e4cdecbb5",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CreateExcellentWork",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "184f3995-10b9-447d-a3b9-41bc134397de",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CreateMediocreWork",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e601c371-2960-4dc1-8e9b-ef4ab5a40b5c",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CreateTerribleWork",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32e12d40-6d0d-4377-8552-ea605c3acd39",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeactivateDevTools",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
