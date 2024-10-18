@@ -54,6 +54,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             DeployGamblingCompatibilities();
             DeployGamesCompatibilities();
             DeployGangsCompatibilities();
+            DeployGhostsCompatibilities();
             DeployGladiatorsCompatibilities();
             DeployGodsCompatibilities();
             DeployHackingCompatibilities();
@@ -997,6 +998,27 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
 
             // Add the pair to the Dictionary
             topicAudienceCompatibilities.Add(TopicType.Gangs, compatibleAudiences);
+        }
+
+        /// <summary>
+        /// Deploy Ghosts-Audience compatibilities
+        /// </summary>
+        private void DeployGhostsCompatibilities()
+        {
+            // Exit case - if the Dictionary is not yet initialized
+            if (topicAudienceCompatibilities == null) return;
+
+            // Create a Dictionary to store compatibilities
+            Dictionary<AudienceType, CompatibilityType> compatibleAudiences = new()
+            {
+                { AudienceType.Children, CompatibilityType.Terrible },
+                { AudienceType.Teens, CompatibilityType.Excellent },
+                { AudienceType.YoungAdults, CompatibilityType.Good },
+                { AudienceType.Adults, CompatibilityType.Neutral }
+            };
+
+            // Add the pair to the Dictionary
+            topicAudienceCompatibilities.Add(TopicType.Ghosts, compatibleAudiences);
         }
 
         /// <summary>

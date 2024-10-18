@@ -18,9 +18,9 @@ namespace WriterTycoon.Entities.Competitors.Learning
     [Serializable]
     public class ReinforcementProblem
     {
-        [SerializeField] private HashSet<Action> availableActionsIdle;
+        [SerializeField] private Dictionary<Action, Func<float>> availableActionsIdle;
 
-        public ReinforcementProblem(HashSet<Action> availableActionsIdle)
+        public ReinforcementProblem(Dictionary<Action, Func<float>> availableActionsIdle)
         {
             // Set the available actions when idle
             this.availableActionsIdle = availableActionsIdle;
@@ -34,14 +34,31 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// <summary>
         /// Get the available actions for a given state
         /// </summary>
-        public HashSet<Action> GetAvailableActions(State state)
+        public Dictionary<Action, Func<float>> GetAvailableActions(State state)
         {
             return state switch
             {
                 State.Idle => availableActionsIdle,
-                State.Working => new HashSet<Action>() { Action.None },
+                State.Working => new Dictionary<Action, Func<float>>() { { Action.None, null } },
                 _ => null
             };
+        }
+
+        /// <summary>
+        /// Take the Action and evaluate
+        /// </summary>
+        public (float reward, State newState) TakeAction(State state, Action action, Func<float> function)
+        {
+            // Invoke the action and store the result
+            float score = function.Invoke();
+
+            // Set the new state
+            State newState = (State)((int)state + (int)action);
+
+            // Set the reward
+            float reward = score;
+
+            return (reward, newState);
         }
     }
 }

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.WorkCreation.Mediation;
 
 namespace WriterTycoon.WorkCreation.Ideation.Genres
@@ -32,6 +33,9 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
             // Create the Genres
             CreateGenres();
+
+            // Register this as a service
+            ServiceLocator.ForSceneOf(this).Register(this);
         }
 
         private void OnEnable()
@@ -65,6 +69,22 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
 
             // Create a standard Genre factory
             StandardGenreFactory factory = new StandardGenreFactory();
+
+            // Get the enum values of GenreType
+            Array enumArray = Enum.GetValues(typeof(GenreType));
+
+            // Iterate through each enum value
+            for(int i = 0; i < enumArray.Length; i++)
+            {
+                // Create the Genre
+                Genre newGenre = factory.CreateGenre((GenreType)enumArray.GetValue(i), false);
+
+                // FOR NOW: Unlock all genres
+                newGenre.Unlock();
+
+                // Add the Genre to the List
+                genres.Add(newGenre);
+            }
 
             // Create and add all Genres
             genres.Add(factory.CreateGenre(GenreType.Action, true));
@@ -151,6 +171,11 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
             // Invoke the event
             OnGenresUpdated.Invoke(selectedGenreButtons);
         }
+
+        /// <summary>
+        /// Get the List of created Genres
+        /// </summary>
+        public List<Genre> GetGenres() => genres;
 
         /// <summary>
         /// Send the selected Genres

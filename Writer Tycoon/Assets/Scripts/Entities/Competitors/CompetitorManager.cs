@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.ServiceLocator;
+using WriterTycoon.WorkCreation.Ideation.Genres;
+using WriterTycoon.WorkCreation.Ideation.Topics;
 
 namespace WriterTycoon.Entities.Competitors
 {
@@ -10,6 +12,8 @@ namespace WriterTycoon.Entities.Competitors
         [SerializeField] private GameObject competitorPrefab;
         [SerializeField] private List<CompetitorData> competitorDatas;
         private CompetitorRecord competitorRecord;
+        private TopicManager topicManager;
+        private GenreManager genreManager;
 
         private void Awake()
         {
@@ -21,9 +25,11 @@ namespace WriterTycoon.Entities.Competitors
         {
             // Get the competitor record
             competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
+            topicManager = ServiceLocator.ForSceneOf(this).Get<TopicManager>();
+            genreManager = ServiceLocator.ForSceneOf(this).Get<GenreManager>();
 
             // Iterate through each competitor data
-            foreach(CompetitorData data in competitorDatas)
+            foreach (CompetitorData data in competitorDatas)
             {
                 // Create a competitor based on the data
                 CreateCompetitor(data);
@@ -46,6 +52,8 @@ namespace WriterTycoon.Entities.Competitors
 
             // Initialize the component
             component.Initialize(data.competitorName, data.startingMoney, data.learned, data.learningQ);
+            component.SetKnownTopics(topicManager.GetTopics(), data.topics);
+            component.SetKnownGenres(genreManager.GetGenres(), data.genres);
 
             // Record the component
             competitorRecord.RecordCompetitor(component);

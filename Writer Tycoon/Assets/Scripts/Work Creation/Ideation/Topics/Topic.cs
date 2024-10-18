@@ -12,7 +12,7 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
         Chess, Cinema, Circus, Conspiracies, Crime, Curses, Dancing,
         Demons, Detective, Dinosaurs, Doctors, Dogs, Dolls, Dragons, Dreams,
         Erotica, Espionage, Evolution, Fey, Fashion, Food, Gambling, Games,
-        Gangs, Gladiators, Gods, Hacking, Heaven, Heist, Hell, Hitmen, Hunting,
+        Gangs, Ghosts, Gladiators, Gods, Hacking, Heaven, Heist, Hell, Hitmen, Hunting,
         Industrialization, Insects, Journalism, Kaiju, Language, Mathematics,
         Mecha, Magic, Mermaids, Military, Mummies, Music, Ninjas, ParallelWorld,
         Pets, Photography, Physics, Pirates, Plants, Police, Politics, Prison,
@@ -38,6 +38,15 @@ namespace WriterTycoon.WorkCreation.Ideation.Topics
             IsUnlocked = unlocked;
             MasteryLevel = 0;
             IgnoreGenreCompatibility = ignoreGenreCompatibility;
+        }
+
+        public Topic(Topic topic)
+        {
+            Type = topic.Type;
+            Name = topic.Name;
+            IsUnlocked = topic.IsUnlocked;
+            MasteryLevel = topic.MasteryLevel;
+            IgnoreGenreCompatibility = topic.IgnoreGenreCompatibility;
         }
 
         /// <summary>
