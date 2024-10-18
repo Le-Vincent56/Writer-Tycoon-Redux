@@ -8,9 +8,9 @@ namespace WriterTycoon.Entities.Competitors.Learning
     [Serializable]
     public class QValueStore
     {
-        [SerializeField] private Dictionary<(State, Action), float> qValues;
+        [SerializeField] private Dictionary<(int, int), float> qValues;
 
-        public float GetQValue(State state, Action action)
+        public float GetQValue(int state, int action)
         {
             // Check if the dictionary has the values
             if (qValues.TryGetValue((state, action), out float value))
@@ -20,14 +20,14 @@ namespace WriterTycoon.Entities.Competitors.Learning
             return 0f;
         }
 
-        public Action GetBestAction(State state, HashSet<Action> availableActions)
+        public int GetBestAction(int state, HashSet<int> availableActions)
         {
             // Set the first action as the best action
             float maxQ = GetQValue(state, 0);
-            Action bestAction = availableActions.ElementAt(0);
+            int bestAction = availableActions.ElementAt(0);
 
             // Iterate through each action
-            foreach(Action action in availableActions)
+            foreach(int action in availableActions)
             {
                 // Get the Q-value of the action
                 float qValue = GetQValue(state, action);
@@ -48,6 +48,6 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// <summary>
         /// Store the Q-value for a given state and action
         /// </summary>
-        public void StoreQValue(State state, Action action, float value) => qValues[(state, action)] = value;
+        public void StoreQValue(int state, int action, float value) => qValues[(state, action)] = value;
     }
 }

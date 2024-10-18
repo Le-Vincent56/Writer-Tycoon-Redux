@@ -54,6 +54,7 @@ namespace WriterTycoon.Entities.Competitors
             component.Initialize(data.competitorName, data.startingMoney, data.learned, data.learningQ);
             component.SetKnownTopics(topicManager.GetTopics(), data.topics);
             component.SetKnownGenres(genreManager.GetGenres(), data.genres);
+            component.InitializeLearning();
 
             // Record the component
             competitorRecord.RecordCompetitor(component);

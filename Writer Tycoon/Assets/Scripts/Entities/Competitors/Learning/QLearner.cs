@@ -9,65 +9,61 @@ namespace WriterTycoon.Entities.Competitors.Learning
 {
     public class QLearner
     {
-        public void RunQLearning(
+        public void RunQLearningStep(
             ReinforcementProblem problem, 
-            int iterations, 
-            float alpha,
-            float gamma, 
-            float rho, 
-            float nu
+            int iterations,
+            float rho
         )
         {
             // Create a new QValueStore
             QValueStore store = new();
 
+            // Randomly get a state (Idle or Working)
+            int state = 1;
+
             // Iterate as many times as specified
-            for(int i = 0; i < iterations; i++)
+            for (int i = 0; i < iterations; i++)
             {
-                // Initialize the state
-                State state = problem.GetRandomState();
-
                 // Get the available actions for the current state
-                Dictionary<Action, Func<float>> availableActionsDict = problem.GetAvailableActions(state);
+                Dictionary<int, Func<float>> availableActionsDict = problem.GetAvailableActions(state);
 
-                // Create container variables
-                Action action;
+                int action;
                 Func<float> function;
 
-                // Choose action: exploration (random) or exploitation (best known)
+                // Exploration (random) vs. Exploitation (best known)
                 if (UnityEngine.Random.value < rho)
                 {
-                    // Get a random action and corresponding function
-                    action = (Action)UnityEngine.Random.Range(0, availableActionsDict.Keys.Count);
+                    // Exploration: choose a random action
+                    action = UnityEngine.Random.Range(0, availableActionsDict.Keys.Count);
                     function = availableActionsDict[action];
                 }
                 else
                 {
-                    // Get the best action and corresponding function
+                    // Exploitation: choose the best-known action
                     action = store.GetBestAction(state, availableActionsDict.Keys.ToHashSet());
                     function = availableActionsDict[action];
                 }
 
-                // Take the action and store the results
-                (float reward, State newState) = problem.TakeAction(state, action, function);
+                // Take the action and get the result
+                (float reward, int finalState) = problem.TakeAction(state, action, function);
 
-                // Get the Q-value for the current state action-pair
+                // Get Q-value for the current state-action pair
                 float qValue = store.GetQValue(state, action);
 
-                // Get the max Q-value for the new state (next Action's best Q-value)
+                // Get max Q-value for the new state
                 float maxQValue = store.GetQValue(
-                    newState,
-                    store.GetBestAction(newState, problem.GetAvailableActions(newState).Keys.ToHashSet())
+                    finalState,
+                    store.GetBestAction(finalState, problem.GetAvailableActions(finalState).Keys.ToHashSet())
                 );
 
                 // Update Q-value using the Q-learning formula
+                float alpha = 0.1f; // Learning rate
+                float gamma = 0.9f; // Discount factor
+
                 qValue = (1 - alpha) * qValue + alpha * (reward + gamma * maxQValue);
 
-                // Store the updated q-value
+                // Store the updated Q-value
                 store.StoreQValue(state, action, qValue);
-
-                // Update the current state
-                state = newState;
             }
         }
     }

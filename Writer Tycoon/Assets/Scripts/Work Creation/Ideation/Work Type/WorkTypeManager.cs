@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using WriterTycoon.Patterns.EventBus;
@@ -20,7 +21,7 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
     public class WorkTypeManager : Dedicant
     {
         [SerializeField] private WorkType selectedType;
-        [SerializeField] private float targetScore;
+        [SerializeField] private Dictionary<WorkType, int> targetScores;
 
         public override string Name { get => "Work Type Manager"; }
         public override DedicantType Type { get => DedicantType.WorkType; }
@@ -30,6 +31,21 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
 
 
         private EventBinding<ClearIdeation> clearIdeationEvent;
+
+        private void Awake()
+        {
+            // Initialize the target scores
+            targetScores = new()
+            {
+                { WorkType.None, 0 },
+                { WorkType.Poetry, 100 },
+                { WorkType.FlashFiction, 500 },
+                { WorkType.ShortStory, 1000 },
+                { WorkType.Novella, 5000 },
+                { WorkType.Novel, 15000 },
+                { WorkType.Screenplay, 15000 }
+            };
+        }
 
         private void OnEnable()
         {
@@ -52,7 +68,6 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
 
             // Set the selected type
             selectedType = typeButton.Type;
-            targetScore = typeButton.TargetScore;
 
             // Send the work type out to the mediator
             SendWorkType();
@@ -69,9 +84,6 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
             // Set the Work type to none
             selectedType = WorkType.None;
 
-            // Set the workload to 0
-            targetScore = 0;
-
             // Send the work type out to the mediator
             SendWorkType();
 
@@ -84,7 +96,7 @@ namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
         public void SendWorkType()
         {
             Send(new WorkTypePayload() 
-                { Content = (selectedType, targetScore) }, 
+                { Content = (selectedType, targetScores[selectedType]) }, 
                 AreTypes(new DedicantType[2]
                 {
                     DedicantType.TimeEstimator,
