@@ -15493,6 +15493,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   competitorPrefab: {fileID: 6866723620101752621, guid: f827ce8b585723c40b32919ee8430758, type: 3}
+  competitorDatas:
+  - {fileID: 11400000, guid: 598e7e5af6e864b44be76666867c7c52, type: 2}
+  - {fileID: 11400000, guid: 5bf7c3eeab89277438c5d695fdc5d069, type: 2}
 --- !u!1 &909165084
 GameObject:
   m_ObjectHideFlags: 0
@@ -16032,6 +16035,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d858cb1bd0880cd44a3f9414245c96e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: competitors
+      Entry: 6
+      Data: 
 --- !u!1 &966619563
 GameObject:
   m_ObjectHideFlags: 0
@@ -30519,7 +30534,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1278032194}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.5634953
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

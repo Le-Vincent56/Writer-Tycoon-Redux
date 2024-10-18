@@ -1,10 +1,11 @@
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.ServiceLocator;
 
 namespace WriterTycoon.Entities.Tracker
 {
-    public class CompetitorRecord : MonoBehaviour
+    public class CompetitorRecord : SerializedMonoBehaviour
     {
         [SerializeField] private HashSet<ICompetitor> competitors;
         private ICompetitor player;

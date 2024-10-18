@@ -27,6 +27,11 @@ public class Bank : MonoBehaviour
     public void LinkCompetitor(ICompetitor competitor) => this.competitor = competitor;
 
     /// <summary>
+    /// Set the total bank sum
+    /// </summary>
+    public void SetBankSum(float bankSum) => bank = bankSum;
+
+    /// <summary>
     /// Increase the amount of money within the bank
     /// </summary>
     public void AddAmount(float amount)

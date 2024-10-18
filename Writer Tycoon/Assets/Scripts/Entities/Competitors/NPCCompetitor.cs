@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace WriterTycoon.Entities.Competitors
@@ -7,21 +5,27 @@ namespace WriterTycoon.Entities.Competitors
     public class NPCCompetitor : MonoBehaviour, ICompetitor
     {
         private Bank bank;
+
+        [SerializeField] private string competitorName;
         [SerializeField] private bool learned;
+        [SerializeField] private float learningQ;
 
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
-        public void Initialize(bool learned)
+        public void Initialize(string competitorName, float startingMoney, bool learned, float learningQ)
         {
             // Get Components
             bank = GetComponent<Bank>();
 
-            // Link the bank
+            // Link the bank and set the starting sum
             bank.LinkCompetitor(this);
+            bank.SetBankSum(startingMoney);
 
             // Set variables
+            this.competitorName = competitorName;
             this.learned = learned;
+            this.learningQ = learningQ;
         }
 
         /// <summary>
