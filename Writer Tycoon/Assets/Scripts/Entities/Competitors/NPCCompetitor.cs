@@ -1,13 +1,12 @@
 using Sirenix.OdinInspector;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using WriterTycoon.Entities.Competitors.Learning;
 using WriterTycoon.Entities.Competitors.States;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
 using WriterTycoon.Utilities.Hash;
+using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Ideation.About;
 using WriterTycoon.WorkCreation.Ideation.Audience;
@@ -23,9 +22,8 @@ namespace WriterTycoon.Entities.Competitors
     {
         private Bank bank;
 
+        [Header("Competitor Information")]
         [SerializeField] private string competitorName;
-        [SerializeField] private bool learned;
-        [SerializeField] private float learningQ;
 
         [Header("Working Variables")]
         [SerializeField] private bool working;
@@ -34,13 +32,10 @@ namespace WriterTycoon.Entities.Competitors
         [SerializeField] private int daysWorking;
         [SerializeField] private int totalDaysWorking;
 
-        [SerializeField] private HashSet<Topic> knownTopics;
-        [SerializeField] private HashSet<Genre> knownGenres;
+        [Header("Brain")]
+        [SerializeField] private CompetitorBrain brain;
 
         private StateMachine stateMachine;
-
-        private QLearner qLearner;
-        private ReinforcementProblem writeProblem;
 
         private EventBinding<PassDay> passDayEvent;
 
@@ -58,7 +53,7 @@ namespace WriterTycoon.Entities.Competitors
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
-        public void Initialize(string competitorName, float startingMoney, bool learned, float learningQ)
+        public void Initialize(string competitorName, float startingMoney)
         {
             // Get Components
             bank = GetComponent<Bank>();
@@ -70,15 +65,32 @@ namespace WriterTycoon.Entities.Competitors
             // Set variables
             this.competitorName = competitorName;
             working = false;
-            this.learned = learned;
-            this.learningQ = learningQ;
-
-            // Initialize the HashSets
-            knownTopics = new();
-            knownGenres = new();
 
             // Initialize the state machine
             CreateStateMachine();
+        }
+
+        /// <summary>
+        /// Create the Competitor's Brain for learning
+        /// </summary>
+        public void CreateBrain(
+            bool learned, float learningQ, 
+            List<Topic> availableTopics, List<Genre> availableGenres,
+            HashSet<TopicType> knownTopics, HashSet<GenreType> knownGenres,
+            GenreTopicCompatibility genreTopicCompatibility,
+            TopicAudienceCompatibility topicAudienceCompatibility,
+            GenreFocusTargets genreFocusTargets
+        )
+        {
+            // Create the brain
+            brain = new CompetitorBrain(
+                learned, learningQ, 
+                availableTopics, knownTopics, 
+                availableGenres, knownGenres,
+                genreTopicCompatibility,
+                topicAudienceCompatibility,
+                genreFocusTargets
+            );
         }
 
         /// <summary>
@@ -101,108 +113,7 @@ namespace WriterTycoon.Entities.Competitors
             stateMachine.SetState(idleState);
         }
 
-        /// <summary>
-        /// Set the Competitor's known Topics
-        /// </summary>
-        public void SetKnownTopics(List<Topic> availableTopics, HashSet<TopicType> topicData)
-        {
-            // Iterate through each Topic
-            foreach(Topic topicObj in availableTopics)
-            {
-                // Iterate through each TopicType
-                foreach(TopicType topicType in topicData)
-                {
-                    // Skip if the types are not equal
-                    if (topicObj.Type != topicType) continue;
-
-                    // Add the Topic to the known Topics;
-                    // create a copy to be able to unlock it for the Competitor but
-                    // not the player
-                    knownTopics.Add(new Topic(topicObj));
-                }
-            }
-
-            // Iterate through each Topic in the known Topics
-            foreach(Topic topic in knownTopics)
-            {
-                // Unlock the Topic for the Competitor
-                topic.Unlock();
-            }
-        }
-
-        /// <summary>
-        /// Set the Competitor's known Genres
-        /// </summary>
-        public void SetKnownGenres(List<Genre> availableGenres, HashSet<GenreType> genreData)
-        {
-            // Iterate through each Genre
-            foreach (Genre genreObj in availableGenres)
-            {
-                // Iterate through each GenreType
-                foreach (GenreType genreType in genreData)
-                {
-                    // Skip if the types are not equal
-                    if (genreObj.Type != genreType) continue;
-
-                    // Add the Genre to the known Genres;
-                    // create a copy to be able to unlock it for the Competitor but
-                    // not the player
-                    knownGenres.Add(new Genre(genreObj));
-                }
-            }
-
-            // Iterate through each Genre in the known Genres
-            foreach (Genre genre in knownGenres)
-            {
-                // Unlock the Genre for the Competitor
-                genre.Unlock();
-            }
-        }
-
-        public void InitializeLearning()
-        {
-            // Initialize the Q-Learner
-            qLearner = new QLearner();
-
-            int actionCount = 0;
-            Dictionary<int, Func<float>> availableActions = new();
-
-            Array enumArray = Enum.GetValues(typeof(AudienceType));
-
-            // Create a list of actions
-            for(int i = 0; i < knownTopics.Count; i++)
-            {
-                for(int j = 0; j < knownGenres.Count; j++)
-                {
-                    for(int k = 1; k < enumArray.Length; k++)
-                    {
-                        Topic topic = knownTopics.ElementAt(i);
-                        Genre genre = knownGenres.ElementAt(j);
-                        AudienceType audience = (AudienceType)enumArray.GetValue(k);
-
-                        availableActions.Add(
-                            actionCount,
-                            () => CreateWork(
-                                topic, 
-                                genre, 
-                                audience
-                            )
-                        );
-
-                        Debug.Log($"Created Action ({actionCount}) using {topic.Name}, {genre.Name}, {audience}");
-
-                        actionCount++;
-                    }
-                }
-            }
-
-            writeProblem = new ReinforcementProblem(availableActions);
-        }
-
-        private float CreateWork(Topic topic, Genre genre, AudienceType audienceType)
-        {
-            return 0f;
-        }
+        
 
         /// <summary>
         /// Callback function for handling the Competitor's actions for the day

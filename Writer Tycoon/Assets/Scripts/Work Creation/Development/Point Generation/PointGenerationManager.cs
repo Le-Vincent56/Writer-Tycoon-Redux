@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 using WriterTycoon.WorkCreation.Development.Tracker;
 using WriterTycoon.WorkCreation.Mediation;
 
@@ -23,8 +24,10 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
         {
             // Initialize variables
             worksInProgress = new();
-
             genreFocusTargets = new();
+
+            // Register this as a service
+            ServiceLocator.ForSceneOf(this).Register(this);
         }
 
         private void OnEnable()
@@ -49,6 +52,11 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
             EventBus<SetDevelopmentPhase>.Deregister(setDevelopmentPhaseEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
         }
+
+        /// <summary>
+        /// Get the Genre Focus Slider targets
+        /// </summary>
+        public GenreFocusTargets GetGenreFocusTargets() => genreFocusTargets;
 
         /// <summary>
         /// Generate points per hour

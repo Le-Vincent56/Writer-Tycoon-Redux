@@ -85,18 +85,6 @@ namespace WriterTycoon.WorkCreation.Ideation.Genres
                 // Add the Genre to the List
                 genres.Add(newGenre);
             }
-
-            // Create and add all Genres
-            genres.Add(factory.CreateGenre(GenreType.Action, true));
-            genres.Add(factory.CreateGenre(GenreType.Adventure, true));
-            genres.Add(factory.CreateGenre(GenreType.ContemporaryFiction, false));
-            genres.Add(factory.CreateGenre(GenreType.Fantasy, true));
-            genres.Add(factory.CreateGenre(GenreType.Horror, true));
-            genres.Add(factory.CreateGenre(GenreType.HistoricalFiction, true));
-            genres.Add(factory.CreateGenre(GenreType.Mystery, false));
-            genres.Add(factory.CreateGenre(GenreType.Romance, false));
-            genres.Add(factory.CreateGenre(GenreType.ScienceFiction, true));
-            genres.Add(factory.CreateGenre(GenreType.Thriller, true));
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 using WriterTycoon.Patterns.EventBus;
+using WriterTycoon.Patterns.ServiceLocator;
 
 namespace WriterTycoon.WorkCreation.Ideation.Compatibility
 {
@@ -47,6 +48,9 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
             // Create a new data base for Genre-Topic compatibility
             genreTopicCompatibility = new GenreTopicCompatibility();
             topicAudienceCompatibility = new TopicAudienceCompatibility();
+
+            // Register this as a service
+            ServiceLocator.ForSceneOf(this).Register(this);
         }
 
         private void OnEnable()
@@ -59,6 +63,16 @@ namespace WriterTycoon.WorkCreation.Ideation.Compatibility
         {
             EventBus<CalculateCompatibility>.Deregister(calculateCompatibilityEvent);
         }
+
+        /// <summary>
+        /// Retrieve the GenreTopicCompatibility scoring object
+        /// </summary>
+        public GenreTopicCompatibility GetGenreTopicCompatibilities() => genreTopicCompatibility;
+
+        /// <summary>
+        /// Retrieve the TopicAudienceCompatibility scoring object
+        /// </summary>
+        public TopicAudienceCompatibility GetTopicAudienceCompatibilities() => topicAudienceCompatibility;
 
         /// <summary>
         /// Set the selected Audience

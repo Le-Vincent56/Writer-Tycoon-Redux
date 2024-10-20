@@ -10,9 +10,16 @@ namespace WriterTycoon.Entities.Competitors.Learning
     {
         [SerializeField] private Dictionary<int, Func<float>> availableActions;
 
-        public ReinforcementProblem(Dictionary<int, Func<float>> availableActions)
+        public ReinforcementProblem(Dictionary<int, Func<float>> availableActions, bool debug = false)
         {
             this.availableActions = availableActions;
+
+            if (!debug) return;
+
+            foreach(KeyValuePair<int, Func<float>> action in availableActions)
+            {
+                action.Value.Invoke();
+            }
         }
 
         /// <summary>

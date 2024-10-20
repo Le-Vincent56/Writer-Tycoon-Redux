@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.Entities.Tracker;
 using WriterTycoon.Patterns.ServiceLocator;
+using WriterTycoon.WorkCreation.Development.PointGeneration;
+using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
 
@@ -14,6 +16,8 @@ namespace WriterTycoon.Entities.Competitors
         private CompetitorRecord competitorRecord;
         private TopicManager topicManager;
         private GenreManager genreManager;
+        private CompatibilityManager compatibilityManager;
+        private PointGenerationManager pointGenerationManager;
 
         private void Awake()
         {
@@ -27,6 +31,8 @@ namespace WriterTycoon.Entities.Competitors
             competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
             topicManager = ServiceLocator.ForSceneOf(this).Get<TopicManager>();
             genreManager = ServiceLocator.ForSceneOf(this).Get<GenreManager>();
+            compatibilityManager = ServiceLocator.ForSceneOf(this).Get<CompatibilityManager>();
+            pointGenerationManager = ServiceLocator.ForSceneOf(this).Get<PointGenerationManager>();
 
             // Iterate through each competitor data
             foreach (CompetitorData data in competitorDatas)
@@ -51,10 +57,15 @@ namespace WriterTycoon.Entities.Competitors
             if (!competitorObj.TryGetComponent(out NPCCompetitor component)) return;
 
             // Initialize the component
-            component.Initialize(data.competitorName, data.startingMoney, data.learned, data.learningQ);
-            component.SetKnownTopics(topicManager.GetTopics(), data.topics);
-            component.SetKnownGenres(genreManager.GetGenres(), data.genres);
-            component.InitializeLearning();
+            component.Initialize(data.competitorName, data.startingMoney);
+            component.CreateBrain(
+                data.learned, data.learningQ,
+                topicManager.GetTopics(), genreManager.GetGenres(),
+                data.topics, data.genres,
+                compatibilityManager.GetGenreTopicCompatibilities(),
+                compatibilityManager.GetTopicAudienceCompatibilities(),
+                pointGenerationManager.GetGenreFocusTargets()
+            );
 
             // Record the component
             competitorRecord.RecordCompetitor(component);
