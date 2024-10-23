@@ -5,16 +5,10 @@ using WriterTycoon.Entities.Competitors.Learning;
 using WriterTycoon.Entities.Competitors.States;
 using WriterTycoon.Patterns.EventBus;
 using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.Utilities.Hash;
 using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.About;
-using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
 using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.Entities.Competitors
 {
@@ -50,6 +44,11 @@ namespace WriterTycoon.Entities.Competitors
             EventBus<PassDay>.Deregister(passDayEvent);
         }
 
+        private void Update()
+        {
+            stateMachine.Update();
+        }
+
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
@@ -74,7 +73,8 @@ namespace WriterTycoon.Entities.Competitors
         /// Create the Competitor's Brain for learning
         /// </summary>
         public void CreateBrain(
-            bool learned, float learningQ, 
+            bool learned, 
+            float learningFactor, float discountFactor, float explorationFactor,
             List<Topic> availableTopics, List<Genre> availableGenres,
             HashSet<TopicType> knownTopics, HashSet<GenreType> knownGenres,
             GenreTopicCompatibility genreTopicCompatibility,
@@ -84,7 +84,8 @@ namespace WriterTycoon.Entities.Competitors
         {
             // Create the brain
             brain = new CompetitorBrain(
-                learned, learningQ, 
+                learned, 
+                learningFactor, discountFactor, explorationFactor, 
                 availableTopics, knownTopics, 
                 availableGenres, knownGenres,
                 genreTopicCompatibility,
@@ -113,8 +114,6 @@ namespace WriterTycoon.Entities.Competitors
             stateMachine.SetState(idleState);
         }
 
-        
-
         /// <summary>
         /// Callback function for handling the Competitor's actions for the day
         /// </summary>
@@ -135,7 +134,7 @@ namespace WriterTycoon.Entities.Competitors
             else
             {
                 // Otherwise, increase the amount of days spent idle
-                daysIdle--;
+                daysIdle++;
 
                 // Exit case - if below the total amount of days to idle
                 if (daysIdle <= totalDaysIdle) return;
@@ -150,31 +149,49 @@ namespace WriterTycoon.Entities.Competitors
         /// </summary>
         public void SetDaysToIdle()
         {
-            // Reset the counter
+            // Reset counters
             daysIdle = 0;
+            daysWorking = 0;
 
             // Set the amount of days to idle (2-10 days)
-            totalDaysIdle = UnityEngine.Random.Range(2, 10);
+            totalDaysIdle = Random.Range(2, 10);
+        }
+
+        public void SetDaysToWork()
+        {
+            // Reset counters
+            daysWorking = 0;
+            daysIdle = 0;
+
+            // Set the amount of days to work
+            totalDaysWorking = Random.Range(2, 10);
         }
 
         public void StartWorking()
         {
-            // Create an empty work
-            Work newWork = new(
-                this,
-                new AboutInfo() { },
-                new CompatibilityInfo() { },
-                null,
-                new TimeEstimates() { },
-                null,
-                null,
-                AudienceType.None,
-                WorkType.None,
-                0,
-                HashUtils.GenerateHash()
-            );
+            Debug.Log("Working!");
 
-            // TODO: Decide on Topics, Genres, and AudienceTypes based on Q-Learning
+            SetDaysToWork();
+
+            // Create an empty work
+            //Work newWork = new(
+            //    this,
+            //    new AboutInfo() { },
+            //    new CompatibilityInfo() { },
+            //    null,
+            //    new TimeEstimates() { },
+            //    null,
+            //    null,
+            //    AudienceType.None,
+            //    WorkType.None,
+            //    0,
+            //    HashUtils.GenerateHash()
+            //);
+
+            //// TODO: Decide on Topics, Genres, and AudienceTypes based on Q-Learning
+
+            // Learn the concept problem
+            brain.Learn(Problem.Concept);
         }
 
         /// <summary>

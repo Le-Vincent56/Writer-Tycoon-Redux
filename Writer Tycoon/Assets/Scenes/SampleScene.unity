@@ -15411,7 +15411,6 @@ MonoBehaviour:
   competitorPrefab: {fileID: 6866723620101752621, guid: f827ce8b585723c40b32919ee8430758, type: 3}
   competitorDatas:
   - {fileID: 11400000, guid: 598e7e5af6e864b44be76666867c7c52, type: 2}
-  - {fileID: 11400000, guid: 5bf7c3eeab89277438c5d695fdc5d069, type: 2}
 --- !u!1 &909165084
 GameObject:
   m_ObjectHideFlags: 0

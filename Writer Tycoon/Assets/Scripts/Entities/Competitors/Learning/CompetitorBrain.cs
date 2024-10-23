@@ -10,21 +10,42 @@ using WriterTycoon.WorkCreation.Ideation.Topics;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
+    public struct AIConceptData
+    {
+        public Topic Topic;
+        public Genre Genre;
+        public AudienceType Audience;
+    }
+
+    public struct AISliderData
+    {
+        public (PointCategory category, int value) SliderOne;
+        public (PointCategory category, int value) SliderTwo;
+        public (PointCategory category, int value) SliderThree;
+    }
+
+    public enum Problem
+    {
+        Concept,
+        FocusOne,
+        FocusTwo,
+        FocusThree
+    }
+
     public class CompetitorBrain
     {
         [Header("Learning")]
         [SerializeField] private bool learned;
-        [SerializeField] private float learningQ;
+        [SerializeField] float learnFactor;
+        [SerializeField] float discountFactor;
+        [SerializeField] float explorationFactor;
 
         [Header("Characteristics")]
         [SerializeField] private HashSet<Topic> knownTopics;
         [SerializeField] private HashSet<Genre> knownGenres;
 
         private QLearner qLearner;
-        private ReinforcementProblem conceptProblem;
-        private ReinforcementProblem focusOneProblem;
-        private ReinforcementProblem focusTwoProblem;
-        private ReinforcementProblem focusThreeProblem;
+        private ReinforcementProblem workProblem;
 
         [Header("Scoring Objects")]
         [SerializeField] private GenreTopicCompatibility genreTopicCompatibility;
@@ -32,7 +53,8 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private GenreFocusTargets genreFocusTargets;
 
         public CompetitorBrain(
-            bool learned, float learningQ, 
+            bool learned, 
+            float learnFactor, float discountFactor, float explorationFactor,
             List<Topic> availableTopics, HashSet<TopicType> knownTopics,
             List<Genre> availableGenres, HashSet<GenreType> knownGenres,
             GenreTopicCompatibility genreTopicCompatibility,
@@ -42,7 +64,9 @@ namespace WriterTycoon.Entities.Competitors.Learning
         {
             // Set variables
             this.learned = learned;
-            this.learningQ = learningQ;
+            this.learnFactor = learnFactor;
+            this.discountFactor = discountFactor;
+            this.explorationFactor = explorationFactor;
 
             // Set the known Topics and Genres
             SetKnownTopics(availableTopics, knownTopics);
@@ -134,7 +158,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
             // Define the number of actions being made and a dictionary to store
             // corresponding functions
             int conceptActionCount = 0;
-            Dictionary<int, Func<float>> availableActionsConcept = new();
+            Dictionary<int, Func<(float value, object data)>> availableActionsConcept = new();
 
             // Store the types of audiences into an array
             Array enumArray = Enum.GetValues(typeof(AudienceType));
@@ -167,15 +191,12 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 }
             }
 
-            // Create the new Concept Reinforcement Problem
-            conceptProblem = new ReinforcementProblem(availableActionsConcept);
-
             int sliderOneActionCount = 0;
             int sliderTwoActionCount = 0;
             int sliderThreeActionCount = 0;
-            Dictionary<int, Func<float>> availableActionsFocusSliderOne = new();
-            Dictionary<int, Func<float>> availableActionsFocusSliderTwo = new();
-            Dictionary<int, Func<float>> availableActionsFocusSliderThree = new();
+            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderOne = new();
+            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderTwo = new();
+            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderThree = new();
 
             // Get all possible, unique Focus Slider combinations
             HashSet<(int s1, int s2, int s3)> focusSliderCombinations = GetSliderCombinations();
@@ -243,22 +264,25 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 }
             }
 
-            // Create the Focus Slider Reinforcement Problem
-            focusOneProblem = new ReinforcementProblem(availableActionsFocusSliderOne, true);
-            focusTwoProblem = new ReinforcementProblem(availableActionsFocusSliderTwo);
-            focusThreeProblem = new ReinforcementProblem(availableActionsFocusSliderThree);
+            // Create the new Concept Reinforcement Problem
+            workProblem = new ReinforcementProblem(
+                availableActionsConcept,
+                availableActionsFocusSliderOne, 
+                availableActionsFocusSliderTwo,
+                availableActionsFocusSliderThree
+            );
         }
 
         /// <summary>
         /// Simulate the creation of the Work and provide a reward
         /// </summary>
-        private float TryConcept(Topic topic, Genre genre, AudienceType audienceType)
+        private (float value, object data) TryConcept(Topic topic, Genre genre, AudienceType audienceType)
         {
             // Exit case - the Genre-Topic compatibility object does not exist
-            if (genreTopicCompatibility == null) return 0f;
+            if (genreTopicCompatibility == null) return (0f, null);
 
             // Exit case - the Topic-Audience compatibility object does not exist
-            if (topicAudienceCompatibility == null) return 0f;
+            if (topicAudienceCompatibility == null) return (0f, null);
 
             // Get the compatibility types
             CompatibilityType genreTopicCompatibilities = 
@@ -273,7 +297,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
             // Calculate the average of the scores and round it down
             float totalScore = Mathf.FloorToInt((genreTopicScore + topicAudienceScore) / 2f);
 
-            return totalScore;
+            return (totalScore, new AIConceptData() { Topic = topic, Genre = genre, Audience = audienceType });
         }
 
         /// <summary>
@@ -307,7 +331,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// <summary>
         /// Simulate the setting of Focus Sliders
         /// </summary>
-        private float AttemptSliderCombination(
+        private (float value, object data) AttemptSliderCombination(
             Genre genre,
             (PointCategory category, int value) sliderOne, 
             (PointCategory category, int value) sliderTwo, 
@@ -350,7 +374,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
             //    $"Ideal Slider Score: {idealSliderScore}");
 
             // Return the percentage of the final score compared to the ideal
-            return finalScore / idealSliderScore;
+            return 
+                (
+                    finalScore / idealSliderScore, 
+                    new AISliderData() { SliderOne = sliderOne, SliderTwo = sliderTwo, SliderThree = sliderThree }
+                );
         }
 
         /// <summary>
@@ -386,6 +414,26 @@ namespace WriterTycoon.Entities.Competitors.Learning
 
             // Return the average multiplier times the base component score
             return componentScore * totalMultiplier;
+        }
+
+        public void Learn(Problem problemToLearn)
+        {
+            switch (problemToLearn)
+            {
+                case Problem.Concept:
+                    qLearner.RunQLearningStep(workProblem, 0, 100, learnFactor, discountFactor, explorationFactor);
+                    break;
+
+                case Problem.FocusOne:
+                    qLearner.RunQLearningStep(workProblem, 1, 10, learnFactor, discountFactor, explorationFactor);
+                    break;
+                case Problem.FocusTwo:
+                    qLearner.RunQLearningStep(workProblem, 2, 10, learnFactor, discountFactor, explorationFactor);
+                    break;
+                case Problem.FocusThree:
+                    qLearner.RunQLearningStep(workProblem, 3, 10, learnFactor, discountFactor, explorationFactor);
+                    break;
+            }
         }
     }
 }

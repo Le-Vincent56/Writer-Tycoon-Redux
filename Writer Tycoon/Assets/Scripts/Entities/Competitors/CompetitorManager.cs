@@ -59,7 +59,8 @@ namespace WriterTycoon.Entities.Competitors
             // Initialize the component
             component.Initialize(data.competitorName, data.startingMoney);
             component.CreateBrain(
-                data.learned, data.learningQ,
+                data.learned, 
+                data.learningFactor,data.discountFactor, data.explorationFactor,
                 topicManager.GetTopics(), genreManager.GetGenres(),
                 data.topics, data.genres,
                 compatibilityManager.GetGenreTopicCompatibilities(),

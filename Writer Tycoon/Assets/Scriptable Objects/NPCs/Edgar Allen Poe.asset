@@ -74,4 +74,6 @@ MonoBehaviour:
   competitorName: Edgar Allen Poe
   startingMoney: 50000
   learned: 1
-  learningQ: 0.75
+  learningFactor: 0.8
+  discountFactor: 0.2
+  explorationFactor: 0.1

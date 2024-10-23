@@ -12,7 +12,9 @@ namespace WriterTycoon.Entities.Competitors
         [SerializeField] public string competitorName;
         [SerializeField] public int startingMoney;
         [SerializeField] public bool learned;
-        [SerializeField] public float learningQ;
+        [SerializeField] public float learningFactor;
+        [SerializeField] public float discountFactor;
+        [SerializeField] public float explorationFactor;
 
         [SerializeField] public HashSet<TopicType> topics = new();
         [SerializeField] public HashSet<GenreType> genres = new();

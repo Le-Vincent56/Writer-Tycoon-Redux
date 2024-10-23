@@ -4,11 +4,11 @@ namespace WriterTycoon.Entities.Competitors.States
 {
     public class CompetitorState : IState
     {
-        protected readonly NPCCompetitor controller;
+        protected readonly NPCCompetitor competitor;
 
-        public CompetitorState(NPCCompetitor controller)
+        public CompetitorState(NPCCompetitor competitor)
         {
-            this.controller = controller;
+            this.competitor = competitor;
         }
 
         public virtual void OnEnter() { }

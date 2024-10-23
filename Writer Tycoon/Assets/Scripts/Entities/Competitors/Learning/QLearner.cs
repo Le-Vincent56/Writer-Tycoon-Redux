@@ -9,29 +9,33 @@ namespace WriterTycoon.Entities.Competitors.Learning
 {
     public class QLearner
     {
+        QValueStore store;
+
+        public QLearner()
+        {
+            store = new();
+        }
+
         public void RunQLearningStep(
             ReinforcementProblem problem, 
+            int state,
             int iterations,
-            float rho
+            float learnFactor,
+            float discountFactor,
+            float explorationFactor
         )
         {
-            // Create a new QValueStore
-            QValueStore store = new();
-
-            // Randomly get a state (Idle or Working)
-            int state = 1;
-
             // Iterate as many times as specified
             for (int i = 0; i < iterations; i++)
             {
                 // Get the available actions for the current state
-                Dictionary<int, Func<float>> availableActionsDict = problem.GetAvailableActions(state);
+                Dictionary<int, Func<(float value, object data)>> availableActionsDict = problem.GetAvailableActions(state);
 
                 int action;
-                Func<float> function;
+                Func<(float value, object data)> function;
 
                 // Exploration (random) vs. Exploitation (best known)
-                if (UnityEngine.Random.value < rho)
+                if (UnityEngine.Random.value < explorationFactor)
                 {
                     // Exploration: choose a random action
                     action = UnityEngine.Random.Range(0, availableActionsDict.Keys.Count);
@@ -45,7 +49,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 }
 
                 // Take the action and get the result
-                (float reward, int finalState) = problem.TakeAction(state, action, function);
+                (float reward, int finalState, object data) = problem.TakeAction(state, action, function);
 
                 // Get Q-value for the current state-action pair
                 float qValue = store.GetQValue(state, action);
@@ -56,15 +60,14 @@ namespace WriterTycoon.Entities.Competitors.Learning
                     store.GetBestAction(finalState, problem.GetAvailableActions(finalState).Keys.ToHashSet())
                 );
 
-                // Update Q-value using the Q-learning formula
-                float alpha = 0.1f; // Learning rate
-                float gamma = 0.9f; // Discount factor
-
-                qValue = (1 - alpha) * qValue + alpha * (reward + gamma * maxQValue);
+                qValue = (1 - learnFactor) * qValue + learnFactor * (reward + discountFactor * maxQValue);
 
                 // Store the updated Q-value
-                store.StoreQValue(state, action, qValue);
+                store.StoreQValue(state, action, qValue, data);
             }
+
+            // Debug the store
+            store.Debug();
         }
     }
 }
