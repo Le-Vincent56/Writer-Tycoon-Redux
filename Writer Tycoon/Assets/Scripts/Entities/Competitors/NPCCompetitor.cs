@@ -25,6 +25,7 @@ namespace WriterTycoon.Entities.Competitors
         [SerializeField] private int totalDaysIdle;
         [SerializeField] private int daysWorking;
         [SerializeField] private int totalDaysWorking;
+        [SerializeField] private bool progressWork;
 
         [Header("Brain")]
         [SerializeField] private CompetitorBrain brain;
@@ -104,11 +105,17 @@ namespace WriterTycoon.Entities.Competitors
 
             // Create states
             IdleState idleState = new IdleState(this);
-            WorkState workState = new WorkState(this);
+            ConceptState conceptState = new ConceptState(this);
+            FocusOneState focusOneState = new FocusOneState(this);
+            FocusTwoState focusTwoState = new FocusTwoState(this);
+            FocusThreeState focusThreeState = new FocusThreeState(this);
 
             // Define state transitions
-            stateMachine.At(idleState, workState, new FuncPredicate(() => working));
-            stateMachine.At(workState, idleState, new FuncPredicate(() => !working));
+            stateMachine.At(idleState, conceptState, new FuncPredicate(() => working));
+            stateMachine.At(conceptState, focusOneState, new FuncPredicate(() => progressWork));
+            stateMachine.At(focusOneState, focusTwoState, new FuncPredicate(() => progressWork));
+            stateMachine.At(focusTwoState, focusThreeState, new FuncPredicate(() => progressWork));
+            stateMachine.At(focusThreeState, idleState, new FuncPredicate(() => !working));
 
             // Set an initial state
             stateMachine.SetState(idleState);
@@ -127,9 +134,14 @@ namespace WriterTycoon.Entities.Competitors
 
                 // Exit case - if below the total amount of days to work
                 if (daysWorking <= totalDaysWorking) return;
-                
-                // Set working to false
-                working = false;
+
+                if(stateMachine.GetState() is FocusThreeState)
+                {
+                    working = false;
+                } else
+                {
+                    progressWork = true;
+                }
             }
             else
             {
@@ -142,6 +154,13 @@ namespace WriterTycoon.Entities.Competitors
                 // Set working to true
                 working = true;
             }
+        }
+
+        public void StopWorking()
+        {
+            daysWorking = 0;
+            working = false;
+            progressWork = false;
         }
 
         /// <summary>
@@ -159,23 +178,19 @@ namespace WriterTycoon.Entities.Competitors
 
         public void SetDaysToWork()
         {
-            // Reset counters
+            // Reset variables
             daysWorking = 0;
             daysIdle = 0;
+            progressWork = false;
 
             // Set the amount of days to work
             totalDaysWorking = Random.Range(2, 10);
         }
 
-        public void StartWorking()
-        {
-            Debug.Log("Working!");
-
-            SetDaysToWork();
-
-            // Learn the concept problem
-            brain.Learn(Problem.Concept);
-        }
+        /// <summary>
+        /// Learn from a problem using the CompetitorBrain
+        /// </summary>
+        public void Learn(Problem problem) => brain.Learn(problem);
 
         /// <summary>
         /// Calculate sales for the NPC Competitor

@@ -133,6 +133,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 highestLog += $"\n\tTopic: {highestConceptData.Topic.Name}" +
                     $"\n\tGenre: {highestConceptData.Genre.Name}" +
                     $"\n\tAudience: {highestConceptData.Audience}";
+            } else if(highestValueData.data is AISliderData highestSliderData)
+            {
+                highestLog += $"\n\t{highestSliderData.SliderOne.category}: {highestSliderData.SliderOne.value}" +
+                    $"\n\t{highestSliderData.SliderTwo.category}: {highestSliderData.SliderTwo.value}" +
+                    $"\n\t{highestSliderData.SliderThree.category}: {highestSliderData.SliderThree.value}";
             }
 
             string lowestLog = $"Lowest Value: {lowestValueData.value}";
@@ -142,6 +147,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 lowestLog += $"\n\tTopic: {lowestConceptData.Topic.Name}" +
                     $"\n\tGenre: {lowestConceptData.Genre.Name}" +
                     $"\n\tAudience: {lowestConceptData.Audience}";
+            } else if(lowestValueData.data is AISliderData lowestSliderData)
+            {
+                lowestLog += $"\n\t{lowestSliderData.SliderOne.category}: {lowestSliderData.SliderOne.value}" +
+                    $"\n\t{lowestSliderData.SliderTwo.category}: {lowestSliderData.SliderTwo.value}" +
+                    $"\n\t{lowestSliderData.SliderThree.category}: {lowestSliderData.SliderThree.value}";
             }
 
 

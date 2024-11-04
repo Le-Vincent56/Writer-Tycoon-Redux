@@ -40,6 +40,11 @@ namespace WriterTycoon.Patterns.StateMachine
         }
 
         /// <summary>
+        /// Get the current State
+        /// </summary>
+        public IState GetState() => current.State;
+
+        /// <summary>
         /// Change States within the StateMachine
         /// </summary>
         /// <param name="state">The State to change to</param>

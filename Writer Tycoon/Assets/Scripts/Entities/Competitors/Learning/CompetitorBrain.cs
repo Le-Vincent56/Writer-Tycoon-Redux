@@ -44,7 +44,10 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private HashSet<Topic> knownTopics;
         [SerializeField] private HashSet<Genre> knownGenres;
 
-        [SerializeField] private QLearner qLearner;
+        [SerializeField] private QLearner conceptLearner;
+        [SerializeField] private QLearner focusOneLearner;
+        [SerializeField] private QLearner focusTwoLearner;
+        [SerializeField] private QLearner focusThreeLearner;
         private ReinforcementProblem workProblem;
 
         [Header("Scoring Objects")]
@@ -152,8 +155,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// </summary>
         public void InitializeLearning()
         {
-            // Initialize the Q-Learner
-            qLearner = new QLearner();
+            // Initialize the Q-Learners
+            conceptLearner = new QLearner();
+            focusOneLearner = new QLearner();
+            focusTwoLearner = new QLearner();
+            focusThreeLearner = new QLearner();
 
             // Define the number of actions being made and a dictionary to store
             // corresponding functions
@@ -421,17 +427,23 @@ namespace WriterTycoon.Entities.Competitors.Learning
             switch (problemToLearn)
             {
                 case Problem.Concept:
-                    qLearner.RunQLearningStep(workProblem, 0, 1, learnFactor, discountFactor, explorationFactor);
+                    Debug.Log(" ----- LEARNING CONCEPT ------");
+                    conceptLearner.RunQLearningStep(workProblem, 0, 3, learnFactor, discountFactor, explorationFactor);
                     break;
 
                 case Problem.FocusOne:
-                    qLearner.RunQLearningStep(workProblem, 1, 10, learnFactor, discountFactor, explorationFactor);
+                    Debug.Log(" ----- LEARNING FOCUS ONE ------");
+                    focusOneLearner.RunQLearningStep(workProblem, 1, 3, learnFactor, discountFactor, explorationFactor);
                     break;
+
                 case Problem.FocusTwo:
-                    qLearner.RunQLearningStep(workProblem, 2, 10, learnFactor, discountFactor, explorationFactor);
+                    Debug.Log(" ----- LEARNING FOCUS TWO ------");
+                    focusTwoLearner.RunQLearningStep(workProblem, 2, 3, learnFactor, discountFactor, explorationFactor);
                     break;
+
                 case Problem.FocusThree:
-                    qLearner.RunQLearningStep(workProblem, 3, 10, learnFactor, discountFactor, explorationFactor);
+                    Debug.Log(" ----- LEARNING FOCUS THREE ------");
+                    focusThreeLearner.RunQLearningStep(workProblem, 3, 3, learnFactor, discountFactor, explorationFactor);
                     break;
             }
         }
