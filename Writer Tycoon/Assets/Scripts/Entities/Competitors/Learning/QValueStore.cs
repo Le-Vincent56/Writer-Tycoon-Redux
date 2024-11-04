@@ -1,14 +1,15 @@
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
     [Serializable]
     public class QValueStore
     {
-        [SerializeField] private Dictionary<(int state, int action), (float value, object data)> qValues;
+        [OdinSerialize, ShowInInspector] private Dictionary<(int state, int action), (float value, object data)> qValues;
 
         public QValueStore()
         {
@@ -56,27 +57,96 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// </summary>
         public void StoreQValue(int state, int action, float value, object data) => qValues[(state, action)] = (value, data);
 
+        private (float value, object data) GetHighestValue()
+        {
+            // If the Dictionary is not instantiated or is empty, return 0
+            if (qValues == null || qValues.Count == 0) return (0f, null);
+
+            // Initialize the lowest float value
+            (float value, object data) highestValueData = (float.MinValue, null);
+
+            // Iterate through the Dictionary
+            foreach (KeyValuePair<(int state, int action), (float qValue, object qData)> kvp in qValues)
+            {
+                // Check if the value is greater than the max value
+                if (kvp.Value.qValue > highestValueData.value)
+                {
+                    // Set the new max value
+                    highestValueData.value = kvp.Value.qValue;
+                    highestValueData.data = kvp.Value.qData;
+                }
+            }
+
+            return highestValueData;
+        }
+
+        private (float value, object data) GetLowestValue()
+        {
+            // If the Dictionary is not instantiated or is empty, return 0
+            if (qValues == null || qValues.Count == 0) return (0f, null);
+
+            // Initialize the lowest float value
+            (float value, object data) lowestValueData = (float.MaxValue, null);
+
+            // Iterate through the Dictionary
+            foreach (KeyValuePair<(int state, int action), (float qValue, object qData)> kvp in qValues)
+            {
+                // Check if the value is greater than the max value
+                if (kvp.Value.qValue < lowestValueData.value)
+                {
+                    // Set the new max value
+                    lowestValueData.value = kvp.Value.qValue;
+                    lowestValueData.data = kvp.Value.qData;
+                }
+            }
+
+            return lowestValueData;
+        }
+
         /// <summary>
         /// Debug the QValueStore
         /// </summary>
         public void Debug()
         {
-            string log = "Q Value Store:";
+            //string log = "Q Value Store:";
 
-            foreach(KeyValuePair<(int state, int action), (float value, object data)> kvp in qValues)
+            //foreach(KeyValuePair<(int state, int action), (float value, object data)> kvp in qValues)
+            //{
+            //    log += $"\nState: {kvp.Key.state}, Action: {kvp.Key.action}, Value: {kvp.Value.value}, " +
+            //        $"\n\tData:";
+
+            //    if(kvp.Value.data is AIConceptData conceptData)
+            //    {
+            //        log += $"\n\tTopic: {conceptData.Topic.Name}" +
+            //            $"\n\tGenre: {conceptData.Genre.Name}" +
+            //            $"\n\tAudience: {conceptData.Audience}";
+            //    }
+            //}
+
+            (float value, object data) highestValueData = GetHighestValue();
+            (float value, object data) lowestValueData = GetLowestValue();
+
+            string highestLog = $"Highest Value: {highestValueData.value}";
+
+            if(highestValueData.data is AIConceptData highestConceptData)
             {
-                log += $"\nState: {kvp.Key.state}, Action: {kvp.Key.action}, Value: {kvp.Value.value}, " +
-                    $"\n\tData:";
-
-                if(kvp.Value.data is AIConceptData conceptData)
-                {
-                    log += $"\n\tTopic: {conceptData.Topic.Name}" +
-                        $"\n\tGenre: {conceptData.Genre.Name}" +
-                        $"\n\tAudience: {conceptData.Audience}";
-                }
+                highestLog += $"\n\tTopic: {highestConceptData.Topic.Name}" +
+                    $"\n\tGenre: {highestConceptData.Genre.Name}" +
+                    $"\n\tAudience: {highestConceptData.Audience}";
             }
 
-            UnityEngine.Debug.Log(log);
+            string lowestLog = $"Lowest Value: {lowestValueData.value}";
+
+            if (lowestValueData.data is AIConceptData lowestConceptData)
+            {
+                lowestLog += $"\n\tTopic: {lowestConceptData.Topic.Name}" +
+                    $"\n\tGenre: {lowestConceptData.Genre.Name}" +
+                    $"\n\tAudience: {lowestConceptData.Audience}";
+            }
+
+
+            UnityEngine.Debug.Log(highestLog);
+            UnityEngine.Debug.Log(lowestLog);
         }
     }
 }

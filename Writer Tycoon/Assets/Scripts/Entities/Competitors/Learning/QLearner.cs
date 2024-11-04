@@ -1,21 +1,23 @@
-using Sirenix.Reflection.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
+    [Serializable]
     public class QLearner
     {
-        QValueStore store;
+        [SerializeField] private QValueStore store;
 
         public QLearner()
         {
             store = new();
         }
 
+        /// <summary>
+        /// Run the Q-Learning step
+        /// </summary>
         public void RunQLearningStep(
             ReinforcementProblem problem, 
             int state,

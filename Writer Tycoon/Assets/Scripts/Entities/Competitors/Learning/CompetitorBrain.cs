@@ -44,7 +44,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private HashSet<Topic> knownTopics;
         [SerializeField] private HashSet<Genre> knownGenres;
 
-        private QLearner qLearner;
+        [SerializeField] private QLearner qLearner;
         private ReinforcementProblem workProblem;
 
         [Header("Scoring Objects")]
@@ -421,7 +421,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
             switch (problemToLearn)
             {
                 case Problem.Concept:
-                    qLearner.RunQLearningStep(workProblem, 0, 100, learnFactor, discountFactor, explorationFactor);
+                    qLearner.RunQLearningStep(workProblem, 0, 1, learnFactor, discountFactor, explorationFactor);
                     break;
 
                 case Problem.FocusOne:

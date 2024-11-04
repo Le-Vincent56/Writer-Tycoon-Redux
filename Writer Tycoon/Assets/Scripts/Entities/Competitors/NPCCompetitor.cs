@@ -173,23 +173,6 @@ namespace WriterTycoon.Entities.Competitors
 
             SetDaysToWork();
 
-            // Create an empty work
-            //Work newWork = new(
-            //    this,
-            //    new AboutInfo() { },
-            //    new CompatibilityInfo() { },
-            //    null,
-            //    new TimeEstimates() { },
-            //    null,
-            //    null,
-            //    AudienceType.None,
-            //    WorkType.None,
-            //    0,
-            //    HashUtils.GenerateHash()
-            //);
-
-            //// TODO: Decide on Topics, Genres, and AudienceTypes based on Q-Learning
-
             // Learn the concept problem
             brain.Learn(Problem.Concept);
         }
