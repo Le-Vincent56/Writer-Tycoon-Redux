@@ -69,7 +69,40 @@ namespace WriterTycoon.Entities.Competitors.Learning
             }
 
             // Debug the store
-            store.Debug();
+            //store.Debug();
+        }
+
+        /// <summary>
+        /// Get the best action from the QValueStore
+        /// </summary>
+        public (float value, object data) GetBestAction(bool debug = false)
+        {
+            // Get the most valuable action
+            (float value, object data) mostValuableAction = store.GetMostValuableAction();
+
+            // Handle debugging
+            if (debug)
+            {
+                string bestActionLog = $"Best Action: {mostValuableAction.value}";
+
+                if (mostValuableAction.data is AIConceptData highestConceptData)
+                {
+                    bestActionLog += $"\n\tTopic: {highestConceptData.Topic.Name}" +
+                        $"\n\tGenre: {highestConceptData.Genre.Name}" +
+                        $"\n\tAudience: {highestConceptData.Audience}";
+                }
+                else if (mostValuableAction.data is AISliderData highestSliderData)
+                {
+                    bestActionLog += $"\n\t{highestSliderData.SliderOne.category}: {highestSliderData.SliderOne.value}" +
+                        $"\n\t{highestSliderData.SliderTwo.category}: {highestSliderData.SliderTwo.value}" +
+                        $"\n\t{highestSliderData.SliderThree.category}: {highestSliderData.SliderThree.value}";
+                }
+
+                Debug.Log(bestActionLog);
+            }
+
+            // Return the most valuable action
+            return mostValuableAction;
         }
     }
 }

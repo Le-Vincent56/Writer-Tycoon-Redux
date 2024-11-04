@@ -55,6 +55,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private TopicAudienceCompatibility topicAudienceCompatibility;
         [SerializeField] private GenreFocusTargets genreFocusTargets;
 
+        private (float value, object data) currentConcept;
+        private (float value, object data) currentFocusOne;
+        private (float value, object data) currentFocusTwo;
+        private (float value, object data) currentFocusThree;
+
         public CompetitorBrain(
             bool learned, 
             float learnFactor, float discountFactor, float explorationFactor,
@@ -422,6 +427,9 @@ namespace WriterTycoon.Entities.Competitors.Learning
             return componentScore * totalMultiplier;
         }
 
+        /// <summary>
+        /// Learn about a specific problem
+        /// </summary>
         public void Learn(Problem problemToLearn)
         {
             switch (problemToLearn)
@@ -429,23 +437,64 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 case Problem.Concept:
                     Debug.Log(" ----- LEARNING CONCEPT ------");
                     conceptLearner.RunQLearningStep(workProblem, 0, 3, learnFactor, discountFactor, explorationFactor);
+                    currentConcept = conceptLearner.GetBestAction(true);
                     break;
 
                 case Problem.FocusOne:
                     Debug.Log(" ----- LEARNING FOCUS ONE ------");
                     focusOneLearner.RunQLearningStep(workProblem, 1, 3, learnFactor, discountFactor, explorationFactor);
+                    currentFocusOne = focusOneLearner.GetBestAction(true);
                     break;
 
                 case Problem.FocusTwo:
                     Debug.Log(" ----- LEARNING FOCUS TWO ------");
                     focusTwoLearner.RunQLearningStep(workProblem, 2, 3, learnFactor, discountFactor, explorationFactor);
+                    currentFocusTwo = focusTwoLearner.GetBestAction(true);
                     break;
 
                 case Problem.FocusThree:
                     Debug.Log(" ----- LEARNING FOCUS THREE ------");
                     focusThreeLearner.RunQLearningStep(workProblem, 3, 3, learnFactor, discountFactor, explorationFactor);
+                    currentFocusThree = focusThreeLearner.GetBestAction(true);
                     break;
             }
+        }
+
+        public void Rate()
+        {
+            // Exit case - the Concept data is the wrong type
+            if (currentConcept.data is not AIConceptData conceptData) return;
+
+            // Exit case - the Focus One data is the wrong type
+            if (currentFocusOne.data is not AISliderData focusOneData) return;
+
+            // Exit case - the Focus Two data is the wrong type
+            if (currentFocusTwo.data is not AISliderData focusTwoData) return;
+
+            // Exit case - the Focus Three data is the wrong type
+            if (currentFocusOne.data is not AISliderData focusThreeData) return;
+
+            // Set concept data
+            Topic chosenTopic = conceptData.Topic;
+            Genre chosenGenre = conceptData.Genre;
+            AudienceType chosenAudience = conceptData.Audience;
+
+            // Set Focus One data
+            (PointCategory category, int value) characterSheets = focusOneData.SliderOne;
+            (PointCategory category, int value) plotOutline = focusOneData.SliderTwo;
+            (PointCategory category, int value) worldDocument = focusOneData.SliderThree;
+
+            // Set Focus Two data
+            (PointCategory category, int value) dialogue = focusTwoData.SliderOne;
+            (PointCategory category, int value) subplots = focusTwoData.SliderTwo;
+            (PointCategory category, int value) descriptions = focusTwoData.SliderThree;
+
+            // Set Focus Three data
+            (PointCategory category, int value) emotions = focusThreeData.SliderOne;
+            (PointCategory category, int value) twists = focusThreeData.SliderTwo;
+            (PointCategory category, int value) symbolism = focusThreeData.SliderThree;
+
+
         }
     }
 }

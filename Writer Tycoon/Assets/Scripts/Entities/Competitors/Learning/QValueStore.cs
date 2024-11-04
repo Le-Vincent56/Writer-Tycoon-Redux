@@ -53,6 +53,53 @@ namespace WriterTycoon.Entities.Competitors.Learning
         }
 
         /// <summary>
+        /// Get the (or one of the) most valuable action from the QValueStore
+        /// </summary>
+        public (float value, object data) GetMostValuableAction()
+        {
+            // Exit case - if the Dictionary is not initialized or empty
+            if (qValues == null || qValues.Count == 0) return (0f, null);
+
+            // Create a list to store the most valuable actions
+            // This list with either store a unique, highest value action
+            // or multiple highest value actions, if there are many with the 
+            // same highest value
+            List<(float value, object data)> mostValuableActions = new();
+
+            // Set the highest value
+            float highestValue = float.MinValue;
+
+            // Iterate through each key-value pair in the Q-Values Dictionary
+            foreach(KeyValuePair<(int state, int action), (float value, object data)> kvp in qValues)
+            {
+                // Get the current value
+                float qValue = kvp.Value.value;
+
+                // Check if the value is greater than the highest value
+                if(qValue > highestValue)
+                {
+                    // Set the new highest value
+                    highestValue = qValue;
+
+                    // Clear the actions List
+                    mostValuableActions.Clear();
+
+                    // Add the most valuable action to the List
+                    mostValuableActions.Add(kvp.Value);
+                }
+                // Otherwise, check if the value is equal to the highest value
+                else if (qValue == highestValue)
+                {
+                    // If so, add it to the most valuable actions List
+                    mostValuableActions.Add(kvp.Value);
+                }
+            }
+
+            // Return a random most valuable action from the top actions
+            return mostValuableActions[UnityEngine.Random.Range(0, mostValuableActions.Count)];
+        }
+
+        /// <summary>
         /// Store the Q-value for a given state and action
         /// </summary>
         public void StoreQValue(int state, int action, float value, object data) => qValues[(state, action)] = (value, data);
