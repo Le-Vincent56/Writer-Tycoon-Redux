@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using WriterTycoon.WorkCreation.Ideation.Genres;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
@@ -44,16 +46,19 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// <summary>
         /// Take the Action and evaluate
         /// </summary>
-        public (float reward, int state, object data) TakeAction(int state, int action, Func<(float value, object data)> function)
+        public (float reward, int state, ActionData data) TakeAction(int state, int action, Func<(float value, object data)> function)
         {
             // Invoke the action and store the result
-            float score = function.Invoke().value;
-            object data = function.Invoke().data;
+            (float value, object data) data = function.Invoke();
+            float score = data.value;
+
+            // Cast to ActionData
+            ActionData actionData = new ActionData() { Value = data.value, Data = data.data };
 
             // Set the reward
             float reward = score;
 
-            return (reward, state, data);
+            return (reward, state, actionData);
         }
     }
 }

@@ -74,4 +74,7 @@ MonoBehaviour:
   competitorName: Nathaniel Hawthorne
   startingMoney: 50000
   learned: 0
-  learningQ: 0
+  learningFactor: 0
+  discountFactor: 0
+  explorationFactor: 0
+  workType: 3

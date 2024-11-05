@@ -10,5 +10,10 @@ namespace WriterTycoon.Entities.Competitors.States
             competitor.SetDaysToWork();
             competitor.Learn(Learning.Problem.FocusThree);
         }
+
+        public override void OnExit()
+        {
+            competitor.Rate();
+        }
     }
 }

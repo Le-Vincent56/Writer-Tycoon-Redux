@@ -13,10 +13,10 @@ namespace WriterTycoon.Entities.Competitors.States
 
         public virtual void OnEnter() { }
 
-        public void Update() { }
+        public virtual void Update() { }
 
-        public void FixedUpdate() { }
+        public virtual void FixedUpdate() { }
 
-        public void OnExit() { }
+        public virtual void OnExit() { }
     }
 }

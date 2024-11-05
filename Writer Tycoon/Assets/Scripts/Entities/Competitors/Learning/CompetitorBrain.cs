@@ -7,6 +7,7 @@ using WriterTycoon.WorkCreation.Ideation.Audience;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
@@ -19,6 +20,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
 
     public struct AISliderData
     {
+        public string Genre;
         public (PointCategory category, int value) SliderOne;
         public (PointCategory category, int value) SliderTwo;
         public (PointCategory category, int value) SliderThree;
@@ -41,6 +43,8 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] float explorationFactor;
 
         [Header("Characteristics")]
+        [SerializeField] private WorkType workType;
+        [SerializeField] private float targetScore;
         [SerializeField] private HashSet<Topic> knownTopics;
         [SerializeField] private HashSet<Genre> knownGenres;
 
@@ -48,6 +52,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private QLearner focusOneLearner;
         [SerializeField] private QLearner focusTwoLearner;
         [SerializeField] private QLearner focusThreeLearner;
+        [SerializeField] private QLearner finalWorkLearner;
         private ReinforcementProblem workProblem;
 
         [Header("Scoring Objects")]
@@ -55,14 +60,15 @@ namespace WriterTycoon.Entities.Competitors.Learning
         [SerializeField] private TopicAudienceCompatibility topicAudienceCompatibility;
         [SerializeField] private GenreFocusTargets genreFocusTargets;
 
-        private (float value, object data) currentConcept;
-        private (float value, object data) currentFocusOne;
-        private (float value, object data) currentFocusTwo;
-        private (float value, object data) currentFocusThree;
+        private (float value, ActionData data) currentConcept;
+        private (float value, ActionData data) currentFocusOne;
+        private (float value, ActionData data) currentFocusTwo;
+        private (float value, ActionData data) currentFocusThree;
 
         public CompetitorBrain(
             bool learned, 
             float learnFactor, float discountFactor, float explorationFactor,
+            WorkType workType, int targetScore,
             List<Topic> availableTopics, HashSet<TopicType> knownTopics,
             List<Genre> availableGenres, HashSet<GenreType> knownGenres,
             GenreTopicCompatibility genreTopicCompatibility,
@@ -75,6 +81,10 @@ namespace WriterTycoon.Entities.Competitors.Learning
             this.learnFactor = learnFactor;
             this.discountFactor = discountFactor;
             this.explorationFactor = explorationFactor;
+
+            // Set the work type and associated target score
+            this.workType = workType;
+            this.targetScore = targetScore * 0.8f; // Can only earn up to 80% with sliders
 
             // Set the known Topics and Genres
             SetKnownTopics(availableTopics, knownTopics);
@@ -165,6 +175,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
             focusOneLearner = new QLearner();
             focusTwoLearner = new QLearner();
             focusThreeLearner = new QLearner();
+            finalWorkLearner = new QLearner();
 
             // Define the number of actions being made and a dictionary to store
             // corresponding functions
@@ -353,8 +364,8 @@ namespace WriterTycoon.Entities.Competitors.Learning
             float[] pointScores = new float[3];
             
             // 80% of the SHORT STORY target score divided into each slider component
-            float componentScore = (1000 * 0.8f) / 9f;
-            float idealSliderScore = componentScore * 3f;
+            float componentScore = targetScore / 9f;
+            float idealFocusScore = componentScore * 3f;
 
             // Calculate the point scores
             pointScores[0] = CalculatePointScore(
@@ -377,18 +388,11 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 finalScore += pointScores[i];
             }
 
-            //Debug.Log($"Phase Slider Results: {finalScore / idealSliderScore}" +
-            //    $"\nSlider One: {pointScores[0]}" +
-            //    $"\nSlider Two: {pointScores[1]}" +
-            //    $"\nSlider Three: {pointScores[2]}" +
-            //    $"\nFinal Score: {finalScore}" +
-            //    $"Ideal Slider Score: {idealSliderScore}");
-
             // Return the percentage of the final score compared to the ideal
             return 
                 (
-                    finalScore / idealSliderScore, 
-                    new AISliderData() { SliderOne = sliderOne, SliderTwo = sliderTwo, SliderThree = sliderThree }
+                    finalScore / idealFocusScore, 
+                    new AISliderData() { Genre = genre.Name, SliderOne = sliderOne, SliderTwo = sliderTwo, SliderThree = sliderThree }
                 );
         }
 
@@ -460,41 +464,40 @@ namespace WriterTycoon.Entities.Competitors.Learning
             }
         }
 
+        /// <summary>
+        /// Rate the work
+        /// </summary>
         public void Rate()
         {
             // Exit case - the Concept data is the wrong type
-            if (currentConcept.data is not AIConceptData conceptData) return;
+            if (currentConcept.data.Data is not AIConceptData conceptData) return;
 
-            // Exit case - the Focus One data is the wrong type
-            if (currentFocusOne.data is not AISliderData focusOneData) return;
+            // Exit case - the Focus One data is null or the wrong type
+            if (currentFocusOne.data.Data is not AISliderData focusOneData) return;
 
-            // Exit case - the Focus Two data is the wrong type
-            if (currentFocusTwo.data is not AISliderData focusTwoData) return;
+            // Exit case - the Focus Two data is null or the wrong type
+            if (currentFocusTwo.data.Data is not AISliderData focusTwoData) return;
 
-            // Exit case - the Focus Three data is the wrong type
-            if (currentFocusOne.data is not AISliderData focusThreeData) return;
+            // Exit case - the Focus Three data is null or the wrong type
+            if (currentFocusThree.data.Data is not AISliderData focusThreeData) return;
 
             // Set concept data
             Topic chosenTopic = conceptData.Topic;
             Genre chosenGenre = conceptData.Genre;
             AudienceType chosenAudience = conceptData.Audience;
 
-            // Set Focus One data
-            (PointCategory category, int value) characterSheets = focusOneData.SliderOne;
-            (PointCategory category, int value) plotOutline = focusOneData.SliderTwo;
-            (PointCategory category, int value) worldDocument = focusOneData.SliderThree;
+            float phaseScores = targetScore / 3f;
+            float focusOneScore = phaseScores * currentFocusOne.data.Value;
+            float focusTwoScore = phaseScores * currentFocusTwo.data.Value;
+            float focusThreeScore = phaseScores * currentFocusThree.data.Value;
 
-            // Set Focus Two data
-            (PointCategory category, int value) dialogue = focusTwoData.SliderOne;
-            (PointCategory category, int value) subplots = focusTwoData.SliderTwo;
-            (PointCategory category, int value) descriptions = focusTwoData.SliderThree;
+            // Calculate the total scoree from the Focus Sliders and the chosen Genre
+            Debug.Log($"Focus One Total: {focusOneScore}" +
+                $"\nFocus Two Total: {focusTwoScore}" +
+                $"\nFocus Three Total: {focusThreeScore}");
 
-            // Set Focus Three data
-            (PointCategory category, int value) emotions = focusThreeData.SliderOne;
-            (PointCategory category, int value) twists = focusThreeData.SliderTwo;
-            (PointCategory category, int value) symbolism = focusThreeData.SliderThree;
-
-
+            float totalPoints = focusOneScore + focusTwoScore + focusThreeScore;
+            Debug.Log($"Rating Total Points: {totalPoints / targetScore}");
         }
     }
 }

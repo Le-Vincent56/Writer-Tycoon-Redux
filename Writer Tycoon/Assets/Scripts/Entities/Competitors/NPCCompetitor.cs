@@ -9,6 +9,7 @@ using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.Entities.Competitors
 {
@@ -76,6 +77,7 @@ namespace WriterTycoon.Entities.Competitors
         public void CreateBrain(
             bool learned, 
             float learningFactor, float discountFactor, float explorationFactor,
+            WorkType workType, int targetScore,
             List<Topic> availableTopics, List<Genre> availableGenres,
             HashSet<TopicType> knownTopics, HashSet<GenreType> knownGenres,
             GenreTopicCompatibility genreTopicCompatibility,
@@ -87,6 +89,7 @@ namespace WriterTycoon.Entities.Competitors
             brain = new CompetitorBrain(
                 learned, 
                 learningFactor, discountFactor, explorationFactor, 
+                workType, targetScore,
                 availableTopics, knownTopics, 
                 availableGenres, knownGenres,
                 genreTopicCompatibility,
@@ -191,6 +194,11 @@ namespace WriterTycoon.Entities.Competitors
         /// Learn from a problem using the CompetitorBrain
         /// </summary>
         public void Learn(Problem problem) => brain.Learn(problem);
+
+        /// <summary>
+        /// Rate the current concept and slider values
+        /// </summary>
+        public void Rate() => brain.Rate();
 
         /// <summary>
         /// Calculate sales for the NPC Competitor

@@ -55,16 +55,10 @@ MonoBehaviour:
         Assembly-CSharp]], System.Core
     - Name: 
       Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 6
+      Data: 1
     - Name: 
       Entry: 3
       Data: 4
-    - Name: 
-      Entry: 3
-      Data: 9
     - Name: 
       Entry: 13
       Data: 
@@ -74,6 +68,7 @@ MonoBehaviour:
   competitorName: Edgar Allen Poe
   startingMoney: 50000
   learned: 1
-  learningFactor: 0.3
+  learningFactor: 1
   discountFactor: 0.2
   explorationFactor: 0.7
+  workType: 3

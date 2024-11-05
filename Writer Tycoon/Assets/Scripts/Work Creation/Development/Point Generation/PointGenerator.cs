@@ -10,7 +10,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
     [System.Serializable]
     public class PointGenerator
     {
-        private Work workParent;
+        private readonly Work workParent;
 
         [SerializeField] private DevelopmentPhase currentPhase;
         [SerializeField] private List<Genre> chosenGenres;
@@ -301,7 +301,7 @@ namespace WriterTycoon.WorkCreation.Development.PointGeneration
                 // Get the multiplier
                 float multiplier = 1f - percentageLoss;
 
-                // Clamp so that the most someone can get if 5%
+                // Clamp so that the least someone can get is 5%
                 multiplier = Mathf.Clamp(multiplier, 0.05f, 1f);
 
                 // Add the multiplier to the total

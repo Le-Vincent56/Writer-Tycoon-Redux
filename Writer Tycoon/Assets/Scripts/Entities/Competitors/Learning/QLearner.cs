@@ -5,6 +5,12 @@ using UnityEngine;
 
 namespace WriterTycoon.Entities.Competitors.Learning
 {
+    public struct ActionData
+    {
+        public float Value;
+        public object Data;
+    }
+
     [Serializable]
     public class QLearner
     {
@@ -51,7 +57,7 @@ namespace WriterTycoon.Entities.Competitors.Learning
                 }
 
                 // Take the action and get the result
-                (float reward, int finalState, object data) = problem.TakeAction(state, action, function);
+                (float reward, int finalState, ActionData data) = problem.TakeAction(state, action, function);
 
                 // Get Q-value for the current state-action pair
                 float qValue = store.GetQValue(state, action);
@@ -75,23 +81,23 @@ namespace WriterTycoon.Entities.Competitors.Learning
         /// <summary>
         /// Get the best action from the QValueStore
         /// </summary>
-        public (float value, object data) GetBestAction(bool debug = false)
+        public (float value, ActionData data) GetBestAction(bool debug = false)
         {
             // Get the most valuable action
-            (float value, object data) mostValuableAction = store.GetMostValuableAction();
+            (float value, ActionData data) mostValuableAction = store.GetMostValuableAction();
 
             // Handle debugging
             if (debug)
             {
                 string bestActionLog = $"Best Action: {mostValuableAction.value}";
 
-                if (mostValuableAction.data is AIConceptData highestConceptData)
+                if (mostValuableAction.data.Data is AIConceptData highestConceptData)
                 {
                     bestActionLog += $"\n\tTopic: {highestConceptData.Topic.Name}" +
                         $"\n\tGenre: {highestConceptData.Genre.Name}" +
                         $"\n\tAudience: {highestConceptData.Audience}";
                 }
-                else if (mostValuableAction.data is AISliderData highestSliderData)
+                else if (mostValuableAction.data.Data is AISliderData highestSliderData)
                 {
                     bestActionLog += $"\n\t{highestSliderData.SliderOne.category}: {highestSliderData.SliderOne.value}" +
                         $"\n\t{highestSliderData.SliderTwo.category}: {highestSliderData.SliderTwo.value}" +

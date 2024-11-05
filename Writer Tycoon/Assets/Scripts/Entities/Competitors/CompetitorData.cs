@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.Entities.Competitors
 {
@@ -15,7 +16,7 @@ namespace WriterTycoon.Entities.Competitors
         [SerializeField] public float learningFactor;
         [SerializeField] public float discountFactor;
         [SerializeField] public float explorationFactor;
-
+        [SerializeField] public WorkType workType;
         [SerializeField] public HashSet<TopicType> topics = new();
         [SerializeField] public HashSet<GenreType> genres = new();
     }

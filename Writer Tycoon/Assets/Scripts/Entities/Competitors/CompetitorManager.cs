@@ -6,6 +6,7 @@ using WriterTycoon.WorkCreation.Development.PointGeneration;
 using WriterTycoon.WorkCreation.Ideation.Compatibility;
 using WriterTycoon.WorkCreation.Ideation.Genres;
 using WriterTycoon.WorkCreation.Ideation.Topics;
+using WriterTycoon.WorkCreation.Ideation.WorkTypes;
 
 namespace WriterTycoon.Entities.Competitors
 {
@@ -13,6 +14,7 @@ namespace WriterTycoon.Entities.Competitors
     {
         [SerializeField] private GameObject competitorPrefab;
         [SerializeField] private List<CompetitorData> competitorDatas;
+        private Dictionary<WorkType, int> targetScores;
         private CompetitorRecord competitorRecord;
         private TopicManager topicManager;
         private GenreManager genreManager;
@@ -23,6 +25,18 @@ namespace WriterTycoon.Entities.Competitors
         {
             // Verify the competitor datas
             competitorDatas ??= new();
+
+            // Initialize the target scores
+            targetScores = new()
+            {
+                { WorkType.None, 0 },
+                { WorkType.Poetry, 100 },
+                { WorkType.FlashFiction, 500 },
+                { WorkType.ShortStory, 1000 },
+                { WorkType.Novella, 5000 },
+                { WorkType.Novel, 15000 },
+                { WorkType.Screenplay, 15000 }
+            };
         }
 
         private void Start()
@@ -61,6 +75,7 @@ namespace WriterTycoon.Entities.Competitors
             component.CreateBrain(
                 data.learned, 
                 data.learningFactor,data.discountFactor, data.explorationFactor,
+                data.workType, targetScores[data.workType],
                 topicManager.GetTopics(), genreManager.GetGenres(),
                 data.topics, data.genres,
                 compatibilityManager.GetGenreTopicCompatibilities(),
