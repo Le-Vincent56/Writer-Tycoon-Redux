@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf4c52f5765ee24bb0c66fa3ad23783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventName: OnBookClose
-  triggerTime: 0.384
+  eventName: OnBookOpen
+  triggerTime: 0.765
 --- !u!1102 &-3811103415000868318
 AnimatorState:
   serializedVersion: 6
