@@ -20,7 +20,7 @@ namespace WriterTycoon.MainMenu.States
             this.controller = controller;
             this.animator = animator;
             this.stateGroup = stateGroup;
-            fadeDuration = 0.3f;
+            fadeDuration = 0.45f;
         }
 
         public virtual void OnEnter()
@@ -31,7 +31,7 @@ namespace WriterTycoon.MainMenu.States
                 // Allow the CanvasGroup to be interacted with
                 stateGroup.interactable = true;
                 stateGroup.blocksRaycasts = true;
-            });
+            }, Ease.InExpo);
         }
 
         public virtual void Update() { }
@@ -46,7 +46,7 @@ namespace WriterTycoon.MainMenu.States
                 // Don't allow the CanvasGroup to be interacted with
                 stateGroup.interactable = false;
                 stateGroup.blocksRaycasts = false;
-            });
+            }, Ease.OutExpo);
         }
 
         /// <summary>
