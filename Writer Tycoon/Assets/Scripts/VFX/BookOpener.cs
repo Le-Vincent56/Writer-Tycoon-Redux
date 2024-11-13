@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using WriterTycoon.Patterns.EventBus;
 
 public class BookOpener : MonoBehaviour
 {
     private List<ParticleSystem> particleSystems;
     private Light2D bookLight;
+    private Animator animator;
     
     [Header("Tweening Variables")]
     [SerializeField] private float targetIntensity;
@@ -19,6 +21,7 @@ public class BookOpener : MonoBehaviour
         // Get the particle systems
         particleSystems = GetComponentsInChildren<ParticleSystem>().ToList();
         bookLight = GetComponentInChildren<Light2D>();
+        animator = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -61,5 +64,11 @@ public class BookOpener : MonoBehaviour
 
         // Enable the light
         EnableLight();
+
+        // Activate the main menu
+        EventBus<ActivateMainMenu>.Raise(new ActivateMainMenu()
+        {
+            Animator = animator
+        });
     }
 }
