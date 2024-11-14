@@ -1,8 +1,8 @@
 using UnityEngine;
-using WriterTycoon.Entities.Player;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Entities.Player;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.Patterns.Strategy
+namespace GhostWriter.Patterns.Strategy
 {
     public interface IMenuActionStrategy
     {

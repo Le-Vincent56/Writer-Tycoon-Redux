@@ -1,8 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.WorkCreation.UI.Development.States
+namespace GhostWriter.WorkCreation.UI.Development.States
 {
     public class ProgressState : IState
     {

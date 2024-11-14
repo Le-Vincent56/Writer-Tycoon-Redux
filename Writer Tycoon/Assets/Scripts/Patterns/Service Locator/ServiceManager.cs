@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.ServiceLocator
+namespace GhostWriter.Patterns.ServiceLocator
 {
     public class ServiceManager
     {

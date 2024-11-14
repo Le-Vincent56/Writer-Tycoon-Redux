@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.Ideation.Compatibility
+namespace GhostWriter.WorkCreation.Ideation.Compatibility
 {
     public class CompatibilityButton : MonoBehaviour
     {

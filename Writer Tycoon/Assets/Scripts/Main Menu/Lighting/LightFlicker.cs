@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-namespace WriterTycoon.MainMenu.Lighting
+namespace GhostWriter.MainMenu.Lighting
 {
     public class LightFlicker : MonoBehaviour
     {

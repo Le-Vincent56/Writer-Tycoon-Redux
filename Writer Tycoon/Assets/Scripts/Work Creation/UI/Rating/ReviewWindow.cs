@@ -2,10 +2,10 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.About;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.About;
 
-namespace WriterTycoon.WorkCreation.UI.Rating
+namespace GhostWriter.WorkCreation.UI.Rating
 {
     public class ReviewWindow : MonoBehaviour
     {

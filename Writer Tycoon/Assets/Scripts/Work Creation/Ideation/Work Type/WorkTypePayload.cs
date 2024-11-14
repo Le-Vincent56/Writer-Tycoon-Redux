@@ -1,8 +1,8 @@
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Review;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
 
-namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
+namespace GhostWriter.WorkCreation.Ideation.WorkTypes
 {
     public class WorkTypePayload : Payload<(WorkType Type, float TargetScore)>
     {

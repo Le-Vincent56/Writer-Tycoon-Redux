@@ -1,17 +1,17 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities.Competitors.Learning;
-using WriterTycoon.Entities.Competitors.States;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.Entities.Competitors.Learning;
+using GhostWriter.Entities.Competitors.States;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.Entities.Competitors
+namespace GhostWriter.Entities.Competitors
 {
     public class NPCCompetitor : SerializedMonoBehaviour, ICompetitor
     {

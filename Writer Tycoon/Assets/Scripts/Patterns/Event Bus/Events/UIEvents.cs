@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.About;
-using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.Publication;
-using WriterTycoon.WorkCreation.UI.Development;
-using WriterTycoon.World.Interactables;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.WorkCreation.Ideation.Review;
+using GhostWriter.WorkCreation.Publication;
+using GhostWriter.WorkCreation.UI.Development;
+using GhostWriter.World.Interactables;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     #region INTERACT UI EVENTS
     public struct SetInteracting : IEvent

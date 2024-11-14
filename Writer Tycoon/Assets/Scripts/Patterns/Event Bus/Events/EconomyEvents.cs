@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using WriterTycoon.Entities;
-using WriterTycoon.WorkCreation.Publication;
+using GhostWriter.Entities;
+using GhostWriter.WorkCreation.Publication;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public struct SellWork : IEvent
     {

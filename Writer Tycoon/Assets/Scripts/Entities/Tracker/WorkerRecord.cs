@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.Entities.Tracker
+namespace GhostWriter.Entities.Tracker
 {
     public class WorkerRecord : MonoBehaviour
     {

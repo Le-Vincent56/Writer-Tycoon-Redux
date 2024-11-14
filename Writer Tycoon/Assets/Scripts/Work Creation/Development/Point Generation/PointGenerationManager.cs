@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Development.PointGeneration
+namespace GhostWriter.WorkCreation.Development.PointGeneration
 {
     public class PointGenerationManager : Dedicant
     {

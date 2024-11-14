@@ -1,8 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.MainMenu.States
+namespace GhostWriter.MainMenu.States
 {
     public class MenuState : IState
     {

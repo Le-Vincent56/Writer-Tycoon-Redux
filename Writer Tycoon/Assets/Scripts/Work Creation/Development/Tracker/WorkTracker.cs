@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities.Tracker;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Mediation;
 using static UnityEngine.Rendering.DebugUI;
 
-namespace WriterTycoon.WorkCreation.Development.Tracker
+namespace GhostWriter.WorkCreation.Development.Tracker
 {
     public enum DevelopmentPhase
     {

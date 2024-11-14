@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using WriterTycoon.Extensions.Enumerable;
-using WriterTycoon.Patterns.Visitor;
+using GhostWriter.Extensions.Enumerable;
+using GhostWriter.Patterns.Visitor;
 
-namespace WriterTycoon.Patterns.Mediator
+namespace GhostWriter.Patterns.Mediator
 {
     public abstract class Mediator<T> : MonoBehaviour where T : IVisitable
     {

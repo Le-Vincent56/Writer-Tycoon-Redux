@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation.States
+namespace GhostWriter.WorkCreation.UI.Ideation.States
 {
     public class GenreState : CreateWorkState
     {

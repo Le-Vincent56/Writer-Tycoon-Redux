@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Editing
+namespace GhostWriter.WorkCreation.Editing
 {
     public class PolishManager : Dedicant
     {

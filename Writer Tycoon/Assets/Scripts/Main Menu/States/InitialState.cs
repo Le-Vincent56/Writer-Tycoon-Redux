@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.MainMenu.States
+namespace GhostWriter.MainMenu.States
 {
     public class InitialState : MenuState
     {

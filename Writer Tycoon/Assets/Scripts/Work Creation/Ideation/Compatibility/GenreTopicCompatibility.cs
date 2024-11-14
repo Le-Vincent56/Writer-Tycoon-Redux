@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
 
-namespace WriterTycoon.WorkCreation.Ideation.Compatibility
+namespace GhostWriter.WorkCreation.Ideation.Compatibility
 {
     public class GenreTopicCompatibility
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.World.Interactables
+namespace GhostWriter.World.Interactables
 {
     public interface IInteractable
     {

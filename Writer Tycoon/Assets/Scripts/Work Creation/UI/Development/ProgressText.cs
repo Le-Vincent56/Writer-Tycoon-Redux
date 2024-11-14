@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public class ProgressText : MonoBehaviour
     {

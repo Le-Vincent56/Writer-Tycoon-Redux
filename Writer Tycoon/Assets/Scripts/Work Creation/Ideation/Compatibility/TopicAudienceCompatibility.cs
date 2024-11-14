@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Topics;
 
-namespace WriterTycoon.WorkCreation.Ideation.Compatibility
+namespace GhostWriter.WorkCreation.Ideation.Compatibility
 {
     public class TopicAudienceCompatibility
     {

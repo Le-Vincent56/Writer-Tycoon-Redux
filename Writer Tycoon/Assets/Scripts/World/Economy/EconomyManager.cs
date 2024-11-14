@@ -1,11 +1,11 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.WorkCreation.Publication;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Publication;
 
-namespace WriterTycoon.World.Economy
+namespace GhostWriter.World.Economy
 {
     public class EconomyManager : SerializedMonoBehaviour
     {

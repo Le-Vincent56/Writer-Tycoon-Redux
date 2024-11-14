@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.UI.Publication
+namespace GhostWriter.WorkCreation.UI.Publication
 {
     public class PublicationExitButton : MonoBehaviour
     {

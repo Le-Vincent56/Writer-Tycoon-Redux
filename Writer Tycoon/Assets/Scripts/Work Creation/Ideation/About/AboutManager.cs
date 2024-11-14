@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.Input;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Input;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Ideation.About
+namespace GhostWriter.WorkCreation.Ideation.About
 {
     [Serializable]
     public struct AboutInfo

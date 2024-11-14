@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public class ProgressCardController : MonoBehaviour
     {

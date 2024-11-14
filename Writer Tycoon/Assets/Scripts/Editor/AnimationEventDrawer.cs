@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace WriterTycoon.Animations.Editors
+namespace GhostWriter.Animations.Editors
 {
     [CustomPropertyDrawer(typeof(AnimationEvent))]
     public class AnimationEventDrawer : PropertyDrawer

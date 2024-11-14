@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.StateMachine
+namespace GhostWriter.Patterns.StateMachine
 {
     public class StateMachine
     {

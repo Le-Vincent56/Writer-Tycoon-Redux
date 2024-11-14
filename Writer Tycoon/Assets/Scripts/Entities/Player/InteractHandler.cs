@@ -1,9 +1,9 @@
 using UnityEngine;
-using WriterTycoon.Input;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.World.Interactables;
+using GhostWriter.Input;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.Interactables;
 
-namespace WriterTycoon.Entities.Player
+namespace GhostWriter.Entities.Player
 {
     public class InteractHandler : MonoBehaviour
     {

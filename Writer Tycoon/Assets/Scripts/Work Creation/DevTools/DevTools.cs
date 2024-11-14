@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities;
-using WriterTycoon.Entities.Tracker;
-using WriterTycoon.Input;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Utilities.Hash;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.About;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.Entities;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Input;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.Utilities.Hash;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.WorkCreation.DevTools
+namespace GhostWriter.WorkCreation.DevTools
 {
     public class DevTools : MonoBehaviour
     {

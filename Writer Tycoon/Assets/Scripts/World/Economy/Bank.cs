@@ -1,6 +1,6 @@
 using UnityEngine;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.EventBus;
 
 public class Bank : MonoBehaviour
 {

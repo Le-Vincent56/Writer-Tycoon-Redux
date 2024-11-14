@@ -3,9 +3,9 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.World.Economy
+namespace GhostWriter.World.Economy
 {
     public class SalesGraphController : SerializedMonoBehaviour
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Runtime;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Ideation.Topics
+namespace GhostWriter.WorkCreation.Ideation.Topics
 {
     public class TopicManager : Dedicant
     {

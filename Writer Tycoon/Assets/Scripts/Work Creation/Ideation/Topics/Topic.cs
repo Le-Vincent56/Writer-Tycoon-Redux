@@ -1,8 +1,8 @@
 using System;
 using System.Text;
-using WriterTycoon.WorkCreation.Rater;
+using GhostWriter.WorkCreation.Rater;
 
-namespace WriterTycoon.WorkCreation.Ideation.Topics
+namespace GhostWriter.WorkCreation.Ideation.Topics
 {
     public enum TopicType
     {

@@ -1,8 +1,8 @@
 using UnityEngine;
-using WriterTycoon.Patterns.Command;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.Command;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.World.Interactables.UI
+namespace GhostWriter.World.Interactables.UI
 {
     public class InteractionOptionHandler : MonoBehaviour
     {

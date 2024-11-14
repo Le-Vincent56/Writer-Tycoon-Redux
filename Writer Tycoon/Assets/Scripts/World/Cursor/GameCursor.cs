@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace WriterTycoon.World.GameCursor
+namespace GhostWriter.World.GameCursor
 {
     public class GameCursor : MonoBehaviour
     {

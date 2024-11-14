@@ -1,11 +1,11 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.Entities.Competitors
+namespace GhostWriter.Entities.Competitors
 {
     [CreateAssetMenu(fileName = "Competitor Data", menuName = "Data/Competitor")]
     public class CompetitorData : SerializedScriptableObject

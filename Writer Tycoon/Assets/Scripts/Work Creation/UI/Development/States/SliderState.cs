@@ -1,8 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.WorkCreation.Development.UI.States
+namespace GhostWriter.WorkCreation.Development.UI.States
 {
     public class SliderState : IState
     {

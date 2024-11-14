@@ -1,11 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.UI.Development.States;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
+using GhostWriter.WorkCreation.UI.Development.States;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public enum ProgressStage
     {

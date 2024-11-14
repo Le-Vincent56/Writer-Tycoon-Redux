@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.World.Calendar
+namespace GhostWriter.World.Calendar
 {
     [CreateAssetMenu(fileName = "CalendarData", menuName = "Data/Calendar Data")]
     public class CalendarData : ScriptableObject

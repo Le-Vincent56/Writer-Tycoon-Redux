@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using WriterTycoon.Entities;
+using GhostWriter.Entities;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public struct AvailableWorkersUpdated : IEvent
     {

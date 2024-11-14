@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WriterTycoon.Extensions.List
+namespace GhostWriter.Extensions.List
 {
     public static class ListExtensions
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace WriterTycoon.WorkCreation.Ideation.About
+namespace GhostWriter.WorkCreation.Ideation.About
 {
     public class AboutInput : MonoBehaviour, ISelectHandler, IDeselectHandler
     {

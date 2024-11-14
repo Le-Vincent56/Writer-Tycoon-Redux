@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities;
-using WriterTycoon.WorkCreation.Ideation.Workers;
+using GhostWriter.Entities;
+using GhostWriter.WorkCreation.Ideation.Workers;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class WorkersUI : MonoBehaviour
     {

@@ -1,8 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.WorkCreation.UI.Publication.States
+namespace GhostWriter.WorkCreation.UI.Publication.States
 {
     public class PublicationHistoryState : IState
     {

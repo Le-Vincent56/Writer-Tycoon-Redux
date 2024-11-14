@@ -1,4 +1,4 @@
-namespace WriterTycoon.Patterns.StateMachine
+namespace GhostWriter.Patterns.StateMachine
 {
     /// <summary>
     /// Interface for a State, which will have effects on Enter,

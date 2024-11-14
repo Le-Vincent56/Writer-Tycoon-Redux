@@ -1,4 +1,4 @@
-namespace WriterTycoon.WorkCreation.Ideation.Topics
+namespace GhostWriter.WorkCreation.Ideation.Topics
 {
     public abstract class TopicFactory
     {

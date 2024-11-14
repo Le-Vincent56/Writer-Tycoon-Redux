@@ -1,4 +1,4 @@
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public struct PassHour : IEvent { }
 

@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.UI.Rating
+namespace GhostWriter.WorkCreation.UI.Rating
 {
     public class ReviewText : MonoBehaviour
     {

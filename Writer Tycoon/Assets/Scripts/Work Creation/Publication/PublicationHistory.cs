@@ -2,10 +2,10 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
 
-namespace WriterTycoon.WorkCreation.Publication
+namespace GhostWriter.WorkCreation.Publication
 {
     public class PublicationHistory : SerializedMonoBehaviour
     {

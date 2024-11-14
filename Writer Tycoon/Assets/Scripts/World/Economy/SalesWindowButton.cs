@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.World.Economy
+namespace GhostWriter.World.Economy
 {
     public class SalesWindowButton : MonoBehaviour
     {

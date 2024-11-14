@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
 
-namespace WriterTycoon.WorkCreation.Rater
+namespace GhostWriter.WorkCreation.Rater
 {
     public class RaterPayload : Payload<(List<Topic> Topics, List<Genre> Genres)>
     {

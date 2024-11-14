@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace WriterTycoon.Utilities.PredefinedAssembly
+namespace GhostWriter.Utilities.PredefinedAssembly
 {
     public static class PredefinedAssemblyUtils
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.ServiceLocator
+namespace GhostWriter.Patterns.ServiceLocator
 {
     [AddComponentMenu("ServiceLocator/Scene ServiceLocator")]
     public class ServiceLocatorScene : Bootstrapper

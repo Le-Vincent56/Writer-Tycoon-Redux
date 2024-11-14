@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.Entities
+namespace GhostWriter.Entities
 {
     public interface ICompetitor
     {

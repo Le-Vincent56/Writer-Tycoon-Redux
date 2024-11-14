@@ -4,9 +4,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using WriterTycoon.Extensions.GameObject;
+using GhostWriter.Extensions.GameObject;
 
-namespace WriterTycoon.Patterns.ServiceLocator
+namespace GhostWriter.Patterns.ServiceLocator
 {
     public class ServiceLocator : MonoBehaviour
     {

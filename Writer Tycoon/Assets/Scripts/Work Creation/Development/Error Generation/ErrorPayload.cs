@@ -1,7 +1,7 @@
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Editing;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Editing;
 
-namespace WriterTycoon.WorkCreation.Development.ErrorGeneration
+namespace GhostWriter.WorkCreation.Development.ErrorGeneration
 {
     public class ErrorPayload : Payload<(int Hash, int TotalErrors)>
     {

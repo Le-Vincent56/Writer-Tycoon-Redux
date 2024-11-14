@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static WriterTycoon.Input.GameInputActions;
+using static GhostWriter.Input.GameInputActions;
 
-namespace WriterTycoon.Input
+namespace GhostWriter.Input
 {
     [CreateAssetMenu(fileName = "DevInputReader", menuName = "Input/Development Input Reader")]
     public class DevInputReader : ScriptableObject, IDevelopmentToolsActions, IInputReader

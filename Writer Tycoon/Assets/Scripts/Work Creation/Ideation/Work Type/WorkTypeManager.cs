@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
+namespace GhostWriter.WorkCreation.Ideation.WorkTypes
 {
     public enum WorkType
     {

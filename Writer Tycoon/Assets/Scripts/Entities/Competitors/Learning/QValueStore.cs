@@ -3,9 +3,9 @@ using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WriterTycoon.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Genres;
 
-namespace WriterTycoon.Entities.Competitors.Learning
+namespace GhostWriter.Entities.Competitors.Learning
 {
     [Serializable]
     public class QValueStore

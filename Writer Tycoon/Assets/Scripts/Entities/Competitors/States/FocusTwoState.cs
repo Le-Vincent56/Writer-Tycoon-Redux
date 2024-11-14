@@ -1,4 +1,4 @@
-namespace WriterTycoon.Entities.Competitors.States
+namespace GhostWriter.Entities.Competitors.States
 {
     public class FocusTwoState : CompetitorState
     {

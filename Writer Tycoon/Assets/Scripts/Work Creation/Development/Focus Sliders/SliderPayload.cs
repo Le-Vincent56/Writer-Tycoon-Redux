@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Development.PointGeneration;
 
-namespace WriterTycoon.WorkCreation.Development.FocusSliders
+namespace GhostWriter.WorkCreation.Development.FocusSliders
 {
     public class SliderPayload : Payload<(int Hash, Dictionary<PointCategory, int> Points)>
     {

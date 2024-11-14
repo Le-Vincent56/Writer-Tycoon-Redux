@@ -1,11 +1,11 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.UI.Publication.States;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
+using GhostWriter.WorkCreation.UI.Publication.States;
 
-namespace WriterTycoon.WorkCreation.UI.Publication
+namespace GhostWriter.WorkCreation.UI.Publication
 {
     public class PublicationHistoryWindow : MonoBehaviour
     {

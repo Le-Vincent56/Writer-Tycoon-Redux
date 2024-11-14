@@ -1,6 +1,6 @@
-using WriterTycoon.Patterns.Strategy;
+using GhostWriter.Patterns.Strategy;
 
-namespace WriterTycoon.Patterns.Command
+namespace GhostWriter.Patterns.Command
 {
     public class MenuActionCommand : ICommand
     {

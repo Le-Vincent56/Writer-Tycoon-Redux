@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Timers
+namespace GhostWriter.Timers
 {
     public class CountdownTimer : Timer
     {

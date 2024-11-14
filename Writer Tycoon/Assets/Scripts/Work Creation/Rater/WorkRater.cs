@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Rater
+namespace GhostWriter.WorkCreation.Rater
 {
     public enum ReviewScore
     {

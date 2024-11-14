@@ -1,10 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class TimeEstimationUI : MonoBehaviour
     {

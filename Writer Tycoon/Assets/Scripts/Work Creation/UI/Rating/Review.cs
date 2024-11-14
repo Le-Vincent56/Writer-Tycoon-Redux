@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.UI.Rating
+namespace GhostWriter.WorkCreation.UI.Rating
 {
     public class Review : MonoBehaviour
     {

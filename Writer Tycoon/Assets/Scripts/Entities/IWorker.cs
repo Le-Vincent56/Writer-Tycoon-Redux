@@ -1,4 +1,4 @@
-namespace WriterTycoon.Entities
+namespace GhostWriter.Entities
 {
     public interface IWorker
     {

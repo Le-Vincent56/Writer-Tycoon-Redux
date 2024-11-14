@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
+namespace GhostWriter.WorkCreation.Ideation.WorkTypes
 {
     public class WorkTypeUI : MonoBehaviour
     {

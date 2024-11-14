@@ -1,4 +1,4 @@
-namespace WriterTycoon.Patterns.StateMachine
+namespace GhostWriter.Patterns.StateMachine
 {
     public class Transition : ITransition
     {

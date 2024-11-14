@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
+namespace GhostWriter.WorkCreation.Ideation.TimeEstimation
 {
     public struct TimeEstimates
     {

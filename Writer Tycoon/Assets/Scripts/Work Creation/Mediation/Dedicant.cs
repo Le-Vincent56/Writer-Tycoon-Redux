@@ -1,11 +1,11 @@
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Patterns.Visitor;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.Patterns.Visitor;
 
-namespace WriterTycoon.WorkCreation.Mediation
+namespace GhostWriter.WorkCreation.Mediation
 {
     public enum DedicantType
     {

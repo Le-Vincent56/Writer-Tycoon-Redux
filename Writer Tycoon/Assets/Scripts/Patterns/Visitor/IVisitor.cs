@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.Visitor
+namespace GhostWriter.Patterns.Visitor
 {
     public interface IVisitor
     {

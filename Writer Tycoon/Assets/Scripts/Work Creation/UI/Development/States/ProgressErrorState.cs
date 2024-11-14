@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.UI.Development.States
+namespace GhostWriter.WorkCreation.UI.Development.States
 {
     public class ProgressErrorState : ProgressState
     {

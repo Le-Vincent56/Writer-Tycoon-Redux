@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.Entities.Competitors.Learning
+namespace GhostWriter.Entities.Competitors.Learning
 {
     public struct AIConceptData
     {

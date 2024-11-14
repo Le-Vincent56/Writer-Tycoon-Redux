@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.WorkCreation.Ideation.Genres
+namespace GhostWriter.WorkCreation.Ideation.Genres
 {
     public class GenreButton : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-namespace WriterTycoon.Input
+namespace GhostWriter.Input
 {
     public interface IInputReader
     {

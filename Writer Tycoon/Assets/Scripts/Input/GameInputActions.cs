@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace WriterTycoon.Input
+namespace GhostWriter.Input
 {
     public partial class @GameInputActions: IInputActionCollection2, IDisposable
     {

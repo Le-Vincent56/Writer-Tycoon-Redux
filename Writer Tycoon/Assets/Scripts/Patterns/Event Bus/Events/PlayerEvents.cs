@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Entities.Player;
+using GhostWriter.Entities.Player;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public struct ChangePlayerWorkState : IEvent
     {

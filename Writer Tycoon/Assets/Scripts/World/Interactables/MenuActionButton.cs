@@ -1,9 +1,9 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.Command;
+using GhostWriter.Patterns.Command;
 
-namespace WriterTycoon.World.Interactables.UI
+namespace GhostWriter.World.Interactables.UI
 {
     public class MenuActionButton : MonoBehaviour
     {

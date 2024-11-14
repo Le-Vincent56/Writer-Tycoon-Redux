@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Mediation;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Mediation;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.WorkCreation.Ideation.Compatibility
+namespace GhostWriter.WorkCreation.Ideation.Compatibility
 {
     public enum CompatibilityType
     {

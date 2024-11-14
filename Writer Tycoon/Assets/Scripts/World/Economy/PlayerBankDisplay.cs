@@ -1,11 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Entities.Tracker;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.World.Economy
+namespace GhostWriter.World.Economy
 {
     public class PlayerBankDisplay : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.World.Graph
+namespace GhostWriter.World.Graph
 {
     public class Node
     {

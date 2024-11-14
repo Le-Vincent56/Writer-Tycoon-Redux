@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Ideation.Audience
+namespace GhostWriter.WorkCreation.Ideation.Audience
 {
     public enum AudienceType
     {

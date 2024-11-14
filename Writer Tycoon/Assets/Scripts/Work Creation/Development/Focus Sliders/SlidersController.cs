@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.UI.Development;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.UI.Development;
 
-namespace WriterTycoon.WorkCreation.Development.FocusSliders
+namespace GhostWriter.WorkCreation.Development.FocusSliders
 {
     public class SlidersController : MonoBehaviour
     {

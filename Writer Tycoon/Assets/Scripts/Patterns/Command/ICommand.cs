@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.Command
+namespace GhostWriter.Patterns.Command
 {
     public interface ICommand
     {

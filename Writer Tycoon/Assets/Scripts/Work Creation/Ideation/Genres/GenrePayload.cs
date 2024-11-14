@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Review;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Review;
 
-namespace WriterTycoon.WorkCreation.Ideation.Genres
+namespace GhostWriter.WorkCreation.Ideation.Genres
 {
     public class GenrePayload : Payload<List<Genre>>
     {

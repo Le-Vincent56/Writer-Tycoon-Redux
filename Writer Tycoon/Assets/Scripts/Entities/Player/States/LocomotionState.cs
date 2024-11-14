@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Entities.Player.States
+namespace GhostWriter.Entities.Player.States
 {
     public class LocomotionState : PlayerState
     {

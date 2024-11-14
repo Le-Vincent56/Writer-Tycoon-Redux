@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.Animations
+namespace GhostWriter.Animations
 {
     public class AnimationEventReceiver : MonoBehaviour
     {

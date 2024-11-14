@@ -1,8 +1,8 @@
 using UnityEngine;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.WorkCreation.Mediation
+namespace GhostWriter.WorkCreation.Mediation
 {
     public class DedicantMediator : Mediator<Dedicant>
     {

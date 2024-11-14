@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.WorkCreation.Ideation.Topics
+namespace GhostWriter.WorkCreation.Ideation.Topics
 {
     public class TopicButton : MonoBehaviour
     {

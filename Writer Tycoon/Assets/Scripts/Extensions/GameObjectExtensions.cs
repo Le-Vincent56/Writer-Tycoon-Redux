@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Extensions.GameObject
+namespace GhostWriter.Extensions.GameObject
 {
     public static class GameObjectExtensions
     {

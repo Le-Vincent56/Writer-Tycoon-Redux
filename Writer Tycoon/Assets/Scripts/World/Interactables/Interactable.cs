@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.World.Interactables
+namespace GhostWriter.World.Interactables
 {
     public enum InteractableType
     {

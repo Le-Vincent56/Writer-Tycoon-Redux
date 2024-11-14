@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public struct ActivateMainMenu : IEvent 
     {

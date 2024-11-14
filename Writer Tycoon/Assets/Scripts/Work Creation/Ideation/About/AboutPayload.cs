@@ -1,7 +1,7 @@
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Review;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Review;
 
-namespace WriterTycoon.WorkCreation.Ideation.About
+namespace GhostWriter.WorkCreation.Ideation.About
 {
     public class AboutPayload : Payload<AboutInfo>
     {

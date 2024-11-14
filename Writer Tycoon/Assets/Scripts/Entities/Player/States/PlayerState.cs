@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.Entities.Player.States
+namespace GhostWriter.Entities.Player.States
 {
     public abstract class PlayerState : IState
     {

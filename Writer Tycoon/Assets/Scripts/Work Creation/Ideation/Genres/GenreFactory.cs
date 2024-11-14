@@ -1,4 +1,4 @@
-namespace WriterTycoon.WorkCreation.Ideation.Genres
+namespace GhostWriter.WorkCreation.Ideation.Genres
 {
     public abstract class GenreFactory
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     internal interface IEventBinding<T>
     {

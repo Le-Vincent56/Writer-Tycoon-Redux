@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WriterTycoon.Utilities.Hash
+namespace GhostWriter.Utilities.Hash
 {
     public static class HashUtils
     {

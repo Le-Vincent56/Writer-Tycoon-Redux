@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.PointGeneration;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public class FocusSlider : MonoBehaviour
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Review;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
 
-namespace WriterTycoon.WorkCreation.Ideation.Topics
+namespace GhostWriter.WorkCreation.Ideation.Topics
 {
     public class WorkerPayload : Payload<List<IWorker>>
     {

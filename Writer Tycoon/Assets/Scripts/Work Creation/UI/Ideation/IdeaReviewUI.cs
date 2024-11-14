@@ -2,17 +2,17 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.About;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Review;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class IdeaReviewUI : MonoBehaviour
     {

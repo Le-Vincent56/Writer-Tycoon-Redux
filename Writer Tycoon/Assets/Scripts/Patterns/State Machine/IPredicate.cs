@@ -1,4 +1,4 @@
-namespace WriterTycoon.Patterns.StateMachine
+namespace GhostWriter.Patterns.StateMachine
 {
     /// <summary>
     /// A Predicate is an expression that returns true or false depending

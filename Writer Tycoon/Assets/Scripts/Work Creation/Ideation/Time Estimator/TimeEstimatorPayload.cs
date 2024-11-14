@@ -1,8 +1,8 @@
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.Review;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Ideation.Review;
 
-namespace WriterTycoon.WorkCreation.Ideation.TimeEstimation
+namespace GhostWriter.WorkCreation.Ideation.TimeEstimation
 {
     public class TimeEstimationPayload : Payload<TimeEstimates>
     {

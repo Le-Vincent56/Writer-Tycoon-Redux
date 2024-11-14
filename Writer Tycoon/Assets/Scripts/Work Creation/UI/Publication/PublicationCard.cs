@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Publication;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Publication;
 
-namespace WriterTycoon.WorkCreation.UI.Publication
+namespace GhostWriter.WorkCreation.UI.Publication
 {
     public class PublicationCard : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
     {

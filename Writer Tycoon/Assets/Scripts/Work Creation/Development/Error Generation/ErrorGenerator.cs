@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Development.Tracker;
 
-namespace WriterTycoon.WorkCreation.Rater
+namespace GhostWriter.WorkCreation.Rater
 {
     [System.Serializable]
     public class ErrorGenerator

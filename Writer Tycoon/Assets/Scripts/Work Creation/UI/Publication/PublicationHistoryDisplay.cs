@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
-using WriterTycoon.WorkCreation.Publication;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Publication;
 
-namespace WriterTycoon.WorkCreation.UI.Publication
+namespace GhostWriter.WorkCreation.UI.Publication
 {
     public class PublicationHistoryDisplay : MonoBehaviour
     {

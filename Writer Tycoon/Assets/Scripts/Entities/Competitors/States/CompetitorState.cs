@@ -1,6 +1,6 @@
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.Entities.Competitors.States
+namespace GhostWriter.Entities.Competitors.States
 {
     public class CompetitorState : IState
     {

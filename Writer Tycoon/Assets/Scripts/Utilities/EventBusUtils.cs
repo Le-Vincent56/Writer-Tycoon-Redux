@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Utilities.PredefinedAssembly;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Utilities.PredefinedAssembly;
 
-namespace WriterTycoon.Utilities.EventBus
+namespace GhostWriter.Utilities.EventBus
 {
     public static class EventBusUtils
     {

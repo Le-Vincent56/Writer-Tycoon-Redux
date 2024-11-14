@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Extensions.GameObject;
+using GhostWriter.Extensions.GameObject;
 
-namespace WriterTycoon.Patterns.ServiceLocator
+namespace GhostWriter.Patterns.ServiceLocator
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ServiceLocator))]

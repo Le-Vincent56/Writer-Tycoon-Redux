@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WriterTycoon.Extensions.Enumerable
+namespace GhostWriter.Extensions.Enumerable
 {
     public static class EnumerableExtensions
     {

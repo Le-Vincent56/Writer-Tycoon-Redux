@@ -2,9 +2,9 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
+using GhostWriter.Patterns.EventBus;
 
-namespace WriterTycoon.World.Interactables.UI
+namespace GhostWriter.World.Interactables.UI
 {
     public class InteractionMenuDisplayer : SerializedMonoBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace WriterTycoon.Animations.Editors
+namespace GhostWriter.Animations.Editors
 {
     [CustomEditor(typeof(AnimationEventStateBehaviour))]
     public class AnimationEventStateBehaviourEditor : Editor

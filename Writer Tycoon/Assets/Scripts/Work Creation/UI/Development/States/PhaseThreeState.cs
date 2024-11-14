@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.Development.UI.States
+namespace GhostWriter.WorkCreation.Development.UI.States
 {
     public class PhaseThreeState : SliderState
     {

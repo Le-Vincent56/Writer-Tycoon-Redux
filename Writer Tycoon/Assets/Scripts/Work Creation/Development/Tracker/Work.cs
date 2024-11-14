@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Editing;
-using WriterTycoon.WorkCreation.Ideation.About;
-using WriterTycoon.WorkCreation.Ideation.Audience;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.TimeEstimation;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
-using WriterTycoon.WorkCreation.Rater;
-using WriterTycoon.WorkCreation.UI.Development;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Editing;
+using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Rater;
+using GhostWriter.WorkCreation.UI.Development;
 
-namespace WriterTycoon.WorkCreation.Development.Tracker
+namespace GhostWriter.WorkCreation.Development.Tracker
 {
     [System.Serializable]
     public class Work

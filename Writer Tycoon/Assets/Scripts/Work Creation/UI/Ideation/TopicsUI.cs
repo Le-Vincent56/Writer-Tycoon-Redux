@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.Topics;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class TopicsUI : MonoBehaviour
     {

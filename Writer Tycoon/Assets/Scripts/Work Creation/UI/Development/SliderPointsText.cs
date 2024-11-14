@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public class SliderPointsText : MonoBehaviour
     {

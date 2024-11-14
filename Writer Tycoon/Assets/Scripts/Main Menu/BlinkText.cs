@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.MainMenu
+namespace GhostWriter.MainMenu
 {
     public class BlinkText : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-namespace WriterTycoon.Patterns.StateMachine
+namespace GhostWriter.Patterns.StateMachine
 {
     /// <summary>
     /// A Transition requires a State to go to

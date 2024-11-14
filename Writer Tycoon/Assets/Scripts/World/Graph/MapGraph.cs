@@ -4,9 +4,9 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.World.Graph
+namespace GhostWriter.World.Graph
 {
     public class MapGraph : MonoBehaviour
     {

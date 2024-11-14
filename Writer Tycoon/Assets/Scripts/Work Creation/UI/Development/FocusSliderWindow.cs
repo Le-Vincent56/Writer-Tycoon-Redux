@@ -1,13 +1,13 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.Development.FocusSliders;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Development.UI.States;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
+using GhostWriter.WorkCreation.Development.FocusSliders;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Development.UI.States;
 
-namespace WriterTycoon.WorkCreation.UI.Development
+namespace GhostWriter.WorkCreation.UI.Development
 {
     public class FocusSliderWindow : MonoBehaviour
     {

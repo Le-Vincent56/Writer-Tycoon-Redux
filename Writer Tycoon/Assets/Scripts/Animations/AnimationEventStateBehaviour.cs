@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.Animations
+namespace GhostWriter.Animations
 {
     public class AnimationEventStateBehaviour : StateMachineBehaviour
     {

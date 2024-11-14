@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.WorkCreation.Publication;
+using GhostWriter.WorkCreation.Publication;
 
-namespace WriterTycoon.World.Economy
+namespace GhostWriter.World.Economy
 {
     public class PublishedWorkLifecycle
     {

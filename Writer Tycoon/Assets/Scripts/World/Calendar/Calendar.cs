@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Input;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Timers;
+using GhostWriter.Input;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.Timers;
 
-namespace WriterTycoon.World.Calendar
+namespace GhostWriter.World.Calendar
 {
     public class Calendar : MonoBehaviour
     {

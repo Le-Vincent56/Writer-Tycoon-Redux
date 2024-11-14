@@ -2,9 +2,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
-using WriterTycoon.Utilities.LowLevel;
+using GhostWriter.Utilities.LowLevel;
 
-namespace WriterTycoon.Timers
+namespace GhostWriter.Timers
 {
     internal static class TimerBootstrapper
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.ErrorGeneration;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Editing;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Development.ErrorGeneration;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Editing;
 
-namespace WriterTycoon.WorkCreation.Development.Tracker
+namespace GhostWriter.WorkCreation.Development.Tracker
 {
     public class TrackerPayload : Payload<Dictionary<int, Work>>
     {

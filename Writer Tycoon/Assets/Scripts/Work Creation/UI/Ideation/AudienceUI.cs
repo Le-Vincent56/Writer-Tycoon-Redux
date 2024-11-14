@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.WorkCreation.Ideation.Audience;
+using GhostWriter.WorkCreation.Ideation.Audience;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class AudienceUI : MonoBehaviour
     {

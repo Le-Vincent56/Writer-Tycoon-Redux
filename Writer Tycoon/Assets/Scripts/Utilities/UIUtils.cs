@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.Utilities.UI
+namespace GhostWriter.Utilities.UI
 {
     public static class UIUtils
     {

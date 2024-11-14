@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities.Tracker;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Genres;
-using WriterTycoon.WorkCreation.Ideation.Topics;
-using WriterTycoon.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Topics;
+using GhostWriter.WorkCreation.Ideation.WorkTypes;
 
-namespace WriterTycoon.Entities.Competitors
+namespace GhostWriter.Entities.Competitors
 {
     public class CompetitorManager : MonoBehaviour
     {

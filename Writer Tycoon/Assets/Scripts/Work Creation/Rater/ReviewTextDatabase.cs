@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.Rater
+namespace GhostWriter.WorkCreation.Rater
 {
     public class ReviewTextDatabase
     {

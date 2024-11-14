@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using WriterTycoon.Extensions.List;
+using GhostWriter.Extensions.List;
 
-namespace WriterTycoon.Timers
+namespace GhostWriter.Timers
 {
     public static class TimerManager
     {

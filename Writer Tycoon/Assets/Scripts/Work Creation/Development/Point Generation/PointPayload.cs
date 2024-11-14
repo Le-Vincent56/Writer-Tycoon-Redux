@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Editing;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Editing;
 
-namespace WriterTycoon.WorkCreation.Development.PointGeneration
+namespace GhostWriter.WorkCreation.Development.PointGeneration
 {
     public class PointPayload : Payload<Dictionary<int, Work>>
     {

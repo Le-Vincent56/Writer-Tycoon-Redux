@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WriterTycoon.WorkCreation.Ideation.WorkTypes
+namespace GhostWriter.WorkCreation.Ideation.WorkTypes
 {
     public class WorkTypeButton : MonoBehaviour
     {

@@ -1,9 +1,9 @@
 using UnityEngine;
-using WriterTycoon.MainMenu.States;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.StateMachine;
+using GhostWriter.MainMenu.States;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
 
-namespace WriterTycoon.MainMenu
+namespace GhostWriter.MainMenu
 {
     public class MainMenuController : MonoBehaviour
     {

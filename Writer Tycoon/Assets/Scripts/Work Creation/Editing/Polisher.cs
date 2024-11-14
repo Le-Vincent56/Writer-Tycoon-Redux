@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using WriterTycoon.Entities;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.UI.Development;
+using GhostWriter.Entities;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.UI.Development;
 
-namespace WriterTycoon.WorkCreation.Editing
+namespace GhostWriter.WorkCreation.Editing
 {
     [System.Serializable]
     public class Polisher

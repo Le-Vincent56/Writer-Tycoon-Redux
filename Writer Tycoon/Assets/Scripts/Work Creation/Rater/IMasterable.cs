@@ -1,4 +1,4 @@
-namespace WriterTycoon.WorkCreation.Rater
+namespace GhostWriter.WorkCreation.Rater
 {
     public interface IMasterable
     {

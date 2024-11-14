@@ -1,8 +1,8 @@
 using UnityEngine;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Ideation.About;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Ideation.About;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class AboutUI : MonoBehaviour
     {

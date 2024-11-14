@@ -1,9 +1,9 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Patterns.ServiceLocator;
+using GhostWriter.Patterns.ServiceLocator;
 
-namespace WriterTycoon.Entities.Tracker
+namespace GhostWriter.Entities.Tracker
 {
     public class CompetitorRecord : SerializedMonoBehaviour
     {

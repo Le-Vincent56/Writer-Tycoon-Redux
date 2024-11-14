@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Genres;
 
-namespace WriterTycoon.WorkCreation.UI.Ideation
+namespace GhostWriter.WorkCreation.UI.Ideation
 {
     public class GenreUI : MonoBehaviour
     {

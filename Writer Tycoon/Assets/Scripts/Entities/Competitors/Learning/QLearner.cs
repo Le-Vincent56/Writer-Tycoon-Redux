@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace WriterTycoon.Entities.Competitors.Learning
+namespace GhostWriter.Entities.Competitors.Learning
 {
     public struct ActionData
     {

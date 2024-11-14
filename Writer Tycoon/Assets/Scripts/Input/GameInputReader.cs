@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static WriterTycoon.Input.GameInputActions;
+using static GhostWriter.Input.GameInputActions;
 
-namespace WriterTycoon.Input
+namespace GhostWriter.Input
 {
     [CreateAssetMenu(fileName = "GameInputReader", menuName = "Input/Game Input Reader")]
     public class GameInputReader : ScriptableObject, IPlayerControlsActions, IInputReader

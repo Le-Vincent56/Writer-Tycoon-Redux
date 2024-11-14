@@ -1,8 +1,8 @@
 using System;
 using System.Text;
-using WriterTycoon.WorkCreation.Rater;
+using GhostWriter.WorkCreation.Rater;
 
-namespace WriterTycoon.WorkCreation.Ideation.Genres
+namespace GhostWriter.WorkCreation.Ideation.Genres
 {
     public enum GenreType
     {

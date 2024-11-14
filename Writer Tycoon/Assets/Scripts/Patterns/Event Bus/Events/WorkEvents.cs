@@ -1,9 +1,9 @@
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.WorkCreation.Ideation.Review;
-using WriterTycoon.WorkCreation.UI.Development;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.WorkCreation.Ideation.Review;
+using GhostWriter.WorkCreation.UI.Development;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     #region WORK CREATION EVENTS
     public struct CalculateCompatibility : IEvent { }

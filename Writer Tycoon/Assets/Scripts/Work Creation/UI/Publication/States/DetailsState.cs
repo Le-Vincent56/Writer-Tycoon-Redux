@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WriterTycoon.WorkCreation.UI.Publication.States
+namespace GhostWriter.WorkCreation.UI.Publication.States
 {
     public class DetailsState : PublicationHistoryState
     {

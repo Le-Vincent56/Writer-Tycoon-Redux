@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WriterTycoon.Patterns.EventBus
+namespace GhostWriter.Patterns.EventBus
 {
     public static class EventBus<T> where T : IEvent
     {

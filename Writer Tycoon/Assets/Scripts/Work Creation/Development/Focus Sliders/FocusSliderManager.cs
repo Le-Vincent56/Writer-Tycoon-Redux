@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.WorkCreation.Development.PointGeneration;
-using WriterTycoon.WorkCreation.Mediation;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.WorkCreation.Development.PointGeneration;
+using GhostWriter.WorkCreation.Mediation;
 
-namespace WriterTycoon.WorkCreation.Development.FocusSliders
+namespace GhostWriter.WorkCreation.Development.FocusSliders
 {
     public class FocusSliderManager : Dedicant
     {

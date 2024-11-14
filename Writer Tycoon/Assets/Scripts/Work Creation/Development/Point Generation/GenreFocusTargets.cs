@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using WriterTycoon.WorkCreation.Ideation.Genres;
+using GhostWriter.WorkCreation.Ideation.Genres;
 
-namespace WriterTycoon.WorkCreation.Development.PointGeneration
+namespace GhostWriter.WorkCreation.Development.PointGeneration
 {
     public enum PointCategory
     {

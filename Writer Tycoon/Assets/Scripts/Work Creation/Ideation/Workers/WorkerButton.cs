@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WriterTycoon.Entities;
+using GhostWriter.Entities;
 
-namespace WriterTycoon.WorkCreation.Ideation.Workers
+namespace GhostWriter.WorkCreation.Ideation.Workers
 {
     public class WorkerButton : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
-using WriterTycoon.Patterns.Visitor;
+using GhostWriter.Patterns.Visitor;
 
-namespace WriterTycoon.Patterns.Mediator
+namespace GhostWriter.Patterns.Mediator
 {
     public abstract class Payload<TData> : IVisitor
     {

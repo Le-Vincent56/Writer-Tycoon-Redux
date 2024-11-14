@@ -1,8 +1,8 @@
-using WriterTycoon.Patterns.Mediator;
-using WriterTycoon.WorkCreation.Ideation.Compatibility;
-using WriterTycoon.WorkCreation.Ideation.Review;
+using GhostWriter.Patterns.Mediator;
+using GhostWriter.WorkCreation.Ideation.Compatibility;
+using GhostWriter.WorkCreation.Ideation.Review;
 
-namespace WriterTycoon.WorkCreation.Ideation.Audience
+namespace GhostWriter.WorkCreation.Ideation.Audience
 {
     public class AudiencePayload : Payload<AudienceType>
     {

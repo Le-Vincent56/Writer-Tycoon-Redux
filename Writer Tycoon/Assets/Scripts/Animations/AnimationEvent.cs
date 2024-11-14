@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.Events;
 
-namespace WriterTycoon.Animations
+namespace GhostWriter.Animations
 {
     [Serializable]
     public class AnimationEvent

@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WriterTycoon.Entities.Player.States;
-using WriterTycoon.Entities.Tracker;
-using WriterTycoon.Patterns.EventBus;
-using WriterTycoon.Patterns.ServiceLocator;
-using WriterTycoon.Patterns.StateMachine;
-using WriterTycoon.WorkCreation.Development.Tracker;
-using WriterTycoon.World.Graph;
+using GhostWriter.Entities.Player.States;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
+using GhostWriter.Patterns.StateMachine;
+using GhostWriter.WorkCreation.Development.Tracker;
+using GhostWriter.World.Graph;
 
-namespace WriterTycoon.Entities.Player
+namespace GhostWriter.Entities.Player
 {
     public enum CommandType
     {

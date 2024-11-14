@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.LowLevel;
 
-namespace WriterTycoon.Utilities.LowLevel
+namespace GhostWriter.Utilities.LowLevel
 {
     public static class PlayerLoopUtils
     {
