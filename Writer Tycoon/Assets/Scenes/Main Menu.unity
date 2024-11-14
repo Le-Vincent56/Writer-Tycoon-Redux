@@ -747,6 +747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 538555207}
   - component: {fileID: 538555208}
+  - component: {fileID: 538555209}
   m_Layer: 5
   m_Name: Traits Options
   m_TagString: Untagged
@@ -793,10 +794,23 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 150, y: 50}
+  m_Spacing: {x: 15, y: 15}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &538555209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538555206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0943fca98c67415428d42023958e07b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  traitPrefab: {fileID: 3692102554456752726, guid: 36b4a31d3080f0e41aa247f16e7c6961, type: 3}
 --- !u!1 &672631908
 GameObject:
   m_ObjectHideFlags: 0

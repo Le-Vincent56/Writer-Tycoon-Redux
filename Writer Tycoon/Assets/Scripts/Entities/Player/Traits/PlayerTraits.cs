@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GhostWriter.Entities.Player.Traits
 {
     public class PlayerTraits
     {
-        private List<Trait> allTraits;
+        private readonly List<Trait> allTraits;
 
         public PlayerTraits()
         {
@@ -16,34 +14,51 @@ namespace GhostWriter.Entities.Player.Traits
             // Create a TraitBuilder
             TraitBuilder builder = new();
 
-            // Add Plotter
+            // Plotter
             Trait plotter = builder
                 .WithName("Plotter")
+                .WithDescription("The plot comes first, writing comes later. Way later.")
                 .WithPreProductionSpeed(1.25f)
                 .Build();
             allTraits.Add(plotter);
 
-            // Add Pantser
+            // Pantser
             Trait pantser = builder
                 .WithName("Pantser")
+                .WithDescription("You'll finish your first draft before you have any idea what the plot is.")
                 .WithProductionSpeed(1.25f)
                 .Build();
             allTraits.Add(pantser);
 
-            // Add Fifth-Drafter
-            Trait fifthDrafter = builder
-                .WithName("Fifth-Drafter")
+            // Polisher
+            Trait polisher = builder
+                .WithName("Polisher")
+                .WithDescription("You can polish your book faster than anyone else.")
                 .WithPostProductionSpeed(1.25f)
                 .Build();
-            allTraits.Add(fifthDrafter);
+            allTraits.Add(polisher);
 
-            // Add anomaly
+            // Perfectionist
+            Trait perfectionist = builder
+                .WithName("Perfectionist")
+                .WithDescription("At the cost of speed in all areas, you make sure there are no mistakes.")
+                .WithPreProductionSpeed(0.65f)
+                .WithProductionSpeed(0.65f)
+                .WithPostProductionSpeed(0.65f)
+                .WithErrorMult(0f)
+                .Build();
+            allTraits.Add(perfectionist);
+
+            // Anomaly
             Trait anomaly = builder
                 .WithName("Anomaly")
+                .WithDescription("You're a biological anomaly: your bodily functions take a backseat to your work.")
                 .WithHungerSpeed(0.8f)
                 .WithBathroomSpeed(0.8f)
                 .Build();
             allTraits.Add(anomaly);
         }
+
+        public List<Trait> GetTraits() => allTraits;
     }
 }

@@ -19,11 +19,24 @@ namespace GhostWriter.Entities.Player.Traits
     public class TraitBuilder
     {
         private string name;
+        private string description;
         private Dictionary<Attribute, float> attributes = new();
 
+        /// <summary>
+        /// Add a name to the Trait
+        /// </summary>
         public TraitBuilder WithName(string name)
         {
             this.name = name;
+            return this;
+        }
+
+        /// <summary>
+        /// Add a description to the Trait
+        /// </summary>
+        public TraitBuilder WithDescription(string description)
+        {
+            this.description = description; 
             return this;
         }
 
@@ -122,7 +135,13 @@ namespace GhostWriter.Entities.Player.Traits
         /// </summary>
         public Trait Build()
         {
-            return new Trait(name, attributes);
+            // Built the Trait
+            Trait builtTrait = new Trait(name, description, attributes);
+
+            // Clear the attributes for further building
+            attributes.Clear();
+
+            return builtTrait;
         }
     }
 }
