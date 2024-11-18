@@ -1,17 +1,19 @@
 using GhostWriter.Entities.Player.Traits;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GhostWriter.MainMenu
 {
-    public class TraitButton : MonoBehaviour
+    public class TraitButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private TraitPicker traitPicker;
         private Text nameText;
         private Button button;
         private Trait trait;
+        private TraitTooltip tooltip;
 
-        public void Initialize(TraitPicker traitPicker, Trait trait)
+        public void Initialize(TraitPicker traitPicker, TraitTooltip tooltip, Trait trait)
         {
             // Get components
             nameText = GetComponentInChildren<Text>();
@@ -19,6 +21,7 @@ namespace GhostWriter.MainMenu
 
             // Set variables
             this.traitPicker = traitPicker;
+            this.tooltip = tooltip;
             this.trait = trait;
 
             // Set the name text
@@ -33,7 +36,17 @@ namespace GhostWriter.MainMenu
         /// </summary>
         private void OnClick()
         {
-            Debug.Log($"Trait: {trait.Name}, {trait.Description}");
+            Debug.Log($"Trait: {trait.Name}, {trait.Flavor}");
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            tooltip.ShowTooltip(trait.Flavor, trait.Effects);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            tooltip.HideTooltip();
         }
     }
 }

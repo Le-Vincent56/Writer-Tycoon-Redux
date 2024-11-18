@@ -1,8 +1,7 @@
-using GhostWriter.Entities.Player.Traits;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GhostWriter
+namespace GhostWriter.Entities.Player.Traits
 {
     public class PlayerData
     {

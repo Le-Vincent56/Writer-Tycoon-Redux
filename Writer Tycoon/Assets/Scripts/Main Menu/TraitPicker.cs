@@ -7,6 +7,7 @@ namespace GhostWriter.MainMenu
     public class TraitPicker : MonoBehaviour
     {
         [SerializeField] private GameObject traitPrefab;
+        [SerializeField] private TraitTooltip tooltip;
         private PlayerTraits playerTraits;
 
         private List<Trait> selectedTraits;
@@ -34,7 +35,7 @@ namespace GhostWriter.MainMenu
                 GameObject traitObj = Instantiate(traitPrefab, transform);
 
                 // Initialize it's Trait Button
-                traitObj.GetComponent<TraitButton>().Initialize(this, trait);
+                traitObj.GetComponent<TraitButton>().Initialize(this, tooltip, trait);
             }
         }
     }
