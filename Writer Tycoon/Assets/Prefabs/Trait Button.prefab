@@ -213,3 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83012ceca7524b546a40397b9c011c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedColor: {r: 0.7132075, g: 0.7132075, b: 0.7132075, a: 1}
+  unselectedColor: {r: 1, g: 1, b: 1, a: 1}
+  colorDuration: 0.3

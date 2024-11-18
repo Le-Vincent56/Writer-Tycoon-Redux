@@ -546,7 +546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &271572866
 RectTransform:
   m_ObjectHideFlags: 0
@@ -813,6 +813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   traitPrefab: {fileID: 3692102554456752726, guid: 36b4a31d3080f0e41aa247f16e7c6961, type: 3}
   tooltip: {fileID: 1305964635}
+  maxSelectedTraits: 3
 --- !u!1 &672631908
 GameObject:
   m_ObjectHideFlags: 0
@@ -16999,7 +17000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17099,7 +17100,7 @@ MonoBehaviour:
   canvas: {fileID: 714538911}
   flavorText: {fileID: 1259618859}
   effectText: {fileID: 928920076}
-  positiveEffectColor: {r: 0, g: 0.8113208, b: 0.23080674, a: 1}
+  positiveEffectColor: {r: 0, g: 0.6754716, b: 0.19252573, a: 1}
   negativeEffectColor: {r: 0.82641506, g: 0, b: 0.12939925, a: 1}
   fadeDuration: 0.2
 --- !u!114 &1305964636
@@ -17115,10 +17116,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 15
-    m_Right: 15
-    m_Top: 15
-    m_Bottom: 15
+    m_Left: 25
+    m_Right: 25
+    m_Top: 25
+    m_Bottom: 25
   m_ChildAlignment: 1
   m_Spacing: 30
   m_ChildForceExpandWidth: 0
@@ -17141,14 +17142,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81886786, g: 0.81886786, b: 0.81886786, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d8ee9286c9ae7004c9be743e0a577508, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70672c536fdf4d847b87707d08750402, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

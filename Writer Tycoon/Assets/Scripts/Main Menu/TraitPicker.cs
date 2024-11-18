@@ -10,6 +10,7 @@ namespace GhostWriter.MainMenu
         [SerializeField] private TraitTooltip tooltip;
         private PlayerTraits playerTraits;
 
+        [SerializeField] private int maxSelectedTraits;
         private List<Trait> selectedTraits;
 
         private void Awake()
@@ -20,6 +21,7 @@ namespace GhostWriter.MainMenu
             // Instantiate the selected Traits list
             selectedTraits = new();
 
+            // Create Trait Buttons
             CreateTraitButtons();
         }
 
@@ -37,6 +39,34 @@ namespace GhostWriter.MainMenu
                 // Initialize it's Trait Button
                 traitObj.GetComponent<TraitButton>().Initialize(this, tooltip, trait);
             }
+        }
+
+        /// <summary>
+        /// Select a Trait from a Trait Button
+        /// </summary>
+        public void SelectTrait(TraitButton traitButton)
+        {
+            // Exit case - if already reached the maximum amount of selected traits and the list
+            // doesn't already contain the selected trait
+            if (selectedTraits.Count >= maxSelectedTraits && !selectedTraits.Contains(traitButton.Trait)) return;
+
+            // Check if the Trait is already selected
+            if(selectedTraits.Contains(traitButton.Trait))
+            {
+                // Remove the Trait from the selected Traits List
+                selectedTraits.Remove(traitButton.Trait);
+
+                // Deselect the button
+                traitButton.Deselect();
+
+                return;
+            }
+
+            // Add the selected Trait
+            selectedTraits.Add(traitButton.Trait);
+
+            // Select the button
+            traitButton.Select();
         }
     }
 }
