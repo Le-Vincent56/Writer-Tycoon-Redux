@@ -1,4 +1,5 @@
 using GhostWriter.Entities.Player.Traits;
+using GhostWriter.Patterns.EventBus;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,11 +60,17 @@ namespace GhostWriter.MainMenu
                 // Deselect the button
                 traitButton.Deselect();
 
+                // List the selected traits
+                EventBus<ListTraits>.Raise(new ListTraits() { Traits = selectedTraits });
+
                 return;
             }
 
             // Add the selected Trait
             selectedTraits.Add(traitButton.Trait);
+
+            // List the selected traits
+            EventBus<ListTraits>.Raise(new ListTraits() { Traits =  selectedTraits });
 
             // Select the button
             traitButton.Select();
