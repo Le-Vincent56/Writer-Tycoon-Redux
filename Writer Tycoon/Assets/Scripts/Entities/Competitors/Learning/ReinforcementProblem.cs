@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using GhostWriter.WorkCreation.Ideation.Genres;
+using System.Linq;
 
 namespace GhostWriter.Entities.Competitors.Learning
 {
@@ -11,21 +11,15 @@ namespace GhostWriter.Entities.Competitors.Learning
     public class ReinforcementProblem
     {
         [SerializeField] private Dictionary<int, Func<(float value, object data)>> availableActionsConcept;
-        [SerializeField] private Dictionary<int, Func<(float value, object data)>> availableActionsFocusOne;
-        [SerializeField] private Dictionary<int, Func<(float value, object data)>> availableActionsFocusTwo;
-        [SerializeField] private Dictionary<int, Func<(float value, object data)>> availableActionsFocusThree;
+        [SerializeField] private Dictionary<Genre, List<Dictionary<int, Func<(float value, object data)>>>> genreFocusActions;
 
         public ReinforcementProblem(
             Dictionary<int, Func<(float value, object data)>> availableActionsConcept,
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusOne,
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusTwo,
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusThree,
+            Dictionary<Genre, List<Dictionary<int, Func<(float value, object data)>>>> genreFocusActions,
             bool debug = false)
         {
             this.availableActionsConcept = availableActionsConcept;
-            this.availableActionsFocusOne = availableActionsFocusOne;
-            this.availableActionsFocusTwo = availableActionsFocusTwo;
-            this.availableActionsFocusThree = availableActionsFocusThree;
+            this.genreFocusActions = genreFocusActions;
         }
 
         /// <summary>
@@ -33,14 +27,24 @@ namespace GhostWriter.Entities.Competitors.Learning
         /// </summary>
         public Dictionary<int, Func<(float value, object data)>> GetAvailableActions(int state)
         {
-            return state switch
-            {
-                0 => availableActionsConcept,
-                1 => availableActionsFocusOne,
-                2 => availableActionsFocusTwo,
-                3 => availableActionsFocusThree,
-                _ => null
-            };
+            // If the state is 0, return the concepting actions
+            if (state == 0) return availableActionsConcept;
+
+            // Calculate genre index
+            int genreIndex = (state - 1) / 3;
+
+            // Calculate action within the genre's actions
+            int actionIndex = (state - 1) % 3;
+
+            // Check if the genre index is negative or greater than or qual to the amount of focus actions
+            // for that genre
+            if (genreIndex < 0 || genreIndex >= genreFocusActions.Count)
+                return null; // Invalid state
+
+            Debug.Log($"Getting Available Actions for: {genreFocusActions.ElementAt(genreIndex).Key.Name}, Slider: {actionIndex + 1}");
+
+            // Return the given Genre-Focus actions
+            return genreFocusActions.ElementAt(genreIndex).Value[actionIndex];
         }
 
         /// <summary>

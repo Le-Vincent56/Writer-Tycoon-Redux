@@ -53,7 +53,7 @@ namespace GhostWriter.Entities.Competitors.Learning
         [SerializeField] private QLearner focusTwoLearner;
         [SerializeField] private QLearner focusThreeLearner;
         [SerializeField] private QLearner finalWorkLearner;
-        private ReinforcementProblem workProblem;
+        [SerializeField] private ReinforcementProblem workProblem;
 
         [Header("Scoring Objects")]
         [SerializeField] private GenreTopicCompatibility genreTopicCompatibility;
@@ -213,23 +213,26 @@ namespace GhostWriter.Entities.Competitors.Learning
                 }
             }
 
-            int sliderOneActionCount = 0;
-            int sliderTwoActionCount = 0;
-            int sliderThreeActionCount = 0;
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderOne = new();
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderTwo = new();
-            Dictionary<int, Func<(float value, object data)>> availableActionsFocusSliderThree = new();
+            // Create a Dictionary to map a Genre to its tested slider combinations
+            Dictionary<Genre, List<Dictionary<int, Func<(float value, object data)>>>> genreFocusActions = new();
 
             // Get all possible, unique Focus Slider combinations
             HashSet<(int s1, int s2, int s3)> focusSliderCombinations = GetSliderCombinations();
 
-            // Create slider combinations for phase one
-            foreach ((int s1, int s2, int s3) in focusSliderCombinations)
+            foreach(Genre genre in knownGenres)
             {
-                foreach(Genre genre in knownGenres)
+                int sliderOneActionCount = 0;
+                int sliderTwoActionCount = 0;
+                int sliderThreeActionCount = 0;
+
+                Dictionary<int, Func<(float value, object data)>> genreFocusActionsSliderOne = new();
+                Dictionary<int, Func<(float value, object data)>> genreFocusActionsSliderTwo = new();
+                Dictionary<int, Func<(float value, object data)>> genreFocusActionsSliderThree = new();
+
+                // Create the slider combinations for phase one
+                foreach((int s1, int s2, int s3) in focusSliderCombinations)
                 {
-                    // Add the action to the Dictionary with its corresponding function
-                    availableActionsFocusSliderOne.Add(
+                    genreFocusActionsSliderOne.Add(
                         sliderOneActionCount, () =>
                         AttemptSliderCombination(
                             genre,
@@ -239,18 +242,14 @@ namespace GhostWriter.Entities.Competitors.Learning
                         )
                     );
 
-                    // Increment the action count
                     sliderOneActionCount++;
                 }
-            }
 
-            // Create slider combinations for phase two
-            foreach ((int s1, int s2, int s3) in focusSliderCombinations)
-            {
-                foreach(Genre genre in knownGenres)
+                // Create slider combinations for phase two
+                foreach ((int s1, int s2, int s3) in focusSliderCombinations)
                 {
                     // Add the action to the Dictionary with its corresponding function
-                    availableActionsFocusSliderTwo.Add(
+                    genreFocusActionsSliderTwo.Add(
                         sliderTwoActionCount, () =>
                         AttemptSliderCombination(
                             genre,
@@ -263,15 +262,12 @@ namespace GhostWriter.Entities.Competitors.Learning
                     // Increment the action count
                     sliderTwoActionCount++;
                 }
-            }
 
-            // Create slider combinations for phase three
-            foreach ((int s1, int s2, int s3) in focusSliderCombinations)
-            {
-                foreach(Genre genre in knownGenres)
+                // Create slider combinations for phase three
+                foreach ((int s1, int s2, int s3) in focusSliderCombinations)
                 {
                     // Add the action to the Dictionary with its corresponding function
-                    availableActionsFocusSliderThree.Add(
+                    genreFocusActionsSliderThree.Add(
                         sliderThreeActionCount, () =>
                         AttemptSliderCombination(
                             genre,
@@ -284,14 +280,23 @@ namespace GhostWriter.Entities.Competitors.Learning
                     // Increment the action count
                     sliderThreeActionCount++;
                 }
+
+                // Create the list of Actions
+                List<Dictionary<int, Func<(float value, object data)>>> genreFocusActionsList = new()
+                {
+                    genreFocusActionsSliderOne,
+                    genreFocusActionsSliderTwo,
+                    genreFocusActionsSliderThree,
+                };
+
+                // Add it to the Dictionary
+                genreFocusActions.Add(genre, genreFocusActionsList);
             }
 
             // Create the new Concept Reinforcement Problem
             workProblem = new ReinforcementProblem(
                 availableActionsConcept,
-                availableActionsFocusSliderOne, 
-                availableActionsFocusSliderTwo,
-                availableActionsFocusSliderThree
+                genreFocusActions
             );
         }
 
@@ -446,19 +451,71 @@ namespace GhostWriter.Entities.Competitors.Learning
 
                 case Problem.FocusOne:
                     Debug.Log(" ----- LEARNING FOCUS ONE ------");
-                    focusOneLearner.RunQLearningStep(workProblem, 1, 3, learnFactor, discountFactor, explorationFactor);
+
+                    // Exit case - the current concept data is the wrong type
+                    if (currentConcept.data.Data is not AIConceptData focusOneConceptData) return;
+
+                    // Set a default state
+                    int focusOneState = 0;
+
+                    // Iterate through the known genres
+                    for(int i = 0; i < knownGenres.Count; i++)
+                    {
+                        // Skip if the Genres are not equal
+                        if (focusOneConceptData.Genre != knownGenres.ElementAt(i)) continue;
+
+                        // Set the state based on the concepted Genre
+                        focusOneState = i * 3 + 1;
+                    }
+
+                    // Run the learning
+                    focusOneLearner.RunQLearningStep(workProblem, focusOneState, 3, learnFactor, discountFactor, explorationFactor);
                     currentFocusOne = focusOneLearner.GetBestAction(true);
                     break;
 
                 case Problem.FocusTwo:
                     Debug.Log(" ----- LEARNING FOCUS TWO ------");
-                    focusTwoLearner.RunQLearningStep(workProblem, 2, 3, learnFactor, discountFactor, explorationFactor);
+
+                    // Exit case - the current concept data is the wrong type
+                    if (currentConcept.data.Data is not AIConceptData focusTwoConceptData) return;
+
+                    // Set a default state
+                    int focusTwoState = 0;
+
+                    // Iterate through the known genres
+                    for (int i = 0; i < knownGenres.Count; i++)
+                    {
+                        // Skip if the Genres are not equal
+                        if (focusTwoConceptData.Genre != knownGenres.ElementAt(i)) continue;
+
+                        // Set the state based on the concepted Genre
+                        focusTwoState = i * 3 + 2;
+                    }
+
+                    focusTwoLearner.RunQLearningStep(workProblem, focusTwoState, 3, learnFactor, discountFactor, explorationFactor);
                     currentFocusTwo = focusTwoLearner.GetBestAction(true);
                     break;
 
                 case Problem.FocusThree:
                     Debug.Log(" ----- LEARNING FOCUS THREE ------");
-                    focusThreeLearner.RunQLearningStep(workProblem, 3, 3, learnFactor, discountFactor, explorationFactor);
+
+                    // Exit case - the current concept data is the wrong type
+                    if (currentConcept.data.Data is not AIConceptData focusThreeConceptData) return;
+
+                    // Set a default state
+                    int focusThreeState = 0;
+
+                    // Iterate through the known genres
+                    for (int i = 0; i < knownGenres.Count; i++)
+                    {
+                        // Skip if the Genres are not equal
+                        if (focusThreeConceptData.Genre != knownGenres.ElementAt(i)) continue;
+
+                        // Set the state based on the concepted Genre
+                        focusThreeState = i * 3 + 3;
+                    }
+
+                    focusThreeLearner.RunQLearningStep(workProblem, focusThreeState, 3, learnFactor, discountFactor, explorationFactor);
                     currentFocusThree = focusThreeLearner.GetBestAction(true);
                     break;
             }
@@ -491,13 +548,20 @@ namespace GhostWriter.Entities.Competitors.Learning
             float focusTwoScore = phaseScores * currentFocusTwo.data.Value;
             float focusThreeScore = phaseScores * currentFocusThree.data.Value;
 
-            // Calculate the total scoree from the Focus Sliders and the chosen Genre
-            Debug.Log($"Focus One Total: {focusOneScore}" +
-                $"\nFocus Two Total: {focusTwoScore}" +
-                $"\nFocus Three Total: {focusThreeScore}");
-
+            // Calculate the total points
             float totalPoints = focusOneScore + focusTwoScore + focusThreeScore;
-            Debug.Log($"Rating Total Points: {totalPoints / targetScore}");
+
+            // Creat the rating string
+            string ratingString = "Rating: ";
+            ratingString += $"\nTopic: {chosenTopic.Name}" +
+                $"\nGenre: {chosenGenre.Name}" +
+                $"\nAudience: {chosenAudience}" +
+                $"\nFocus One Total: {focusOneScore}" +
+                $"\nFocus Two Total: {focusTwoScore}" +
+                $"\nFocus Three Total: {focusThreeScore}" +
+                $"\nTotal Points: {totalPoints / targetScore}";
+
+            Debug.Log(ratingString);
         }
     }
 }
