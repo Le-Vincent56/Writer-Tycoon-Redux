@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: topics
       Entry: 7
-      Data: 0|System.Collections.Generic.HashSet`1[[WriterTycoon.WorkCreation.Ideation.Topics.TopicType,
+      Data: 0|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Topics.TopicType,
         Assembly-CSharp]], System.Core
     - Name: 
       Entry: 12
@@ -51,14 +51,20 @@ MonoBehaviour:
       Data: 
     - Name: genres
       Entry: 7
-      Data: 1|System.Collections.Generic.HashSet`1[[WriterTycoon.WorkCreation.Ideation.Genres.GenreType,
+      Data: 1|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Genres.GenreType,
         Assembly-CSharp]], System.Core
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 9
     - Name: 
       Entry: 3
       Data: 4
+    - Name: 
+      Entry: 3
+      Data: 6
     - Name: 
       Entry: 13
       Data: 

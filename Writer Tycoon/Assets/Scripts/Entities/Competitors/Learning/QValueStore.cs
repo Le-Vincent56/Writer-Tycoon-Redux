@@ -3,7 +3,6 @@ using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GhostWriter.WorkCreation.Ideation.Genres;
 
 namespace GhostWriter.Entities.Competitors.Learning
 {

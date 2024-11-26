@@ -10,6 +10,7 @@ using GhostWriter.WorkCreation.Ideation.Compatibility;
 using GhostWriter.WorkCreation.Ideation.Genres;
 using GhostWriter.WorkCreation.Ideation.Topics;
 using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.Extensions.GameObjects;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -85,12 +86,24 @@ namespace GhostWriter.Entities.Competitors
             GenreFocusTargets genreFocusTargets
         )
         {
-            // Create the brain
-            brain = new CompetitorBrain(
-                learned, 
-                learningFactor, discountFactor, explorationFactor, 
+            // Check if the Brain is learned
+            if (learned)
+            {
+                // Get or add the Learned Brain
+                brain = gameObject.GetOrAdd<LearnedBrain>();
+                
+                // Set the learning variables
+                (brain as LearnedBrain).SetVariables(learningFactor, discountFactor, explorationFactor);
+            } else
+            {
+                // Get or add the Random Brain
+                brain = gameObject.GetOrAdd<RandomBrain>();
+            }
+
+            // Initialize the Brain
+            brain.InitializeBrain(
                 workType, targetScore,
-                availableTopics, knownTopics, 
+                availableTopics, knownTopics,
                 availableGenres, knownGenres,
                 genreTopicCompatibility,
                 topicAudienceCompatibility,

@@ -41,8 +41,6 @@ namespace GhostWriter.Entities.Competitors.Learning
             if (genreIndex < 0 || genreIndex >= genreFocusActions.Count)
                 return null; // Invalid state
 
-            Debug.Log($"Getting Available Actions for: {genreFocusActions.ElementAt(genreIndex).Key.Name}, Slider: {actionIndex + 1}");
-
             // Return the given Genre-Focus actions
             return genreFocusActions.ElementAt(genreIndex).Value[actionIndex];
         }

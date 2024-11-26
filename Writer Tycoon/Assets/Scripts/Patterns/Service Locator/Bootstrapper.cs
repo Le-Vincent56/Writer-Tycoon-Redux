@@ -1,5 +1,5 @@
 using UnityEngine;
-using GhostWriter.Extensions.GameObject;
+using GhostWriter.Extensions.GameObjects;
 
 namespace GhostWriter.Patterns.ServiceLocator
 {

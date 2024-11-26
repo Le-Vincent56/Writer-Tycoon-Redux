@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using GhostWriter.Extensions.GameObject;
+using GhostWriter.Extensions.GameObjects;
 
 namespace GhostWriter.Patterns.ServiceLocator
 {
