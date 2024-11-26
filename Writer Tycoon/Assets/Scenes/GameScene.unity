@@ -593,60 +593,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes:
     - Name: Updated
-      Entry: 7
-      Data: 0|UnityEngine.Events.UnityAction`1[[System.Int32, mscorlib]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 7
-      Data: 1|WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimator+<>c,
-        Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 2|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimator+<>c,
-        Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__26_0
-    - Name: delegateType
-      Entry: 7
-      Data: 3|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[System.Int32, mscorlib]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 4|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
   workType: 0
 --- !u!1 &16952827
@@ -14467,61 +14414,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes:
     - Name: OnWorkersUpdated
-      Entry: 7
-      Data: 0|UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 7
-      Data: 1|WriterTycoon.WorkCreation.Ideation.Workers.WorkerManager+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 2|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.Workers.WorkerManager+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__17_0
-    - Name: delegateType
-      Entry: 7
-      Data: 3|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker,
-        Assembly-CSharp]], mscorlib]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 4|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Collections.Generic.List`1[[WriterTycoon.Entities.IWorker, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
   selectedWorkersMax: 1
 --- !u!1 &866261739
@@ -15411,6 +15304,7 @@ MonoBehaviour:
   competitorPrefab: {fileID: 6866723620101752621, guid: f827ce8b585723c40b32919ee8430758, type: 3}
   competitorDatas:
   - {fileID: 11400000, guid: 598e7e5af6e864b44be76666867c7c52, type: 2}
+  - {fileID: 11400000, guid: 5bf7c3eeab89277438c5d695fdc5d069, type: 2}
 --- !u!1 &909165084
 GameObject:
   m_ObjectHideFlags: 0
@@ -17985,7 +17879,7 @@ MonoBehaviour:
       Data: 
     - Name: timeEstimates
       Entry: 7
-      Data: WriterTycoon.WorkCreation.Ideation.TimeEstimation.TimeEstimates, Assembly-CSharp
+      Data: GhostWriter.WorkCreation.Ideation.TimeEstimation.TimeEstimates, Assembly-CSharp
     - Name: Total
       Entry: 3
       Data: 0
@@ -18003,7 +17897,7 @@ MonoBehaviour:
       Data: 
     - Name: compatibilityInfo
       Entry: 7
-      Data: WriterTycoon.WorkCreation.Ideation.Compatibility.CompatibilityInfo, Assembly-CSharp
+      Data: GhostWriter.WorkCreation.Ideation.Compatibility.CompatibilityInfo, Assembly-CSharp
     - Name: TopicGenreTypes
       Entry: 6
       Data: 
@@ -24240,96 +24134,10 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes:
     - Name: OnAudienceSelected
-      Entry: 7
-      Data: 0|UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: target
-      Entry: 7
-      Data: 1|WriterTycoon.WorkCreation.Ideation.Audience.AudienceManager+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 2|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceManager+<>c, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__13_0
-    - Name: delegateType
-      Entry: 7
-      Data: 3|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction`1[[WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton,
-        Assembly-CSharp]], UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 4|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: WriterTycoon.WorkCreation.Ideation.Audience.AudienceButton, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: OnAudienceCleared
-      Entry: 7
-      Data: 6|UnityEngine.Events.UnityAction, UnityEngine.CoreModule
-    - Name: target
-      Entry: 9
-      Data: 1
-    - Name: declaringType
-      Entry: 9
-      Data: 2
-    - Name: methodName
-      Entry: 1
-      Data: <.ctor>b__13_1
-    - Name: delegateType
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: UnityEngine.Events.UnityAction, UnityEngine.CoreModule
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 8|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
   selectedAudience: 0
 --- !u!1 &1406793483
@@ -32308,7 +32116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1870482280
