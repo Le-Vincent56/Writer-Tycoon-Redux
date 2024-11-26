@@ -1,14 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GhostWriter.WorkCreation.Development.PointGeneration;
-using GhostWriter.WorkCreation.Ideation.Audience;
 using GhostWriter.WorkCreation.Ideation.Compatibility;
 using GhostWriter.WorkCreation.Ideation.Genres;
 using GhostWriter.WorkCreation.Ideation.Topics;
 using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.WorkCreation.Ideation.Audience;
 
 namespace GhostWriter.Entities.Competitors.Learning
 {
+    public enum Problem
+    {
+        Concept,
+        FocusOne,
+        FocusTwo,
+        FocusThree
+    }
+
     public struct AIConceptData
     {
         public Topic Topic;
@@ -24,12 +32,12 @@ namespace GhostWriter.Entities.Competitors.Learning
         public (PointCategory category, int value) SliderThree;
     }
 
-    public enum Problem
+    public struct RateData
     {
-        Concept,
-        FocusOne,
-        FocusTwo,
-        FocusThree
+        public Topic Topic;
+        public Genre Genre;
+        public AudienceType Audience;
+        public float FinalScore;
     }
 
     public abstract class CompetitorBrain : MonoBehaviour
@@ -40,10 +48,12 @@ namespace GhostWriter.Entities.Competitors.Learning
         [SerializeField] protected HashSet<Topic> knownTopics;
         [SerializeField] protected HashSet<Genre> knownGenres;
 
-        [Header("Scoring Objects")]
+        [Header("Work and Scoring Objects")]
         [SerializeField] protected GenreTopicCompatibility genreTopicCompatibility;
         [SerializeField] protected TopicAudienceCompatibility topicAudienceCompatibility;
         [SerializeField] protected GenreFocusTargets genreFocusTargets;
+
+        public WorkType WorkType { get => workType; }
 
         /// <summary>
         /// Initialize the Competitor Brain
@@ -69,8 +79,8 @@ namespace GhostWriter.Entities.Competitors.Learning
             this.topicAudienceCompatibility = topicAudienceCompatibility;
             this.genreFocusTargets = genreFocusTargets;
 
-            // Initialize learning
-            InitializeLearning();
+            // Extend the Initialization for child classes
+            ExtendInitialization();
         }
 
         /// <summary>
@@ -174,10 +184,10 @@ namespace GhostWriter.Entities.Competitors.Learning
             return componentScore * totalMultiplier;
         }
 
-        public abstract void InitializeLearning();
+        public abstract void ExtendInitialization();
 
-        public abstract void Learn(Problem problem);
+        public abstract void HandleProblem(Problem problem);
 
-        public abstract void Rate();
+        public abstract RateData Rate();
     }
 }

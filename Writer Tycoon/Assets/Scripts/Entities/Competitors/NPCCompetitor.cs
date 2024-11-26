@@ -11,6 +11,9 @@ using GhostWriter.WorkCreation.Ideation.Genres;
 using GhostWriter.WorkCreation.Ideation.Topics;
 using GhostWriter.WorkCreation.Ideation.WorkTypes;
 using GhostWriter.Extensions.GameObjects;
+using GhostWriter.WorkCreation.Publication;
+using GhostWriter.Utilities.Hash;
+using GhostWriter.WorkCreation.Ideation.About;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -20,6 +23,7 @@ namespace GhostWriter.Entities.Competitors
 
         [Header("Competitor Information")]
         [SerializeField] private string competitorName;
+        [SerializeField] private Dictionary<int, PublishedWork> workHistory;
 
         [Header("Working Variables")]
         [SerializeField] private bool working;
@@ -67,6 +71,9 @@ namespace GhostWriter.Entities.Competitors
             // Set variables
             this.competitorName = competitorName;
             working = false;
+
+            // Initialize the Work history
+            workHistory = new();
 
             // Initialize the state machine
             CreateStateMachine();
@@ -206,12 +213,36 @@ namespace GhostWriter.Entities.Competitors
         /// <summary>
         /// Learn from a problem using the CompetitorBrain
         /// </summary>
-        public void Learn(Problem problem) => brain.Learn(problem);
+        public void Learn(Problem problem) => brain.HandleProblem(problem);
 
         /// <summary>
         /// Rate the current concept and slider values
         /// </summary>
-        public void Rate() => brain.Rate();
+        public void Rate()
+        {
+            // Get the final data
+            RateData finalData = brain.Rate();
+
+            // Create the Published Work object
+            PublishedWork publishedWork = new(
+                HashUtils.GenerateHash(),
+                this,
+                new AboutInfo()
+                {
+                    Title = competitorName,
+                    // TODO: Add a random name
+                    // TODO: Add a random description
+                },
+                new List<Topic>() { finalData.Topic },
+                new List<Genre>() { finalData.Genre },
+                finalData.Audience,
+                brain.WorkType,
+                finalData.FinalScore
+            );
+
+            // Add to the dictionary
+            workHistory.Add(publishedWork.Hash, publishedWork);
+        }
 
         /// <summary>
         /// Calculate sales for the NPC Competitor

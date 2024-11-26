@@ -31,7 +31,7 @@ namespace GhostWriter.Entities.Competitors.Learning
         /// <summary>
         /// Initialize the Learning variables
         /// </summary>
-        public override void InitializeLearning()
+        public override void ExtendInitialization()
         {
             // Initialize the Q-Learners
             conceptLearner = new QLearner();
@@ -274,21 +274,18 @@ namespace GhostWriter.Entities.Competitors.Learning
         }
 
         /// <summary>
-        /// Learn about a specific problem
+        /// Handle a specific problem using learning
         /// </summary>
-        public override void Learn(Problem problemToLearn)
+        public override void HandleProblem(Problem problemToLearn)
         {
             switch (problemToLearn)
             {
                 case Problem.Concept:
-                    Debug.Log(" ----- LEARNING CONCEPT ------");
                     conceptLearner.RunQLearningStep(workProblem, 0, 3, learnFactor, discountFactor, explorationFactor);
-                    currentConcept = conceptLearner.GetBestAction(true);
+                    currentConcept = conceptLearner.GetBestAction();
                     break;
 
                 case Problem.FocusOne:
-                    Debug.Log(" ----- LEARNING FOCUS ONE ------");
-
                     // Exit case - the current concept data is the wrong type
                     if (currentConcept.data.Data is not AIConceptData focusOneConceptData) return;
 
@@ -307,12 +304,10 @@ namespace GhostWriter.Entities.Competitors.Learning
 
                     // Run the learning
                     focusOneLearner.RunQLearningStep(workProblem, focusOneState, 3, learnFactor, discountFactor, explorationFactor);
-                    currentFocusOne = focusOneLearner.GetBestAction(true);
+                    currentFocusOne = focusOneLearner.GetBestAction();
                     break;
 
                 case Problem.FocusTwo:
-                    Debug.Log(" ----- LEARNING FOCUS TWO ------");
-
                     // Exit case - the current concept data is the wrong type
                     if (currentConcept.data.Data is not AIConceptData focusTwoConceptData) return;
 
@@ -330,12 +325,10 @@ namespace GhostWriter.Entities.Competitors.Learning
                     }
 
                     focusTwoLearner.RunQLearningStep(workProblem, focusTwoState, 3, learnFactor, discountFactor, explorationFactor);
-                    currentFocusTwo = focusTwoLearner.GetBestAction(true);
+                    currentFocusTwo = focusTwoLearner.GetBestAction();
                     break;
 
                 case Problem.FocusThree:
-                    Debug.Log(" ----- LEARNING FOCUS THREE ------");
-
                     // Exit case - the current concept data is the wrong type
                     if (currentConcept.data.Data is not AIConceptData focusThreeConceptData) return;
 
@@ -353,7 +346,7 @@ namespace GhostWriter.Entities.Competitors.Learning
                     }
 
                     focusThreeLearner.RunQLearningStep(workProblem, focusThreeState, 3, learnFactor, discountFactor, explorationFactor);
-                    currentFocusThree = focusThreeLearner.GetBestAction(true);
+                    currentFocusThree = focusThreeLearner.GetBestAction();
                     break;
             }
         }
@@ -361,25 +354,29 @@ namespace GhostWriter.Entities.Competitors.Learning
         /// <summary>
         /// Rate the work
         /// </summary>
-        public override void Rate()
+        public override RateData Rate()
         {
+            RateData finalData = new RateData()
+            {
+                Topic = null,
+                Genre = null,
+                Audience = AudienceType.None,
+                FinalScore = 0f
+            };
+
             // Exit case - the Concept data is the wrong type
-            if (currentConcept.data.Data is not AIConceptData conceptData) return;
+            if (currentConcept.data.Data is not AIConceptData conceptData) return finalData;
 
             // Exit case - the Focus One data is null or the wrong type
-            if (currentFocusOne.data.Data is not AISliderData focusOneData) return;
+            if (currentFocusOne.data.Data is not AISliderData) return finalData;
 
             // Exit case - the Focus Two data is null or the wrong type
-            if (currentFocusTwo.data.Data is not AISliderData focusTwoData) return;
+            if (currentFocusTwo.data.Data is not AISliderData) return finalData;
 
             // Exit case - the Focus Three data is null or the wrong type
-            if (currentFocusThree.data.Data is not AISliderData focusThreeData) return;
+            if (currentFocusThree.data.Data is not AISliderData) return finalData;
 
-            // Set concept data
-            Topic chosenTopic = conceptData.Topic;
-            Genre chosenGenre = conceptData.Genre;
-            AudienceType chosenAudience = conceptData.Audience;
-
+            // Get the individual phase scores
             float phaseScores = targetScore / 3f;
             float focusOneScore = phaseScores * currentFocusOne.data.Value;
             float focusTwoScore = phaseScores * currentFocusTwo.data.Value;
@@ -388,17 +385,13 @@ namespace GhostWriter.Entities.Competitors.Learning
             // Calculate the total points
             float totalPoints = focusOneScore + focusTwoScore + focusThreeScore;
 
-            // Creat the rating string
-            string ratingString = "Rating: ";
-            ratingString += $"\nTopic: {chosenTopic.Name}" +
-                $"\nGenre: {chosenGenre.Name}" +
-                $"\nAudience: {chosenAudience}" +
-                $"\nFocus One Total: {focusOneScore}" +
-                $"\nFocus Two Total: {focusTwoScore}" +
-                $"\nFocus Three Total: {focusThreeScore}" +
-                $"\nTotal Points: {totalPoints / targetScore}";
+            // Set the rate data
+            finalData.Topic = conceptData.Topic;
+            finalData.Genre = conceptData.Genre;
+            finalData.Audience = conceptData.Audience;
+            finalData.FinalScore = totalPoints / targetScore;
 
-            Debug.Log(ratingString);
+            return finalData;
         }
     }
 }
