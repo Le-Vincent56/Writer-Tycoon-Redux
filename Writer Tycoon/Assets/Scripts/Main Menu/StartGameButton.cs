@@ -1,5 +1,7 @@
+using DG.Tweening;
 using GhostWriter.Patterns.EventBus;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GhostWriter.MainMenu
@@ -39,7 +41,13 @@ namespace GhostWriter.MainMenu
         /// </summary>
         private void OnClick()
         {
-            // TODO: Start the game
+            // TODO: Save traits
+
+            // Kill all Tweens
+            DOTween.KillAll();
+
+            // Change the scene
+            SceneManager.LoadScene(1);
         }
 
         /// <summary>
