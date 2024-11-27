@@ -4,6 +4,8 @@ using UnityEngine;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.Patterns.ServiceLocator;
 using GhostWriter.WorkCreation.Publication;
+using GhostWriter.Entities.Tracker;
+using GhostWriter.Entities;
 
 namespace GhostWriter.World.Economy
 {
@@ -12,6 +14,9 @@ namespace GhostWriter.World.Economy
         [SerializeField] private Dictionary<int, PublishedWork> sellingWorksDict;
         [SerializeField] private Dictionary<int, PublishedWorkLifecycle> lifecycleDict;
         private Calendar.Calendar calendar;
+        private CompetitorRecord competitorRecord;
+
+        private ICompetitor player;
 
         [Header("Sell Variables")]
         [SerializeField] private float peakCopies = 500f;
@@ -46,6 +51,10 @@ namespace GhostWriter.World.Economy
         {
             // Get the Calendar to use as a service
             calendar = ServiceLocator.ForSceneOf(this).Get<Calendar.Calendar>();
+            competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
+
+            // Store the Player character
+            player = competitorRecord.GetPlayer();
         }
 
         /// <summary>
@@ -73,6 +82,9 @@ namespace GhostWriter.World.Economy
 
             // Add to the lifecycle dictionary
             lifecycleDict.Add(publishedWork.Hash, lifecycle);
+
+            // Exit case - the Published Work owner is not the Player
+            if (publishedWork.Owner != player) return;
 
             EventBus<CreateSalesGraph>.Raise(new CreateSalesGraph()
             {
@@ -129,19 +141,23 @@ namespace GhostWriter.World.Economy
                     });
                 }
 
-                // Update the associated Sales Graph
-                EventBus<UpdateSalesGraph>.Raise(new UpdateSalesGraph()
+                // Check if the Owner is the Player
+                if (work.Owner == player)
                 {
-                    Hash = hash,
-                    Sales = weeklySales
-                });
+                    // Update the associated Sales Graph
+                    EventBus<UpdateSalesGraph>.Raise(new UpdateSalesGraph()
+                    {
+                        Hash = hash,
+                        Sales = weeklySales
+                    });
 
-                // Update the Publication Card
-                EventBus<UpdatePublicationCard>.Raise(new UpdatePublicationCard()
-                {
-                    Hash = hash,
-                    PublishedWork = work
-                });
+                    // Update the Publication Card
+                    EventBus<UpdatePublicationCard>.Raise(new UpdatePublicationCard()
+                    {
+                        Hash = hash,
+                        PublishedWork = work
+                    });
+                }
             }
             
             // Iterate through each completed hash
@@ -221,6 +237,7 @@ namespace GhostWriter.World.Economy
                 float variation = 0.1f; // +- 10$%
                 float randomFactor = 1f + Random.Range(-variation, variation);
                 int sales = Mathf.RoundToInt(salesMax * randomFactor);
+
                 weeklySales.Add(sales);
             }
 

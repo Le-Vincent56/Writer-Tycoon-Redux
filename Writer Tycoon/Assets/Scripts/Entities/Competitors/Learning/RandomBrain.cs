@@ -141,13 +141,19 @@ namespace GhostWriter.Entities.Competitors.Learning
             // Calculate the total points
             float totalPoints = focusOneScore + focusTwoScore + focusThreeScore;
 
+            // Multiply by 100 and roundto an integer
+            float roundedPercentage = Mathf.RoundToInt((totalPoints / targetScore) * 100f);
+
+            // Clamp the final percentage to a maximum of 100 and a minimum of 0
+            float finalPercentage = Mathf.Clamp(roundedPercentage, 0, 100);
+
             // Create the final data
             RateData finalData = new RateData()
             {
                 Topic = chosenTopic,
                 Genre = chosenGenre,
                 Audience = chosenAudience,
-                FinalScore = (totalPoints / targetScore)
+                FinalScore = finalPercentage
             };
 
             return finalData;

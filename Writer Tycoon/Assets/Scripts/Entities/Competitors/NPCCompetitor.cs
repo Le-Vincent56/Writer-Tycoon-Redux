@@ -252,11 +252,14 @@ namespace GhostWriter.Entities.Competitors
                 finalData.FinalScore
             );
 
-            // Set the release date of the Published Work
-            publishedWork.SetReleaseDate(calendar.Day, calendar.Month, calendar.Year);
-
             // Add to the dictionary
             workHistory.Add(publishedWork.Hash, publishedWork);
+
+            // Sell the work
+            EventBus<SellWork>.Raise(new SellWork()
+            {
+                WorkToSell = publishedWork
+            });
         }
 
         /// <summary>
