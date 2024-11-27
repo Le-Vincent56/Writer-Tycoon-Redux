@@ -7,6 +7,7 @@ using GhostWriter.WorkCreation.Ideation.Compatibility;
 using GhostWriter.WorkCreation.Ideation.Genres;
 using GhostWriter.WorkCreation.Ideation.Topics;
 using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.World.Calendar;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -20,6 +21,8 @@ namespace GhostWriter.Entities.Competitors
         private GenreManager genreManager;
         private CompatibilityManager compatibilityManager;
         private PointGenerationManager pointGenerationManager;
+        private Calendar calendar;
+        private GeneratedStoryBank generatedStoryBank;
 
         private void Awake()
         {
@@ -47,6 +50,8 @@ namespace GhostWriter.Entities.Competitors
             genreManager = ServiceLocator.ForSceneOf(this).Get<GenreManager>();
             compatibilityManager = ServiceLocator.ForSceneOf(this).Get<CompatibilityManager>();
             pointGenerationManager = ServiceLocator.ForSceneOf(this).Get<PointGenerationManager>();
+            calendar = ServiceLocator.ForSceneOf(this).Get<Calendar>();
+            generatedStoryBank = new GeneratedStoryBank();
 
             // Iterate through each competitor data
             foreach (CompetitorData data in competitorDatas)
@@ -71,7 +76,7 @@ namespace GhostWriter.Entities.Competitors
             if (!competitorObj.TryGetComponent(out NPCCompetitor component)) return;
 
             // Initialize the component
-            component.Initialize(data.competitorName, data.startingMoney);
+            component.Initialize(data.competitorName, data.startingMoney, calendar, generatedStoryBank);
             component.CreateBrain(
                 data.learned, 
                 data.learningFactor,data.discountFactor, data.explorationFactor,

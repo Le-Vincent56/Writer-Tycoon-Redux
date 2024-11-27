@@ -14,6 +14,7 @@ using GhostWriter.Extensions.GameObjects;
 using GhostWriter.WorkCreation.Publication;
 using GhostWriter.Utilities.Hash;
 using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.World.Calendar;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -36,6 +37,8 @@ namespace GhostWriter.Entities.Competitors
         [Header("Brain")]
         [SerializeField] private CompetitorBrain brain;
 
+        private Calendar calendar;
+        private GeneratedStoryBank generatedStoryBank;
         private StateMachine stateMachine;
 
         private EventBinding<PassDay> passDayEvent;
@@ -59,7 +62,7 @@ namespace GhostWriter.Entities.Competitors
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
-        public void Initialize(string competitorName, float startingMoney)
+        public void Initialize(string competitorName, float startingMoney, Calendar calendar, GeneratedStoryBank generatedStoryBank)
         {
             // Get Components
             bank = GetComponent<Bank>();
@@ -74,6 +77,12 @@ namespace GhostWriter.Entities.Competitors
 
             // Initialize the Work history
             workHistory = new();
+
+            // Get the Calendar
+            this.calendar = calendar;
+
+            // Get the Generated Story Bank
+            this.generatedStoryBank = generatedStoryBank;
 
             // Initialize the state machine
             CreateStateMachine();
@@ -223,15 +232,18 @@ namespace GhostWriter.Entities.Competitors
             // Get the final data
             RateData finalData = brain.Rate();
 
+            // Get a title and description from the Generated Story Bank
+            (string Title, string Description) generatedStory = generatedStoryBank.Get(finalData.Genre.Type);
+
             // Create the Published Work object
             PublishedWork publishedWork = new(
                 HashUtils.GenerateHash(),
                 this,
                 new AboutInfo()
                 {
-                    Title = competitorName,
-                    // TODO: Add a random name
-                    // TODO: Add a random description
+                    Author = competitorName,
+                    Title = generatedStory.Title,
+                    Description = generatedStory.Description,
                 },
                 new List<Topic>() { finalData.Topic },
                 new List<Genre>() { finalData.Genre },
@@ -239,6 +251,9 @@ namespace GhostWriter.Entities.Competitors
                 brain.WorkType,
                 finalData.FinalScore
             );
+
+            // Set the release date of the Published Work
+            publishedWork.SetReleaseDate(calendar.Day, calendar.Month, calendar.Year);
 
             // Add to the dictionary
             workHistory.Add(publishedWork.Hash, publishedWork);
