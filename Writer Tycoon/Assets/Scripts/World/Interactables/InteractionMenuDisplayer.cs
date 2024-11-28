@@ -3,11 +3,15 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.World.Interactables.UI
 {
     public class InteractionMenuDisplayer : SerializedMonoBehaviour
     {
+        private WindowTracker windowTracker;
+
         [SerializeField] private float fadeDuration;
         [SerializeField] private Dictionary<InteractableType, CanvasGroup> menus;
         [SerializeField] private CanvasGroup bookshelfGroup;
@@ -43,6 +47,12 @@ namespace GhostWriter.World.Interactables.UI
         private void OnDisable()
         {
             EventBus<ToggleInteractMenu>.Deregister(showInteractMenuEvent);
+        }
+
+        private void Start()
+        {
+            // Get the Window Tracker
+            windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
         }
 
         /// <summary>
@@ -109,6 +119,9 @@ namespace GhostWriter.World.Interactables.UI
         /// </summary>
         private void ShowMenu(CanvasGroup canvasGroup, Vector2 cursorPosition, Interactable interactable = null)
         {
+            // Exit case - a UI window is open
+            if (windowTracker.CheckIfAnyOpen()) return;
+
             canvasGroup.transform.position = cursorPosition;
 
             // Fade in to 1

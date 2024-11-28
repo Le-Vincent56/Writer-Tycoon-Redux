@@ -4,10 +4,12 @@ using UnityEngine;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.Patterns.StateMachine;
 using GhostWriter.WorkCreation.UI.Publication.States;
+using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.WorkCreation.UI.Publication
 {
-    public class PublicationHistoryWindow : MonoBehaviour
+    public class PublicationHistoryWindow : MonoBehaviour, IWindow
     {
         [Header("State")]
         [SerializeField] private int state;
@@ -37,6 +39,8 @@ namespace GhostWriter.WorkCreation.UI.Publication
 
         public int SHELF { get => 0; }
         public int DETAILS { get => 1; }
+
+        public bool Open { get; set; }
 
         private void Awake()
         {
@@ -91,6 +95,15 @@ namespace GhostWriter.WorkCreation.UI.Publication
             EventBus<CreatePublicationCard>.Deregister(createPublicationCardEvent);
             EventBus<UpdatePublicationCard>.Deregister(updatePublicationCardsEvent);
             EventBus<ClosePublicationHistory>.Deregister(closePublicationHistoryEvent);
+        }
+
+        private void Start()
+        {
+            // Get the WindowTracker
+            WindowTracker windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+
+            // Register this as a Window
+            windowTracker.RegisterWindow(this);
         }
 
         private void Update()
@@ -160,6 +173,9 @@ namespace GhostWriter.WorkCreation.UI.Publication
 
             // Translate down
             Translate(-translateValue, animationDuration);
+
+            // Set the window to open
+            Open = true;
         }
 
         /// <summary>
@@ -175,6 +191,9 @@ namespace GhostWriter.WorkCreation.UI.Publication
 
             // Translate down
             Translate(-translateValue, animationDuration);
+
+            // Set the window to closed
+            Open = false;
         }
 
         /// <summary>

@@ -6,10 +6,12 @@ using GhostWriter.Patterns.StateMachine;
 using GhostWriter.WorkCreation.Development.FocusSliders;
 using GhostWriter.WorkCreation.Development.Tracker;
 using GhostWriter.WorkCreation.Development.UI.States;
+using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.WorkCreation.UI.Development
 {
-    public class FocusSliderWindow : MonoBehaviour
+    public class FocusSliderWindow : MonoBehaviour, IWindow
     {
         [SerializeField] private bool windowOpen;
         [SerializeField] private CanvasGroup window;
@@ -32,6 +34,8 @@ namespace GhostWriter.WorkCreation.UI.Development
         private EventBinding<SetDevelopmentPhase> setDevelopmentPhaseEvent;
         private EventBinding<OpenSliderWindow> openSliderWindowEvent;
         private EventBinding<CloseSliderWindow> closeSliderWindowEvent;
+
+        public bool Open { get; set; }
 
         private void Awake()
         {
@@ -90,6 +94,15 @@ namespace GhostWriter.WorkCreation.UI.Development
             EventBus<OpenSliderWindow>.Deregister(openSliderWindowEvent);
             EventBus<CloseSliderWindow>.Deregister(closeSliderWindowEvent);
             EventBus<SetDevelopmentPhase>.Deregister(setDevelopmentPhaseEvent);
+        }
+
+        private void Start()
+        {
+            // Get the WindowTracker
+            WindowTracker windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+
+            // Register this as a Window
+            windowTracker.RegisterWindow(this);
         }
 
         private void Update()
@@ -203,6 +216,9 @@ namespace GhostWriter.WorkCreation.UI.Development
 
             // Translate down
             Translate(-translateValue, duration);
+
+            // Set the window to open
+            Open = true;
         }
 
         /// <summary>
@@ -228,6 +244,9 @@ namespace GhostWriter.WorkCreation.UI.Development
                 },
                 Ease.OutBack
             );
+
+            // Set the window to closed
+            Open = false;
         }
 
         /// <summary>

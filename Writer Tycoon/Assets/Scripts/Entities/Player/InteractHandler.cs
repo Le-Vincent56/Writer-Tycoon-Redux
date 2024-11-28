@@ -2,6 +2,8 @@ using UnityEngine;
 using GhostWriter.Input;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.World.Interactables;
+using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.Entities.Player
 {
@@ -13,6 +15,8 @@ namespace GhostWriter.Entities.Player
         [SerializeField] private bool canInteract;
         [SerializeField] private bool interacting;
         [SerializeField] private bool inTrigger;
+
+        private WindowTracker windowTracker;
 
         private EventBinding<SetCanInteract> setCanInteractEvent;
         private EventBinding<SetInteracting> interactEvent;
@@ -42,8 +46,17 @@ namespace GhostWriter.Entities.Player
             EventBus<SetInteracting>.Deregister(interactEvent);
         }
 
+        private void Start()
+        {
+            // Get the Window Tracker
+            windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            // Exit case - a UI window is open
+            if (windowTracker.CheckIfAnyOpen()) return;
+
             // Set within the trigger
             inTrigger = true;
 

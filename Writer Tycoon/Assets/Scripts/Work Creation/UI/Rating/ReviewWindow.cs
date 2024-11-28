@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.WorkCreation.Ideation.About;
 using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.WorkCreation.UI.Rating
 {
-    public class ReviewWindow : CodeableButton
+    public class ReviewWindow : CodeableButton, IWindow
     {
         [Header("Review Window Queue")]
         [SerializeField] private bool canOpen;
@@ -38,6 +39,8 @@ namespace GhostWriter.WorkCreation.UI.Rating
         private Sequence reviewTextSequence;
 
         private EventBinding<ShowReviewWindow> showReviewWindowEvent;
+
+        public bool Open { get; set; }
 
         protected override void Awake()
         {
@@ -69,6 +72,15 @@ namespace GhostWriter.WorkCreation.UI.Rating
         private void OnDisable()
         {
             EventBus<ShowReviewWindow>.Deregister(showReviewWindowEvent);
+        }
+
+        private void Start()
+        {
+            // Get the WindowTracker
+            WindowTracker windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+
+            // Register this as a Window
+            windowTracker.RegisterWindow(this);
         }
 
         private void Update()
@@ -200,6 +212,9 @@ namespace GhostWriter.WorkCreation.UI.Rating
 
             // Translate down
             Translate(-translateValue, duration);
+            
+            // Set to open
+            Open = true;
         }
 
         /// <summary>
@@ -243,6 +258,9 @@ namespace GhostWriter.WorkCreation.UI.Rating
                 },
                 Ease.OutBack
             );
+
+            // Set the window closed
+            Open = false;
         }
 
         /// <summary>

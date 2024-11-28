@@ -3,10 +3,12 @@ using DG.Tweening;
 using GhostWriter.WorkCreation.UI.Ideation.States;
 using GhostWriter.Patterns.StateMachine;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
+using GhostWriter.Patterns.ServiceLocator;
 
 namespace GhostWriter.WorkCreation.UI.Ideation
 {
-    public class CreateWorkWindow : MonoBehaviour
+    public class CreateWorkWindow : MonoBehaviour, IWindow
     {
         private StateMachine stateMachine;
         [SerializeField] private CanvasGroup window;
@@ -29,6 +31,8 @@ namespace GhostWriter.WorkCreation.UI.Ideation
         public int GENRE { get => 2; }
         public int WORKERS { get => 3; }
         public int REVIEW { get => 4; }
+
+        public bool Open { get; set; }
 
         private void Awake()
         {
@@ -88,6 +92,15 @@ namespace GhostWriter.WorkCreation.UI.Ideation
             EventBus<CloseCreateWorkMenu>.Deregister(closeWorkMenuEvent);
             EventBus<NotifySuccessfulCreation>.Deregister(notifySuccessfulCreationEvent);
             EventBus<EndDevelopment>.Deregister(endDevelopmentEvent);
+        }
+
+        private void Start()
+        {
+            // Get the WindowTracker
+            WindowTracker windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+
+            // Register this as a Window
+            windowTracker.RegisterWindow(this);
         }
 
         private void Update()
@@ -199,6 +212,9 @@ namespace GhostWriter.WorkCreation.UI.Ideation
 
             // Translate down
             Translate(-translateValue, duration);
+
+            // Set the window to open
+            Open = true;
         }
 
         /// <summary>
@@ -214,6 +230,9 @@ namespace GhostWriter.WorkCreation.UI.Ideation
 
             // Translate down
             Translate(-translateValue, duration);
+
+            // Set the window to closed
+            Open = false;
         }
 
         /// <summary>
@@ -239,6 +258,9 @@ namespace GhostWriter.WorkCreation.UI.Ideation
                     }, 
                 Ease.OutBack
             );
+
+            // Set the window to closed
+            Open = false;
         }
 
         /// <summary>

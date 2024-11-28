@@ -1,12 +1,15 @@
 using DG.Tweening;
 using GhostWriter.Entities.Competitors.UI.States;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.ServiceLocator;
 using GhostWriter.Patterns.StateMachine;
+using GhostWriter.World.GeneralUI;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 namespace GhostWriter.Entities.Competitors.UI
 {
-    public class CompetitorWindow : MonoBehaviour
+    public class CompetitorWindow : MonoBehaviour, IWindow
     {
         [SerializeField] private CompetitorList competitorList;
         private CanvasGroup canvasGroup;
@@ -26,6 +29,8 @@ namespace GhostWriter.Entities.Competitors.UI
         [SerializeField] private float fadeDuration;
         private Tween fadeTween;
 
+        public bool Open { get; set; }
+
         private void Awake()
         {
             // Get components
@@ -41,10 +46,10 @@ namespace GhostWriter.Entities.Competitors.UI
 
         private void OnEnable()
         {
-            openCompetitorWindowEvent = new EventBinding<OpenCompetitorWindow>(Open);
+            openCompetitorWindowEvent = new EventBinding<OpenCompetitorWindow>(Show);
             EventBus<OpenCompetitorWindow>.Register(openCompetitorWindowEvent);
 
-            closeCompetitorWindowEvent = new EventBinding<CloseCompetitorWindow>(Close);
+            closeCompetitorWindowEvent = new EventBinding<CloseCompetitorWindow>(Hide);
             EventBus<CloseCompetitorWindow>.Register(closeCompetitorWindowEvent);
 
             setCompetitorWindowEvent = new EventBinding<SetCompetitorWindowState>(SetState);
@@ -56,6 +61,15 @@ namespace GhostWriter.Entities.Competitors.UI
             EventBus<OpenCompetitorWindow>.Deregister(openCompetitorWindowEvent);
             EventBus<CloseCompetitorWindow>.Deregister(closeCompetitorWindowEvent);
             EventBus<SetCompetitorWindowState>.Deregister(setCompetitorWindowEvent);
+        }
+
+        private void Start()
+        {
+            // Get the WindowTracker
+            WindowTracker windowTracker = ServiceLocator.ForSceneOf(this).Get<WindowTracker>();
+
+            // Register this as a Window
+            windowTracker.RegisterWindow(this);
         }
 
         private void Update()
@@ -87,7 +101,7 @@ namespace GhostWriter.Entities.Competitors.UI
         /// <summary>
         /// Callback function to handle opening the Competitor Window
         /// </summary>
-        private void Open()
+        private void Show()
         {
             // Fully update the Competitor List
             EventBus<UpdateCompetitorList>.Raise(new UpdateCompetitorList()
@@ -101,12 +115,15 @@ namespace GhostWriter.Entities.Competitors.UI
                 canvasGroup.interactable = true;
                 canvasGroup.blocksRaycasts = true;
             });
+
+            // Set to open
+            Open = true;
         }
 
         /// <summary>
         /// Callback function to handle closing the Competitor Window
         /// </summary>
-        private void Close() 
+        private void Hide() 
         {
             // Fade out
             Fade(0f, fadeDuration, () =>
@@ -116,6 +133,9 @@ namespace GhostWriter.Entities.Competitors.UI
 
                 state = LIST;
             });
+
+            // Set to closed
+            Open = false;
         }
 
         /// <summary>
