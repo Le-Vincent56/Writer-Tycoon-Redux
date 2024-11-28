@@ -1,25 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GhostWriter.Entities;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.Ideation.Workers
 {
-    public class WorkerButton : MonoBehaviour
+    public class WorkerButton : CodeableButton
     {
         [SerializeField] private Color buttonSelectedColor;
 
         private WorkerManager workerManager;
-        private Button button;
         private Text nameText;
 
         public IWorker Worker { get; private set; }
 
+        protected override void Awake()
+        {
+            // Noop
+        }
+
         /// <summary>
         /// Initialize the Topic Button
         /// </summary>
-        public void Instantiate(WorkerManager workerManager, IWorker worker)
+        public void Initialize(WorkerManager workerManager, IWorker worker)
         {
             // Verify the Button component
             if (button == null)
@@ -41,7 +44,7 @@ namespace GhostWriter.WorkCreation.Ideation.Workers
         /// <summary>
         /// Callback function for when the Worker Button is clicked
         /// </summary>
-        private void OnClick() => workerManager.SelectWorker(this);
+        protected override void OnClick() => workerManager.SelectWorker(this);
 
         /// <summary>
         /// Select the Worker Button

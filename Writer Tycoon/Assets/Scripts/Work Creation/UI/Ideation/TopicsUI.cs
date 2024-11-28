@@ -57,7 +57,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
 
                 // Set button functionality
                 TopicButton topicButton = topicObject.GetComponent<TopicButton>();
-                topicButton.Instantiate(topicManager, topic);
+                topicButton.Initialize(topicManager, topic);
 
                 // Add the Topic Button to the List
                 topicButtons.Add(topicButton);

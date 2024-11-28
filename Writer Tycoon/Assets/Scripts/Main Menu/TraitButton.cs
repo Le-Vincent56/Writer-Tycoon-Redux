@@ -1,16 +1,16 @@
 using DG.Tweening;
 using GhostWriter.Entities.Player.Traits;
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GhostWriter.MainMenu
 {
-    public class TraitButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class TraitButton : CodeableButton, IPointerEnterHandler, IPointerExitHandler
     {
         private TraitPicker traitPicker;
         private Text nameText;
-        private Button button;
         private Trait trait;
         private TraitTooltip tooltip;
 
@@ -21,6 +21,11 @@ namespace GhostWriter.MainMenu
         private Tween colorTween;
 
         public Trait Trait { get => trait; }
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Trait Button
@@ -46,7 +51,7 @@ namespace GhostWriter.MainMenu
         /// <summary>
         /// Handle the Trait Button being clicked
         /// </summary>
-        private void OnClick() => traitPicker.SelectTrait(this);
+        protected override void OnClick() => traitPicker.SelectTrait(this);
 
         /// <summary>
         /// Select the Button

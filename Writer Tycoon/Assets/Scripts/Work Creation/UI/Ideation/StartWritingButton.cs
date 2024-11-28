@@ -8,16 +8,16 @@ using GhostWriter.WorkCreation.Ideation.Audience;
 using GhostWriter.WorkCreation.Ideation.Review;
 using GhostWriter.WorkCreation.Ideation.TimeEstimation;
 using GhostWriter.WorkCreation.Ideation.WorkTypes;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.UI.Ideation
 {
-    public class StartWritingButton : MonoBehaviour
+    public class StartWritingButton : CodeableButton
     {
-        private Button button;
         [SerializeField] private ReviewData reviewData;
         private EventBinding<SendReviewData> reviewDataEvent;
 
-        private void Awake()
+        protected override void Awake()
         {
             // Verify the button component
             if(button == null)
@@ -46,7 +46,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
             };
 
             // Add event listener
-            button.onClick.AddListener(TryBeginWriting);
+            button.onClick.AddListener(OnClick);
         }
 
         private void OnEnable()
@@ -68,7 +68,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
         /// <summary>
         /// Callback function to try to begin writing
         /// </summary>
-        private void TryBeginWriting()
+        protected override void OnClick()
         {
             bool willSucceed = true;
 

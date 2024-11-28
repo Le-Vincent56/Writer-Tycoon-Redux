@@ -2,16 +2,21 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using GhostWriter.Patterns.Command;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.World.Interactables.UI
 {
-    public class MenuActionButton : MonoBehaviour
+    public class MenuActionButton : CodeableButton
     {
         [SerializeField] private Color disabledColor;
-        private Button button;
         private Text buttonText;
         private Image buttonIcon;
         private ICommand command;
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Menu Action Button
@@ -61,6 +66,6 @@ namespace GhostWriter.World.Interactables.UI
         /// <summary>
         /// Callback function for handling click
         /// </summary>
-        private void OnClick() => command?.Execute();
+        protected override void OnClick() => command?.Execute();
     }
 }

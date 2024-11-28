@@ -1,22 +1,27 @@
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.WorkCreation.Ideation.Genres
 {
-    public class GenreButton : MonoBehaviour
+    public class GenreButton : CodeableButton
     {
         [SerializeField] private Image[] masteryIcons = new Image[3];
         [SerializeField] private Color buttonSelectedColor;
         [SerializeField] private Color unmasteredColor;
 
         private GenreManager genreManager;
-        private Button button;
         public Genre Genre { get; private set; }
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Genre Button
         /// </summary>
-        public void Instantiate(GenreManager genreManager, Genre topic)
+        public void Initialize(GenreManager genreManager, Genre topic)
         {
             // Verify the Button component
             if (button == null)
@@ -44,7 +49,7 @@ namespace GhostWriter.WorkCreation.Ideation.Genres
         /// <summary>
         /// Callback function for when the Genre Button is clicked
         /// </summary>
-        private void OnClick() => genreManager.SelectGenre(this);
+        protected override void OnClick() => genreManager.SelectGenre(this);
 
         /// <summary>
         /// Select the Genre Button

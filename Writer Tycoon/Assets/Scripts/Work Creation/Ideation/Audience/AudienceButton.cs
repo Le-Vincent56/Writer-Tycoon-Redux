@@ -1,23 +1,27 @@
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.WorkCreation.Ideation.Audience
 {
-    public class AudienceButton : MonoBehaviour
+    public class AudienceButton : CodeableButton
     {
         private AudienceManager audienceManager;
-        private Button button;
         [SerializeField] private AudienceType type;
         [SerializeField] private Color buttonSelectedColor;
 
         public AudienceType Type { get => type; }
         public bool Selected { get; set; }
 
+        protected override void Awake()
+        {
+            // Noop
+        }
+
         /// <summary>
-        /// Instantiate the Audience Button
+        /// Initialize the Audience Button
         /// </summary>
-        /// <param name="audienceManager"></param>
-        public void Instantiate(AudienceManager audienceManager)
+        public void Initialize(AudienceManager audienceManager)
         {
             // Verify the Button component
             if (button == null)
@@ -34,7 +38,7 @@ namespace GhostWriter.WorkCreation.Ideation.Audience
         /// <summary>
         /// Callback function for when the Audience Button is clicked
         /// </summary>
-        private void OnClick() => audienceManager.SelectAudience(this);
+        protected override void OnClick() => audienceManager.SelectAudience(this);
 
         /// <summary>
         /// Select the Audience Button

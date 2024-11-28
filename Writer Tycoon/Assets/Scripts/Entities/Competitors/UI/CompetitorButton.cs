@@ -1,17 +1,22 @@
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.Entities.Competitors.UI
 {
-    public class CompetitorButton : MonoBehaviour
+    public class CompetitorButton : CodeableButton
     {
-        private Button button;
         [SerializeField] private Text nameText;
         [SerializeField] private Text flavorText;
         [SerializeField] private Text salesText;
         private NPCCompetitor competitor;
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Competitor Button
@@ -34,7 +39,7 @@ namespace GhostWriter.Entities.Competitors.UI
         /// <summary>
         /// Handle Button clicking
         /// </summary>
-        private void OnClick()
+        protected override void OnClick()
         {
             // Set the Button's Competitor's Work History to display
             EventBus<SetCompetitorWorkHistory>.Raise(new SetCompetitorWorkHistory()

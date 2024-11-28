@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleText: {fileID: 6897650095751691099}
   detailsText: {fileID: 8934739721516790185}
-  workTypeText: {fileID: 1225172487581763490}
+  salesText: {fileID: 1225172487581763490}
 --- !u!1 &5014405560475749339
 GameObject:
   m_ObjectHideFlags: 0

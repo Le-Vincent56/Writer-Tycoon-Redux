@@ -1,12 +1,12 @@
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.WorkCreation.Ideation.WorkTypes
 {
-    public class WorkTypeButton : MonoBehaviour
+    public class WorkTypeButton : CodeableButton
     {
         private WorkTypeManager workTypeManager;
-        private Button button;
         [SerializeField] private WorkType type;
         [SerializeField] private float targetScore;
         [SerializeField] private Color buttonSelectedColor;
@@ -15,7 +15,16 @@ namespace GhostWriter.WorkCreation.Ideation.WorkTypes
         public float TargetScore { get => targetScore; }
         public bool Selected { get; set; }
 
-        public void Instantiate(WorkTypeManager workTypeManager)
+        protected override void Awake()
+        {
+            // Noop
+        }
+
+        /// <summary>
+        /// Initialize the Work Type Button
+        /// </summary>
+        /// <param name="workTypeManager"></param>
+        public void Initialize(WorkTypeManager workTypeManager)
         {
             // Verify the Button component
             if (button == null)
@@ -32,7 +41,7 @@ namespace GhostWriter.WorkCreation.Ideation.WorkTypes
         /// <summary>
         /// Callback function for when the Work Type Button is clicked
         /// </summary>
-        private void OnClick() => workTypeManager.SelectWorkType(this);
+        protected override void OnClick() => workTypeManager.SelectWorkType(this);
 
         /// <summary>
         /// Select the Work Type Button

@@ -1,30 +1,49 @@
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GhostWriter.Entities.Competitors.UI
 {
-    public class CompetitorWindowToggle : MonoBehaviour
+    public class CompetitorWindowToggle : CodeableButton
     {
         [SerializeField] private bool open;
-        private Button button;
 
-        private void Awake()
+        private EventBinding<OpenCompetitorWindow> openCompetitorWindowEvent;
+        private EventBinding<CloseCompetitorWindow> closeCompetitorWindowEvent;
+
+        protected override void Awake()
         {
-            // Get components
-            button = GetComponent<Button>();
-
-            // Hook up click actions
-            button.onClick.AddListener(OnClick);
+            // Call the base Awake
+            base.Awake();
 
             // Set to initially open
             open = true;
         }
 
+        private void OnEnable()
+        {
+            openCompetitorWindowEvent = new EventBinding<OpenCompetitorWindow>(ToggleToOpen);
+            EventBus<OpenCompetitorWindow>.Register(openCompetitorWindowEvent);
+
+            closeCompetitorWindowEvent = new EventBinding<CloseCompetitorWindow>(ToggleToClose);
+            EventBus<CloseCompetitorWindow>.Register(closeCompetitorWindowEvent);
+        }
+
+
+        private void OnDisable()
+        {
+            EventBus<OpenCompetitorWindow>.Deregister(openCompetitorWindowEvent);
+            EventBus<CloseCompetitorWindow>.Deregister(closeCompetitorWindowEvent);
+        }
+
+        private void ToggleToOpen() => open = false;
+
+        private void ToggleToClose() => open = true;
+
         /// <summary>
         /// Handle button clicking by toggling the Competitor Window
         /// </summary>
-        private void OnClick()
+        protected override void OnClick()
         {
             // Check if to open
             if (open)
@@ -33,9 +52,6 @@ namespace GhostWriter.Entities.Competitors.UI
             else
                 // Otherwise, close the Competitor Window
                 EventBus<CloseCompetitorWindow>.Raise(new CloseCompetitorWindow());
-
-            // Toggle whether to open
-            open = !open;
         }
     }
 }

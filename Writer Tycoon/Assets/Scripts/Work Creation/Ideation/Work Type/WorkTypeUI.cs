@@ -22,7 +22,7 @@ namespace GhostWriter.WorkCreation.Ideation.WorkTypes
             for (int i = 0; i < workTypeButtons.Length; i++)
             {
                 // Instantiate the Work Type Button
-                workTypeButtons[i].Instantiate(workTypeManager);
+                workTypeButtons[i].Initialize(workTypeManager);
             }
         }
 

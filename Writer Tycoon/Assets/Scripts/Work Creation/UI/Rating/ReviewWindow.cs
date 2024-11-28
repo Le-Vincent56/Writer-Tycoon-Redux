@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.WorkCreation.Ideation.About;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.UI.Rating
 {
-    public class ReviewWindow : MonoBehaviour
+    public class ReviewWindow : CodeableButton
     {
         [Header("Review Window Queue")]
         [SerializeField] private bool canOpen;
@@ -15,7 +16,6 @@ namespace GhostWriter.WorkCreation.UI.Rating
 
         [Header("UI References")]
         [SerializeField] private CanvasGroup window;
-        [SerializeField] private Button exitButton;
         [SerializeField] private Text titleText;
         [SerializeField] private Text authorText;
         [SerializeField] private Text scoreText;
@@ -39,15 +39,15 @@ namespace GhostWriter.WorkCreation.UI.Rating
 
         private EventBinding<ShowReviewWindow> showReviewWindowEvent;
 
-        private void Awake()
+        protected override void Awake()
         {
             // Verify the Canvas Group component
             if (window == null)
                 window = GetComponent<CanvasGroup>();
 
             // Verify the Button component
-            if(exitButton == null)
-                exitButton = GetComponentInChildren<Button>();
+            if(button == null)
+                button = GetComponentInChildren<Button>();
 
             // Initialize the queue
             openWindowQueue = new();
@@ -57,7 +57,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
             canOpen = true;
 
             // Set button event
-            exitButton.onClick.AddListener(HideWindow);
+            button.onClick.AddListener(OnClick);
         }
 
         private void OnEnable()
@@ -190,10 +190,10 @@ namespace GhostWriter.WorkCreation.UI.Rating
                 reviewTextSequence.Join(scoreText.DOFade(1f, 0.6f).From(0f));
 
                 // Fade in the exit button and set it to interactable when fully faded
-                Tween exitButtonFade = exitButton.image.DOFade(1f, duration).From(0f);
+                Tween exitButtonFade = button.image.DOFade(1f, duration).From(0f);
                 exitButtonFade.onComplete += () =>
                 {
-                    exitButton.interactable = true;
+                    button.interactable = true;
                 };
                 reviewTextSequence.Append(exitButtonFade);
             });
@@ -205,7 +205,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
         /// <summary>
         /// Hide the window with a little more flair for successful Work creation
         /// </summary>
-        private void HideWindow()
+        protected override void OnClick()
         {
             // Unpause the Calendar
             EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
@@ -226,7 +226,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
                         window.interactable = false;
                         window.blocksRaycasts = false;
                         canOpen = true;
-                        exitButton.interactable = false;
+                        button.interactable = false;
 
                         // Fade out each review
                         for (int i = 0; i < reviews.Length; i++)
@@ -235,7 +235,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
                         }
 
                         // Fade out the button
-                        exitButton.image.DOFade(0f, 0f);
+                        button.image.DOFade(0f, 0f);
                     }, Ease.OutCirc);
 
                     // And translate downwards

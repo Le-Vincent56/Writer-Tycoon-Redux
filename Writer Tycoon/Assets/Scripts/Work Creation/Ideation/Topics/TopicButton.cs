@@ -1,22 +1,27 @@
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.WorkCreation.Ideation.Topics
 {
-    public class TopicButton : MonoBehaviour
+    public class TopicButton : CodeableButton
     {
         [SerializeField] private Image[] masteryIcons = new Image[3];
         [SerializeField] private Color buttonSelectedColor;
         [SerializeField] private Color unmasteredColor;
 
         private TopicManager topicManager;
-        private Button button;
         public Topic Topic { get; private set; }
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Topic Button
         /// </summary>
-        public void Instantiate(TopicManager topicManager, Topic topic)
+        public void Initialize(TopicManager topicManager, Topic topic)
         {
             // Verify the Button component
             if(button == null)
@@ -44,7 +49,7 @@ namespace GhostWriter.WorkCreation.Ideation.Topics
         /// <summary>
         /// Callback function for when the Topic Button is clicked
         /// </summary>
-        private void OnClick() => topicManager.SelectTopic(this);
+        protected override void OnClick() => topicManager.SelectTopic(this);
 
         /// <summary>
         /// Select the Topic Button

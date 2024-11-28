@@ -1,27 +1,17 @@
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GhostWriter.World.Economy
 {
-    public class SalesWindowButton : MonoBehaviour
+    public class SalesWindowButton : CodeableButton
     {
         private SalesGraphController controller;
-        private Button button;
 
         [SerializeField] private Sprite openButton;
         [SerializeField] private Sprite openButtonPressed;
         [SerializeField] private Sprite closeButton;
         [SerializeField] private Sprite closeButtonPressed;
-
-        private void Awake()
-        {
-            // Verify the Button component
-            if (button == null)
-                button = GetComponent<Button>();
-
-            // Add listeners
-            button.onClick.AddListener(ToggleSprite);
-        }
 
         /// <summary>
         /// Initialize the Sales Window Button
@@ -34,7 +24,7 @@ namespace GhostWriter.World.Economy
         /// <summary>
         /// Toggle the Button sprite
         /// </summary>
-        private void ToggleSprite()
+        protected override void OnClick()
         {
             // Change the sprite depending on whether or not the window is open or not
             if (controller.Showing)

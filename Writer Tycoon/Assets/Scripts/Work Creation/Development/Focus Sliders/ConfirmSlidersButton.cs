@@ -3,16 +3,24 @@ using UnityEngine.UI;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.WorkCreation.Development.Tracker;
 using GhostWriter.WorkCreation.UI.Development;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.Development.FocusSliders
 {
-    public class ConfirmSlidersButton : MonoBehaviour
+    public class ConfirmSlidersButton : CodeableButton
     {
         private FocusSliderWindow sliderWindow;
 
         [SerializeField] private DevelopmentPhase intendedPhase;
-        private Button button;
 
+        protected override void Awake()
+        {
+            // Noop
+        }
+
+        /// <summary>
+        /// Initialize the Focus Slider Window
+        /// </summary>
         public void Initialize(FocusSliderWindow sliderWindow)
         {
             // Verify the button
@@ -22,10 +30,11 @@ namespace GhostWriter.WorkCreation.Development.FocusSliders
             // Set references
             this.sliderWindow = sliderWindow;
 
-            button.onClick.AddListener(SendSliderPoints);
+            // Hook up button references
+            button.onClick.AddListener(OnClick);
         }
 
-        private void SendSliderPoints()
+        protected override void OnClick()
         {
             // Send the points
             EventBus<SendSliderPoints>.Raise(new SendSliderPoints()

@@ -22,7 +22,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
             for (int i = 0; i < audienceButtons.Length; i++)
             {
                 // Instantiate the Audience Button
-                audienceButtons[i].Instantiate(audienceManager);
+                audienceButtons[i].Initialize(audienceManager);
             }
         }
 

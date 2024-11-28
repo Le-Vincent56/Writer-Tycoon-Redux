@@ -1,28 +1,24 @@
 using DG.Tweening;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace GhostWriter.MainMenu
 {
-    public class StartGameButton : MonoBehaviour
+    public class StartGameButton : CodeableButton
     {
-        private Button startButton;
         [SerializeField] private bool canStartGame;
 
         private EventBinding<DisplayName> displayNameEvent;
 
-        private void Awake()
+        protected override void Awake()
         {
-            // Get components
-            startButton = GetComponent<Button>();
-
-            // Hook up events
-            startButton.onClick.AddListener(OnClick);
+            // Call the base Awake
+            base.Awake();
 
             // Disable the Start Button
-            startButton.interactable = false;
+            button.interactable = false;
         }
 
         private void OnEnable()
@@ -39,7 +35,7 @@ namespace GhostWriter.MainMenu
         /// <summary>
         /// Handle the function of the Start Button
         /// </summary>
-        private void OnClick()
+        protected override void OnClick()
         {
             // TODO: Save traits
 
@@ -57,7 +53,7 @@ namespace GhostWriter.MainMenu
         private void CheckStartability(DisplayName eventData)
         {
             // Set whether or not the button is enabled based on if a name is given
-            startButton.interactable = eventData.Name != "" && eventData.Name != string.Empty;
+            button.interactable = eventData.Name != "" && eventData.Name != string.Empty;
         }
     }
 }

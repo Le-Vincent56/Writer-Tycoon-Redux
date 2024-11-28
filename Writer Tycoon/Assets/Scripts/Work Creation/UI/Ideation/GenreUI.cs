@@ -57,7 +57,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
 
                 // Set button functionality
                 GenreButton genreButton = topicObject.GetComponent<GenreButton>();
-                genreButton.Instantiate(genreManager, genre);
+                genreButton.Initialize(genreManager, genre);
 
                 // Add the buttons to the List
                 genreButtons.Add(genreButton);

@@ -162,6 +162,13 @@ namespace GhostWriter.World.Interactables.UI
                 Interacting = false
             });
 
+            // Unpause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = false,
+                AllowSpeedChanges = true
+            });
+
             // Exit case - if the interactable doesn't exist
             if (interactable == null) return;
 

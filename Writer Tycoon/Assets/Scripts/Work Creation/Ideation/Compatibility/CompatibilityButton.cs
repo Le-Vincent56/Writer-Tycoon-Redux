@@ -1,30 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.UI;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.Ideation.Compatibility
 {
-    public class CompatibilityButton : MonoBehaviour
+    public class CompatibilityButton : CodeableButton
     {
-        private Button button;
-
-        private void Awake()
-        {
-            // Verify the button component
-            if(button == null )
-                button = GetComponent<Button>();
-
-            // Add event listener
-            button.onClick.AddListener(OnClick);
-        }
-
         /// <summary>
         /// Handler for clicking the Compatibility button
         /// </summary>
-        private void OnClick()
+        protected override void OnClick()
         {
             EventBus<CalculateCompatibility>.Raise(new CalculateCompatibility());
         }

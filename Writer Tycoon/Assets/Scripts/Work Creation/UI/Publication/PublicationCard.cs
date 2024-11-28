@@ -3,14 +3,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.WorkCreation.Publication;
+using GhostWriter.World.GeneralUI;
 
 namespace GhostWriter.WorkCreation.UI.Publication
 {
-    public class PublicationCard : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
+    public class PublicationCard : CodeableButton, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [Header("UI References")]
         [SerializeField] private Image image;
-        [SerializeField] private Button button;
         [SerializeField] private Text titleText;
         [SerializeField] private Text authorText;
 
@@ -23,6 +23,11 @@ namespace GhostWriter.WorkCreation.UI.Publication
 
         [Header("Data")]
         [SerializeField] private PublishedWork publishedWork;
+
+        protected override void Awake()
+        {
+            // Noop
+        }
 
         /// <summary>
         /// Initialize the Publication Card
@@ -45,13 +50,13 @@ namespace GhostWriter.WorkCreation.UI.Publication
             authorText.text = publishedWork.Author;
 
             // Set an onClick listener
-            button.onClick.AddListener(SetDisplayData);
+            button.onClick.AddListener(OnClick);
         }
 
         /// <summary>
         /// Set the display data
         /// </summary>
-        private void SetDisplayData()
+        protected override void OnClick()
         {
             // Set the data
             EventBus<SetPublicationDisplayData>.Raise(new SetPublicationDisplayData()

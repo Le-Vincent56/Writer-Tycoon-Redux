@@ -62,7 +62,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
                 WorkerButton workerButton = workerObj.GetComponent<WorkerButton>();
 
                 // Instantiate the worker button
-                workerButton.Instantiate(workerManager, worker);
+                workerButton.Initialize(workerManager, worker);
 
                 // Add the worker button to the list
                 workerButtons.Add(workerButton);
