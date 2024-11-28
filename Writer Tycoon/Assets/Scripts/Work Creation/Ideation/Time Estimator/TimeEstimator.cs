@@ -63,7 +63,7 @@ namespace GhostWriter.WorkCreation.Ideation.TimeEstimation
             totalDayEstimate += GetTopicEstimates();
 
             // Get the total day estimate as a float to incorporate the scalar
-            float totalDayEstimateFloat = (float)totalDayEstimate * GetWorkerEstimates();
+            float totalDayEstimateFloat = totalDayEstimate * GetWorkerEstimates();
 
             // Round the scaled estimate
             totalDayEstimate = Mathf.RoundToInt(totalDayEstimateFloat);

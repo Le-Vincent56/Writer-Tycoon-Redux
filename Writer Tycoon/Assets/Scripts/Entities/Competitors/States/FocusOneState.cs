@@ -7,7 +7,7 @@ namespace GhostWriter.Entities.Competitors.States
         public override void OnEnter()
         {
             // Start working
-            competitor.SetDaysToWork();
+            competitor.SetDaysToWork(competitor.TimeEstimates.PhaseOne);
             competitor.Learn(Learning.Problem.FocusOne);
         }
     }

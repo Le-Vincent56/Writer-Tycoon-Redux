@@ -4,7 +4,6 @@ using GhostWriter.Entities.Tracker;
 using GhostWriter.Patterns.EventBus;
 using GhostWriter.Patterns.ServiceLocator;
 using GhostWriter.WorkCreation.Mediation;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace GhostWriter.WorkCreation.Development.Tracker
 {
@@ -112,9 +111,9 @@ namespace GhostWriter.WorkCreation.Development.Tracker
                 { Content = worksToTrack },
                     AreTypes(new DedicantType[3]
                     {
-                    DedicantType.PointGenerator,
-                    DedicantType.ErrorGenerator,
-                    DedicantType.Editor
+                        DedicantType.PointGenerator,
+                        DedicantType.ErrorGenerator,
+                        DedicantType.Editor
                     })
                 );
             }

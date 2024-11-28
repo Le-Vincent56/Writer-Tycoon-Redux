@@ -14,7 +14,7 @@ using GhostWriter.Extensions.GameObjects;
 using GhostWriter.WorkCreation.Publication;
 using GhostWriter.Utilities.Hash;
 using GhostWriter.WorkCreation.Ideation.About;
-using GhostWriter.World.Calendar;
+using GhostWriter.WorkCreation.Ideation.TimeEstimation;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -33,15 +33,17 @@ namespace GhostWriter.Entities.Competitors
         [SerializeField] private int daysWorking;
         [SerializeField] private int totalDaysWorking;
         [SerializeField] private bool progressWork;
+        private TimeEstimates timeEstimates;
 
         [Header("Brain")]
         [SerializeField] private CompetitorBrain brain;
 
-        private Calendar calendar;
         private GeneratedStoryBank generatedStoryBank;
         private StateMachine stateMachine;
 
         private EventBinding<PassDay> passDayEvent;
+
+        public TimeEstimates TimeEstimates { get => timeEstimates; }
 
         private void OnEnable()
         {
@@ -62,7 +64,7 @@ namespace GhostWriter.Entities.Competitors
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
-        public void Initialize(string competitorName, float startingMoney, Calendar calendar, GeneratedStoryBank generatedStoryBank)
+        public void Initialize(string competitorName, float startingMoney, GeneratedStoryBank generatedStoryBank)
         {
             // Get Components
             bank = GetComponent<Bank>();
@@ -77,9 +79,6 @@ namespace GhostWriter.Entities.Competitors
 
             // Initialize the Work history
             workHistory = new();
-
-            // Get the Calendar
-            this.calendar = calendar;
 
             // Get the Generated Story Bank
             this.generatedStoryBank = generatedStoryBank;
@@ -125,6 +124,9 @@ namespace GhostWriter.Entities.Competitors
                 topicAudienceCompatibility,
                 genreFocusTargets
             );
+
+            // Get Time Estimates
+            GetTimeEstimates(workType);
         }
 
         /// <summary>
@@ -208,7 +210,7 @@ namespace GhostWriter.Entities.Competitors
             totalDaysIdle = Random.Range(2, 10);
         }
 
-        public void SetDaysToWork()
+        public void SetDaysToWork(int daysToWork)
         {
             // Reset variables
             daysWorking = 0;
@@ -216,7 +218,7 @@ namespace GhostWriter.Entities.Competitors
             progressWork = false;
 
             // Set the amount of days to work
-            totalDaysWorking = Random.Range(2, 10);
+            totalDaysWorking = daysToWork;
         }
 
         /// <summary>
@@ -266,5 +268,55 @@ namespace GhostWriter.Entities.Competitors
         /// Calculate sales for the NPC Competitor
         /// </summary>
         public void CalculateSales(float amount) => bank.AddAmount(amount);
+
+        /// <summary>
+        /// Get the Time Estimate per the Work Type
+        /// </summary>
+        private int GetWorkTypeEstimates(WorkType workType)
+        {
+            return workType switch
+            {
+                WorkType.None => 0,
+                WorkType.Poetry => 10,
+                WorkType.FlashFiction => 25,
+                WorkType.ShortStory => 70,
+                WorkType.Novella => 100,
+                WorkType.Novel => 365,
+                WorkType.Screenplay => 365,
+                _ => 0
+            };
+        }
+
+        /// <summary>
+        /// Get all of the relevant Time Estimates
+        /// </summary>
+        private void GetTimeEstimates(WorkType workType)
+        {
+            // Get the total Work Time Estimate
+            int totalWorkTimeEstimate = GetWorkTypeEstimates(workType);
+
+            // Get the individual Work Time Estimates for the three phases of development
+            int phaseOneDayEstimate = (int)(totalWorkTimeEstimate * (1f / 5f));
+            int phaseTwoDayEstimate = (int)(totalWorkTimeEstimate * (3 / 5f));
+            int phaseThreeDayEstimate = (int)(totalWorkTimeEstimate * (1f / 5f));
+
+            // Ensure that all of the total days are used
+            int combinedEstimates = phaseOneDayEstimate + phaseTwoDayEstimate + phaseThreeDayEstimate;
+            int leftoverEstimate = totalWorkTimeEstimate - combinedEstimates;
+
+            // Check if a positive amount of leftover days remain
+            if (leftoverEstimate > 0)
+                // If so, add them to the third phase estimate
+                phaseThreeDayEstimate += leftoverEstimate;
+
+            // Set Time Estimates
+            timeEstimates = new()
+            {
+                Total = totalWorkTimeEstimate,
+                PhaseOne = phaseOneDayEstimate,
+                PhaseTwo = phaseTwoDayEstimate,
+                PhaseThree = phaseThreeDayEstimate
+            };
+        }
     }
 }

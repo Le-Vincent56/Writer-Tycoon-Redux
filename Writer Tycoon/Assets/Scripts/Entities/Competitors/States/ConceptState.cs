@@ -1,3 +1,5 @@
+using System;
+
 namespace GhostWriter.Entities.Competitors.States
 {
     public class ConceptState : CompetitorState
@@ -7,7 +9,7 @@ namespace GhostWriter.Entities.Competitors.States
         public override void OnEnter()
         {
             // Start working
-            competitor.SetDaysToWork();
+            competitor.SetDaysToWork(UnityEngine.Random.Range(5, 11));
             competitor.Learn(Learning.Problem.Concept);
         }
     }
