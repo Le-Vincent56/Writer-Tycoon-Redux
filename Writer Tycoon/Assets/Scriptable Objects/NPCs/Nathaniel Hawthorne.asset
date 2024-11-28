@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: topics
       Entry: 7
-      Data: 0|System.Collections.Generic.HashSet`1[[WriterTycoon.WorkCreation.Ideation.Topics.TopicType,
+      Data: 0|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Topics.TopicType,
         Assembly-CSharp]], System.Core
     - Name: 
       Entry: 12
@@ -51,7 +51,7 @@ MonoBehaviour:
       Data: 
     - Name: genres
       Entry: 7
-      Data: 1|System.Collections.Generic.HashSet`1[[WriterTycoon.WorkCreation.Ideation.Genres.GenreType,
+      Data: 1|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Genres.GenreType,
         Assembly-CSharp]], System.Core
     - Name: 
       Entry: 12
@@ -72,7 +72,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   competitorName: Nathaniel Hawthorne
-  startingMoney: 50000
+  flavorText: The Scarlet Scribe
+  startingMoney: 5000
   learned: 0
   learningFactor: 0
   discountFactor: 0

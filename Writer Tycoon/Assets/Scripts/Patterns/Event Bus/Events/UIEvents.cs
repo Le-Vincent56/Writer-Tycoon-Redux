@@ -6,6 +6,7 @@ using GhostWriter.WorkCreation.Ideation.Review;
 using GhostWriter.WorkCreation.Publication;
 using GhostWriter.WorkCreation.UI.Development;
 using GhostWriter.World.Interactables;
+using GhostWriter.Entities.Competitors;
 
 namespace GhostWriter.Patterns.EventBus
 {
@@ -150,6 +151,22 @@ namespace GhostWriter.Patterns.EventBus
 
     #region COMPETITOR WINDOW EVENTS
     public struct OpenCompetitorWindow : IEvent { }
+
     public struct CloseCompetitorWindow : IEvent { }
+
+    public struct SetCompetitorWindowState : IEvent
+    {
+        public int State;
+    }
+
+    public struct UpdateCompetitorList : IEvent 
+    {
+        public bool FullUpdate;
+    }
+
+    public struct SetCompetitorWorkHistory : IEvent
+    {
+        public NPCCompetitor Competitor;
+    }
     #endregion
 }

@@ -72,7 +72,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   competitorName: Edgar Allen Poe
-  startingMoney: 50000
+  flavorText: The Master of Macabre
+  startingMoney: 5000
   learned: 1
   learningFactor: 1
   discountFactor: 0.2

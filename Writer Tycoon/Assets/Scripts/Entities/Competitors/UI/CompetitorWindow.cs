@@ -1,5 +1,7 @@
 using DG.Tweening;
+using GhostWriter.Entities.Competitors.UI.States;
 using GhostWriter.Patterns.EventBus;
+using GhostWriter.Patterns.StateMachine;
 using UnityEngine;
 
 namespace GhostWriter.Entities.Competitors.UI
@@ -9,8 +11,16 @@ namespace GhostWriter.Entities.Competitors.UI
         [SerializeField] private CompetitorList competitorList;
         private CanvasGroup canvasGroup;
 
-        private EventBinding<OpenCompetitorWindow> openCompetitorWindow;
-        private EventBinding<CloseCompetitorWindow> closeCompetitorWindow;
+        [Header("States")]
+        [SerializeField] private int state;
+        private StateMachine stateMachine;
+        private const int LIST = 0;
+        private const int HISTORY = 1;
+        [SerializeField] private CanvasGroup[] states;
+
+        private EventBinding<OpenCompetitorWindow> openCompetitorWindowEvent;
+        private EventBinding<CloseCompetitorWindow> closeCompetitorWindowEvent;
+        private EventBinding<SetCompetitorWindowState> setCompetitorWindowEvent;
 
         [Header("Tweening Variables")]
         [SerializeField] private float fadeDuration;
@@ -21,21 +31,57 @@ namespace GhostWriter.Entities.Competitors.UI
             // Get components
             competitorList = GetComponentInChildren<CompetitorList>();
             canvasGroup = GetComponent<CanvasGroup>();
+
+            // Set the initial state
+            state = LIST;
+
+            // Initialize the State Machine
+            InitializeStateMachine();
         }
 
         private void OnEnable()
         {
-            openCompetitorWindow = new EventBinding<OpenCompetitorWindow>(Open);
-            EventBus<OpenCompetitorWindow>.Register(openCompetitorWindow);
+            openCompetitorWindowEvent = new EventBinding<OpenCompetitorWindow>(Open);
+            EventBus<OpenCompetitorWindow>.Register(openCompetitorWindowEvent);
 
-            closeCompetitorWindow = new EventBinding<CloseCompetitorWindow>(Close);
-            EventBus<CloseCompetitorWindow>.Register(closeCompetitorWindow);
+            closeCompetitorWindowEvent = new EventBinding<CloseCompetitorWindow>(Close);
+            EventBus<CloseCompetitorWindow>.Register(closeCompetitorWindowEvent);
+
+            setCompetitorWindowEvent = new EventBinding<SetCompetitorWindowState>(SetState);
+            EventBus<SetCompetitorWindowState>.Register(setCompetitorWindowEvent);
         }
 
         private void OnDisable()
         {
-            EventBus<OpenCompetitorWindow>.Deregister(openCompetitorWindow);
-            EventBus<CloseCompetitorWindow>.Deregister(closeCompetitorWindow);
+            EventBus<OpenCompetitorWindow>.Deregister(openCompetitorWindowEvent);
+            EventBus<CloseCompetitorWindow>.Deregister(closeCompetitorWindowEvent);
+            EventBus<SetCompetitorWindowState>.Deregister(setCompetitorWindowEvent);
+        }
+
+        private void Update()
+        {
+            // Update the State Machine
+            stateMachine.Update();
+        }
+
+        /// <summary>
+        /// Initialize the State Machine
+        /// </summary>
+        private void InitializeStateMachine()
+        {
+            // Initialize the State Machine
+            stateMachine = new StateMachine();
+
+            // Create states
+            ListState listState = new ListState(this, states[LIST]);
+            HistoryState historyState = new HistoryState(this, states[HISTORY]);
+
+            // Define state transitions
+            stateMachine.At(listState, historyState, new FuncPredicate(() => state == HISTORY));
+            stateMachine.At(historyState, listState, new FuncPredicate(() => state == LIST));
+
+            // Set the initial state
+            stateMachine.SetState(listState);
         }
 
         /// <summary>
@@ -43,8 +89,11 @@ namespace GhostWriter.Entities.Competitors.UI
         /// </summary>
         private void Open()
         {
-            // Update the Competitor List
-            competitorList.UpdateList();
+            // Fully update the Competitor List
+            EventBus<UpdateCompetitorList>.Raise(new UpdateCompetitorList()
+            {
+                FullUpdate = true
+            });
 
             // Fade in
             Fade(1f, fadeDuration, () =>
@@ -64,9 +113,19 @@ namespace GhostWriter.Entities.Competitors.UI
             {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
+
+                state = LIST;
             });
         }
 
+        /// <summary>
+        /// Callback function to handle Competitor Window State setting
+        /// </summary>
+        public void SetState(SetCompetitorWindowState eventData) => state = eventData.State;
+
+        /// <summary>
+        /// Handle fading for the Competitor Window
+        /// </summary>
         private void Fade(float endValue, float duration, TweenCallback onComplete = null)
         {
             // Kill the Fade Tween if it already exists

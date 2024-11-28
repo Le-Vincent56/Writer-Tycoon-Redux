@@ -15,6 +15,7 @@ using GhostWriter.WorkCreation.Publication;
 using GhostWriter.Utilities.Hash;
 using GhostWriter.WorkCreation.Ideation.About;
 using GhostWriter.WorkCreation.Ideation.TimeEstimation;
+using System.Linq;
 
 namespace GhostWriter.Entities.Competitors
 {
@@ -24,6 +25,8 @@ namespace GhostWriter.Entities.Competitors
 
         [Header("Competitor Information")]
         [SerializeField] private string competitorName;
+        [SerializeField] private string flavorText;
+        [SerializeField] private int totalSales;
         [SerializeField] private Dictionary<int, PublishedWork> workHistory;
 
         [Header("Working Variables")]
@@ -43,7 +46,12 @@ namespace GhostWriter.Entities.Competitors
 
         private EventBinding<PassDay> passDayEvent;
 
-        public TimeEstimates TimeEstimates { get => timeEstimates; }
+        public string Name { get => name; }
+        public string FlavorText { get => flavorText; }
+        public int TotalSales { get => totalSales; }
+        public List<PublishedWork> PublishedWorks { get => workHistory.Values.ToList(); }
+
+    public TimeEstimates TimeEstimates { get => timeEstimates; }
 
         private void OnEnable()
         {
@@ -64,7 +72,7 @@ namespace GhostWriter.Entities.Competitors
         /// <summary>
         /// Initialize the NPC Competitor
         /// </summary>
-        public void Initialize(string competitorName, float startingMoney, GeneratedStoryBank generatedStoryBank)
+        public void Initialize(string competitorName, string flavorText, float startingMoney, GeneratedStoryBank generatedStoryBank)
         {
             // Get Components
             bank = GetComponent<Bank>();
@@ -75,6 +83,7 @@ namespace GhostWriter.Entities.Competitors
 
             // Set variables
             this.competitorName = competitorName;
+            this.flavorText = flavorText;
             working = false;
 
             // Initialize the Work history
@@ -82,6 +91,9 @@ namespace GhostWriter.Entities.Competitors
 
             // Get the Generated Story Bank
             this.generatedStoryBank = generatedStoryBank;
+
+            // Set the total sales
+            totalSales = 0;
 
             // Initialize the state machine
             CreateStateMachine();
@@ -267,7 +279,30 @@ namespace GhostWriter.Entities.Competitors
         /// <summary>
         /// Calculate sales for the NPC Competitor
         /// </summary>
-        public void CalculateSales(float amount) => bank.AddAmount(amount);
+        public void CalculateSales(float amount)
+        {
+            // Add the amount to the bank
+            bank.AddAmount(amount);
+
+            // Start counting the total sales
+            int totalSales = 0;
+
+            // Iterate through each Published Work within the Work History
+            foreach(KeyValuePair<int, PublishedWork> kvp in workHistory)
+            {
+                // Add the Published Work's cumulative sales to the total
+                totalSales += kvp.Value.CumulativeSales;
+            }
+
+            // Set the total sales
+            this.totalSales = totalSales;
+
+            // Update the existing Competitor List
+            EventBus<UpdateCompetitorList>.Raise(new UpdateCompetitorList()
+            {
+                FullUpdate = false
+            });
+        }
 
         /// <summary>
         /// Get the Time Estimate per the Work Type

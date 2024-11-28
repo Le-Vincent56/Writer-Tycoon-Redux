@@ -11,6 +11,7 @@ namespace GhostWriter.Entities.Competitors
     public class CompetitorData : SerializedScriptableObject
     {
         [SerializeField] public string competitorName;
+        [SerializeField] public string flavorText;
         [SerializeField] public int startingMoney;
         [SerializeField] public bool learned;
         [SerializeField] public float learningFactor;

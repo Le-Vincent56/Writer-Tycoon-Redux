@@ -83,7 +83,7 @@ namespace GhostWriter.Entities.Competitors
                 compatibilityManager.GetTopicAudienceCompatibilities(),
                 pointGenerationManager.GetGenreFocusTargets()
             );
-            component.Initialize(data.competitorName, data.startingMoney, generatedStoryBank);
+            component.Initialize(data.competitorName, data.flavorText, data.startingMoney, generatedStoryBank);
 
             // Record the component
             competitorRecord.RecordCompetitor(component);
