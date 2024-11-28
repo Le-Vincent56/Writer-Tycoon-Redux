@@ -147,4 +147,9 @@ namespace GhostWriter.Patterns.EventBus
 
     public struct ClosePublicationHistory : IEvent { }
     #endregion
+
+    #region COMPETITOR WINDOW EVENTS
+    public struct OpenCompetitorWindow : IEvent { }
+    public struct CloseCompetitorWindow : IEvent { }
+    #endregion
 }

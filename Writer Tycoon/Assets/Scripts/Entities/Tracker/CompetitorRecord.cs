@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using GhostWriter.Patterns.ServiceLocator;
+using System.Linq;
 
 namespace GhostWriter.Entities.Tracker
 {
@@ -38,5 +39,13 @@ namespace GhostWriter.Entities.Tracker
         /// Get the player
         /// </summary>
         public ICompetitor GetPlayer() => player;
+
+        /// <summary>
+        /// Get all NPC Competitors
+        /// </summary>
+        public List<ICompetitor> GetNPCCompetitors()
+        {
+            return competitors.Where(competitor => competitor != player).ToList();
+        }
     }
 }
