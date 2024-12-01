@@ -8891,7 +8891,7 @@ Transform:
   m_GameObject: {fileID: 564271174}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4428222, y: 3.3231144, z: 2.176376}
+  m_LocalPosition: {x: 5.0397396, y: 1.3798949, z: -12.128847}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16501,6 +16501,11 @@ MonoBehaviour:
   competitorPrefab: {fileID: 6866723620101752621, guid: f827ce8b585723c40b32919ee8430758, type: 3}
   competitorDatas:
   - {fileID: 11400000, guid: 598e7e5af6e864b44be76666867c7c52, type: 2}
+  - {fileID: 11400000, guid: 9dec2b7d8ad49384480302a596a0e055, type: 2}
+  - {fileID: 11400000, guid: 1b626e676efb79444a3046cec0360ab8, type: 2}
+  - {fileID: 11400000, guid: c8246d170a6580b4f8a60d8e8fe4b47a, type: 2}
+  - {fileID: 11400000, guid: 37f963079c26ecb4b8f111a669f6265b, type: 2}
+  - {fileID: 11400000, guid: 19ba327435c563145882bca550b7cf01, type: 2}
   - {fileID: 11400000, guid: 5bf7c3eeab89277438c5d695fdc5d069, type: 2}
 --- !u!1 &909165084
 GameObject:
@@ -37091,6 +37096,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b46cf5f2f5c3949861e715db62332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: windows
+      Entry: 6
+      Data: 
 --- !u!1 &1953568379
 GameObject:
   m_ObjectHideFlags: 0

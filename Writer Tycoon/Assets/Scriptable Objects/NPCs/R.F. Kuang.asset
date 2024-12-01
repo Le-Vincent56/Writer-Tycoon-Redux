@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509de9d2abab4cd4cbf4a124f8f72d66, type: 3}
+  m_Name: R.F. Kuang
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: topics
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Topics.TopicType,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 43
+    - Name: 
+      Entry: 3
+      Data: 54
+    - Name: 
+      Entry: 3
+      Data: 72
+    - Name: 
+      Entry: 3
+      Data: 70
+    - Name: 
+      Entry: 3
+      Data: 92
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: genres
+      Entry: 7
+      Data: 1|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Genres.GenreType,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  competitorName: R. F. Kuang
+  flavorText: The Historian of Havoc
+  startingMoney: 5000
+  learned: 1
+  learningFactor: 0.2
+  discountFactor: 0.7
+  explorationFactor: 1
+  workType: 3

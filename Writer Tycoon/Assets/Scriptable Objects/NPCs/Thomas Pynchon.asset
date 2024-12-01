@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509de9d2abab4cd4cbf4a124f8f72d66, type: 3}
+  m_Name: Thomas Pynchon
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: topics
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Topics.TopicType,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 20
+    - Name: 
+      Entry: 3
+      Data: 33
+    - Name: 
+      Entry: 3
+      Data: 50
+    - Name: 
+      Entry: 3
+      Data: 86
+    - Name: 
+      Entry: 3
+      Data: 77
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: genres
+      Entry: 7
+      Data: 1|System.Collections.Generic.HashSet`1[[GhostWriter.WorkCreation.Ideation.Genres.GenreType,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 9
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  competitorName: Thomas Pynchon
+  flavorText: The Phantom of Prose
+  startingMoney: 5000
+  learned: 1
+  learningFactor: 0.7
+  discountFactor: 1
+  explorationFactor: 0.2
+  workType: 3
