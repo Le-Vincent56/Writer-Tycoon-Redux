@@ -62,12 +62,13 @@ namespace GhostWriter.Entities.Competitors.Learning
                 // Get Q-value for the current state-action pair
                 float qValue = store.GetQValue(state, action);
 
-                // Get max Q-value for the new state
+                // Get max Q-value
                 float maxQValue = store.GetQValue(
                     finalState,
                     store.GetBestAction(finalState, problem.GetAvailableActions(finalState).Keys.ToHashSet())
                 );
 
+                // Calculate the q-value for the current state
                 qValue = (1 - learnFactor) * qValue + learnFactor * (reward + discountFactor * maxQValue);
 
                 // Store the updated Q-value

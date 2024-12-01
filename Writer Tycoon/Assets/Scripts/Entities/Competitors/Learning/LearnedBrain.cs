@@ -13,9 +13,10 @@ namespace GhostWriter.Entities.Competitors.Learning
     public class LearnedBrain : CompetitorBrain
     {
         [Header("Learning")]
-        [SerializeField] float learnFactor;
-        [SerializeField] float discountFactor;
-        [SerializeField] float explorationFactor;
+        [SerializeField] private float learnFactor;
+        [SerializeField] private float discountFactor;
+        [SerializeField] private float explorationFactor;
+        [SerializeField] private int iterations;
 
         [SerializeField] private QLearner conceptLearner;
         [SerializeField] private QLearner focusOneLearner;
@@ -170,6 +171,7 @@ namespace GhostWriter.Entities.Competitors.Learning
             this.learnFactor = learnFactor;
             this.discountFactor = discountFactor;
             this.explorationFactor = explorationFactor;
+            iterations = 10;
         }
 
         /// <summary>
@@ -281,7 +283,7 @@ namespace GhostWriter.Entities.Competitors.Learning
             switch (problemToLearn)
             {
                 case Problem.Concept:
-                    conceptLearner.RunQLearningStep(workProblem, 0, 3, learnFactor, discountFactor, explorationFactor);
+                    conceptLearner.RunQLearningStep(workProblem, 0, iterations, learnFactor, discountFactor, explorationFactor);
                     currentConcept = conceptLearner.GetBestAction();
                     break;
 
@@ -303,7 +305,7 @@ namespace GhostWriter.Entities.Competitors.Learning
                     }
 
                     // Run the learning
-                    focusOneLearner.RunQLearningStep(workProblem, focusOneState, 3, learnFactor, discountFactor, explorationFactor);
+                    focusOneLearner.RunQLearningStep(workProblem, focusOneState, iterations, learnFactor, discountFactor, explorationFactor);
                     currentFocusOne = focusOneLearner.GetBestAction();
                     break;
 
@@ -324,7 +326,7 @@ namespace GhostWriter.Entities.Competitors.Learning
                         focusTwoState = i * 3 + 2;
                     }
 
-                    focusTwoLearner.RunQLearningStep(workProblem, focusTwoState, 3, learnFactor, discountFactor, explorationFactor);
+                    focusTwoLearner.RunQLearningStep(workProblem, focusTwoState, iterations, learnFactor, discountFactor, explorationFactor);
                     currentFocusTwo = focusTwoLearner.GetBestAction();
                     break;
 
@@ -345,7 +347,7 @@ namespace GhostWriter.Entities.Competitors.Learning
                         focusThreeState = i * 3 + 3;
                     }
 
-                    focusThreeLearner.RunQLearningStep(workProblem, focusThreeState, 3, learnFactor, discountFactor, explorationFactor);
+                    focusThreeLearner.RunQLearningStep(workProblem, focusThreeState, iterations, learnFactor, discountFactor, explorationFactor);
                     currentFocusThree = focusThreeLearner.GetBestAction();
                     break;
             }
