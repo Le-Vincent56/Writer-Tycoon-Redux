@@ -23,7 +23,7 @@ namespace GhostWriter.Timers
             // Calculate the time threshold
             timeThresholdDef = 1f / TicksPerSecond;
             timeThresholdFaster = timeThresholdDef / 2f;
-            timeThresholdFastest = timeThresholdDef / 30f;
+            timeThresholdFastest = timeThresholdDef / 5f;
 
             // Set the default time threshold
             timeThreshold = timeThresholdDef;
@@ -55,7 +55,7 @@ namespace GhostWriter.Timers
         public void SetFastestSpeed()
         {
             timeThreshold = timeThresholdFastest;
-            scalar = 30;
+            scalar = 5;
             mode = 3;
         }
 

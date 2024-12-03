@@ -14,6 +14,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
         [SerializeField] private CanvasGroup window;
         [SerializeField] private int state;
         [SerializeField] private CanvasGroup[] screens = new CanvasGroup[4];
+        private RectTransform rectTransform;
 
         [SerializeField] private float translateValue;
         [SerializeField] private float duration;
@@ -36,6 +37,10 @@ namespace GhostWriter.WorkCreation.UI.Ideation
 
         private void Awake()
         {
+            // Verify the RectTransform component
+            if (rectTransform == null)
+                rectTransform = window.GetComponent<RectTransform>();
+
             // Set the ideation state
             state = IDEATION;
 
@@ -68,7 +73,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
             stateMachine.SetState(ideationState);
 
             // Set variables
-            originalPosition = window.transform.localPosition;
+            originalPosition = rectTransform.anchoredPosition;
         }
 
         private void OnEnable()
@@ -202,7 +207,7 @@ namespace GhostWriter.WorkCreation.UI.Ideation
                 originalPosition.y + translateValue, 
                 originalPosition.z
             );
-            window.transform.localPosition = startPos;
+            rectTransform.anchoredPosition = startPos;
 
             // Fade in
             Fade(1f, duration, () => {
@@ -291,10 +296,10 @@ namespace GhostWriter.WorkCreation.UI.Ideation
             translateTween?.Kill(false);
 
             // Calculate the target position
-            float targetPos = window.transform.localPosition.y + endTranslateValue;
+            float targetPos = rectTransform.anchoredPosition.y + endTranslateValue;
 
             // Set the tween animation
-            translateTween = window.transform.DOLocalMoveY(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosY(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

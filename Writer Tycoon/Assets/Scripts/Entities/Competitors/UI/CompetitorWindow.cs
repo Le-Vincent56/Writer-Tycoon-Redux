@@ -4,7 +4,6 @@ using GhostWriter.Patterns.EventBus;
 using GhostWriter.Patterns.ServiceLocator;
 using GhostWriter.Patterns.StateMachine;
 using GhostWriter.World.GeneralUI;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 namespace GhostWriter.Entities.Competitors.UI

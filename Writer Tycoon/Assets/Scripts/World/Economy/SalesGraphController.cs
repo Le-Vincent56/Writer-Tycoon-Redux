@@ -1,9 +1,9 @@
 using DG.Tweening;
 using Sirenix.OdinInspector;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GhostWriter.Patterns.EventBus;
+using UnityEngine.UI;
 
 namespace GhostWriter.World.Economy
 {
@@ -48,7 +48,7 @@ namespace GhostWriter.World.Economy
             // Initialize the button
             button.Initialize(this);
 
-            // Start off screen
+            // Translate off screen
             Translate(-translateValue, 0f);
 
             showing = false;
@@ -184,11 +184,11 @@ namespace GhostWriter.World.Economy
             // Kill the current translate tween if it exists
             translateTween?.Kill(false);
 
-            // Calculate the target position
-            float targetPos = rectTransform.localPosition.x + endTranslateValue;
+            // Calculate the target position based on anchoredPosition
+            float targetPos = rectTransform.anchoredPosition.x + endTranslateValue;
 
             // Set the tween animation
-            translateTween = rectTransform.DOLocalMoveX(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosX(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

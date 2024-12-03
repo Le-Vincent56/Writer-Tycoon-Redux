@@ -20,6 +20,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
         [SerializeField] private Text titleText;
         [SerializeField] private Text authorText;
         [SerializeField] private Text scoreText;
+        private RectTransform rectTransform;
 
         [SerializeField] private Color terribleColor;
         [SerializeField] private Color poorColor;
@@ -52,11 +53,15 @@ namespace GhostWriter.WorkCreation.UI.Rating
             if(button == null)
                 button = GetComponentInChildren<Button>();
 
+            // Verify the RectTransform component
+            if (rectTransform == null)
+                rectTransform = GetComponent<RectTransform>();
+
             // Initialize the queue
             openWindowQueue = new();
 
             // Set variables
-            originalPosition = window.transform.localPosition;
+            originalPosition = rectTransform.anchoredPosition;
             canOpen = true;
 
             // Set button event
@@ -176,7 +181,7 @@ namespace GhostWriter.WorkCreation.UI.Rating
                 originalPosition.y + translateValue,
                 originalPosition.z
             );
-            window.transform.localPosition = startPos;
+            rectTransform.anchoredPosition = startPos;
 
             // Fade in
             Fade(1f, duration, () => {
@@ -291,10 +296,10 @@ namespace GhostWriter.WorkCreation.UI.Rating
             translateTween?.Kill(false);
 
             // Calculate the target position
-            float targetPos = window.transform.localPosition.y + endTranslateValue;
+            float targetPos = rectTransform.anchoredPosition.y + endTranslateValue;
 
             // Set the tween animation
-            translateTween = window.transform.DOLocalMoveY(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosY(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

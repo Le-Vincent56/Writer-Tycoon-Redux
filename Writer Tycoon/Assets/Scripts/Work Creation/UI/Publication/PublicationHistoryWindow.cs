@@ -18,6 +18,7 @@ namespace GhostWriter.WorkCreation.UI.Publication
         [Header("Instantiation")]
         [SerializeField] private GameObject publishedWorkCard;
         [SerializeField] private Transform container;
+        private RectTransform rectTransform;
 
         [SerializeField] private List<CanvasGroup> canvasGroups;
         private CanvasGroup window;
@@ -48,11 +49,15 @@ namespace GhostWriter.WorkCreation.UI.Publication
             if(window == null)
                 window = GetComponent<CanvasGroup>();
 
+            // Verify the RectTransform component
+            if (rectTransform == null)
+                rectTransform = GetComponent<RectTransform>();
+
             // Instantiate the dictionary
             publicationCardsDict = new();
 
             // Set the original window position
-            originalPosition = window.transform.localPosition;
+            originalPosition = rectTransform.anchoredPosition;
 
             // Initialize the state machine
             stateMachine = new();
@@ -224,10 +229,10 @@ namespace GhostWriter.WorkCreation.UI.Publication
             translateTween?.Kill(false);
 
             // Calculate the target position
-            float targetPos = window.transform.localPosition.y + endTranslateValue;
+            float targetPos = rectTransform.anchoredPosition.y + endTranslateValue;
 
             // Set the tween animation
-            translateTween = window.transform.DOLocalMoveY(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosY(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

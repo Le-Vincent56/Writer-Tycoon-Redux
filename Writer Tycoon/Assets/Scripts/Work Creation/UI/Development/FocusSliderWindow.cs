@@ -20,6 +20,7 @@ namespace GhostWriter.WorkCreation.UI.Development
         [SerializeField] private CanvasGroup[] screens = new CanvasGroup[3];
         [SerializeField] private FocusSlider[] focusSliders = new FocusSlider[9];
         [SerializeField] private ConfirmSlidersButton[] confirmButtons = new ConfirmSlidersButton[3];
+        private RectTransform rectTransform;
 
         private Queue<int> hashQueue;
 
@@ -39,6 +40,10 @@ namespace GhostWriter.WorkCreation.UI.Development
 
         private void Awake()
         {
+            // Verify the RectTransform component
+            if (rectTransform == null)
+                rectTransform = window.GetComponent<RectTransform>();
+
             // Set the ideation state
             currentPhase = DevelopmentPhase.PhaseOne;
 
@@ -75,6 +80,7 @@ namespace GhostWriter.WorkCreation.UI.Development
             // Initialize variables
             hashQueue = new();
             windowOpen = false;
+            originalPosition = rectTransform.anchoredPosition;
         }
 
         private void OnEnable()
@@ -206,7 +212,7 @@ namespace GhostWriter.WorkCreation.UI.Development
                 originalPosition.y + translateValue,
                 originalPosition.z
             );
-            window.transform.localPosition = startPos;
+            rectTransform.anchoredPosition = startPos;
 
             // Fade in
             Fade(1f, duration, () => {
@@ -279,10 +285,10 @@ namespace GhostWriter.WorkCreation.UI.Development
             translateTween?.Kill(false);
 
             // Calculate the target position
-            float targetPos = window.transform.localPosition.y + endTranslateValue;
+            float targetPos = rectTransform.anchoredPosition.y + endTranslateValue;
 
             // Set the tween animation
-            translateTween = window.transform.DOLocalMoveY(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosY(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback

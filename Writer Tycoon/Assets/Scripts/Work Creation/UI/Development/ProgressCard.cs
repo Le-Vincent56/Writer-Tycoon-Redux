@@ -109,7 +109,7 @@ namespace GhostWriter.WorkCreation.UI.Development
 
             // Set variables
             this.workHash = workHash;
-            originalPosition = rectTransform.localPosition;
+            originalPosition = rectTransform.anchoredPosition;
             currentStage = ProgressStage.Development;
 
             // Initialize the Progress Title
@@ -298,7 +298,7 @@ namespace GhostWriter.WorkCreation.UI.Development
                 originalPosition.y - translateValue,
                 originalPosition.z
             );
-            rectTransform.localPosition = startPos;
+            rectTransform.anchoredPosition = startPos;
 
             // Fade in
             Fade(1f, animateDuration);
@@ -360,10 +360,10 @@ namespace GhostWriter.WorkCreation.UI.Development
             translateTween?.Kill(false);
 
             // Calculate the target position
-            float targetPos = rectTransform.localPosition.y + endTranslateValue;
+            float targetPos = rectTransform.anchoredPosition.y + endTranslateValue;
 
             // Set the tween animation
-            translateTween = rectTransform.DOLocalMoveY(targetPos, duration)
+            translateTween = rectTransform.DOAnchorPosY(targetPos, duration)
                 .SetEase(easeType);
 
             // Exit case - if there is no given Tween Callback
