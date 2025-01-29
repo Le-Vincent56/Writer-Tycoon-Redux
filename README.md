@@ -47,7 +47,7 @@ Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus
 * Workplace: Employee Traits------------------------------------☐
 * Workplace: Liveliness/Motivation------------------------------☐
 * Workplace: Contract Work--------------------------------------☐
-* AI: Competitors-----------------------------------------------☐
+* AI: Competitors-----------------------------------------------☑ (12/1/2024)
 * AI: Book Deals------------------------------------------------☐
 * Game: Win State-----------------------------------------------☐
 * Game: Lose State----------------------------------------------☐
