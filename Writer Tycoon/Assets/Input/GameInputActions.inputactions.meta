@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: Assets/Scripts/Input/GameInputActions.cs
   wrapperClassName: GameInputActions
-  wrapperCodeNamespace: WriterTycoon.Input
+  wrapperCodeNamespace: GhostWriter.Input

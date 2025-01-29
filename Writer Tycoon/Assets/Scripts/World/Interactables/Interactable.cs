@@ -7,7 +7,7 @@ namespace GhostWriter.World.Interactables
     {
         None,
         Bookshelf,
-        Computer,
+        Desk,
         Fridge
     }
 

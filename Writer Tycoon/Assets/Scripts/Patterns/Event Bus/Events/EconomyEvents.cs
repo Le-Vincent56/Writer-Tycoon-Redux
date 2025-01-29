@@ -13,7 +13,7 @@ namespace GhostWriter.Patterns.EventBus
     {
         public ICompetitor Competitor;
         public float BankAmount;
-        public float Revenue;
+        public float Change;
     }
 
     public struct CreateSalesGraph : IEvent

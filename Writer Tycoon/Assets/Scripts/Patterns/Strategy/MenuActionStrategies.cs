@@ -13,8 +13,22 @@ namespace GhostWriter.Patterns.Strategy
     {
         public void PerformAction()
         {
-            // Open the Publication History
-            EventBus<OpenPublicationHistory>.Raise(new OpenPublicationHistory());
+            // Close the interact menus
+            EventBus<CloseInteractMenus>.Raise(new CloseInteractMenus());
+
+            // Pause the Calendar
+            EventBus<ChangeCalendarPauseState>.Raise(new ChangeCalendarPauseState()
+            {
+                Paused = true,
+                AllowSpeedChanges = false
+            });
+
+            // Move the player (in front of the fridge)
+            EventBus<CommandPlayerPosition>.Raise(new CommandPlayerPosition()
+            {
+                TargetPosition = new Vector2Int(-14, 7),
+                Type = CommandType.BookShelf
+            });
         }
     }
 
@@ -37,7 +51,7 @@ namespace GhostWriter.Patterns.Strategy
             // Move the player (on top of the chair)
             EventBus<CommandPlayerPosition>.Raise(new CommandPlayerPosition()
             {
-                TargetPosition = new Vector2Int(9, 5),
+                TargetPosition = new Vector2Int(9, 3),
                 Type = CommandType.Computer
             });
         }

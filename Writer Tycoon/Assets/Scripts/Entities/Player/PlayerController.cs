@@ -15,7 +15,8 @@ namespace GhostWriter.Entities.Player
     public enum CommandType
     {
         Computer,
-        Fridge
+        Fridge,
+        BookShelf
     }
 
     public class PlayerController : MonoBehaviour, IWorker, ICompetitor
@@ -252,6 +253,13 @@ namespace GhostWriter.Entities.Player
                     StartTraversal(() =>
                     {
                         eating = true;
+                    });
+                    break;
+                case CommandType.BookShelf:
+                    StartTraversal(() =>
+                    {
+                        // Open the Publication History
+                        EventBus<OpenPublicationHistory>.Raise(new OpenPublicationHistory());
                     });
                     break;
             }

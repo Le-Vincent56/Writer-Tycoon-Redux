@@ -11,6 +11,7 @@ namespace GhostWriter.World.Economy
     {
         private CompetitorRecord competitorRecord;
         private Text displayText;
+        private BankPopup bankPopup;
 
         [SerializeField] private float animationDuration;
         [SerializeField] private Color normalColor;
@@ -26,8 +27,13 @@ namespace GhostWriter.World.Economy
             if(displayText == null )
                 displayText = GetComponent<Text>();
 
+            // Verofy tje Bank Popup component
+            if(bankPopup == null)
+                bankPopup = GetComponentInChildren<BankPopup>();
+
             // Set the normal color
             displayText.color = normalColor;
+
         }
 
         private void OnEnable()
@@ -58,23 +64,18 @@ namespace GhostWriter.World.Economy
             // Display the text
             displayText.text = $"{eventData.BankAmount}";
 
-            // Change the color based on the revenue
-            if(eventData.Revenue > 0)
-            {
-                ChangeColor(incomeColor, animationDuration);
-            } 
-            else if(eventData.Revenue < 0)
-            {
-                ChangeColor(debtColor, animationDuration);
-            }
-            else if (eventData.BankAmount < 0)
-            {
-                ChangeColor(debtColor, animationDuration);
-            }
-            else if(eventData.Revenue == 0)
-            {
-                ChangeColor(normalColor, animationDuration);
-            }
+            // choose the display color
+            Color displayColor = eventData.Change > 0 
+                ? incomeColor 
+                : eventData.Change < 0 
+                    ? debtColor 
+                    : normalColor;
+
+            // Change the color of the text
+            ChangeColor(displayColor, animationDuration);
+
+            // Activate the bank popup
+            bankPopup.Popup(displayColor, eventData.Change);
         }
 
         /// <summary>

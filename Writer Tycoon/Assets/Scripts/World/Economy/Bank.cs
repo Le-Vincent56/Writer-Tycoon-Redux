@@ -44,7 +44,7 @@ public class Bank : MonoBehaviour
         {
             Competitor = competitor,
             BankAmount = bank,
-            Revenue = amount
+            Change = amount,
         });
     }
 
@@ -61,7 +61,7 @@ public class Bank : MonoBehaviour
         {
             Competitor = competitor,
             BankAmount = bank,
-            Revenue = rent,
+            Change = rent,
         });
     }
 }

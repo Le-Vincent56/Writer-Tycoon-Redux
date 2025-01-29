@@ -30,7 +30,7 @@ namespace GhostWriter.World.Interactables.UI
             menus = new()
             {
                 { InteractableType.Bookshelf, bookshelfGroup },
-                { InteractableType.Computer, computerGroup },
+                { InteractableType.Desk, computerGroup },
                 { InteractableType.Fridge, fridgeGroup },
             };
         }
@@ -66,7 +66,7 @@ namespace GhostWriter.World.Interactables.UI
                     HandleMenu(eventData.Interactable, eventData.Opening, bookshelfGroup, eventData.CursorPosition);
                     break;
 
-                case InteractableType.Computer:
+                case InteractableType.Desk:
                     HandleMenu(eventData.Interactable, eventData.Opening, computerGroup, eventData.CursorPosition);
                     break;
 
