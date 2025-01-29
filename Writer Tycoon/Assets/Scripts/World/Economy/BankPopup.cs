@@ -2,13 +2,15 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GhostWriter
+namespace GhostWriter.World.Economy
 {
     public class BankPopup : MonoBehaviour
     {
         private RectTransform rectTransform;
         private Text popupText;
 
+        [SerializeField] private Vector3 initialPosition;
+        [SerializeField] private Color initialColor;
         [SerializeField] private int initialScaleSize;
         [SerializeField] private int popupScaleSize;
         [SerializeField] private float totalDuration;
@@ -16,7 +18,7 @@ namespace GhostWriter
         private Tween translateTween;
         private Tween fadeTween;
 
-        private void Awake()
+        public void Initialize()
         {
             // Verify the RectTransform component
             if (rectTransform == null)
@@ -28,6 +30,8 @@ namespace GhostWriter
 
             // Set the initial scale size
             initialScaleSize = popupText.fontSize;
+            initialPosition = rectTransform.localPosition;
+            initialColor = popupText.color;
         }
 
 
@@ -42,10 +46,16 @@ namespace GhostWriter
         /// <summary>
         /// Popup the Text
         /// </summary>
-        public void Popup(Color popupColor, float revenue)
+        public void Popup(BankPopupPool pool, Color popupColor, float revenue)
         {
             // If there's no revenue made, return
-            if(revenue == 0) return;
+            if(revenue == 0)
+            {
+                // Release this object back to the pool
+                pool.Pool.Release(this);
+
+                return;
+            }
 
             // Create the popup string
             string popupString = revenue > 0
@@ -55,7 +65,6 @@ namespace GhostWriter
             // Set the text
             popupText.text = popupString;
             popupText.color = popupColor;
-
 
             // Fade in
             Fade(1f, totalDuration * 0.15f);
@@ -69,8 +78,23 @@ namespace GhostWriter
             // Translate upwards
             Translate(100f, totalDuration * 0.5f, Ease.OutQuad, () =>
             {
-                Fade(0f, totalDuration * 0.5f);
+                Fade(0f, totalDuration * 0.5f, () =>
+                {
+                    // Release this object back to the pool
+                    pool.Pool.Release(this);
+                });
             });
+        }
+
+        /// <summary>
+        /// Reset the Popup
+        /// </summary>
+        public void ResetPopup()
+        {
+            // Set initial variables
+            rectTransform.localPosition = initialPosition;
+            popupText.color = initialColor;
+            popupText.fontSize = initialScaleSize;
         }
 
         /// <summary>
