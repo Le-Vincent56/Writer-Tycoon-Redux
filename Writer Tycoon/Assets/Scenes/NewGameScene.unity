@@ -19500,7 +19500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bank: 10000
-  rent: 0
+  rent: 5000
 --- !u!114 &1246124235
 MonoBehaviour:
   m_ObjectHideFlags: 0

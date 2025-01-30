@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -37,6 +35,8 @@ namespace GhostWriter.Input
             // Enable the input actions
             Enable();
         }
+
+        private void OnDisable() => Disable();
 
         /// <summary>
         /// Enable the input actions
@@ -103,7 +103,7 @@ namespace GhostWriter.Input
         public void OnActivateDevTools(InputAction.CallbackContext context)
         {
             // If the button has been lifted, invoke the event
-            if (context.canceled) ActivateDevTools.Invoke();
+            if (context.started) ActivateDevTools.Invoke();
         }
     }
 }

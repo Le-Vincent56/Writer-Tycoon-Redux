@@ -34,6 +34,9 @@ namespace GhostWriter.WorkCreation.DevTools
             // Get the Worker Record
             workerRecord = ServiceLocator.ForSceneOf(this).Get<WorkerRecord>();
             competitorRecord = ServiceLocator.ForSceneOf(this).Get<CompetitorRecord>();
+
+            // Disable the Dev Input Reader by default
+            devInputReader.Disable();
         }
 
         private void OnEnable()

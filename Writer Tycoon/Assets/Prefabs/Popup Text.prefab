@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2631430833689476066
 CanvasRenderer:
@@ -96,4 +96,5 @@ MonoBehaviour:
   initialColor: {r: 0, g: 0, b: 0, a: 0}
   initialScaleSize: 0
   popupScaleSize: 38
-  totalDuration: 1
+  totalDuration: 1.5
+  adjustRate: -50

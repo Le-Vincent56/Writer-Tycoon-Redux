@@ -14,6 +14,7 @@ namespace GhostWriter.World.Economy
         [SerializeField] private int initialScaleSize;
         [SerializeField] private int popupScaleSize;
         [SerializeField] private float totalDuration;
+        [SerializeField] private float adjustRate = -50f;
         private Tween scaleTween;
         private Tween translateTween;
         private Tween fadeTween;
@@ -30,7 +31,7 @@ namespace GhostWriter.World.Economy
 
             // Set the initial scale size
             initialScaleSize = popupText.fontSize;
-            initialPosition = rectTransform.localPosition;
+            initialPosition = new Vector2(rectTransform.localPosition.x + adjustRate, rectTransform.localPosition.y);
             initialColor = popupText.color;
         }
 
@@ -60,7 +61,7 @@ namespace GhostWriter.World.Economy
             // Create the popup string
             string popupString = revenue > 0
                 ? $"+${revenue}"
-                : $"-${revenue}";
+                : $"-${-revenue}";
 
             // Set the text
             popupText.text = popupString;
@@ -75,13 +76,25 @@ namespace GhostWriter.World.Economy
                 Scale(initialScaleSize, totalDuration * 0.7f, Ease.InOutSine);
             });
 
-            // Translate upwards
-            Translate(100f, totalDuration * 0.5f, Ease.OutQuad, () =>
+            // Get the translate value
+            float translateValue = revenue > 0 
+                ? Random.Range(22.5f, 30f) - adjustRate 
+                : Random.Range(72.5f, 80f) + adjustRate;
+
+            Debug.Log(translateValue);
+
+            // Translate 
+            Translate(translateValue, totalDuration * 0.3f, Ease.OutQuad, () =>
             {
-                Fade(0f, totalDuration * 0.5f, () =>
+                // Stay there for a bit
+                Translate(translateValue, totalDuration * 0.5f, Ease.OutQuad, () =>
                 {
-                    // Release this object back to the pool
-                    pool.Pool.Release(this);
+                    // Fade out
+                    Fade(0f, totalDuration * 0.3f, () =>
+                    {
+                        // Release this object back to the pool
+                        pool.Pool.Release(this);
+                    });
                 });
             });
         }

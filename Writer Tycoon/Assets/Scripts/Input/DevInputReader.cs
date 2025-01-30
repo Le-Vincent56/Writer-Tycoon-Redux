@@ -29,6 +29,8 @@ namespace GhostWriter.Input
             Enable();
         }
 
+        private void OnDisable() => Disable();
+
         /// <summary>
         /// Enable the input actions
         /// </summary>
@@ -56,7 +58,7 @@ namespace GhostWriter.Input
 
         public void OnDeactivateDevTools(InputAction.CallbackContext context)
         {
-            if (context.canceled) DeactivateDevTools.Invoke();
+            if (context.started) DeactivateDevTools.Invoke();
         }
     }
 }

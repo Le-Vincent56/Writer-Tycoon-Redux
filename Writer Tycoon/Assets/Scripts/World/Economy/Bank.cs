@@ -61,7 +61,7 @@ public class Bank : MonoBehaviour
         {
             Competitor = competitor,
             BankAmount = bank,
-            Change = rent,
+            Change = -rent,
         });
     }
 }
