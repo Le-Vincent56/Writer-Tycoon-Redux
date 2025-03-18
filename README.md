@@ -1,10 +1,10 @@
-# Writer-Tycoon
-_Writer Tycoon_* is a 2D, management, simulation game where you take on the role of an up-and-coming writer. Learn new topics, genres, and research writing to better your skills and grow your audience. Amongst all of the writers, will you become the best?
+# Ghost Writer
+_Ghost Writer_ is a 2D, management, simulation game where you take on the role of an up-and-coming writer. Learn new topics, genres, and research writing to better your skills and grow your audience. Amongst all of the writers, will you become the best?
 
 This project started off as a way to hone my C++ skills and as a test to see how much I can get done within four weeks of winter break (December 20, 2023 - January 15, 2024). Now, it is a project that I want to hone to a point of satisfaction and possibly release into the world.
 
 ## Engine
-Whereas before _Writer Tycoon_* used SFML and C++, there was too much of a focus on the low-level, engine-like development for the game. The goal for the game now is feature development, which is why I have switched to Unity. The goal, this time around, is to better my skills in general programming and software architecture/engineering by practicing design patterns for modularity and scalability.
+Whereas before _Ghost Writer_ used SFML and C++, there was too much of a focus on the low-level, engine-like development for the game. The goal for the game now is feature development, which is why I have switched to Unity. The goal, this time around, is to better my skills in general programming and software architecture/engineering by practicing design patterns for modularity and scalability.
 
 ## GAMEPLAY CHECKLIST
 * World: Calendar-----------------------------------------------☑ (8/30/2024)
